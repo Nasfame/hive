@@ -17,12 +17,13 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
-// write some string constants for x-CoopHive headers
+// TODO: Revert to previous version after solver deployment @Luke
+// write some string constants for x-lilypad headers
 // this is the address of the user
-const X_COOPHIVE_USER_HEADER = "X-CoopHive-User"
+const X_LILYPAD_USER_HEADER = "X-Lilypad-User"
 
 // this is the signature of the message
-const X_COOPHIVE_SIGNATURE_HEADER = "X-CoopHive-Signature"
+const X_LILYPAD_SIGNATURE_HEADER = "X-Lilypad-Signature"
 
 // the context name we keep the address
 const CONTEXT_ADDRESS = "address"
@@ -98,8 +99,8 @@ func AddHeaders(
 	if err != nil {
 		return err
 	}
-	req.Header.Add(X_COOPHIVE_USER_HEADER, userPayload)
-	req.Header.Add(X_COOPHIVE_SIGNATURE_HEADER, userSignature)
+	req.Header.Add(X_LILYPAD_USER_HEADER, userPayload)
+	req.Header.Add(X_LILYPAD_SIGNATURE_HEADER, userSignature)
 	return nil
 }
 
@@ -109,14 +110,14 @@ func AddHeaders(
 // there is a "X-CoopHive-Signature" header that will contain the signature
 // we use the signature to verify that the message was signed by the private key
 func GetAddressFromHeaders(req *http.Request) (string, error) {
-	userHeader := req.Header.Get(X_COOPHIVE_USER_HEADER)
+	userHeader := req.Header.Get(X_LILYPAD_USER_HEADER)
 	if userHeader == "" {
 		return "", HTTPError{
 			Message:    "missing user header",
 			StatusCode: http.StatusUnauthorized,
 		}
 	}
-	userSignature := req.Header.Get(X_COOPHIVE_SIGNATURE_HEADER)
+	userSignature := req.Header.Get(X_LILYPAD_SIGNATURE_HEADER)
 	if userSignature == "" {
 		return "", HTTPError{
 			Message:    "missing signature header",

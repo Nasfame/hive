@@ -1,10 +1,8 @@
 package main
 
 import (
-	"github.com/joho/godotenv"
-	"github.com/rs/zerolog/log"
-
 	"github.com/CoopHive/hive/cmd/hive"
+	"github.com/joho/godotenv"
 )
 
 func main() {
@@ -16,7 +14,8 @@ func init() {
 
 	err := godotenv.Load()
 	if err != nil {
-		log.Debug().Str("err", err.Error()).Msgf(".env not found")
+		//log.Debug().Str("err", err.Error()).Msgf(".env not found")
+		//TODO: Doesn't look good, add custom flag
 	}
 
 }
