@@ -26,10 +26,15 @@ jobs:
             goos: windows
     steps:
       - uses: actions/checkout@v3
+
+
       - uses: wangyoucao577/go-release-action@v1
         with:
           #          pre_command: go generate && go test TODO:
           build_command: make build
+          #          build_flags: -v
+          #          ldflags:
+          extra_files: LICENSE README.md
 
           github_token: ${{ secrets.GITHUB_TOKEN }}
           goos: ${{ matrix.goos }}
@@ -37,7 +42,9 @@ jobs:
           goversion: "https://dl.google.com/go/go1.13.1.linux-amd64.tar.gz"
           project_path: "."
           binary_name: "hive"
-          extra_files: LICENSE README.md
           compress_assets: true
           retry: 3
 #        asset_name: ${BINARY_NAME}-${RELEASE_TAG}-${GOOS}-${GOARCH} default
+
+
+          release_tag: ${{ github.ref }}
