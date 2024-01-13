@@ -3,8 +3,8 @@ package options
 import (
 	"fmt"
 
-	"github.com/bacalhau-project/lilypad/pkg/mediator"
-	"github.com/bacalhau-project/lilypad/pkg/system"
+	"github.com/CoopHive/hive/pkg/mediator"
+	"github.com/CoopHive/hive/pkg/system"
 	"github.com/spf13/cobra"
 )
 

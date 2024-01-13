@@ -1,4 +1,4 @@
-package lilypad
+package hive
 
 import (
 	"fmt"
@@ -8,11 +8,11 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/bacalhau-project/lilypad/pkg/data"
-	"github.com/bacalhau-project/lilypad/pkg/jobcreator"
-	optionsfactory "github.com/bacalhau-project/lilypad/pkg/options"
-	"github.com/bacalhau-project/lilypad/pkg/solver"
-	"github.com/bacalhau-project/lilypad/pkg/system"
+	"github.com/CoopHive/hive/pkg/data"
+	"github.com/CoopHive/hive/pkg/jobcreator"
+	optionsfactory "github.com/CoopHive/hive/pkg/options"
+	"github.com/CoopHive/hive/pkg/solver"
+	"github.com/CoopHive/hive/pkg/system"
 	"github.com/fatih/color"
 	"github.com/spf13/cobra"
 
@@ -23,8 +23,8 @@ func newRunCmd() *cobra.Command {
 	options := optionsfactory.NewJobCreatorOptions()
 	runCmd := &cobra.Command{
 		Use:     "run",
-		Short:   "Run a job on the Lilypad network.",
-		Long:    "Run a job on the Lilypad network.",
+		Short:   "Run a job on the CoopHive network.",
+		Long:    "Run a job on the CoopHive network.",
 		Example: "run cowsay:v0.0.1 -i Message=moo",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			options, err := optionsfactory.ProcessJobCreatorOptions(options, args)
@@ -42,24 +42,21 @@ func newRunCmd() *cobra.Command {
 
 func runJob(cmd *cobra.Command, options jobcreator.JobCreatorOptions) error {
 	c := color.New(color.FgCyan).Add(color.Bold)
+	//TODO: Rebrand to FI
 	header := `
-⠀⠀⠀⠀⠀⠀⣀⣤⣤⢠⣤⣀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⢴⣿⣿⣿⣿⢸⣿⡟⠀⠀⠀⠀⠀    ██╗     ██╗██╗  ██╗   ██╗██████╗  █████╗ ██████╗ 
-⠀⠀⣰⣿⣦⡙⢿⣿⣿⢸⡿⠀⠀⠀⠀⢀⠀    ██║     ██║██║  ╚██╗ ██╔╝██╔══██╗██╔══██╗██╔══██╗
-⠀⢰⣿⣿⣿⣿⣦⡙⣿⢸⠁⢀⣠⣴⣾⣿⡆    ██║     ██║██║   ╚████╔╝ ██████╔╝███████║██║  ██║
-⠀⣛⣛⣛⣛⣛⣛⣛⠈⠀⣚⣛⣛⣛⣛⣛⣛    ██║     ██║██║    ╚██╔╝  ██╔═══╝ ██╔══██║██║  ██║
-⠀⢹⣿⣿⣿⣿⠟⣡⣿⢸⣮⡻⣿⣿⣿⣿⡏    ███████╗██║███████╗██║   ██║     ██║  ██║██████╔╝
-⠀⠀⢻⣿⡟⣩⣾⣿⣿⢸⣿⣿⣌⠻⣿⡟⠀    ╚══════╝╚═╝╚══════╝╚═╝   ╚═╝     ╚═╝  ╚═╝╚═════╝ v2
-⠀⠀⠀⠉⢾⣿⣿⣿⣿⢸⣿⣿⣿⡷⠈⠀⠀                                                  
-⠀⠀⠀⠀⠀⠈⠙⠛⠛⠘⠛⠋⠁⠀ ⠀⠀⠀   Decentralized Compute Network  https://lilypad.tech
+  ___  __    __  ____  _  _  __  _  _  ____ 
+ / __)/  \  /  \(  _ \/ )( \(  )/ )( \(  __)
+( (__(  O )(  O )) __/) __ ( )( \ \/ / ) _) 
+ \___)\__/  \__/(__)  \_)(_/(__) \__/ (____) v0
+⠀ ⠀⠀⠀   Decentralized Compute Network  https://coophive.network
 
 `
 	if VERSION != "" {
-		header = strings.Replace(header, "v2", VERSION, 1)
+		header = strings.Replace(header, "v0", VERSION, 1)
 	}
 	c.Print(header)
 
-	spinner, err := createSpinner("Lilypad submitting job", "🌟")
+	spinner, err := createSpinner("CoopHive submitting job", "🌟")
 	if err != nil {
 		fmt.Printf("failed to make spinner from config struct: %v\n", err)
 		os.Exit(1)
@@ -139,7 +136,7 @@ func runJob(cmd *cobra.Command, options jobcreator.JobCreatorOptions) error {
 		return err
 	}
 	spinner.Stop()
-	fmt.Printf("\n🍂 Lilypad job completed, try 👇\n    open %s\n    cat %s/stdout\n    cat %s/stderr\n    https://ipfs.io/ipfs/%s\n",
+	fmt.Printf("\n🍂 CoopHive job completed, try 👇\n    open %s\n    cat %s/stdout\n    cat %s/stderr\n    https://ipfs.io/ipfs/%s\n",
 		solver.GetDownloadsFilePath(result.JobOffer.DealID),
 		solver.GetDownloadsFilePath(result.JobOffer.DealID),
 		solver.GetDownloadsFilePath(result.JobOffer.DealID),

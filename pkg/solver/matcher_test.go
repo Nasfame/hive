@@ -3,7 +3,7 @@ package solver
 import (
 	"testing"
 
-	"github.com/bacalhau-project/lilypad/pkg/data"
+	"github.com/CoopHive/hive/pkg/data"
 )
 
 func TestDoOffersMatch(t *testing.T) {

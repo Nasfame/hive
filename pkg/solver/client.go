@@ -5,10 +5,10 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/bacalhau-project/lilypad/pkg/data"
-	"github.com/bacalhau-project/lilypad/pkg/http"
-	"github.com/bacalhau-project/lilypad/pkg/solver/store"
-	"github.com/bacalhau-project/lilypad/pkg/system"
+	"github.com/CoopHive/hive/pkg/data"
+	"github.com/CoopHive/hive/pkg/http"
+	"github.com/CoopHive/hive/pkg/solver/store"
+	"github.com/CoopHive/hive/pkg/system"
 	"github.com/rs/zerolog/log"
 )
 

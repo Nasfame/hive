@@ -1,18 +1,19 @@
 [Unit]
-Description=Lilypad V2 Solver
+Description=CoopHive V0 Solver
 After=network-online.target
 Wants=network-online.target systemd-networkd-wait-online.service
 
 [Service]
 Environment="LOG_TYPE=json"
 Environment="LOG_LEVEL=debug"
-Environment="HOME=/app/lilypad"
-EnvironmentFile=/app/lilypad/solver.env
+Environment="HOME=/app/hive"
+EnvironmentFile=/app/hive/solver.env
 Environment="SERVER_PORT=80"
 Environment="SERVER_URL=http://testnet.lilypad.tech"
+#TODO: replace server url to http://testnet.coophive.network @Luke @Nasfame . Follow ../Readme.md
 Restart=always
 RestartSec=5s
-ExecStart=/usr/bin/lilypad solver
+ExecStart=/usr/bin/hive solver
 
 [Install]
 WantedBy=multi-user.target

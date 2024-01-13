@@ -1,11 +1,11 @@
-package lilypad
+package hive
 
 import (
-	optionsfactory "github.com/bacalhau-project/lilypad/pkg/options"
-	"github.com/bacalhau-project/lilypad/pkg/solver"
-	memorystore "github.com/bacalhau-project/lilypad/pkg/solver/store/memory"
-	"github.com/bacalhau-project/lilypad/pkg/system"
-	"github.com/bacalhau-project/lilypad/pkg/web3"
+	optionsfactory "github.com/CoopHive/hive/pkg/options"
+	"github.com/CoopHive/hive/pkg/solver"
+	memorystore "github.com/CoopHive/hive/pkg/solver/store/memory"
+	"github.com/CoopHive/hive/pkg/system"
+	"github.com/CoopHive/hive/pkg/web3"
 	"github.com/spf13/cobra"
 )
 
@@ -14,8 +14,8 @@ func newSolverCmd() *cobra.Command {
 
 	solverCmd := &cobra.Command{
 		Use:     "solver",
-		Short:   "Start the lilypad solver service.",
-		Long:    "Start the lilypad solver service.",
+		Short:   "Start the CoopHive solver service.",
+		Long:    "Start the CoopHive solver service.",
 		Example: "",
 		RunE: func(cmd *cobra.Command, _ []string) error {
 			options, err := optionsfactory.ProcessSolverOptions(options)

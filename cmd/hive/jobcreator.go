@@ -1,10 +1,10 @@
-package lilypad
+package hive
 
 import (
-	"github.com/bacalhau-project/lilypad/pkg/jobcreator"
-	optionsfactory "github.com/bacalhau-project/lilypad/pkg/options"
-	"github.com/bacalhau-project/lilypad/pkg/system"
-	"github.com/bacalhau-project/lilypad/pkg/web3"
+	"github.com/CoopHive/hive/pkg/jobcreator"
+	optionsfactory "github.com/CoopHive/hive/pkg/options"
+	"github.com/CoopHive/hive/pkg/system"
+	"github.com/CoopHive/hive/pkg/web3"
 	"github.com/spf13/cobra"
 )
 
@@ -13,8 +13,8 @@ func newJobCreatorCmd() *cobra.Command {
 
 	solverCmd := &cobra.Command{
 		Use:     "jobcreator",
-		Short:   "Start the lilypad job creator service.",
-		Long:    "Start the lilypad job creator service.",
+		Short:   "Start the CoopHive job creator service.",
+		Long:    "Start the CoopHive job creator service.",
 		Example: "",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			options, err := optionsfactory.ProcessOnChainJobCreatorOptions(options, args)

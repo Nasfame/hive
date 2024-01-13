@@ -1,12 +1,12 @@
 [Unit]
-Description=Lilypad V2 Bacalhau
+Description=CoopHive V0 Bacalhau
 After=network-online.target
 Wants=network-online.target systemd-networkd-wait-online.service
 
 [Service]
 Environment="LOG_TYPE=json"
 Environment="LOG_LEVEL=debug"
-Environment="HOME=/app/lilypad"
+Environment="HOME=/app/hive"
 Environment="BACALHAU_SERVE_IPFS_PATH=/app/data/ipfs"
 Restart=always
 RestartSec=5s

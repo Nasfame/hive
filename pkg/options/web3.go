@@ -4,14 +4,14 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/bacalhau-project/lilypad/pkg/system"
-	"github.com/bacalhau-project/lilypad/pkg/web3"
+	"github.com/CoopHive/hive/pkg/system"
+	"github.com/CoopHive/hive/pkg/web3"
 	"github.com/spf13/cobra"
 )
 
 func GetDefaultWeb3Options() web3.Web3Options {
 	return web3.Web3Options{
-
+		//TODO: refactor this to use the new config package
 		// core settings
 		RpcURL:     GetDefaultServeOptionString("WEB3_RPC_URL", "ws://testnet.lilypad.tech:8546"),
 		PrivateKey: GetDefaultServeOptionString("WEB3_PRIVATE_KEY", ""),

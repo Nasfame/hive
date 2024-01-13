@@ -3,7 +3,7 @@ package options
 import (
 	"fmt"
 
-	"github.com/bacalhau-project/lilypad/pkg/executor/bacalhau"
+	"github.com/CoopHive/hive/pkg/executor/bacalhau"
 	"github.com/spf13/cobra"
 )
 

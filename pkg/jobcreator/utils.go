@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/bacalhau-project/lilypad/pkg/data"
-	"github.com/bacalhau-project/lilypad/pkg/module"
+	"github.com/CoopHive/hive/pkg/data"
+	"github.com/CoopHive/hive/pkg/module"
 )
 
 // this will load the module in the offer options

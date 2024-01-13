@@ -1,4 +1,4 @@
-package lilypad
+package hive
 
 import (
 	"context"
@@ -10,16 +10,11 @@ import (
 
 var Fatal = FatalErrorHandler
 
-//FIXME: why @Kai?
-//func init() { //nolint:gochecknoinits
-//	NewRootCmd()
-//}
-
 func NewRootCmd() *cobra.Command {
 	RootCmd := &cobra.Command{
 		Use:   getCommandLineExecutable(),
-		Short: "Lilypad",
-		Long:  fmt.Sprintf("Lilypad: %s \nCommit: %s \n", VERSION, COMMIT_SHA),
+		Short: "CoopHive",
+		Long:  fmt.Sprintf("CoopHive: %s \nCommit: %s \n", VERSION, COMMIT_SHA),
 	}
 	RootCmd.AddCommand(newSolverCmd())
 	RootCmd.AddCommand(newResourceProviderCmd())

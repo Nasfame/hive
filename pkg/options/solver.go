@@ -1,8 +1,8 @@
 package options
 
 import (
-	"github.com/bacalhau-project/lilypad/pkg/solver"
-	"github.com/bacalhau-project/lilypad/pkg/system"
+	"github.com/CoopHive/hive/pkg/solver"
+	"github.com/CoopHive/hive/pkg/system"
 	"github.com/spf13/cobra"
 )
 

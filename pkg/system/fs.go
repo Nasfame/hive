@@ -3,17 +3,14 @@ package system
 import (
 	"archive/tar"
 	"bytes"
+	"github.com/CoopHive/hive/config"
 	"io"
 	"os"
 	"path/filepath"
 )
 
 func dataDirPath(path string) string {
-	basePath := os.Getenv("DATA_DIR")
-	if basePath == "" {
-		// TODO: configure temp dir based on OS
-		basePath = "/tmp/lilypad/data"
-	}
+	basePath := config.COOPHIVE_DATA_DIR
 	return filepath.Join(basePath, path)
 }
 

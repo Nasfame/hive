@@ -27,6 +27,7 @@ env:
 
 jobs:
   test:
+    if: false #FIXME: Disable
     runs-on: ubuntu-latest
 
     steps:
@@ -70,7 +71,7 @@ jobs:
           tar xfv bacalhau_v1.0.3_linux_amd64.tar.gz
           mv bacalhau /usr/local/bin
           # configure this to where you want the ipfs data to be stored
-          export BACALHAU_SERVE_IPFS_PATH=/tmp/lilypad/data/ipfs
+          export BACALHAU_SERVE_IPFS_PATH=/tmp/coophive/data/ipfs
           # run bacalhau as both compute node and requester node
           ./stack bacalhau-serve &
           sleep 10

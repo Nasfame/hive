@@ -3,12 +3,13 @@ package options
 import (
 	"fmt"
 
-	"github.com/bacalhau-project/lilypad/pkg/data"
+	"github.com/CoopHive/hive/pkg/data"
 	"github.com/spf13/cobra"
 )
 
 func GetDefaultServicesOptions() data.ServiceConfig {
 	return data.ServiceConfig{
+		//TODO: refactor to config
 		Solver:   GetDefaultServeOptionString("SERVICE_SOLVER", "0xd4646ef9f7336b06841db3019b617ceadf435316"),
 		Mediator: GetDefaultServeOptionStringArray("SERVICE_MEDIATORS", []string{"0x2d83ced7562e406151bd49c749654429907543b4"}),
 	}

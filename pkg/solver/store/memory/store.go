@@ -2,12 +2,13 @@ package store
 
 import (
 	"fmt"
+	"github.com/CoopHive/hive/config"
 	"os"
 	"sync"
 
-	"github.com/bacalhau-project/lilypad/pkg/data"
-	"github.com/bacalhau-project/lilypad/pkg/jsonl"
-	"github.com/bacalhau-project/lilypad/pkg/solver/store"
+	"github.com/CoopHive/hive/pkg/data"
+	"github.com/CoopHive/hive/pkg/jsonl"
+	"github.com/CoopHive/hive/pkg/solver/store"
 )
 
 type SolverStoreMemory struct {
@@ -29,7 +30,7 @@ func NewSolverStoreMemory() (*SolverStoreMemory, error) {
 
 	kinds := []string{"job_offers", "resource_offers", "deals", "decisions", "results"}
 	for k := range kinds {
-		logfile, err := os.OpenFile(fmt.Sprintf("/var/tmp/lilypad_%s.jsonl", kinds[k]), os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0644)
+		logfile, err := os.OpenFile(fmt.Sprintf(config.LogFileFormat, kinds[k]), os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0644)
 		if err != nil {
 			return nil, err
 		}

@@ -1,11 +1,11 @@
-package lilypad
+package hive
 
 import (
-	"github.com/bacalhau-project/lilypad/pkg/executor/bacalhau"
-	"github.com/bacalhau-project/lilypad/pkg/mediator"
-	optionsfactory "github.com/bacalhau-project/lilypad/pkg/options"
-	"github.com/bacalhau-project/lilypad/pkg/system"
-	"github.com/bacalhau-project/lilypad/pkg/web3"
+	"github.com/CoopHive/hive/pkg/executor/bacalhau"
+	"github.com/CoopHive/hive/pkg/mediator"
+	optionsfactory "github.com/CoopHive/hive/pkg/options"
+	"github.com/CoopHive/hive/pkg/system"
+	"github.com/CoopHive/hive/pkg/web3"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 )
@@ -15,8 +15,8 @@ func newMediatorCmd() *cobra.Command {
 
 	mediatorCmd := &cobra.Command{
 		Use:     "mediator",
-		Short:   "Start the lilypad mediator service.",
-		Long:    "Start the lilypad mediator service.",
+		Short:   "Start the CoopHive mediator service.",
+		Long:    "Start the CoopHive mediator service.",
 		Example: "",
 		RunE: func(cmd *cobra.Command, _ []string) error {
 			options, err := optionsfactory.ProcessMediatorOptions(options)

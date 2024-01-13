@@ -25,8 +25,8 @@ cd /
 sudo mkdir app
 sudo chown $USER app
 cd /app/
-git clone https://github.com/bacalhau-project/lilypad
-cd lilypad
+git clone https://github.com/CoopHive/hive
+cd hive
 (cd hardhat && yarn install)
 ```
 
@@ -36,7 +36,7 @@ Then we create the production keys:
 (cd hardhat && npx hardhat run scripts/generate-addresses.ts)
 ```
 
-This will print out the various private keys. We need to copy these into the `/app/lilypad/.env` file.
+This will print out the various private keys. We need to copy these into the `/app/hive/.env` file.
 
 Now we can boot geth and it will fund the various accounts:
 
@@ -50,7 +50,7 @@ Let's check this:
 ./stack balances
 ```
 
-Time to make the following files by copying the respective private key from `/app/lilypad/.env`
+Time to make the following files by copying the respective private key from `/app/hive/.env`
 
 Each file should be of the following format:
 
@@ -58,25 +58,25 @@ Each file should be of the following format:
 WEB3_PRIVATE_KEY=xxx
 ```
 
-* `/app/lilypad/solver.env` (copy `SOLVER_PRIVATE_KEY` from `.env`)
-* `/app/lilypad/mediator.env` (copy `MEDIATOR_PRIVATE_KEY` from `.env`)
-* `/app/lilypad/resource-provider.env` (copy `RESOURCE_PROVIDER_PRIVATE_KEY` from `.env`)
-* `/app/lilypad/job-creator.env` (copy `SOLVER_PRIVATE_KEY` from `.env`)
+* `/app/hive/solver.env` (copy `SOLVER_PRIVATE_KEY` from `.env`)
+* `/app/hive/mediator.env` (copy `MEDIATOR_PRIVATE_KEY` from `.env`)
+* `/app/hive/resource-provider.env` (copy `RESOURCE_PROVIDER_PRIVATE_KEY` from `.env`)
+* `/app/hive/job-creator.env` (copy `SOLVER_PRIVATE_KEY` from `.env`)
     * IMPORTANT: this has to be the solver private key because the job creator runs as it
 
 Now - we copy the systemd units and reload systemd:
 
 ```bash
-sudo cp /app/lilypad/ops/systemd/*.service /etc/systemd/system
+sudo cp /app/hive/ops/systemd/*.service /etc/systemd/system
 sudo systemctl daemon-reload
 ```
 
 Now we build lilypad:
 
 ```bash
-cd /app/lilypad
+cd /app/hive
 go build .
-sudo mv lilypad /usr/bin/lilypad
+sudo mv hive /usr/bin/hive
 ```
 
 Then we install bacalhau:

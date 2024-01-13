@@ -3,11 +3,11 @@ package resourceprovider
 import (
 	"context"
 
-	"github.com/bacalhau-project/lilypad/pkg/data"
-	"github.com/bacalhau-project/lilypad/pkg/executor"
-	"github.com/bacalhau-project/lilypad/pkg/executor/bacalhau"
-	"github.com/bacalhau-project/lilypad/pkg/system"
-	"github.com/bacalhau-project/lilypad/pkg/web3"
+	"github.com/CoopHive/hive/pkg/data"
+	"github.com/CoopHive/hive/pkg/executor"
+	"github.com/CoopHive/hive/pkg/executor/bacalhau"
+	"github.com/CoopHive/hive/pkg/system"
+	"github.com/CoopHive/hive/pkg/web3"
 )
 
 // this configures the resource offers we will keep track of

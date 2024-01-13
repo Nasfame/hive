@@ -1,16 +1,18 @@
-# Lilypad v2 🍃
+# CoopHive v0 🍃
 
 This cloud is just someone else's computer.
 
-![image](https://github.com/bacalhau-project/lilypad/assets/264658/d91dad9a-ca46-43d4-a94b-d33454efc7ae)
+![image](https://github.com/CoopHive/hive/assets/264658/d91dad9a-ca46-43d4-a94b-d33454efc7ae)
 
-Lilypad enables users to run AI workloads easily in a decentralized GPU network where anyone can get paid to connect
+CoopHive enables users to run AI workloads easily in a decentralized GPU network where anyone can get paid to connect
 their compute nodes to the network and run jobs. Users have access to easy Stable Diffusion XL and cutting edge open
-source LLMs both on chain, from CLI and via [Lilypad AI Studio](https://lilypad.tech) on the web.
+source LLMs both on chain, from CLI and via [CoopHive AI Studio](https://coophive.network) on the web.
+
+[//]: # TODO: deploy AI Studio to coophive.network @luke()
 
 # Getting started
 
-Welcome to the prerelease series of Lilypad v2.
+Welcome to the prerelease series of CoopHive v0.
 
 ## Aurora Testnet
 
@@ -19,7 +21,7 @@ The testnet has a base curency of ETH and you will also get LP to pay for jobs (
 Metamask:
 
 ```
-Network name: Lilypad v2 Aurora testnet
+Network name: CoopHive v0 Aurora testnet
 New RPC URL: http://testnet.lilypad.tech:8545
 Chain ID: 1337
 Currency symbol: ETH
@@ -28,19 +30,20 @@ Block explorer URL: (leave blank)
 
 ### Fund your wallet with ETH and LP
 
-To obtain funds, go to [http://faucet.lilypad.tech:8080](http://faucet.lilypad.tech:8080)
+[//]: # (TODO: rebrand to coophive.tech @luke)
+To obtain funds, go to [http://faucet.coophive.tech:8080](http://faucet.lilypad.tech:8080)
 
 The faucet will give you both ETH (to pay for gas) and LP (to stake and pay for jobs).
 
 ## Install CLI
 
-Download the latest release of Lilypad for your platform. Both the amd64/x86_64 and arm64 variants of macOS and Linux
+Download the latest release of CoopHive for your platform. Both the amd64/x86_64 and arm64 variants of macOS and Linux
 are supported. (If you are on Apple Silicon, you'll want arm64).
 
-Nb:  to check your version use ```which lilypad``` - if an old version run ```rm <path>``` to remove that path then
+Nb:  to check your version use ```which hive``` - if an old version run ```rm <path>``` to remove that path then
 reinstall newest version
 
-The commands below will automatically detect your OS and processor architecture and download the correct Lilypad build
+The commands below will automatically detect your OS and processor architecture and download the correct CoopHive build
 for your machine.
 
 ```
@@ -54,13 +57,13 @@ Then Download & Install
 
 ```
 # Download the latest production build
-curl -sSL -o lilypad https://github.com/bacalhau-project/lilypad/releases/download/v2.0.0-d63a7ff/lilypad-$OSNAME-$OSARCH
-# Make Lilypad executable and install it
-chmod +x lilypad
-sudo mv lilypad /usr/local/bin/lilypad
+curl -sSL -o hive https://github.com/CoopHive/hive/releases/download/v2.0.0-d63a7ff/hive-$OSNAME-$OSARCH
+# Make CoopHive executable and install it
+chmod +x hive
+sudo mv hive /usr/local/bin/hive
 ```
 
-You can also, at your option, choose to compile Lilypad using Go and install it that way on any machine that supports
+You can also, at your option, choose to compile CoopHive using Go and install it that way on any machine that supports
 the Go toolchain.
 
 ## Run a job
@@ -74,41 +77,41 @@ export WEB3_PRIVATE_KEY=<your private key>
 ### Cows
 
 ```
-lilypad run cowsay:v0.0.1 -i Message="moo"
+hive run cowsay:v0.0.1 -i Message="moo"
 ```
 
 ### SDXL
 
 ```
-lilypad run sdxl:v0.9-lilypad1 -i PromptEnv="PROMPT=beautiful view of iceland with a record player"
+hive run sdxl:v0.9-lilypad1 -i PromptEnv="PROMPT=beautiful view of iceland with a record player"
 ```
 
-![image-42](https://github.com/bacalhau-project/lilypad/assets/264658/d48bb897-79a0-4f3a-b938-e85a8cfa3f0e)
+![image-42](https://github.com/CoopHive/hive/assets/264658/d48bb897-79a0-4f3a-b938-e85a8cfa3f0e)
 
 Not working?
-Try ```rm -rf /tmp/lilypad/data/repos``` uninstall lilypad path and reinstall from the start
+Try ```rm -rf /tmp/hive/data/repos``` uninstall hive path and reinstall from the start
 
 ## Run a node, earn LP
 
 ```
-lilypad serve
+hive serve
 ```
 
-systemd units & more details [here](https://github.com/bacalhau-project/lilypad/tree/main/ops)
+systemd units & more details [here](https://github.com/CoopHive/hive/tree/main/ops)
 
 ## Available modules
 
 Check the github releases page for each module or just use the git hash as the tag.
 
-* [sdxl](https://github.com/bacalhau-project/lilypad-module-sdxl)
-* [stable-diffusion](https://github.com/bacalhau-project/lilypad-module-stable-diffusion)
-* [duckdb](https://github.com/bacalhau-project/lilypad-module-duckdb)
-* [fastchat](https://github.com/bacalhau-project/lilypad-module-fastchat)
-* [lora-inference](https://github.com/bacalhau-project/lilypad-module-lora-inference)
-* [lora-training](https://github.com/bacalhau-project/lilypad-module-lora-training)
-* [filecoin-data-prep](https://github.com/bacalhau-project/lilypad-module-filecoin-data-prep)
-* [wasm](https://github.com/bacalhau-project/lilypad-module-wasm)
-* [cowsay](https://github.com/bacalhau-project/lilypad-module-cowsay)
+* [sdxl](https://github.com/CoopHive/hive-module-sdxl)
+* [stable-diffusion](https://github.com/CoopHive/hive-module-stable-diffusion)
+* [duckdb](https://github.com/CoopHive/hive-module-duckdb)
+* [fastchat](https://github.com/CoopHive/hive-module-fastchat)
+* [lora-inference](https://github.com/CoopHive/hive-module-lora-inference)
+* [lora-training](https://github.com/CoopHive/hive-module-lora-training)
+* [filecoin-data-prep](https://github.com/CoopHive/hive-module-filecoin-data-prep)
+* [wasm](https://github.com/CoopHive/hive-module-wasm)
+* [cowsay](https://github.com/CoopHive/hive-module-cowsay)
 
 ## Write a module
 
@@ -118,16 +121,16 @@ Module versions are just git tags.
 
 In your repo, create a file called `lilypad_module.json.tmpl`
 
-See [cowsay](https://github.com/bacalhau-project/lilypad-module-cowsay) for example
+See [cowsay](https://github.com/CoopHive/hive-module-cowsay) for example
 
-This is a json template with Go text/template style `{{.Message}}` sections which will be replaced by Lilypad with json
+This is a json template with Go text/template style `{{.Message}}` sections which will be replaced by CoopHive with json
 encoded inputs to modules. You can also do fancy things with go templates like setting defaults, see cowsay for example.
 While developing a module, you can use the git hash to test it.
 
 Pass inputs as:
 
 ```
-lilypad run github.com/username/repo:tag -i Message=moo
+hive run github.com/username/repo:tag -i Message=moo
 ```
 
 Inputs are a map of strings to strings.
@@ -148,7 +151,7 @@ If your module is not deterministic, compute providers will not adopt it and bla
 
 1. `subt`:
    The `subt` function allows for substitutions in your template, a feature that addresses the issue outlined
-   in [#14](https://github.com/bacalhau-project/lilypad/issues/14).
+   in [#14](https://github.com/CoopHive/hive/issues/14).
 
 This function is a workaround for the lack of direct substitution support in the module. It implements
 the [printf](https://pkg.go.dev/text/template#Template.Funcs) function under the hood, which allows you to format

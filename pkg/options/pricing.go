@@ -1,7 +1,7 @@
 package options
 
 import (
-	"github.com/bacalhau-project/lilypad/pkg/data"
+	"github.com/CoopHive/hive/pkg/data"
 	"github.com/spf13/cobra"
 )
 

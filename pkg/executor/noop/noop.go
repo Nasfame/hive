@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"path/filepath"
 
-	"github.com/bacalhau-project/lilypad/pkg/data"
-	executorlib "github.com/bacalhau-project/lilypad/pkg/executor"
-	"github.com/bacalhau-project/lilypad/pkg/system"
+	"github.com/CoopHive/hive/pkg/data"
+	executorlib "github.com/CoopHive/hive/pkg/executor"
+	"github.com/CoopHive/hive/pkg/system"
 )
 
 const RESULTS_DIR = "noop-results"

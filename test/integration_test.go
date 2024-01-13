@@ -11,16 +11,16 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/stretchr/testify/assert"
 
-	"github.com/bacalhau-project/lilypad/pkg/data"
-	"github.com/bacalhau-project/lilypad/pkg/executor/noop"
-	"github.com/bacalhau-project/lilypad/pkg/jobcreator"
-	"github.com/bacalhau-project/lilypad/pkg/mediator"
-	optionsfactory "github.com/bacalhau-project/lilypad/pkg/options"
-	"github.com/bacalhau-project/lilypad/pkg/resourceprovider"
-	"github.com/bacalhau-project/lilypad/pkg/solver"
-	solvermemorystore "github.com/bacalhau-project/lilypad/pkg/solver/store/memory"
-	"github.com/bacalhau-project/lilypad/pkg/system"
-	"github.com/bacalhau-project/lilypad/pkg/web3"
+	"github.com/CoopHive/hive/pkg/data"
+	"github.com/CoopHive/hive/pkg/executor/noop"
+	"github.com/CoopHive/hive/pkg/jobcreator"
+	"github.com/CoopHive/hive/pkg/mediator"
+	optionsfactory "github.com/CoopHive/hive/pkg/options"
+	"github.com/CoopHive/hive/pkg/resourceprovider"
+	"github.com/CoopHive/hive/pkg/solver"
+	solvermemorystore "github.com/CoopHive/hive/pkg/solver/store/memory"
+	"github.com/CoopHive/hive/pkg/system"
+	"github.com/CoopHive/hive/pkg/web3"
 )
 
 type testOptions struct {

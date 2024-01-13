@@ -3,7 +3,7 @@
 ## Create a folder locally to store the keystore
 
 ```
-sudo mkdir -p /mnt/lilypad/keystore
+sudo mkdir -p /mnt/hive/keystore
 ```
 
 ## Build the docker image
@@ -16,7 +16,7 @@ docker build -t generate-accts-image .
 ## Run the generate-accts docker image and remove the container after exiting
 
 ```
-docker run -it --rm --name generate-accts-container -v /mnt/lilypad/keystore:/root/.ethereum/keystore generate-accts-image
+docker run -it --rm --name generate-accts-container -v /mnt/hive/keystore:/root/.ethereum/keystore generate-accts-image
 ```
 
 ## Create seven new accounts
@@ -43,8 +43,8 @@ geth account new
 
 Add the addresses and private keys
 
-## Keystore files are locally stored at /mnt/lilypad/keystore
+## Keystore files are locally stored at /mnt/hive/keystore
 
 ```
-ls /mnt/lilypad/keystore
+ls /mnt/hive/keystore
 ```

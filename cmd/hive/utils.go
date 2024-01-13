@@ -1,4 +1,4 @@
-package lilypad
+package hive
 
 import (
 	"os"

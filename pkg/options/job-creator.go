@@ -3,9 +3,9 @@ package options
 import (
 	"fmt"
 
-	"github.com/bacalhau-project/lilypad/pkg/data"
-	"github.com/bacalhau-project/lilypad/pkg/jobcreator"
-	"github.com/bacalhau-project/lilypad/pkg/system"
+	"github.com/CoopHive/hive/pkg/data"
+	"github.com/CoopHive/hive/pkg/jobcreator"
+	"github.com/CoopHive/hive/pkg/system"
 	"github.com/spf13/cobra"
 )
 

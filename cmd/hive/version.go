@@ -1,28 +1,28 @@
-package lilypad
+package hive
 
 import (
 	"fmt"
 
 	"github.com/spf13/cobra"
 
-	optionsfactory "github.com/bacalhau-project/lilypad/pkg/options"
-	"github.com/bacalhau-project/lilypad/pkg/system"
+	optionsfactory "github.com/CoopHive/hive/pkg/options"
+	"github.com/CoopHive/hive/pkg/system"
 )
 
 var VERSION string
 
 var COMMIT_SHA string
 
-const GO_BINARY_URL = "https://github.com/bacalhau-project/lilypad/releases/"
+const GO_BINARY_URL = "https://github.com/CoopHive/hive/releases/"
 
 func newVersionCmd() *cobra.Command {
 	options := optionsfactory.NewSolverOptions()
 
 	versionCmd := &cobra.Command{
 		Use:     "version",
-		Short:   "Get the lilypad version",
-		Long:    "Get the lilypad version",
-		Example: "lilypad version",
+		Short:   "Get the CoopHive version",
+		Long:    "Get the CoopHive version",
+		Example: "CoopHive version",
 		RunE: func(cmd *cobra.Command, _ []string) error {
 			return runVersion(cmd)
 		},
@@ -43,7 +43,7 @@ func runVersion(cmd *cobra.Command) error {
 		return nil
 	}
 
-	fmt.Printf("Lilypad: %s\n", VERSION)
+	fmt.Printf("CoopHive: %s\n", VERSION)
 	fmt.Printf("Commit: %s\n", COMMIT_SHA)
 
 	// TODO: suggest updating to the latest version if the current version is not the latest version

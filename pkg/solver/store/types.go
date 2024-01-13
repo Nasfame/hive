@@ -1,6 +1,6 @@
 package store
 
-import "github.com/bacalhau-project/lilypad/pkg/data"
+import "github.com/CoopHive/hive/pkg/data"
 
 type GetJobOffersQuery struct {
 	JobCreator string `json:"job_creator"`

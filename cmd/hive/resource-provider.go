@@ -1,11 +1,11 @@
-package lilypad
+package hive
 
 import (
-	"github.com/bacalhau-project/lilypad/pkg/executor/bacalhau"
-	optionsfactory "github.com/bacalhau-project/lilypad/pkg/options"
-	"github.com/bacalhau-project/lilypad/pkg/resourceprovider"
-	"github.com/bacalhau-project/lilypad/pkg/system"
-	"github.com/bacalhau-project/lilypad/pkg/web3"
+	"github.com/CoopHive/hive/pkg/executor/bacalhau"
+	optionsfactory "github.com/CoopHive/hive/pkg/options"
+	"github.com/CoopHive/hive/pkg/resourceprovider"
+	"github.com/CoopHive/hive/pkg/system"
+	"github.com/CoopHive/hive/pkg/web3"
 	"github.com/spf13/cobra"
 )
 
@@ -14,8 +14,8 @@ func newResourceProviderCmd() *cobra.Command {
 
 	resourceProviderCmd := &cobra.Command{
 		Use:     "resource-provider",
-		Short:   "Start the lilypad resource-provider service.",
-		Long:    "Start the lilypad resource-provider service.",
+		Short:   "Start the CoopHive resource-provider service.",
+		Long:    "Start the CoopHive resource-provider service.",
 		Example: "",
 		RunE: func(cmd *cobra.Command, _ []string) error {
 			options, err := optionsfactory.ProcessResourceProviderOptions(options)

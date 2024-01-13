@@ -3,7 +3,7 @@ package web3
 import (
 	"context"
 
-	"github.com/bacalhau-project/lilypad/pkg/system"
+	"github.com/CoopHive/hive/pkg/system"
 )
 
 type Web3Options struct {

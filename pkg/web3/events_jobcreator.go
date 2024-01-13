@@ -3,8 +3,8 @@ package web3
 import (
 	"context"
 
-	"github.com/bacalhau-project/lilypad/pkg/system"
-	"github.com/bacalhau-project/lilypad/pkg/web3/bindings/jobcreator"
+	"github.com/CoopHive/hive/pkg/system"
+	"github.com/CoopHive/hive/pkg/web3/bindings/jobcreator"
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/event"
 	"github.com/rs/zerolog/log"

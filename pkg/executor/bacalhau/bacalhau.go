@@ -8,10 +8,10 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/bacalhau-project/lilypad/pkg/data"
-	"github.com/bacalhau-project/lilypad/pkg/data/bacalhau"
-	executorlib "github.com/bacalhau-project/lilypad/pkg/executor"
-	"github.com/bacalhau-project/lilypad/pkg/system"
+	"github.com/CoopHive/hive/pkg/data"
+	"github.com/CoopHive/hive/pkg/data/bacalhau"
+	executorlib "github.com/CoopHive/hive/pkg/executor"
+	"github.com/CoopHive/hive/pkg/system"
 	"github.com/rs/zerolog/log"
 )
 

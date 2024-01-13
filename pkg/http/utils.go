@@ -12,17 +12,17 @@ import (
 	"net/url"
 	"strings"
 
-	"github.com/bacalhau-project/lilypad/pkg/web3"
+	"github.com/CoopHive/hive/pkg/web3"
 	"github.com/hashicorp/go-retryablehttp"
 	"github.com/rs/zerolog/log"
 )
 
-// write some string constants for x-lilypad headers
+// write some string constants for x-CoopHive headers
 // this is the address of the user
-const X_LILYPAD_USER_HEADER = "X-Lilypad-User"
+const X_COOPHIVE_USER_HEADER = "X-CoopHive-User"
 
 // this is the signature of the message
-const X_LILYPAD_SIGNATURE_HEADER = "X-Lilypad-Signature"
+const X_COOPHIVE_SIGNATURE_HEADER = "X-CoopHive-Signature"
 
 // the context name we keep the address
 const CONTEXT_ADDRESS = "address"
@@ -98,25 +98,25 @@ func AddHeaders(
 	if err != nil {
 		return err
 	}
-	req.Header.Add(X_LILYPAD_USER_HEADER, userPayload)
-	req.Header.Add(X_LILYPAD_SIGNATURE_HEADER, userSignature)
+	req.Header.Add(X_COOPHIVE_USER_HEADER, userPayload)
+	req.Header.Add(X_COOPHIVE_SIGNATURE_HEADER, userSignature)
 	return nil
 }
 
 // this will use the client headers to ensure that a message was signed
 // by the holder of a private key for a specific address
-// there is a "X-Lilypad-User" header that will contain the address
-// there is a "X-Lilypad-Signature" header that will contain the signature
+// there is a "X-CoopHive-User" header that will contain the address
+// there is a "X-CoopHive-Signature" header that will contain the signature
 // we use the signature to verify that the message was signed by the private key
 func GetAddressFromHeaders(req *http.Request) (string, error) {
-	userHeader := req.Header.Get(X_LILYPAD_USER_HEADER)
+	userHeader := req.Header.Get(X_COOPHIVE_USER_HEADER)
 	if userHeader == "" {
 		return "", HTTPError{
 			Message:    "missing user header",
 			StatusCode: http.StatusUnauthorized,
 		}
 	}
-	userSignature := req.Header.Get(X_LILYPAD_SIGNATURE_HEADER)
+	userSignature := req.Header.Get(X_COOPHIVE_SIGNATURE_HEADER)
 	if userSignature == "" {
 		return "", HTTPError{
 			Message:    "missing signature header",
@@ -329,7 +329,7 @@ func PostRequest[RequestType any, ResultType any](
 	var result ResultType
 	dataBytes, err := json.Marshal(data)
 	if err != nil {
-		return result, fmt.Errorf("THIS IS A JOSN ERROR: %s", err.Error())
+		return result, fmt.Errorf("THIS IS A JSON ERROR: %s", err.Error())
 	}
 	return PostRequestBuffer[ResultType](
 		options,

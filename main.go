@@ -4,15 +4,15 @@ import (
 	"github.com/joho/godotenv"
 	"github.com/rs/zerolog/log"
 
-	"github.com/bacalhau-project/lilypad/cmd/lilypad"
+	"github.com/CoopHive/hive/cmd/hive"
 )
 
 func main() {
-	lilypad.Execute()
+	hive.Execute()
 }
 
 func init() {
-	//fmt.Printf("Lilypad: %s\n", lilypad.VERSION)
+	//fmt.Printf("CoopHive: %s\n", hive.VERSION)
 
 	err := godotenv.Load()
 	if err != nil {
