@@ -28,6 +28,9 @@ jobs:
       - uses: actions/checkout@v3
       - uses: wangyoucao577/go-release-action@v1
         with:
+          #          pre_command: go generate && go test TODO:
+          build_command: make build
+
           github_token: ${{ secrets.GITHUB_TOKEN }}
           goos: ${{ matrix.goos }}
           goarch: ${{ matrix.goarch }}
