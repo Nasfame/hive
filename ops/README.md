@@ -10,7 +10,7 @@
 sudo adduser $USER docker
 ```
 
-We need to point DNS for `testnet.lilypad.tech` at the node and open the following ports:
+We need to point DNS for `hive.coophive.network` at the node and open the following ports:
 
 * 80
 * 443
@@ -71,7 +71,7 @@ sudo cp /app/hive/ops/systemd/*.service /etc/systemd/system
 sudo systemctl daemon-reload
 ```
 
-Now we build lilypad:
+Now we build CoopHive:
 
 ```bash
 cd /app/hive
