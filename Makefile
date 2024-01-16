@@ -20,14 +20,8 @@ release-linux:
 
 .PHONY: release install-unix install-win build release release-linux
 
-install-linux:
-	export GOOS=linux
-	export GOARCH=amd64
-	make release
-
 
 #	ln -s ./bin/hive $$(go env GOBIN)
-
 install-win:
 	make release
 	cp ./bin/$(binName) ./bin/hive.exe
