@@ -1,4 +1,3 @@
-#binName = hive
 binName = hive-$(shell uname -s)-$(shell uname -m)
 
 build:
