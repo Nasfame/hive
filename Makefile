@@ -1,10 +1,11 @@
-#binName = hive-$(shell uname -s)-$(shell uname -m)
+binName = hive-$(shell uname -s)-$(shell uname -m)
 
 build:
 	go build -v -ldflags="\
 		-X 'github.com/CoopHive/hive/cmd/hive.VERSION=$$(git describe --tags --abbrev=0)' \
 		-X 'github.com/CoopHive/hive/cmd/hive.COMMIT_SHA=$$(git rev-parse HEAD)' \
-	" .
+	" -o /bin/hive .
+	./bin/hive version
 
 release:
 	go build -v -ldflags="\
@@ -23,6 +24,8 @@ install-linux:
 	export GOOS=linux
 	export GOARCH=amd64
 	make release
+
+
 #	ln -s ./bin/hive $$(go env GOBIN)
 
 install-win:
