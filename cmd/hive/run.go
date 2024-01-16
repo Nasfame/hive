@@ -42,13 +42,13 @@ func newRunCmd() *cobra.Command {
 
 func runJob(cmd *cobra.Command, options jobcreator.JobCreatorOptions) error {
 	c := color.New(color.FgCyan).Add(color.Bold)
-	//TODO: Rebrand to FI
 	header := `
   ___  __    __  ____  _  _  __  _  _  ____ 
  / __)/  \  /  \(  _ \/ )( \(  )/ )( \(  __)
 ( (__(  O )(  O )) __/) __ ( )( \ \/ / ) _) 
  \___)\__/  \__/(__)  \_)(_/(__) \__/ (____) v0
-⠀ ⠀⠀⠀   Decentralized Compute Network  https://coophive.network
+
+ Decentralized Compute Network  https://coophive.network
 
 `
 	if VERSION != "" {
