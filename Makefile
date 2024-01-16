@@ -21,6 +21,7 @@ release-linux:
 		-X 'github.com/CoopHive/hive/cmd/hive.COMMIT_SHA=$$(git rev-parse HEAD)' \
 	" -o bin/$binName
 	./bin/$binName version
+	./bin/$binName run cowsay:v0.0.1 -i Message="Hiro"
 
 .PHONY: release install-unix install-win build
 

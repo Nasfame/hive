@@ -48,7 +48,7 @@ func runJob(cmd *cobra.Command, options jobcreator.JobCreatorOptions) error {
 ( (__(  O )(  O )) __/) __ ( )( \ \/ / ) _) 
  \___)\__/  \__/(__)  \_)(_/(__) \__/ (____) v0
 
- Decentralized Compute Network  https://coophive.network
+  Decentralized Compute Network  https://coophive.network
 
 `
 	if VERSION != "" {
