@@ -14,6 +14,14 @@ release:
 	./bin/$(binName) version
 
 
+release-linux:
+	export binName=hive-$GOOS-GOARCH
+	go build -v -ldflags="\
+		-X 'github.com/CoopHive/hive/cmd/hive.VERSION=$$(git describe --tags --abbrev=0)' \
+		-X 'github.com/CoopHive/hive/cmd/hive.COMMIT_SHA=$$(git rev-parse HEAD)' \
+	" -o bin/$binName
+	./bin/$binName version
+
 .PHONY: release install-unix install-win build
 
 install-linux:
