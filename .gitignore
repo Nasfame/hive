@@ -16,3 +16,5 @@ bin/
 vendor/
 ./data/
 .DS_Store
+
+dist/

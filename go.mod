@@ -1,6 +1,7 @@
 module github.com/CoopHive/hive
 
 go 1.21
+
 toolchain go1.21.6
 
 require (
