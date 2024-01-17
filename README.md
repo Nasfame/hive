@@ -57,7 +57,7 @@ Then Download & Install
 
 ```
 # Download the latest production build
-curl -sSL -o hive https://github.com/CoopHive/hive/releases/download/v2.0.0-d63a7ff/hive-$OSNAME-$OSARCH
+curl -sSL -o hive https://github.com/CoopHive/hive/releases/download/v0.1.6/hive_$OSNAME_$OSARCH
 # Make CoopHive executable and install it
 chmod +x hive
 sudo mv hive /usr/local/bin/hive
