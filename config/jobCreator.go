@@ -2,7 +2,7 @@ package config
 
 import "os"
 
-const COOPHIVE_MODULE_CONFIG_PATH = "/lilypad_module.json.tmpl" //TODO: rebrand
+const COOPHIVE_MODULE_CONFIG_PATH = "/module.coophive"
 
 var COOPHIVE_DATA_DIR = "/tmp/coophive/data"
 

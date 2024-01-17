@@ -18,12 +18,6 @@ release:
 	goreleaser release --clean
 
 
-
-
-
-
-
-
 make-bin:
 	go build -v -ldflags="\
 		-X 'github.com/CoopHive/hive/cmd/hive.VERSION=$$(git describe --tags --abbrev=0)' \
