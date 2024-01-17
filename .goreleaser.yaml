@@ -41,7 +41,8 @@ builds:
     dir: '.' #go.mod
 
 
-#archives:
+archives:
+  - format: binary
 #  - format: tar.gz
 #    # this name template makes the OS and Arch compatible with the results of `uname`.
 #    name_template: >-
