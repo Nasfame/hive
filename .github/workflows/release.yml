@@ -115,13 +115,20 @@ jobs:
           echo "Found stable version in tag!"
         if: steps.version.outputs.is_stable == 'true'
 
+      #https://goreleaser.com/customization/release/#github
       - name: Run GoReleaser
         continue-on-error: true
         uses: goreleaser/goreleaser-action@v5
         with:
           distribution: goreleaser
           version: ${{ steps.vars.outputs.RELEASE_MODE }}
+          draft: ${{ steps.vars.outputs.RELEASE_MODE }}!=latest
+          replace_existing_draft: true
+          make_latest: ${{ steps.vars.outputs.RELEASE_MODE }}==latest
+
+
           args: release --clean
+
         #          workdir:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

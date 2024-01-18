@@ -66,3 +66,12 @@ changelog:
     exclude:
       - "^docs:"
       - "^test:"
+
+
+release:
+  mode: append
+
+  #  draft: true
+  #  replace_existing_draft: true
+  make_latest: true
+  prerelease: auto #if rc1
