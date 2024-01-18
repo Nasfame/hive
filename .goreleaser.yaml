@@ -21,9 +21,12 @@ builds:
     binary: "bin/"
     main: "main.go"
 
+    flags:
+      - -v
+
     ldflags:
-      - X "github.com/CoopHive/hive/cmd/hive.VERSION=v1.2.0"
-      - X "github.com/CoopHive/hive/cmd/hive.COMMIT_SHA={{.Env.COMMIT_SHA}}"
+      - -X "github.com/CoopHive/hive/cmd/hive.VERSION={{.Version}}"
+      - -X "github.com/CoopHive/hive/cmd/hive.COMMIT_SHA={{.Commit}}"
     env:
       - CGO_ENABLED=0
     goos:
