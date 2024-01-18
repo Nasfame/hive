@@ -11,6 +11,7 @@ export VERSION=$(git describe --tags --abbrev=0)
 export COMMIT_SHA=$(git rev-parse HEAD)
 
 prerelease:
+	echo "Version is $(VERSION)"
 	goreleaser check
 	goreleaser build --single-target --clean
 
