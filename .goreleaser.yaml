@@ -22,7 +22,7 @@ builds:
     main: "main.go"
 
     ldflags:
-      - X "github.com/CoopHive/hive/cmd/hive.VERSION={{.Env.VERSION}}"
+      - X "github.com/CoopHive/hive/cmd/hive.VERSION=v1.2.0"
       - X "github.com/CoopHive/hive/cmd/hive.COMMIT_SHA={{.Env.COMMIT_SHA}}"
     env:
       - CGO_ENABLED=0
