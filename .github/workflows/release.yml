@@ -77,19 +77,50 @@ jobs:
       #          git tag "$PR_TAG" -f
       #          export VERSION=$(git describe --tags --abbrev=0)-$PR_TAG
       #          export COMMIT_SHA=$(git rev-parse HEAD)
-      - name: PreRelease
-        if: github.event_name != 'pull_request'
+
+      - name: Get Tag
+        run: echo "TAG=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+
+      - name: Set Tag output
+        id: vars
+        run: echo "tag=${GITHUB_REF#refs/*/}" >> $GITHUB_OUTPUT
+
+      - name: Check if valid version
+        id: check-valid
         run: |
-          export VERSION=$(git describe --tags --abbrev=0)
-          export COMMIT_SHA=$(git rev-parse HEAD)
-      
+          if [[ "${{ steps.vars.outputs.tag }}" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            export RELEASE_MODE=latest
+          else
+            export RELEASE_MODE=nightly #TODO: look if gorelease supports canary
+          fi
+          
+          echo "Release Mode is $RELEASE_MODE"
+          echo "RELEASE_MODE=$RELEASE_MODE" >> $GITHUB_OUTPUT  
+
+      - uses: nowsprinting/check-version-format-action@v3
+        id: version
+        with:
+          prefix: 'v'
+
+      - name: Version tag only step
+        run: |
+          echo "Found valid version format in tag!"
+          echo "Full version: ${{ steps.version.outputs.full }}"
+          echo "Major version: ${{ steps.version.outputs.major }}"
+          echo "Major with pre-release: ${{ steps.version.outputs.major_prerelease }}"
+        if: steps.version.outputs.is_valid == 'true'
+
+      - name: Stable version only step
+        run: |
+          echo "Found stable version in tag!"
+        if: steps.version.outputs.is_stable == 'true'
 
       - name: Run GoReleaser
         continue-on-error: true
         uses: goreleaser/goreleaser-action@v5
         with:
           distribution: goreleaser
-          version: latest
+          version: ${{ steps.vars.outputs.RELEASE_MODE }}
           args: release --clean
         #          workdir:
         env:
