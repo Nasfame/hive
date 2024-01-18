@@ -70,8 +70,10 @@ changelog:
 
 release:
   mode: append
-
-  #  draft: true
-  #  replace_existing_draft: true
-  make_latest: true
+  draft: true
+  replace_existing_draft: true
+  #  make_latest: true
   prerelease: auto #if rc1
+
+
+#https://goreleaser.com/customization/release/#github
