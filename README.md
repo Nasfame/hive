@@ -21,7 +21,7 @@ The testnet has a base curency of ETH and you will also get LP to pay for jobs (
 Metamask:
 
 ```
-Network name: CoopHive v0 Aurora testnet
+Network name: CoopHive v0
 New RPC URL: http://testnet.co-ophive.network:8545
 Chain ID: 1337
 Currency symbol: ETH
