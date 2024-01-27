@@ -10,7 +10,6 @@ Environment="HOME=/app/hive"
 EnvironmentFile=/app/hive/solver.env
 Environment="SERVER_PORT=80"
 Environment="SERVER_URL=http://testnet.co-ophive.network"
-#TODO: replace server url to http://testnet.coophive.network @Luke @Nasfame . Follow ../Readme.md
 Restart=always
 RestartSec=5s
 ExecStart=/usr/bin/hive solver
