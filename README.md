@@ -30,8 +30,8 @@ Block explorer URL: (leave blank)
 
 ### Fund your wallet with ETH and LP
 
-[//]: # (TODO: rebrand to coophive.tech @luke)
-To obtain funds, go to [http://faucet.coophive.tech:8080](http://faucet.co-ophive.network:8080)
+[//]: # (TODO: rebrand to co-ophive.network @luke)
+To obtain funds, go to [http://faucet.co-ophive.network:8080](http://faucet.co-ophive.network:8080)
 
 The faucet will give you both ETH (to pay for gas) and LP (to stake and pay for jobs).
 
