@@ -14,14 +14,14 @@ source LLMs both on chain, from CLI and via [CoopHive AI Studio](https://co-ophi
 
 Welcome to the prerelease series of CoopHive v0.
 
-## Aurora Testnet
+## CoopHive v0 Testnet
 
 The testnet has a base curency of ETH and you will also get LP to pay for jobs (and nodes to stake).
 
 Metamask:
 
 ```
-Network name: CoopHive v0
+Network name: CoopHive v0 Testnet
 New RPC URL: http://testnet.co-ophive.network
 Chain ID: 1337
 Currency symbol: ETH
