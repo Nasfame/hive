@@ -6,7 +6,7 @@ This cloud is just someone else's computer.
 
 CoopHive enables users to run AI workloads easily in a decentralized GPU network where anyone can get paid to connect
 their compute nodes to the network and run jobs. Users have access to easy Stable Diffusion XL and cutting edge open
-source LLMs both on chain, from CLI and via [CoopHive AI Studio](https://coophive.network) on the web.
+source LLMs both on chain, from CLI and via [CoopHive AI Studio](https://co-ophive.network) on the web.
 
 [//]: # TODO: deploy AI Studio to coophive.network @luke()
 
@@ -150,8 +150,7 @@ If your module is not deterministic, compute providers will not adopt it and bla
 .### Writing Advanced Modules
 
 1. `subt`:
-   The `subt` function allows for substitutions in your template, a feature that addresses the issue outlined
-   in [#14](https://github.com/CoopHive/hive/issues/14).
+   The `subt` function allows for substitutions in your template.
 
 This function is a workaround for the lack of direct substitution support in the module. It implements
 the [printf](https://pkg.go.dev/text/template#Template.Funcs) function under the hood, which allows you to format
