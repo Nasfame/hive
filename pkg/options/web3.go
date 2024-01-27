@@ -13,7 +13,7 @@ func GetDefaultWeb3Options() web3.Web3Options {
 	return web3.Web3Options{
 		//TODO: refactor this to use the new config package
 		// core settings
-		RpcURL:     GetDefaultServeOptionString("WEB3_RPC_URL", "ws://testnet.lilypad.tech:8546"),
+		RpcURL:     GetDefaultServeOptionString("WEB3_RPC_URL", "ws://testnet.co-ophive.network:8546"),
 		PrivateKey: GetDefaultServeOptionString("WEB3_PRIVATE_KEY", ""),
 		ChainID:    GetDefaultServeOptionInt("WEB3_CHAIN_ID", 1337), //nolint:gomnd
 
