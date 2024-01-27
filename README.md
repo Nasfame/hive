@@ -22,7 +22,7 @@ Metamask:
 
 ```
 Network name: CoopHive v0
-New RPC URL: http://testnet.co-ophive.network:8545
+New RPC URL: http://testnet.co-ophive.network
 Chain ID: 1337
 Currency symbol: ETH
 Block explorer URL: (leave blank)
@@ -31,7 +31,7 @@ Block explorer URL: (leave blank)
 ### Fund your wallet with ETH and LP
 
 [//]: # (TODO: rebrand to co-ophive.network @luke)
-To obtain funds, go to [http://faucet.co-ophive.network:8080](http://faucet.co-ophive.network:8080)
+To obtain funds, go to [http://faucet.co-ophive.network](http://faucet.co-ophive.network)
 
 The faucet will give you both ETH (to pay for gas) and LP (to stake and pay for jobs).
 
