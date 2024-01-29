@@ -121,7 +121,7 @@ Module versions are just git tags.
 
 In your repo, create a file called `lilypad_module.json.tmpl`
 
-See [cowsay](https://github.com/CoopHive/hive-module-cowsay) for example
+See [cowsay](https://github.com/CoopHive/coophive-module-cowsay) for example
 
 This is a json template with Go text/template style `{{.Message}}` sections which will be replaced by CoopHive with json
 encoded inputs to modules. You can also do fancy things with go templates like setting defaults, see cowsay for example.
