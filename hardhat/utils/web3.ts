@@ -5,13 +5,13 @@ import {Account} from './types'
 import {ACCOUNTS, getAccount,} from './accounts'
 import {
     ExampleClient,
-    LilypadController,
-    LilypadMediationRandom,
-    LilypadOnChainJobCreator,
-    LilypadPayments,
-    LilypadStorage,
-    LilypadToken,
-    LilypadUsers,
+    HiveController,
+    HiveMediationRandom,
+    HiveOnChainJobCreator,
+    HivePayments,
+    HiveStorage,
+    HiveToken,
+    HiveUsers,
 } from '../typechain-types'
 
 /*
@@ -92,7 +92,7 @@ export async function deployContract<T extends any>(
 
 */
 export async function fundTokens(
-    tokenContract: LilypadToken,
+    tokenContract: HiveToken,
     address: AddressLike,
     amount: BigNumberish = DEFAULT_TOKENS_PER_ACCOUNT,
 ) {
@@ -102,7 +102,7 @@ export async function fundTokens(
 }
 
 export async function fundAccountsWithTokens(
-    tokenContract: LilypadToken,
+    tokenContract: HiveToken,
     amount: BigNumberish = DEFAULT_TOKENS_PER_ACCOUNT,
 ) {
     await bluebird.mapSeries(ACCOUNTS, async (account) => {
@@ -141,11 +141,11 @@ export async function getContractAddress(
 
 */
 export async function connectStorage() {
-    return connectContract<LilypadStorage>('LilypadStorage')
+    return connectContract<HiveStorage>('HiveStorage.sol')
 }
 
 export async function getStorageAddress() {
-    return getContractAddress('LilypadStorage')
+    return getContractAddress('HiveStorage.sol')
 }
 
 /*
@@ -154,11 +154,11 @@ export async function getStorageAddress() {
 
 */
 export async function connectMediation() {
-    return connectContract<LilypadMediationRandom>('LilypadMediationRandom')
+    return connectContract<HiveMediationRandom>('HiveMediationRandom.sol')
 }
 
 export async function getMediationAddress() {
-    return getContractAddress('LilypadMediationRandom')
+    return getContractAddress('HiveMediationRandom.sol')
 }
 
 /*
@@ -167,11 +167,11 @@ export async function getMediationAddress() {
 
 */
 export async function connectToken() {
-    return connectContract<LilypadToken>('LilypadToken')
+    return connectContract<HiveToken>('HiveToken.sol')
 }
 
 export async function getTokenAddress() {
-    return getContractAddress('LilypadToken')
+    return getContractAddress('HiveToken.sol')
 }
 
 /*
@@ -180,11 +180,11 @@ export async function getTokenAddress() {
 
 */
 export async function connectPayments() {
-    return connectContract<LilypadPayments>('LilypadPayments')
+    return connectContract<HivePayments>('HivePayments.sol')
 }
 
 export async function getPaymentsAddress() {
-    return getContractAddress('LilypadPayments')
+    return getContractAddress('HivePayments.sol')
 }
 
 
@@ -194,11 +194,11 @@ export async function getPaymentsAddress() {
 
 */
 export async function connectJobManager() {
-    return connectContract<LilypadOnChainJobCreator>('LilypadOnChainJobCreator')
+    return connectContract<HiveOnChainJobCreator>('HiveOnChainJobCreator.sol')
 }
 
 export async function getJobManagerAddress() {
-    return getContractAddress('LilypadOnChainJobCreator')
+    return getContractAddress('HiveOnChainJobCreator.sol')
 }
 
 
@@ -208,11 +208,11 @@ export async function getJobManagerAddress() {
 
 */
 export async function connectUsers() {
-    return connectContract<LilypadUsers>('LilypadUsers')
+    return connectContract<HiveUsers>('HiveUsers.sol')
 }
 
 export async function getUsersAddress() {
-    return getContractAddress('LilypadUsers')
+    return getContractAddress('HiveUsers.sol')
 }
 
 /*
@@ -234,9 +234,9 @@ export async function getExampleClientAddress() {
 
 */
 export async function connectController() {
-    return connectContract<LilypadController>('LilypadController')
+    return connectContract<HiveController>('HiveController.sol')
 }
 
 export async function getControllerAddress() {
-    return getContractAddress('LilypadController')
+    return getContractAddress('HiveController.sol')
 }

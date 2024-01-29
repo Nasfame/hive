@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity ^0.8.6;
 
-import "./LilypadPayments.sol";
+import "./HivePayments.sol";
 
-contract LilypadPaymentsTestable is LilypadPayments {
+contract HivePaymentsTestable is HivePayments {
   function _checkControllerAccess() internal pure override returns (bool) {
     return true;
   }

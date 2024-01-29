@@ -7,21 +7,21 @@ const deployController: DeployFunction = async function (hre: HardhatRuntimeEnvi
     const {
         admin,
     } = await getNamedAccounts()
-    await deploy("LilypadController", {
+    await deploy("HiveController.sol", {
         from: admin,
         args: [],
         log: true,
     })
 
-    const controllerContract = await deployments.get('LilypadController')
-    const storageContract = await deployments.get('LilypadStorage')
-    const usersContract = await deployments.get('LilypadUsers')
-    const mediationContract = await deployments.get('LilypadMediationRandom')
-    const paymentsContract = await deployments.get('LilypadPayments')
-    const jobCreatorContract = await deployments.get('LilypadOnChainJobCreator')
+    const controllerContract = await deployments.get('HiveController.sol')
+    const storageContract = await deployments.get('HiveStorage.sol')
+    const usersContract = await deployments.get('HiveUsers.sol')
+    const mediationContract = await deployments.get('HiveMediationRandom.sol')
+    const paymentsContract = await deployments.get('HivePayments.sol')
+    const jobCreatorContract = await deployments.get('HiveOnChainJobCreator.sol')
 
     await execute(
-        'LilypadController',
+        'HiveController.sol',
         {
             from: admin,
             log: true,
@@ -35,7 +35,7 @@ const deployController: DeployFunction = async function (hre: HardhatRuntimeEnvi
     )
 
     await execute(
-        'LilypadStorage',
+        'HiveStorage.sol',
         {
             from: admin,
             log: true,
@@ -45,7 +45,7 @@ const deployController: DeployFunction = async function (hre: HardhatRuntimeEnvi
     )
 
     await execute(
-        'LilypadPayments',
+        'HivePayments.sol',
         {
             from: admin,
             log: true,
@@ -55,7 +55,7 @@ const deployController: DeployFunction = async function (hre: HardhatRuntimeEnvi
     )
 
     await execute(
-        'LilypadMediationRandom',
+        'HiveMediationRandom.sol',
         {
             from: admin,
             log: true,

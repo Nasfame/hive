@@ -10,10 +10,10 @@ const deployToken: DeployFunction = async function (hre: HardhatRuntimeEnvironme
     } = await getNamedAccounts()
     // log the admin address
     console.log(`admin: ${admin}`)
-    await deploy("LilypadToken", {
+    await deploy("HiveToken.sol", {
         from: admin,
         args: [
-            "Lilypad Token",
+            "Hive Token",
             "LP",
             DEFAULT_TOKEN_SUPPLY,
         ],

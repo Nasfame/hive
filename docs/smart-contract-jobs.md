@@ -1,9 +1,9 @@
 ## Running jobs from smart contracts
 
-We have deloyed the [LilypadOnChainJobCreator](../hardhat/contracts/LilypadOnChainJobCreator.sol) contract which you can
-use to trigger running jobs on the lilypad network from other smart contracts.
+We have deloyed the [HiveOnChainJobCreator](../hardhat/contracts/HiveOnChainJobCreator.sol) contract which you can
+use to trigger running jobs on the CoopHive network from other smart contracts.
 
-It works in tandem with the `lilypad jobcreator` on-chain which will watch the on-chain contract and manage jobs on
+It works in tandem with the `hive jobcreator` on-chain which will watch the on-chain contract and manage jobs on
 behalf of contracts that submit them.
 
 #### Creating a job
@@ -32,7 +32,7 @@ service to kick in and do the following things:
 
 * check that funds have been approved for the solver
 * transfer those funds to it's wallet
-* run the job on lilypad
+* run the job on CoopHive
 * call the `submitResults` method on the on-chain job creator
 * the on-chain job creator will call the `submitResults` of the original calling contract
 
@@ -44,13 +44,13 @@ pragma solidity ^0.8.6;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
-import "./ILilypadJobManager.sol";
-import "./ILilypadJobClient.sol";
+import "./HiveJobManager.sol";
+import "./HiveJobClient.sol";
 
-contract ExampleClient is Ownable, Initializable, ILilypadJobClient {
+contract ExampleClient is Ownable, Initializable, IHiveJobClient {
 
   address private jobManagerAddress;
-  ILilypadJobManager private jobManagerContract;
+    IHiveJobManager private jobManagerContract;
 
   mapping(uint256 => string) private jobResults;
 
@@ -72,7 +72,7 @@ contract ExampleClient is Ownable, Initializable, ILilypadJobClient {
   function setJobManagerAddress(address _jobManagerAddress) public onlyOwner {
     require(_jobManagerAddress != address(0), "Job manager address");
     jobManagerAddress = _jobManagerAddress;
-    jobManagerContract = ILilypadJobManager(jobManagerAddress);
+      jobManagerContract = IHiveJobManager(jobManagerAddress);
   }
 
   function getJobResult(uint256 _jobID) public view returns (string memory) {

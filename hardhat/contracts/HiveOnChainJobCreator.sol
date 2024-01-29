@@ -4,18 +4,18 @@ pragma solidity ^0.8.6;
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "./SharedStructs.sol";
-import "./ILilypadJobManager.sol";
-import "./ILilypadJobClient.sol";
+import "./IHiveJobManager.sol";
+import "./IHiveJobClient.sol";
 import "./ControllerOwnable.sol";
-import "./ILilypadToken.sol";
+import "./IHiveToken.sol";
 
-contract LilypadOnChainJobCreator is ILilypadJobManager, ControllerOwnable, Initializable {
+contract HiveOnChainJobCreator is IHiveJobManager, ControllerOwnable, Initializable {
 
   // the token contract
   // we check to see what allowance has been granted to be spent on behalf
   // of the customer of a job
   address private tokenAddress;
-  ILilypadToken private tokenContract;
+  IHiveToken private tokenContract;
 
   // the minimum amount that must be "approved" on the smart contract for the solver to spend
   // for it to consider running a job for a client
@@ -51,7 +51,7 @@ contract LilypadOnChainJobCreator is ILilypadJobManager, ControllerOwnable, Init
   function setTokenAddress(address _tokenAddress) public onlyOwner {
     require(_tokenAddress != address(0), "Token address");
     tokenAddress = _tokenAddress;
-    tokenContract = ILilypadToken(tokenAddress);
+    tokenContract = IHiveToken(tokenAddress);
   }
 
   function getTokenAddress() public view returns (address) {
@@ -112,7 +112,7 @@ contract LilypadOnChainJobCreator is ILilypadJobManager, ControllerOwnable, Init
   ) public onlyController override {
     SharedStructs.JobOffer storage offer = jobOffers[id];
     require(offer.id != 0, "Job not found");
-    ILilypadJobClient(offer.calling_contract).submitResults(
+    IHiveJobClient(offer.calling_contract).submitResults(
       id,
       dealId,
       dataId

@@ -77,7 +77,7 @@ jobs:
           sleep 10
 
 
-      - name: Setup Lilypad Nodes- Mediator, Resource providers...
+      - name: Setup CoopHive Nodes- Mediator, Resource providers...
         run: |
           export ADMIN_PRIVATE_KEY=beb00ab9be22a34a9c940c27d1d6bfe59db9ab9de4930c968b16724907591b3f
           export FAUCET_ADDRESS=0x5fbb58c8b15E498442b72E2c8Dad82266ea7e135

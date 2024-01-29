@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/CoopHive/hive/config"
 
 	"github.com/CoopHive/hive/pkg/data"
 	"github.com/CoopHive/hive/pkg/http"
@@ -50,7 +51,7 @@ func (client *SolverClient) Start(ctx context.Context, cm *system.CleanupManager
 		}
 	}()
 	http.ConnectWebSocket(
-		http.WebsocketURL(client.options, http.WEBSOCKET_SUB_PATH),
+		http.WebsocketURL(client.options, config.WEBSOCKET_SUB_PATH),
 		websocketEventChannel,
 		ctx,
 	)

@@ -6,6 +6,7 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
+	"github.com/CoopHive/hive/config"
 	"io"
 	stdlog "log"
 	"net/http"
@@ -16,23 +17,6 @@ import (
 	"github.com/hashicorp/go-retryablehttp"
 	"github.com/rs/zerolog/log"
 )
-
-// TODO: Revert to previous version after solver deployment @Luke
-// write some string constants for x-lilypad headers
-// this is the address of the user
-const X_LILYPAD_USER_HEADER = "X-Lilypad-User"
-
-// this is the signature of the message
-const X_LILYPAD_SIGNATURE_HEADER = "X-Lilypad-Signature"
-
-// the context name we keep the address
-const CONTEXT_ADDRESS = "address"
-
-// the sub path any API's are served over
-const API_SUB_PATH = "/api/v1"
-
-// the sub path the websocket server is mounted on
-const WEBSOCKET_SUB_PATH = "/ws"
 
 type HTTPError struct {
 	Message    string
@@ -99,8 +83,8 @@ func AddHeaders(
 	if err != nil {
 		return err
 	}
-	req.Header.Add(X_LILYPAD_USER_HEADER, userPayload)
-	req.Header.Add(X_LILYPAD_SIGNATURE_HEADER, userSignature)
+	req.Header.Add(config.X_COOPHIVE_USER_HEADER, userPayload)
+	req.Header.Add(config.X_COOPHIVE_SIGNATURE_HEADER, userSignature)
 	return nil
 }
 
@@ -110,14 +94,14 @@ func AddHeaders(
 // there is a "X-CoopHive-Signature" header that will contain the signature
 // we use the signature to verify that the message was signed by the private key
 func GetAddressFromHeaders(req *http.Request) (string, error) {
-	userHeader := req.Header.Get(X_LILYPAD_USER_HEADER)
+	userHeader := req.Header.Get(config.X_COOPHIVE_USER_HEADER)
 	if userHeader == "" {
 		return "", HTTPError{
 			Message:    "missing user header",
 			StatusCode: http.StatusUnauthorized,
 		}
 	}
-	userSignature := req.Header.Get(X_LILYPAD_SIGNATURE_HEADER)
+	userSignature := req.Header.Get(config.X_COOPHIVE_SIGNATURE_HEADER)
 	if userSignature == "" {
 		return "", HTTPError{
 			Message:    "missing signature header",
@@ -170,7 +154,7 @@ func CorsMiddleware(next http.Handler) http.Handler {
 }
 
 func URL(options ClientOptions, path string) string {
-	return fmt.Sprintf("%s%s%s", options.URL, API_SUB_PATH, path)
+	return fmt.Sprintf("%s%s%s", options.URL, config.API_SUB_PATH, path)
 }
 
 func WebsocketURL(options ClientOptions, path string) string {

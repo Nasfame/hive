@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/CoopHive/hive/config"
 	"io"
 	corehttp "net/http"
 	"os"
@@ -53,7 +54,7 @@ func NewSolverServer(
 func (solverServer *solverServer) ListenAndServe(ctx context.Context, cm *system.CleanupManager) error {
 	router := mux.NewRouter()
 
-	subrouter := router.PathPrefix(http.API_SUB_PATH).Subrouter()
+	subrouter := router.PathPrefix(config.API_SUB_PATH).Subrouter()
 
 	subrouter.Use(http.CorsMiddleware)
 
@@ -92,7 +93,7 @@ func (solverServer *solverServer) ListenAndServe(ctx context.Context, cm *system
 
 	http.StartWebSocketServer(
 		subrouter,
-		http.WEBSOCKET_SUB_PATH,
+		config.WEBSOCKET_SUB_PATH,
 		websocketEventChannel,
 		ctx,
 	)

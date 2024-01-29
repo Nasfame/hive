@@ -1,15 +1,8 @@
 import {ethers} from 'hardhat'
 import {AddressLike, BigNumberish, Signer,} from 'ethers'
 import {DEFAULT_TOKEN_SUPPLY, DEFAULT_TOKENS_PER_ACCOUNT, fundAccountsWithTokens, getWallet,} from '../utils/web3'
-import {
-    LilypadController,
-    LilypadMediationRandom,
-    LilypadPayments,
-    LilypadStorage,
-    LilypadToken,
-    LilypadUsers,
-} from '../typechain-types'
-import {SharedStructs,} from '../typechain-types/contracts/LilypadStorage'
+import {HiveController, HiveMediationRandom, HivePayments, HiveStorage, HiveToken, HiveUsers,} from '../typechain-types'
+import {SharedStructs,} from '../typechain-types/contracts/HiveStorage.sol'
 
 /*
 
@@ -34,8 +27,8 @@ export async function deployToken(
     tokenSupply: BigNumberish = DEFAULT_TOKEN_SUPPLY,
     testMode = false,
 ) {
-    return deployContract<LilypadToken>(testMode ? 'LilypadTokenTestable' : 'LilypadToken', signer, [
-        'LilyPad',
+    return deployContract<HiveToken>(testMode ? 'HiveTokenTestable.sol' : 'HiveToken.sol', signer, [
+        'Hive',
         'LLY',
         tokenSupply,
     ])
@@ -46,7 +39,7 @@ export async function deployPayments(
     tokenAddress: AddressLike,
     testMode = false,
 ) {
-    const payments = await deployContract<LilypadPayments>(testMode ? 'LilypadPaymentsTestable' : 'LilypadPayments', signer)
+    const payments = await deployContract<HivePayments>(testMode ? 'HivePaymentsTestable.sol' : 'HivePayments.sol', signer)
     await payments
         .connect(signer)
         .initialize(tokenAddress)
@@ -57,19 +50,19 @@ export async function deployStorage(
     signer: Signer,
     testMode = false,
 ) {
-    return deployContract<LilypadStorage>(testMode ? 'LilypadStorageTestable' : 'LilypadStorage', signer)
+    return deployContract<HiveStorage>(testMode ? 'HiveStorageTestable.sol' : 'HiveStorage.sol', signer)
 }
 
 export async function deployUsers(
     signer: Signer
 ) {
-    return deployContract<LilypadUsers>('LilypadUsers', signer)
+    return deployContract<HiveUsers>('HiveUsers.sol', signer)
 }
 
 export async function deployMediation(
     signer: Signer
 ) {
-    return deployContract<LilypadMediationRandom>('LilypadMediationRandom', signer)
+    return deployContract<HiveMediationRandom>('HiveMediationRandom.sol', signer)
 }
 
 export async function deployController(
@@ -80,7 +73,7 @@ export async function deployController(
     mediationAddress: AddressLike,
     jobCreatorAddress: AddressLike
 ) {
-    const controller = await deployContract<LilypadController>('LilypadController', signer)
+    const controller = await deployContract<HiveController>('HiveController.sol', signer)
     await controller
         .connect(signer)
         .initialize(storageAddress, usersAddress, paymentsAddress, mediationAddress, jobCreatorAddress)

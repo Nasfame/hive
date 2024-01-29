@@ -196,13 +196,13 @@ function go-bindings() {
   fi
   rm -rf pkg/web3/bindings
   mkdir -p pkg/web3/bindings
-  go-binding LilypadToken token
-  go-binding LilypadPayments payments
-  go-binding LilypadStorage storage
-  go-binding LilypadUsers users
-  go-binding LilypadMediationRandom mediation
-  go-binding LilypadOnChainJobCreator jobcreator
-  go-binding LilypadController controller
+  go-binding HiveToken token
+  go-binding HivePayments payments
+  go-binding HiveStorage storage
+  go-binding HiveUsers users
+  go-binding HiveMediationRandom mediation
+  go-binding HiveOnChainJobCreator jobcreator
+  go-binding HiveController controller
   
   echo "Generated all go bindings pkg/contract/bindings/"
 }

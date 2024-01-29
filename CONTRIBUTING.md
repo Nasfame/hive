@@ -34,9 +34,9 @@ export BACALHAU_SERVE_IPFS_PATH=/tmp/hive/data/ipfs
 bacalhau serve --node-type compute,requester --peer none --private-internal-ipfs=false --job-selection-accept-networked
 ```
 
-### 2 - Lilypad
+### 2 - CoopHive
 
-To initiate the boot sequence for Lilypad, run the following command:
+To initiate the boot sequence for CoopHive, run the following command:
 
 ```bash
 ./stack boot
@@ -118,7 +118,7 @@ Run Cowsay:
 Run SDXL:
 
 ```bash
-./stack runsdxl sdxl:v0.9-lilypad1 PROMPT="beautiful view of iceland with a record player"
+./stack runsdxl sdxl:v0.1.0 PROMPT="beautiful view of iceland with a record player"
 ```
 
 ### 4 - Run Cowsay On-Chain

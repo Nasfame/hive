@@ -2,10 +2,10 @@ import {ethers} from 'hardhat'
 import bluebird from 'bluebird'
 import {ACCOUNTS,} from '../utils/accounts'
 import {connectToken,} from '../utils/web3'
-import {LilypadToken,} from '../typechain-types'
+import {HiveToken,} from '../typechain-types'
 
 async function main() {
-    let token: LilypadToken
+    let token: HiveToken
 
     try {
         token = await connectToken()

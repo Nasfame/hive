@@ -8,7 +8,6 @@ import (
 	"github.com/CoopHive/hive/pkg/data"
 )
 
-// allow shortcode github.com/lukemarsden/lilypad-sdxl:v0.0.1 (tag), //TODO: rebrand @luke
 // TODO: enforce sha1 for tags on the server side (like a pin file)
 
 // parse something with no slashes in it as

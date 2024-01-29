@@ -1,16 +1,16 @@
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity ^0.8.6;
 
-import "./LilypadToken.sol";
+import "./HiveToken.sol";
 
-// a version of LilypadToken that can be called by any address
+// a version of HiveToken.sol that can be called by any address
 // so we can run unit tests
-contract LilypadTokenTestable is LilypadToken {
+contract HiveTokenTestable is HiveToken {
   constructor(
     string memory name,
     string memory symbol,
     uint256 initialSupply
-  ) LilypadToken(name, symbol, initialSupply) {}
+  ) HiveToken(name, symbol, initialSupply) {}
 
   function _checkControllerAccess() internal pure override returns (bool) {
     return true;

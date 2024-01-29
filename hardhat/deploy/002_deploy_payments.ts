@@ -7,17 +7,17 @@ const deployPayments: DeployFunction = async function (hre: HardhatRuntimeEnviro
     const {
         admin,
     } = await getNamedAccounts()
-    await deploy("LilypadPayments", {
+    await deploy("HivePayments.sol", {
         from: admin,
         args: [],
         log: true,
     })
 
-    const tokenContract = await deployments.get('LilypadToken')
-    const paymentsContract = await deployments.get('LilypadPayments')
+    const tokenContract = await deployments.get('HiveToken.sol')
+    const paymentsContract = await deployments.get('HivePayments.sol')
 
     await execute(
-        'LilypadPayments',
+        'HivePayments.sol',
         {
             from: admin,
             log: true,
@@ -27,7 +27,7 @@ const deployPayments: DeployFunction = async function (hre: HardhatRuntimeEnviro
     )
 
     await execute(
-        'LilypadToken',
+        'HiveToken.sol',
         {
             from: admin,
             log: true,

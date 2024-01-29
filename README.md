@@ -83,7 +83,7 @@ hive run cowsay:v0.0.1 -i Message="moo"
 ### SDXL
 
 ```
-hive run sdxl:v0.9-lilypad1 -i PromptEnv="PROMPT=beautiful view of iceland with a record player"
+hive run sdxl:v0.1.0 -i PromptEnv="PROMPT=beautiful view of iceland with a record player"
 ```
 
 ![image-42](https://github.com/CoopHive/hive/assets/264658/d48bb897-79a0-4f3a-b938-e85a8cfa3f0e)
@@ -119,7 +119,7 @@ A module is just a git repo.
 
 Module versions are just git tags.
 
-In your repo, create a file called `lilypad_module.json.tmpl`
+In your repo, create a file called `module.coophive`
 
 See [cowsay](https://github.com/CoopHive/coophive-module-cowsay) for example
 

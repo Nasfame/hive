@@ -5,7 +5,7 @@ import {ethers} from 'hardhat'
 import {getPaymentDirection, getPaymentReason,} from '../utils/enums'
 import {getAddress, getWallet,} from '../utils/web3'
 import {setupPaymentsFixture,} from './fixtures'
-import {LilypadToken,} from '../typechain-types'
+import {HiveToken,} from '../typechain-types'
 
 chai.use(chaiAsPromised)
 const {expect} = chai
@@ -129,7 +129,7 @@ describe("Payments", () => {
         }
     }
 
-    async function getBalances(token: LilypadToken, accountName: string) {
+    async function getBalances(token: HiveToken, accountName: string) {
         const tokens = await token.balanceOf(getAddress(accountName))
         const escrow = await token.escrowBalanceOf(getAddress(accountName))
         return {
