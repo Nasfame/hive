@@ -79,18 +79,13 @@ func runJob(cmd *cobra.Command, options jobcreator.JobCreatorOptions) error {
 	// 	return fmt.Errorf("failed to stop spinner: %w", err)
 	// }
 
-	if err := spinner.Stop(); err != nil {
-		return fmt.Errorf("failed to stop spinner: %w", err)
-	}
-
-	if err != nil {
-		fmt.Println(err.Error())
-		os.Exit(1)
-	}
 	commandCtx := system.NewCommandContext(cmd)
 	defer commandCtx.Cleanup()
 	result, err := jobcreator.RunJob(commandCtx, options, func(evOffer data.JobOfferContainer) {
-		spinner.Stop()
+		if err := spinner.Stop(); err != nil {
+			log.Printf("failed to stop spinner: %w", err)
+			os.Exit(1)
+		}
 		st := data.GetAgreementStateString(evOffer.State)
 		var desc string
 		var emoji string
