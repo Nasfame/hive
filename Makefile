@@ -1,14 +1,17 @@
 binName = hive-$(shell uname -s)-$(shell uname -m)
 
-build:
+build-ci:
 	go build -v -ldflags="\
 		-X 'github.com/CoopHive/hive/cmd/hive.VERSION=$$(git describe --tags --abbrev=0)' \
 		-X 'github.com/CoopHive/hive/cmd/hive.COMMIT_SHA=$$(git rev-parse HEAD)' \
-	" -o /bin/hive .
-	./bin/hive version
+	" -o ./bin/hive-ci .
+	./bin/hive-ci version
 
 export VERSION=$(git describe --tags --abbrev=0)
 export COMMIT_SHA=$(git rev-parse HEAD)
+
+build:
+	goreleaser build --single-target --clean -o bin/hive-snapshot --snapshot
 
 prerelease:
 	echo "Version is $(VERSION)"

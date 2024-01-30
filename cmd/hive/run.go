@@ -2,6 +2,7 @@ package hive
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"os/signal"
 	"strings"
@@ -83,8 +84,7 @@ func runJob(cmd *cobra.Command, options jobcreator.JobCreatorOptions) error {
 	defer commandCtx.Cleanup()
 	result, err := jobcreator.RunJob(commandCtx, options, func(evOffer data.JobOfferContainer) {
 		if err := spinner.Stop(); err != nil {
-			log.Printf("failed to stop spinner: %w", err)
-			os.Exit(1)
+			log.Fatalf("failed to stop spinner: %v", err)
 		}
 		st := data.GetAgreementStateString(evOffer.State)
 		var desc string
@@ -111,14 +111,12 @@ func runJob(cmd *cobra.Command, options jobcreator.JobCreatorOptions) error {
 		}
 		spinner, err = createSpinner(desc, emoji)
 		if err != nil {
-			fmt.Printf("failed to make spinner from config struct: %v\n", err)
-			os.Exit(1)
+			log.Fatalf("failed to make spinner from config struct: %v\n", err)
 		}
 
 		// start the spinner animation
 		if err := spinner.Start(); err != nil {
-			fmt.Printf("failed to start spinner: %s", err)
-			os.Exit(1)
+			log.Fatalf("failed to start spinner: %s", err)
 		}
 
 		// UPDATE FUNCTION
