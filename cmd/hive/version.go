@@ -46,13 +46,7 @@ func runVersion(cmd *cobra.Command) error {
 	fmt.Printf("CoopHive: %s\n", VERSION)
 	fmt.Printf("Commit: %s\n", COMMIT_SHA)
 
-	// TODO: suggest updating to the latest version if the current version is not the latest version
+	// TODO: suggest auto updating to the latest version if the current version is not the latest version
 
 	return nil
 }
-
-//func init() {
-//	if VERSION == "" {
-//		VERSION = "v2" //TODO: @release, FIX: L41
-//	}
-//}
