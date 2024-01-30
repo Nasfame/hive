@@ -38,7 +38,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: [ 'javascript', 'python', 'go' ]
+        language: [ 'javascript', 'go' ]
         # CodeQL supports [ 'cpp', 'csharp', 'go', 'java', 'javascript', 'python', 'ruby', 'swift' ]
         # Use only 'java' to analyze code written in Java, Kotlin or both
         # Use only 'javascript' to analyze code written in JavaScript, TypeScript or both
@@ -59,6 +59,23 @@ jobs:
 
           # For more details on CodeQL's query packs, refer to: https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-code-scanning#using-queries-in-ql-packs
           # queries: security-extended,security-and-quality
+
+      - name: Set up Go
+        if: ${{matrix.language}} == "go"
+        uses: actions/setup-go@v4
+        with:
+          check-latest: true
+          cache-dependency-path: go.sum
+          cache: true
+          go-version-file: go.mod
+
+      #      - name: Set up Node
+      #        if: ${{matrix.language}} == "javascript"
+      #        uses: actions/setup-node@v3
+      #        with:
+      #          cache: 'pnpm'
+      #          node-version: 20
+      #          check-latest: true
 
       # Autobuild attempts to build any compiled languages (C/C++, C#, Go, Java, or Swift).
       # If this step fails, then you should remove it and run the build manually (see below)

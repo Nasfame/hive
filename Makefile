@@ -11,7 +11,7 @@ export VERSION=$(git describe --tags --abbrev=0)
 export COMMIT_SHA=$(git rev-parse HEAD)
 
 build:
-	goreleaser build --single-target --clean -o bin/hive-snapshot --snapshot
+	goreleaser build --single-target --clean -o bin/hive --snapshot
 
 prerelease:
 	echo "Version is $(VERSION)"
