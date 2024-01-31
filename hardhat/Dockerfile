@@ -1,9 +1,28 @@
-FROM node:16.19.0-bullseye
-RUN apt update
-RUN apt upgrade -y
-RUN apt install -y bash curl git
+# Build stage
+FROM node:20 AS builder
 WORKDIR /app
-COPY ./package.json /app
-COPY ./package-lock.json /app
-RUN npm install
-COPY . /app
+
+COPY ./package*.json  ./
+COPY ./pnpm-lock.yaml ./
+
+COPY . .
+
+RUN npm install -g pnpm
+RUN pnpm install
+
+
+# Deploy stage
+FROM node:20-alpine
+
+LABEL maintainer="Hiro <laciferin@gmail.com>"
+
+ENV NODE_ENV="production"
+
+WORKDIR /app
+
+
+COPY --from=builder /app ./
+
+RUN
+
+ENTRYPOINT ["npm", "run", ""]

@@ -52,6 +52,8 @@ jobs:
       - name: Build (Race)
         run: go build -v -race .
 
+
+#TODO: setup hardhat files
 #    - name: Setup Env vars for hardhat
 #      working-directory: hardhat
 #      run: |
