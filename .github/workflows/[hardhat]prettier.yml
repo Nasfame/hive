@@ -1,4 +1,4 @@
-name: Prettier
+name: Hardhat Prettier
 
 on:
   pull_request:
@@ -83,12 +83,12 @@ jobs:
         env:
           GITHUB_ACTOR: Baymax # ${{github.actor}}
         with:
+          working_directory: ${{ github.workspace }}/hardhat
           dry: false
           github_token: ${{ github.token }}
           same_commit: false
           commit_message: "style: pretty code"
-          commit_description:
-            "by ci"
+          commit_description: "by ci"
           #  file_pattern: "**/*.{js,jsx,ts,tsx,css,scss,html,vue,json,md}`"
           only_changed: ${{ env.ONLY_CHANGED }}
           prettier_options: "--write . --ignore-path .prettierignore.ci"

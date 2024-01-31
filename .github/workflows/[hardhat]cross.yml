@@ -1,4 +1,4 @@
-name: Cross[Dev Env]
+name: Hardhat Cross[Dev Env]
 
 on:
   push:

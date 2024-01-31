@@ -1,4 +1,4 @@
-name: Deploy to GCR
+name: Hardhat Deploy to GCR
 on:
   push:
     branches:

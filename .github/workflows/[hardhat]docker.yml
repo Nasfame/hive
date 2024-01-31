@@ -1,4 +1,4 @@
-name: Build[Docker]
+name: Hardhat [Docker]
 
 on:
   push:
