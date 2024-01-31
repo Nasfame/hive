@@ -6,7 +6,7 @@ import {getAddress, getWallet} from "../utils/web3";
 import {getAgreementState} from "../utils/enums";
 import {DEFAULT_VALUES, getDefaultPricing, getDefaultTimeouts, setupStorageFixture,} from "./fixtures";
 
-import {SharedStructs} from "../typechain-types/contracts/HiveStorage.sol";
+import {SharedStructs} from "../typechain-types/contracts/HiveStorage";
 
 chai.use(chaiAsPromised);
 const {expect} = chai;

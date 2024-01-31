@@ -11,7 +11,11 @@ import {ACCOUNT_ADDRESSES, PRIVATE_KEYS} from "./utils/accounts";
 const ENV_FILE = process.env.DOTENV_CONFIG_PATH || "../.env";
 dotenv.config({path: ENV_FILE});
 
-const NETWORK = process.env.NETWORK || "geth";
+console.log(`ENV_FILE is ${ENV_FILE}`)
+
+const NETWORK = process.env.NETWORK || "hardhat";
+
+console.log(`network is ${NETWORK}`)
 
 const INFURA_KEY = process.env.INFURA_KEY || "";
 

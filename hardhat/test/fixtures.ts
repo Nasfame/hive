@@ -9,7 +9,7 @@ import {
     HiveToken,
     HiveUsers,
 } from "../typechain-types";
-import {SharedStructs} from "../typechain-types/contracts/HiveStorage.sol";
+import {SharedStructs} from '../typechain-types/contracts/HiveStorage';
 
 /*
 
@@ -32,7 +32,7 @@ export async function deployToken(
     testMode = false
 ) {
     return deployContract<HiveToken>(
-        testMode ? "HiveTokenTestable.sol" : "HiveToken.sol",
+        testMode ? "HiveTokenTestable" : "HiveToken",
         signer,
         ["Hive", "LLY", tokenSupply]
     );
@@ -44,7 +44,7 @@ export async function deployPayments(
     testMode = false
 ) {
     const payments = await deployContract<HivePayments>(
-        testMode ? "HivePaymentsTestable.sol" : "HivePayments.sol",
+        testMode ? "HivePaymentsTestable" : "HivePayments",
         signer
     );
     await payments.connect(signer).initialize(tokenAddress);
@@ -53,17 +53,17 @@ export async function deployPayments(
 
 export async function deployStorage(signer: Signer, testMode = false) {
     return deployContract<HiveStorage>(
-        testMode ? "HiveStorageTestable.sol" : "HiveStorage.sol",
+        testMode ? "HiveStorageTestable" : "HiveStorage",
         signer
     );
 }
 
 export async function deployUsers(signer: Signer) {
-    return deployContract<HiveUsers>("HiveUsers.sol", signer);
+    return deployContract<HiveUsers>("HiveUsers", signer);
 }
 
 export async function deployMediation(signer: Signer) {
-    return deployContract<HiveMediationRandom>("HiveMediationRandom.sol", signer);
+    return deployContract<HiveMediationRandom>("HiveMediationRandom", signer);
 }
 
 export async function deployController(
@@ -75,7 +75,7 @@ export async function deployController(
     jobCreatorAddress: AddressLike
 ) {
     const controller = await deployContract<HiveController>(
-        "HiveController.sol",
+        "HiveController",
         signer
     );
     await controller

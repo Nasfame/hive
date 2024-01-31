@@ -14,7 +14,7 @@ import {
     setupControllerFixture,
 } from "./fixtures";
 import {HiveController, HiveStorage, HiveToken} from "../typechain-types";
-import {SharedStructs} from "../typechain-types/contracts/HiveStorage.sol";
+import {SharedStructs} from "../typechain-types/contracts/HiveStorage";
 
 chai.use(chaiAsPromised);
 const {expect} = chai;
