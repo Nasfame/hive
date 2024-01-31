@@ -14,7 +14,8 @@
     "start": "hardhat node",
     "build": "hardhat compile",
     "clean": "hardhat clean",
-    "hardhat:local": "hardhat node --network hardhat"
+    "hardhat:local": "hardhat node --network hardhat",
+    "test": "DOTENV_CONFIG_PATH=.env.hardhat hardhat test"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-chai-matchers": "^2.0.0",
