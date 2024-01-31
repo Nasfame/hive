@@ -1,8 +1,15 @@
-import {ethers} from 'hardhat'
-import {AddressLike, BigNumberish, Signer,} from 'ethers'
-import {DEFAULT_TOKEN_SUPPLY, DEFAULT_TOKENS_PER_ACCOUNT, fundAccountsWithTokens, getWallet,} from '../utils/web3'
-import {HiveController, HiveMediationRandom, HivePayments, HiveStorage, HiveToken, HiveUsers,} from '../typechain-types'
-import {SharedStructs,} from '../typechain-types/contracts/HiveStorage.sol'
+import {ethers} from "hardhat";
+import {AddressLike, BigNumberish, Signer} from "ethers";
+import {DEFAULT_TOKEN_SUPPLY, DEFAULT_TOKENS_PER_ACCOUNT, fundAccountsWithTokens, getWallet,} from "../utils/web3";
+import {
+    HiveController,
+    HiveMediationRandom,
+    HivePayments,
+    HiveStorage,
+    HiveToken,
+    HiveUsers,
+} from "../typechain-types";
+import {SharedStructs} from "../typechain-types/contracts/HiveStorage.sol";
 
 /*
 
@@ -12,57 +19,51 @@ import {SharedStructs,} from '../typechain-types/contracts/HiveStorage.sol'
 export async function deployContract<T extends any>(
     name: string,
     signer: Signer,
-    args: any[] = [],
+    args: any[] = []
 ): Promise<T> {
-    const factory = await ethers.getContractFactory(
-        name,
-        signer,
-    )
-    const contract = await factory.deploy(...args) as unknown as T
-    return contract
+    const factory = await ethers.getContractFactory(name, signer);
+    const contract = (await factory.deploy(...args)) as unknown as T;
+    return contract;
 }
 
 export async function deployToken(
     signer: Signer,
     tokenSupply: BigNumberish = DEFAULT_TOKEN_SUPPLY,
-    testMode = false,
+    testMode = false
 ) {
-    return deployContract<HiveToken>(testMode ? 'HiveTokenTestable.sol' : 'HiveToken.sol', signer, [
-        'Hive',
-        'LLY',
-        tokenSupply,
-    ])
+    return deployContract<HiveToken>(
+        testMode ? "HiveTokenTestable.sol" : "HiveToken.sol",
+        signer,
+        ["Hive", "LLY", tokenSupply]
+    );
 }
 
 export async function deployPayments(
     signer: Signer,
     tokenAddress: AddressLike,
-    testMode = false,
+    testMode = false
 ) {
-    const payments = await deployContract<HivePayments>(testMode ? 'HivePaymentsTestable.sol' : 'HivePayments.sol', signer)
-    await payments
-        .connect(signer)
-        .initialize(tokenAddress)
-    return payments
+    const payments = await deployContract<HivePayments>(
+        testMode ? "HivePaymentsTestable.sol" : "HivePayments.sol",
+        signer
+    );
+    await payments.connect(signer).initialize(tokenAddress);
+    return payments;
 }
 
-export async function deployStorage(
-    signer: Signer,
-    testMode = false,
-) {
-    return deployContract<HiveStorage>(testMode ? 'HiveStorageTestable.sol' : 'HiveStorage.sol', signer)
+export async function deployStorage(signer: Signer, testMode = false) {
+    return deployContract<HiveStorage>(
+        testMode ? "HiveStorageTestable.sol" : "HiveStorage.sol",
+        signer
+    );
 }
 
-export async function deployUsers(
-    signer: Signer
-) {
-    return deployContract<HiveUsers>('HiveUsers.sol', signer)
+export async function deployUsers(signer: Signer) {
+    return deployContract<HiveUsers>("HiveUsers.sol", signer);
 }
 
-export async function deployMediation(
-    signer: Signer
-) {
-    return deployContract<HiveMediationRandom>('HiveMediationRandom.sol', signer)
+export async function deployMediation(signer: Signer) {
+    return deployContract<HiveMediationRandom>("HiveMediationRandom.sol", signer);
 }
 
 export async function deployController(
@@ -73,11 +74,20 @@ export async function deployController(
     mediationAddress: AddressLike,
     jobCreatorAddress: AddressLike
 ) {
-    const controller = await deployContract<HiveController>('HiveController.sol', signer)
+    const controller = await deployContract<HiveController>(
+        "HiveController.sol",
+        signer
+    );
     await controller
         .connect(signer)
-        .initialize(storageAddress, usersAddress, paymentsAddress, mediationAddress, jobCreatorAddress)
-    return controller
+        .initialize(
+            storageAddress,
+            usersAddress,
+            paymentsAddress,
+            mediationAddress,
+            jobCreatorAddress
+        );
+    return controller;
 }
 
 /*
@@ -103,25 +113,19 @@ export async function setupTokenFixture({
                                             withFunds = false,
                                             controllerAddress,
                                         }: {
-    testMode?: boolean,
-    withFunds?: boolean,
-    controllerAddress?: AddressLike,
+    testMode?: boolean;
+    withFunds?: boolean;
+    controllerAddress?: AddressLike;
 }) {
-    const admin = getWallet('admin')
-    const token = await deployToken(
-        admin,
-        DEFAULT_TOKEN_SUPPLY,
-        testMode,
-    )
+    const admin = getWallet("admin");
+    const token = await deployToken(admin, DEFAULT_TOKEN_SUPPLY, testMode);
     if (withFunds) {
-        await fundAccountsWithTokens(token, DEFAULT_TOKENS_PER_ACCOUNT)
+        await fundAccountsWithTokens(token, DEFAULT_TOKENS_PER_ACCOUNT);
     }
     if (controllerAddress) {
-        await (token as any)
-            .connect(admin)
-            .setControllerAddress(controllerAddress)
+        await (token as any).connect(admin).setControllerAddress(controllerAddress);
     }
-    return token
+    return token;
 }
 
 /*
@@ -138,28 +142,28 @@ export async function setupPaymentsFixture({
                                                withFunds = false,
                                                controllerAddress,
                                            }: {
-    testMode?: boolean,
-    withFunds?: boolean,
-    controllerAddress?: AddressLike,
+    testMode?: boolean;
+    withFunds?: boolean;
+    controllerAddress?: AddressLike;
 }) {
-    const admin = getWallet('admin')
+    const admin = getWallet("admin");
     const token = await setupTokenFixture({
         testMode: false,
         withFunds,
-    })
-    const payments = await deployPayments(admin, token.getAddress(), testMode)
+    });
+    const payments = await deployPayments(admin, token.getAddress(), testMode);
     await (token as any)
         .connect(admin)
-        .setControllerAddress(payments.getAddress())
+        .setControllerAddress(payments.getAddress());
     if (controllerAddress) {
         await (payments as any)
             .connect(admin)
-            .setControllerAddress(controllerAddress)
+            .setControllerAddress(controllerAddress);
     }
     return {
         token,
         payments,
-    }
+    };
 }
 
 /*
@@ -174,20 +178,17 @@ export async function setupStorageFixture({
                                               testMode = false,
                                               controllerAddress,
                                           }: {
-    testMode?: boolean,
-    controllerAddress?: AddressLike,
+    testMode?: boolean;
+    controllerAddress?: AddressLike;
 }) {
-    const admin = getWallet('admin')
-    const storage = await deployStorage(
-        admin,
-        testMode,
-    )
+    const admin = getWallet("admin");
+    const storage = await deployStorage(admin, testMode);
     if (controllerAddress) {
         await (storage as any)
             .connect(admin)
-            .setControllerAddress(controllerAddress)
+            .setControllerAddress(controllerAddress);
     }
-    return storage
+    return storage;
 }
 
 /*
@@ -199,11 +200,9 @@ export async function setupStorageFixture({
 // setup the token in test mode so we can call functions on it directly
 // without the ControllerOwnable module kicking in
 export async function setupUsersFixture() {
-    const admin = getWallet('admin')
-    const users = await deployUsers(
-        admin,
-    )
-    return users
+    const admin = getWallet("admin");
+    const users = await deployUsers(admin);
+    return users;
 }
 
 /*
@@ -217,18 +216,16 @@ export async function setupUsersFixture() {
 export async function setupMediationFixture({
                                                 controllerAddress,
                                             }: {
-    controllerAddress?: AddressLike,
+    controllerAddress?: AddressLike;
 }) {
-    const admin = getWallet('admin')
-    const mediation = await deployMediation(
-        admin,
-    )
+    const admin = getWallet("admin");
+    const mediation = await deployMediation(admin);
     if (controllerAddress) {
         await (mediation as any)
             .connect(admin)
-            .setControllerAddress(controllerAddress)
+            .setControllerAddress(controllerAddress);
     }
-    return mediation
+    return mediation;
 }
 
 /*
@@ -240,24 +237,21 @@ export async function setupMediationFixture({
 export async function setupControllerFixture({
                                                  withFunds = false,
                                              }: {
-    withFunds?: boolean,
+    withFunds?: boolean;
 }) {
-    const admin = getWallet('admin')
-    const {
-        token,
-        payments,
-    } = await setupPaymentsFixture({
+    const admin = getWallet("admin");
+    const {token, payments} = await setupPaymentsFixture({
         withFunds,
-    })
-    const storage = await setupStorageFixture({})
-    const users = await setupUsersFixture()
-    const mediation = await setupMediationFixture({})
-    const paymentsAddress = await payments.getAddress()
-    const storageAddress = await storage.getAddress()
-    const usersAddress = await users.getAddress()
-    const mediationAddress = await mediation.getAddress()
+    });
+    const storage = await setupStorageFixture({});
+    const users = await setupUsersFixture();
+    const mediation = await setupMediationFixture({});
+    const paymentsAddress = await payments.getAddress();
+    const storageAddress = await storage.getAddress();
+    const usersAddress = await users.getAddress();
+    const mediationAddress = await mediation.getAddress();
 
-    const jobCreator = getWallet('job_creator')
+    const jobCreator = getWallet("job_creator");
 
     const controller = await deployController(
         admin,
@@ -266,17 +260,15 @@ export async function setupControllerFixture({
         paymentsAddress,
         mediationAddress,
         jobCreator
-    )
-    const controllerAddress = await controller.getAddress()
+    );
+    const controllerAddress = await controller.getAddress();
     await (payments as any)
         .connect(admin)
-        .setControllerAddress(controllerAddress)
-    await (storage as any)
-        .connect(admin)
-        .setControllerAddress(controllerAddress)
+        .setControllerAddress(controllerAddress);
+    await (storage as any).connect(admin).setControllerAddress(controllerAddress);
     await (mediation as any)
         .connect(admin)
-        .setControllerAddress(controllerAddress)
+        .setControllerAddress(controllerAddress);
     return {
         token,
         payments,
@@ -284,12 +276,12 @@ export async function setupControllerFixture({
         users,
         mediation,
         controller,
-    }
+    };
 }
 
-export const DEAL_ID = "10"
-export const RESULTS_ID = "11"
-export const DATA_ID = "12"
+export const DEAL_ID = "10";
+export const RESULTS_ID = "11";
+export const DATA_ID = "12";
 
 export const DEFAULT_VALUES: Record<string, bigint> = {
     instructionPrice: ethers.parseEther("10"),
@@ -301,40 +293,40 @@ export const DEFAULT_VALUES: Record<string, bigint> = {
     mediationFee: ethers.parseEther("5"),
     timeout: ethers.getBigInt("100"),
     timeoutCollateral: ethers.parseEther("10"),
-}
+};
 
 export function getDefaultTimeouts(
     timeout = DEFAULT_VALUES.timeout,
-    collateral = DEFAULT_VALUES.timeoutCollateral,
+    collateral = DEFAULT_VALUES.timeoutCollateral
 ) {
     const defaultTimeout: SharedStructs.DealTimeoutStruct = {
         timeout,
         collateral,
-    }
+    };
     const defaultTimeoutNoCost: SharedStructs.DealTimeoutStruct = {
         timeout,
         collateral: ethers.parseEther("0"),
-    }
+    };
     const ret: SharedStructs.DealTimeoutsStruct = {
         agree: defaultTimeoutNoCost,
         submitResults: defaultTimeout,
         judgeResults: defaultTimeout,
         mediateResults: defaultTimeoutNoCost,
-    }
-    return ret
+    };
+    return ret;
 }
 
 export function getDefaultPricing(
     instructionPrice = DEFAULT_VALUES.instructionPrice,
     paymentCollateral = DEFAULT_VALUES.paymentCollateral,
     resultsCollateralMultiple = DEFAULT_VALUES.resultsCollateralMultiple,
-    mediationFee = DEFAULT_VALUES.mediationFee,
+    mediationFee = DEFAULT_VALUES.mediationFee
 ) {
     const ret: SharedStructs.DealPricingStruct = {
         instructionPrice,
         paymentCollateral,
         resultsCollateralMultiple,
         mediationFee,
-    }
-    return ret
+    };
+    return ret;
 }

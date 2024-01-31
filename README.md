@@ -30,7 +30,8 @@ Block explorer URL: (leave blank)
 
 ### Fund your wallet with ETH and LP
 
-[//]: # (TODO: rebrand to co-ophive.network @luke)
+[//]: # "TODO: rebrand to co-ophive.network @luke"
+
 To obtain funds, go to [http://faucet.co-ophive.network:8080](http://faucet.co-ophive.network:8080)
 
 The faucet will give you both ETH (to pay for gas) and LP (to stake and pay for jobs).
@@ -40,7 +41,7 @@ The faucet will give you both ETH (to pay for gas) and LP (to stake and pay for 
 Download the latest release of CoopHive for your platform. Both the amd64/x86_64 and arm64 variants of macOS and Linux
 are supported. (If you are on Apple Silicon, you'll want arm64).
 
-Nb:  to check your version use ```which hive``` - if an old version run ```rm <path>``` to remove that path then
+Nb: to check your version use `which hive` - if an old version run `rm <path>` to remove that path then
 reinstall newest version
 
 The commands below will automatically detect your OS and processor architecture and download the correct CoopHive build
@@ -89,7 +90,7 @@ hive run sdxl:v0.1.0 -i PromptEnv="PROMPT=beautiful view of iceland with a recor
 ![image-42](https://github.com/CoopHive/hive/assets/264658/d48bb897-79a0-4f3a-b938-e85a8cfa3f0e)
 
 Not working?
-Try ```rm -rf /tmp/hive/data/repos``` uninstall hive path and reinstall from the start
+Try `rm -rf /tmp/hive/data/repos` uninstall hive path and reinstall from the start
 
 ## Run a node, earn LP
 
@@ -103,15 +104,15 @@ systemd units & more details [here](https://github.com/CoopHive/hive/tree/main/o
 
 Check the github releases page for each module or just use the git hash as the tag.
 
-* [sdxl](https://github.com/CoopHive/hive-module-sdxl)
-* [stable-diffusion](https://github.com/CoopHive/hive-module-stable-diffusion)
-* [duckdb](https://github.com/CoopHive/hive-module-duckdb)
-* [fastchat](https://github.com/CoopHive/hive-module-fastchat)
-* [lora-inference](https://github.com/CoopHive/hive-module-lora-inference)
-* [lora-training](https://github.com/CoopHive/hive-module-lora-training)
-* [filecoin-data-prep](https://github.com/CoopHive/hive-module-filecoin-data-prep)
-* [wasm](https://github.com/CoopHive/hive-module-wasm)
-* [cowsay](https://github.com/CoopHive/hive-module-cowsay)
+- [sdxl](https://github.com/CoopHive/hive-module-sdxl)
+- [stable-diffusion](https://github.com/CoopHive/hive-module-stable-diffusion)
+- [duckdb](https://github.com/CoopHive/hive-module-duckdb)
+- [fastchat](https://github.com/CoopHive/hive-module-fastchat)
+- [lora-inference](https://github.com/CoopHive/hive-module-lora-inference)
+- [lora-training](https://github.com/CoopHive/hive-module-lora-training)
+- [filecoin-data-prep](https://github.com/CoopHive/hive-module-filecoin-data-prep)
+- [wasm](https://github.com/CoopHive/hive-module-wasm)
+- [cowsay](https://github.com/CoopHive/hive-module-cowsay)
 
 ## Write a module
 
@@ -139,11 +140,11 @@ Inputs are a map of strings to strings.
 
 Tips:
 
-* Make the output reproducible, for example for the diffusers library,
+- Make the output reproducible, for example for the diffusers library,
   see [here](https://huggingface.co/docs/diffusers/using-diffusers/reproducibility)
-* Strip timestamps and time measurements out of the output, including to stdout/stderr
-* Don't read any sources of entropy (e.g. /dev/random)
-* When referencing docker images, you MUST specify their sha256 hashes, as shown in this example
+- Strip timestamps and time measurements out of the output, including to stdout/stderr
+- Don't read any sources of entropy (e.g. /dev/random)
+- When referencing docker images, you MUST specify their sha256 hashes, as shown in this example
 
 If your module is not deterministic, compute providers will not adopt it and blacklist your module
 

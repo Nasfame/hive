@@ -23,7 +23,7 @@ env:
   envfile: ${{secrets.ENV}}
   MODE: test
   NODE_ENV: testing
-  DOTENV_CONFIG_PATH: './hardhat/.env'
+  DOTENV_CONFIG_PATH: "./hardhat/.env"
 
 jobs:
   build-docker:
@@ -50,5 +50,4 @@ jobs:
 
       - name: Build Docker
         run: docker build -t app .
-
 #TODO: docker create Dockerfile.test

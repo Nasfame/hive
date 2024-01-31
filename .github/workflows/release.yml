@@ -4,8 +4,8 @@ on:
   pull_request:
   push:
     tags:
-      - '*'
-      - '**'
+      - "*"
+      - "**"
 
     branches:
       - main
@@ -67,7 +67,7 @@ jobs:
         with:
           go-version-file: go.mod
           check-latest: true
-      
+
       #      - name: PreRelease
       #        if: github.event_name == 'pull_request'
       #        run: |
@@ -93,14 +93,14 @@ jobs:
           else
             export RELEASE_MODE=nightly #TODO: look if gorelease supports canary
           fi
-          
+
           echo "Release Mode is $RELEASE_MODE"
-          echo "RELEASE_MODE=$RELEASE_MODE" >> $GITHUB_OUTPUT  
+          echo "RELEASE_MODE=$RELEASE_MODE" >> $GITHUB_OUTPUT
 
       - uses: nowsprinting/check-version-format-action@v3
         id: version
         with:
-          prefix: 'v'
+          prefix: "v"
 
       - name: Version tag only step
         run: |
@@ -122,7 +122,6 @@ jobs:
           distribution: goreleaser
           version: latest
           install-only: false
-
 
           args: release --clean
 

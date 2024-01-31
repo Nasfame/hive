@@ -1,27 +1,23 @@
-import {HardhatRuntimeEnvironment} from 'hardhat/types'
-import {DeployFunction} from 'hardhat-deploy/types'
-import {DEFAULT_TOKEN_SUPPLY,} from '../utils/web3'
+import {HardhatRuntimeEnvironment} from "hardhat/types";
+import {DeployFunction} from "hardhat-deploy/types";
+import {DEFAULT_TOKEN_SUPPLY} from "../utils/web3";
 
-const deployToken: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
-    const {deployments, getNamedAccounts} = hre
-    const {deploy} = deployments
-    const {
-        admin,
-    } = await getNamedAccounts()
+const deployToken: DeployFunction = async function (
+    hre: HardhatRuntimeEnvironment
+) {
+    const {deployments, getNamedAccounts} = hre;
+    const {deploy} = deployments;
+    const {admin} = await getNamedAccounts();
     // log the admin address
-    console.log(`admin: ${admin}`)
+    console.log(`admin: ${admin}`);
     await deploy("HiveToken.sol", {
         from: admin,
-        args: [
-            "Hive Token",
-            "LP",
-            DEFAULT_TOKEN_SUPPLY,
-        ],
+        args: ["Hive Token", "LP", DEFAULT_TOKEN_SUPPLY],
         log: true,
-    })
-    return true
-}
+    });
+    return true;
+};
 
-deployToken.id = 'deployToken'
+deployToken.id = "deployToken";
 
-export default deployToken
+export default deployToken;

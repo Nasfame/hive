@@ -13,11 +13,9 @@ on:
 
   workflow_dispatch:
 
-
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
-
 
 jobs:
   cross:
@@ -27,7 +25,7 @@ jobs:
       matrix:
         #        go-version: go #[ '1.21.x' ]
         #        arch: [ x64, arm, arm64 ]
-        os: [ windows-latest,macos-latest, ubuntu-latest ]
+        os: [ windows-latest, macos-latest, ubuntu-latest ]
 
     runs-on: ${{ matrix.os }}
 
@@ -51,8 +49,6 @@ jobs:
 
       - name: Build (Race)
         run: go build -v -race .
-
-
 #TODO: setup hardhat files
 #    - name: Setup Env vars for hardhat
 #      working-directory: hardhat

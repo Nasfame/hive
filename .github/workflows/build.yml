@@ -12,11 +12,9 @@ on:
 
   workflow_dispatch:
 
-
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
-
 
 jobs:
   build:
@@ -41,4 +39,3 @@ jobs:
 
       - name: Build (Race)
         run: go build -v -race .
-

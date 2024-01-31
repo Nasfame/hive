@@ -1,10 +1,10 @@
 # deployment from scratch (MVP deployment)
 
-* create new IP address on GCP
-* create new VM on GCP (e2-standard-8, 1TB root disk, ubuntu 22.04) using IP above
-* install docker: https://docs.docker.com/engine/install/ubuntu/
-* install node 20: https://github.com/nodesource/distributions#debian-and-ubuntu-based-distributions
-* install go using PPA: https://github.com/golang/go/wiki/Ubuntu
+- create new IP address on GCP
+- create new VM on GCP (e2-standard-8, 1TB root disk, ubuntu 22.04) using IP above
+- install docker: https://docs.docker.com/engine/install/ubuntu/
+- install node 20: https://github.com/nodesource/distributions#debian-and-ubuntu-based-distributions
+- install go using PPA: https://github.com/golang/go/wiki/Ubuntu
 
 ```bash
 sudo adduser $USER docker
@@ -12,11 +12,11 @@ sudo adduser $USER docker
 
 We need to point DNS for `hive.coophive.network` at the node and open the following ports:
 
-* 80
-* 443
-* 8080
-* 8545
-* 8546
+- 80
+- 443
+- 8080
+- 8545
+- 8546
 
 log out and log in again
 
@@ -58,11 +58,11 @@ Each file should be of the following format:
 WEB3_PRIVATE_KEY=xxx
 ```
 
-* `/app/hive/solver.env` (copy `SOLVER_PRIVATE_KEY` from `.env`)
-* `/app/hive/mediator.env` (copy `MEDIATOR_PRIVATE_KEY` from `.env`)
-* `/app/hive/resource-provider.env` (copy `RESOURCE_PROVIDER_PRIVATE_KEY` from `.env`)
-* `/app/hive/job-creator.env` (copy `SOLVER_PRIVATE_KEY` from `.env`)
-    * IMPORTANT: this has to be the solver private key because the job creator runs as it
+- `/app/hive/solver.env` (copy `SOLVER_PRIVATE_KEY` from `.env`)
+- `/app/hive/mediator.env` (copy `MEDIATOR_PRIVATE_KEY` from `.env`)
+- `/app/hive/resource-provider.env` (copy `RESOURCE_PROVIDER_PRIVATE_KEY` from `.env`)
+- `/app/hive/job-creator.env` (copy `SOLVER_PRIVATE_KEY` from `.env`)
+    - IMPORTANT: this has to be the solver private key because the job creator runs as it
 
 Now - we copy the systemd units and reload systemd:
 

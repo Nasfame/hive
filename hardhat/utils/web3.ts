@@ -1,8 +1,8 @@
-import hre, {ethers} from 'hardhat'
-import bluebird from 'bluebird'
-import {AddressLike, BigNumberish, Signer} from 'ethers'
-import {Account} from './types'
-import {ACCOUNTS, getAccount,} from './accounts'
+import hre, {ethers} from "hardhat";
+import bluebird from "bluebird";
+import {AddressLike, BigNumberish, Signer} from "ethers";
+import {Account} from "./types";
+import {ACCOUNTS, getAccount} from "./accounts";
 import {
     ExampleClient,
     HiveController,
@@ -12,7 +12,7 @@ import {
     HiveStorage,
     HiveToken,
     HiveUsers,
-} from '../typechain-types'
+} from "../typechain-types";
 
 /*
 
@@ -21,13 +21,13 @@ import {
 */
 
 // how much ether to send to each account
-export const DEFAULT_ETHER_PER_ACCOUNT = ethers.parseEther('1000')
+export const DEFAULT_ETHER_PER_ACCOUNT = ethers.parseEther("1000");
 
 // a billion tokens in total
-export const DEFAULT_TOKEN_SUPPLY = ethers.parseEther('1000000000')
+export const DEFAULT_TOKEN_SUPPLY = ethers.parseEther("1000000000");
 
 // each service gets 100000 tokens
-export const DEFAULT_TOKENS_PER_ACCOUNT = ethers.parseEther('100000')
+export const DEFAULT_TOKENS_PER_ACCOUNT = ethers.parseEther("100000");
 
 /*
 
@@ -35,38 +35,52 @@ export const DEFAULT_TOKENS_PER_ACCOUNT = ethers.parseEther('100000')
 
 */
 export const getWallet = (name: string) => {
-    const account = getAccount(name)
-    return new ethers.Wallet(account.privateKey, ethers.provider)
-}
+    const account = getAccount(name);
+    return new ethers.Wallet(account.privateKey, ethers.provider);
+};
 
 export const getAddress = (name: string) => {
-    const account = getAccount(name)
-    return account.address
-}
+    const account = getAccount(name);
+    return account.address;
+};
 
 export const getRandomWallet = () => {
-    return ethers.Wallet.createRandom()
-}
+    return ethers.Wallet.createRandom();
+};
 
-export const transferEther = async (fromAccount: Account, toAccount: Account, amount: BigNumberish) => {
-    const signer = new hre.ethers.Wallet(fromAccount.privateKey, hre.ethers.provider)
+export const transferEther = async (
+    fromAccount: Account,
+    toAccount: Account,
+    amount: BigNumberish
+) => {
+    const signer = new hre.ethers.Wallet(
+        fromAccount.privateKey,
+        hre.ethers.provider
+    );
     const tx = await signer.sendTransaction({
         to: toAccount.address,
         value: amount,
-    })
-    await tx.wait()
-    console.log(`Moved ${amount} ETHER from ${fromAccount.name} (${fromAccount.address}) to ${toAccount.name} (${toAccount.address}) - ${tx.hash}.`)
-}
+    });
+    await tx.wait();
+    console.log(
+        `Moved ${amount} ETHER from ${fromAccount.name} (${fromAccount.address}) to ${toAccount.name} (${toAccount.address}) - ${tx.hash}.`
+    );
+};
 
-export const transferTokens = async (fromAccount: Account, toAccount: Account, amount: BigNumberish) => {
-    const token = await connectToken()
+export const transferTokens = async (
+    fromAccount: Account,
+    toAccount: Account,
+    amount: BigNumberish
+) => {
+    const token = await connectToken();
     const tx = await token
         .connect(getWallet(fromAccount.name))
-        .transfer(toAccount.address, amount)
-    await tx.wait()
-    console.log(`Moved ${amount} TOKENS from ${fromAccount.name} (${fromAccount.address}) to ${toAccount.name} (${toAccount.address}) - ${tx.hash}.`)
-}
-
+        .transfer(toAccount.address, amount);
+    await tx.wait();
+    console.log(
+        `Moved ${amount} TOKENS from ${fromAccount.name} (${fromAccount.address}) to ${toAccount.name} (${toAccount.address}) - ${tx.hash}.`
+    );
+};
 
 /*
 
@@ -76,14 +90,11 @@ export const transferTokens = async (fromAccount: Account, toAccount: Account, a
 export async function deployContract<T extends any>(
     name: string,
     signer: Signer,
-    args: any[] = [],
+    args: any[] = []
 ): Promise<T> {
-    const factory = await ethers.getContractFactory(
-        name,
-        signer,
-    )
-    const contract = await factory.deploy(...args) as unknown as T
-    return contract
+    const factory = await ethers.getContractFactory(name, signer);
+    const contract = (await factory.deploy(...args)) as unknown as T;
+    return contract;
 }
 
 /*
@@ -94,20 +105,18 @@ export async function deployContract<T extends any>(
 export async function fundTokens(
     tokenContract: HiveToken,
     address: AddressLike,
-    amount: BigNumberish = DEFAULT_TOKENS_PER_ACCOUNT,
+    amount: BigNumberish = DEFAULT_TOKENS_PER_ACCOUNT
 ) {
-    await tokenContract
-        .connect(getWallet('admin'))
-        .transfer(address, amount)
+    await tokenContract.connect(getWallet("admin")).transfer(address, amount);
 }
 
 export async function fundAccountsWithTokens(
     tokenContract: HiveToken,
-    amount: BigNumberish = DEFAULT_TOKENS_PER_ACCOUNT,
+    amount: BigNumberish = DEFAULT_TOKENS_PER_ACCOUNT
 ) {
     await bluebird.mapSeries(ACCOUNTS, async (account) => {
-        await fundTokens(tokenContract, account.address, amount)
-    })
+        await fundTokens(tokenContract, account.address, amount);
+    });
 }
 
 /*
@@ -119,20 +128,16 @@ export async function fundAccountsWithTokens(
 
 */
 
-export async function connectContract<T extends any>(
-    name: string,
-): Promise<T> {
-    const deployment = await hre.deployments.get(name)
-    const factory = await hre.ethers.getContractFactory(name)
-    const contract = factory.attach(deployment.address) as unknown as T
-    return contract
+export async function connectContract<T extends any>(name: string): Promise<T> {
+    const deployment = await hre.deployments.get(name);
+    const factory = await hre.ethers.getContractFactory(name);
+    const contract = factory.attach(deployment.address) as unknown as T;
+    return contract;
 }
 
-export async function getContractAddress(
-    name: string,
-): Promise<AddressLike> {
-    const deployment = await hre.deployments.get(name)
-    return deployment.address
+export async function getContractAddress(name: string): Promise<AddressLike> {
+    const deployment = await hre.deployments.get(name);
+    return deployment.address;
 }
 
 /*
@@ -141,11 +146,11 @@ export async function getContractAddress(
 
 */
 export async function connectStorage() {
-    return connectContract<HiveStorage>('HiveStorage.sol')
+    return connectContract<HiveStorage>("HiveStorage.sol");
 }
 
 export async function getStorageAddress() {
-    return getContractAddress('HiveStorage.sol')
+    return getContractAddress("HiveStorage.sol");
 }
 
 /*
@@ -154,11 +159,11 @@ export async function getStorageAddress() {
 
 */
 export async function connectMediation() {
-    return connectContract<HiveMediationRandom>('HiveMediationRandom.sol')
+    return connectContract<HiveMediationRandom>("HiveMediationRandom.sol");
 }
 
 export async function getMediationAddress() {
-    return getContractAddress('HiveMediationRandom.sol')
+    return getContractAddress("HiveMediationRandom.sol");
 }
 
 /*
@@ -167,11 +172,11 @@ export async function getMediationAddress() {
 
 */
 export async function connectToken() {
-    return connectContract<HiveToken>('HiveToken.sol')
+    return connectContract<HiveToken>("HiveToken.sol");
 }
 
 export async function getTokenAddress() {
-    return getContractAddress('HiveToken.sol')
+    return getContractAddress("HiveToken.sol");
 }
 
 /*
@@ -180,13 +185,12 @@ export async function getTokenAddress() {
 
 */
 export async function connectPayments() {
-    return connectContract<HivePayments>('HivePayments.sol')
+    return connectContract<HivePayments>("HivePayments.sol");
 }
 
 export async function getPaymentsAddress() {
-    return getContractAddress('HivePayments.sol')
+    return getContractAddress("HivePayments.sol");
 }
-
 
 /*
 
@@ -194,13 +198,12 @@ export async function getPaymentsAddress() {
 
 */
 export async function connectJobManager() {
-    return connectContract<HiveOnChainJobCreator>('HiveOnChainJobCreator.sol')
+    return connectContract<HiveOnChainJobCreator>("HiveOnChainJobCreator.sol");
 }
 
 export async function getJobManagerAddress() {
-    return getContractAddress('HiveOnChainJobCreator.sol')
+    return getContractAddress("HiveOnChainJobCreator.sol");
 }
-
 
 /*
 
@@ -208,11 +211,11 @@ export async function getJobManagerAddress() {
 
 */
 export async function connectUsers() {
-    return connectContract<HiveUsers>('HiveUsers.sol')
+    return connectContract<HiveUsers>("HiveUsers.sol");
 }
 
 export async function getUsersAddress() {
-    return getContractAddress('HiveUsers.sol')
+    return getContractAddress("HiveUsers.sol");
 }
 
 /*
@@ -221,11 +224,11 @@ export async function getUsersAddress() {
 
 */
 export async function connectExampleClient() {
-    return connectContract<ExampleClient>('ExampleClient')
+    return connectContract<ExampleClient>("ExampleClient");
 }
 
 export async function getExampleClientAddress() {
-    return getContractAddress('ExampleClient')
+    return getContractAddress("ExampleClient");
 }
 
 /*
@@ -234,9 +237,9 @@ export async function getExampleClientAddress() {
 
 */
 export async function connectController() {
-    return connectContract<HiveController>('HiveController.sol')
+    return connectContract<HiveController>("HiveController.sol");
 }
 
 export async function getControllerAddress() {
-    return getContractAddress('HiveController.sol')
+    return getContractAddress("HiveController.sol");
 }

@@ -15,14 +15,14 @@ the on-chain job creator `getJobCreatorAddress()`
 
 Running a job involves 2 phases:
 
-* calling `approve` on the ERC-20 contract to allow the solver to spend your tokens
-* trigger the job via the on chain job manager
+- calling `approve` on the ERC-20 contract to allow the solver to spend your tokens
+- trigger the job via the on chain job manager
 
 Now we know the address of the on-chain job controller - we can ask it for 3 things:
 
-* the address of the ERC-20 token contract - `getTokenAddress()`
-* how much the required deposit it - `getRequiredDeposit()`
-* the address of the solver that will handle running the job for us - `getControllerAddress()`
+- the address of the ERC-20 token contract - `getTokenAddress()`
+- how much the required deposit it - `getRequiredDeposit()`
+- the address of the solver that will handle running the job for us - `getControllerAddress()`
 
 Knowing these 3 things means we can call the standard ERC-20 `approve` to allow the solver to spend our tokens on our
 behalf.
@@ -30,11 +30,11 @@ behalf.
 Now - we can call the `runJob` method of the on chain controller from another contract. This will cause the job-creator
 service to kick in and do the following things:
 
-* check that funds have been approved for the solver
-* transfer those funds to it's wallet
-* run the job on CoopHive
-* call the `submitResults` method on the on-chain job creator
-* the on-chain job creator will call the `submitResults` of the original calling contract
+- check that funds have been approved for the solver
+- transfer those funds to it's wallet
+- run the job on CoopHive
+- call the `submitResults` method on the on-chain job creator
+- the on-chain job creator will call the `submitResults` of the original calling contract
 
 The following is an example on-chain smart contract:
 
@@ -114,74 +114,73 @@ contract ExampleClient is Ownable, Initializable, IHiveJobClient {
 Here is an example of a script that brings all of this together:
 
 ```typescript
-import bluebird from 'bluebird'
+import bluebird from "bluebird";
 import {
   connectToken,
   connectJobManager,
   connectExampleClient,
   getWallet,
   getAddress,
-} from '../utils/web3'
-import { ethers } from 'hardhat'
+} from "../utils/web3";
+import { ethers } from "hardhat";
 
 async function main() {
   // it's annoying to not be able to use argv but hardhat complains about it
-  const message = process.env.MESSAGE || 'Hello World!'
+  const message = process.env.MESSAGE || "Hello World!";
 
-  const token = await connectToken()
-  const manager = await connectJobManager()
-  const client = await connectExampleClient()
+  const token = await connectToken();
+  const manager = await connectJobManager();
+  const client = await connectExampleClient();
 
   const setRequiredDepositTx = await manager
-    .connect(getWallet('solver'))
-    .setRequiredDeposit(ethers.parseEther("2"))
-  await setRequiredDepositTx.wait()
+    .connect(getWallet("solver"))
+    .setRequiredDeposit(ethers.parseEther("2"));
+  await setRequiredDepositTx.wait();
 
-  const requiredDeposit = await manager.getRequiredDeposit()
+  const requiredDeposit = await manager.getRequiredDeposit();
 
-  console.log(`requiredDeposit: ${Number(requiredDeposit)}`)
+  console.log(`requiredDeposit: ${Number(requiredDeposit)}`);
 
   const paytokensTx = await token
-    .connect(getWallet('job_creator'))
-    .approve(getAddress('solver'), requiredDeposit)
-  await paytokensTx.wait()
+    .connect(getWallet("job_creator"))
+    .approve(getAddress("solver"), requiredDeposit);
+  await paytokensTx.wait();
 
-  console.log(`tokens approved: ${paytokensTx.hash}`)
+  console.log(`tokens approved: ${paytokensTx.hash}`);
 
   const runjobTx = await client
-    .connect(getWallet('job_creator'))
-    .runCowsay(message)
-  const receipt = await runjobTx.wait()
-  if(!receipt) throw new Error(`no receipt`)
+    .connect(getWallet("job_creator"))
+    .runCowsay(message);
+  const receipt = await runjobTx.wait();
+  if (!receipt) throw new Error(`no receipt`);
 
-  console.log(`submitted job: ${runjobTx.hash}`)
-  
-  let jobID = 0
+  console.log(`submitted job: ${runjobTx.hash}`);
 
-  receipt.logs.forEach(log => {
-    const logs = client.interface.parseLog(log as any)
-    if(!logs) return
-    jobID = Number(logs.args[0])
-  })
+  let jobID = 0;
 
-  console.log(`Job ID: ${jobID}`)
-  console.log(`Waiting for job to be completed...`)
+  receipt.logs.forEach((log) => {
+    const logs = client.interface.parseLog(log as any);
+    if (!logs) return;
+    jobID = Number(logs.args[0]);
+  });
 
-  let result = ''
+  console.log(`Job ID: ${jobID}`);
+  console.log(`Waiting for job to be completed...`);
 
-  while(!result) {
-    result = await client.getJobResult(jobID)
-    if(!result) {
-      await bluebird.delay(1000)
+  let result = "";
+
+  while (!result) {
+    result = await client.getJobResult(jobID);
+    if (!result) {
+      await bluebird.delay(1000);
     }
   }
 
-  console.log(`Job result: ${result}`)
+  console.log(`Job result: ${result}`);
 }
 
 main().catch((error) => {
   console.error(error);
   process.exitCode = 1;
 });
-
 ```

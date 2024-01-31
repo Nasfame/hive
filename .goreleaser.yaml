@@ -15,7 +15,6 @@ before:
     # you may remove this if you don't need go generate
 #    - go generate ./...
 
-
 builds:
   - id: "cli"
     binary: "bin/"
@@ -41,8 +40,7 @@ builds:
       - goos: windows
         goarch: arm64
 
-    dir: '.' #go.mod
-
+    dir: "." #go.mod
 
 archives:
   - format: binary
@@ -67,13 +65,11 @@ changelog:
       - "^docs:"
       - "^test:"
 
-
 release:
   mode: append
   draft: true
   replace_existing_draft: true
   #  make_latest: true
   prerelease: auto #if rc1
-
 
 #https://goreleaser.com/customization/release/#github

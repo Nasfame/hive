@@ -1,62 +1,61 @@
-import {HardhatRuntimeEnvironment} from 'hardhat/types'
-import {DeployFunction} from 'hardhat-deploy/types'
+import {HardhatRuntimeEnvironment} from "hardhat/types";
+import {DeployFunction} from "hardhat-deploy/types";
 
-const deployJobCreator: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
-    const {deployments, getNamedAccounts} = hre
-    const {deploy, execute} = deployments
-    const {
-        admin,
-        solver,
-    } = await getNamedAccounts()
+const deployJobCreator: DeployFunction = async function (
+    hre: HardhatRuntimeEnvironment
+) {
+    const {deployments, getNamedAccounts} = hre;
+    const {deploy, execute} = deployments;
+    const {admin, solver} = await getNamedAccounts();
     await deploy("HiveOnChainJobCreator.sol", {
         from: admin,
         args: [],
         log: true,
-    })
+    });
 
     await deploy("ExampleClient", {
         from: admin,
         args: [],
         log: true,
-    })
+    });
 
-    const tokenContract = await deployments.get('HiveToken.sol')
-    const jobCreator = await deployments.get('HiveOnChainJobCreator.sol')
+    const tokenContract = await deployments.get("HiveToken.sol");
+    const jobCreator = await deployments.get("HiveOnChainJobCreator.sol");
 
     await execute(
-        'HiveOnChainJobCreator.sol',
+        "HiveOnChainJobCreator.sol",
         {
             from: admin,
             log: true,
         },
-        'initialize',
+        "initialize",
         tokenContract.address
-    )
+    );
 
     await execute(
-        'ExampleClient',
+        "ExampleClient",
         {
             from: admin,
             log: true,
         },
-        'initialize',
+        "initialize",
         jobCreator.address
-    )
+    );
 
     // we set the controller of the job creator to be the solver
     // because it will be the one pulling jobs from it
     await execute(
-        'HiveOnChainJobCreator.sol',
+        "HiveOnChainJobCreator.sol",
         {
             from: admin,
             log: true,
         },
-        'setControllerAddress',
+        "setControllerAddress",
         solver
-    )
-    return true
-}
+    );
+    return true;
+};
 
-deployJobCreator.id = 'deployJobCreator'
+deployJobCreator.id = "deployJobCreator";
 
-export default deployJobCreator
+export default deployJobCreator;

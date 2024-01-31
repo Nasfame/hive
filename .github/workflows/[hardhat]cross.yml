@@ -23,7 +23,7 @@ env:
   envfile: ${{secrets.ENV}}
   MODE: test
   NODE_ENV: testing
-  DOTENV_CONFIG_PATH: './hardhat/.env'
+  DOTENV_CONFIG_PATH: "./hardhat/.env"
 
 jobs:
   build:
@@ -50,7 +50,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           cache: "pnpm"
-          cache-dependency-path: './hardhat/pnpm-lock.yaml'
+          cache-dependency-path: "./hardhat/pnpm-lock.yaml"
           node-version: ${{ matrix.node_version }}
           architecture: ${{ matrix.architecture }}
           check-latest: true

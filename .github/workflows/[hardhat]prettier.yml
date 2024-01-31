@@ -36,7 +36,7 @@ defaults:
 
 env:
   ONLY_CHANGED: ${{ inputs.only_changed }}
-  DOTENV_CONFIG_PATH: './hardhat/.env'
+  DOTENV_CONFIG_PATH: "./hardhat/.env"
 
 jobs:
   prettier:
@@ -62,7 +62,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           cache: "pnpm"
-          cache-dependency-path: './hardhat/pnpm-lock.yaml'
+          cache-dependency-path: "./hardhat/pnpm-lock.yaml"
           node-version: 20
           check-latest: false
 

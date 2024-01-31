@@ -1,28 +1,28 @@
-import {HardhatRuntimeEnvironment} from 'hardhat/types'
-import {DeployFunction} from 'hardhat-deploy/types'
+import {HardhatRuntimeEnvironment} from "hardhat/types";
+import {DeployFunction} from "hardhat-deploy/types";
 
-const deployStorage: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
-    const {deployments, getNamedAccounts} = hre
-    const {deploy, execute} = deployments
-    const {
-        admin,
-    } = await getNamedAccounts()
+const deployStorage: DeployFunction = async function (
+    hre: HardhatRuntimeEnvironment
+) {
+    const {deployments, getNamedAccounts} = hre;
+    const {deploy, execute} = deployments;
+    const {admin} = await getNamedAccounts();
     await deploy("HiveStorage.sol", {
         from: admin,
         args: [],
         log: true,
-    })
+    });
     await execute(
-        'HiveStorage.sol',
+        "HiveStorage.sol",
         {
             from: admin,
             log: true,
         },
-        'initialize'
-    )
-    return true
-}
+        "initialize"
+    );
+    return true;
+};
 
-deployStorage.id = 'deployStorage'
+deployStorage.id = "deployStorage";
 
-export default deployStorage
+export default deployStorage;

@@ -162,3 +162,4 @@ Start the on-chain Job Creator:
 
 ```bash
 ./stack run-cowsay-onchain
+```

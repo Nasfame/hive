@@ -1,31 +1,31 @@
-import {ethers} from 'hardhat'
-import bluebird from 'bluebird'
-import {ACCOUNTS,} from '../utils/accounts'
-import {connectToken,} from '../utils/web3'
-import {HiveToken,} from '../typechain-types'
+import {ethers} from "hardhat";
+import bluebird from "bluebird";
+import {ACCOUNTS} from "../utils/accounts";
+import {connectToken} from "../utils/web3";
+import {HiveToken} from "../typechain-types";
 
 async function main() {
-    let token: HiveToken
+    let token: HiveToken;
 
     try {
-        token = await connectToken()
+        token = await connectToken();
     } catch (e) {
     }
 
     await bluebird.mapSeries(ACCOUNTS, async (account) => {
-        const balanceEther = await ethers.provider.getBalance(account.address)
-        let balanceTokens = ethers.getBigInt(0)
+        const balanceEther = await ethers.provider.getBalance(account.address);
+        let balanceTokens = ethers.getBigInt(0);
         if (token) {
             try {
-                balanceTokens = await token.balanceOf(account.address)
+                balanceTokens = await token.balanceOf(account.address);
             } catch (e) {
             }
         }
         console.log(`
 ${account.name} - ${account.address}
   * ETHER: ${ethers.formatEther(balanceEther)}
-  * TOKENS: ${balanceTokens}`)
-    })
+  * TOKENS: ${balanceTokens}`);
+    });
 }
 
 main().catch((error) => {
