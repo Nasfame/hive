@@ -2,12 +2,17 @@ name: Hardhat [Docker]
 
 on:
   push:
-    branches:
-      - main
     tags:
 
-  pull_request:
     branches:
+      - main
+
+    paths:
+      - hardhat/**
+
+  pull_request:
+    paths:
+      - hardhat/**
 
   merge_group:
     types: [ checks_requested ]

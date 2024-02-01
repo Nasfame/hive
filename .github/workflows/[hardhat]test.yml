@@ -2,8 +2,12 @@ name: Hardhat Contracts [Test]
 
 on:
   push:
+    paths:
+      - hardhat/**
 
   pull_request:
+    paths:
+      - hardhat/**
 
   workflow_dispatch:
 
