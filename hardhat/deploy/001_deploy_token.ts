@@ -10,7 +10,7 @@ const deployToken: DeployFunction = async function (
     const {admin} = await getNamedAccounts();
     // log the admin address
     console.log(`admin: ${admin}`);
-    await deploy("HiveToken.sol", {
+    await deploy("HiveToken", {
         from: admin,
         args: ["Hive Token", "LP", DEFAULT_TOKEN_SUPPLY],
         log: true,

@@ -7,13 +7,13 @@ const deployStorage: DeployFunction = async function (
     const {deployments, getNamedAccounts} = hre;
     const {deploy, execute} = deployments;
     const {admin} = await getNamedAccounts();
-    await deploy("HiveStorage.sol", {
+    await deploy("HiveStorage", {
         from: admin,
         args: [],
         log: true,
     });
     await execute(
-        "HiveStorage.sol",
+        "HiveStorage",
         {
             from: admin,
             log: true,

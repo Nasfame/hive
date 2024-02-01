@@ -7,7 +7,7 @@ const deployJobCreator: DeployFunction = async function (
     const {deployments, getNamedAccounts} = hre;
     const {deploy, execute} = deployments;
     const {admin, solver} = await getNamedAccounts();
-    await deploy("HiveOnChainJobCreator.sol", {
+    await deploy("HiveOnChainJobCreator", {
         from: admin,
         args: [],
         log: true,
@@ -19,11 +19,11 @@ const deployJobCreator: DeployFunction = async function (
         log: true,
     });
 
-    const tokenContract = await deployments.get("HiveToken.sol");
-    const jobCreator = await deployments.get("HiveOnChainJobCreator.sol");
+    const tokenContract = await deployments.get("HiveToken");
+    const jobCreator = await deployments.get("HiveOnChainJobCreator");
 
     await execute(
-        "HiveOnChainJobCreator.sol",
+        "HiveOnChainJobCreator",
         {
             from: admin,
             log: true,
@@ -45,7 +45,7 @@ const deployJobCreator: DeployFunction = async function (
     // we set the controller of the job creator to be the solver
     // because it will be the one pulling jobs from it
     await execute(
-        "HiveOnChainJobCreator.sol",
+        "HiveOnChainJobCreator",
         {
             from: admin,
             log: true,

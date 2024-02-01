@@ -49,6 +49,16 @@ const config: HardhatUserConfig = {
             url: `https://sepolia.infura.io/v3/${INFURA_KEY}`,
             accounts: PRIVATE_KEYS,
         },
+        calibration: {
+            chainId: 314159,
+            url: "https://api.calibration.node.glif.io/rpc/v1",
+            accounts: PRIVATE_KEYS,
+        },
+        fvm: {
+            chainId: 314,
+            url: "https://api.node.glif.io",
+            accounts: PRIVATE_KEYS,
+        },
     },
     etherscan: {
         apiKey: process.env.ETHERSCAN_API_KEY,

@@ -7,17 +7,17 @@ const deployPayments: DeployFunction = async function (
     const {deployments, getNamedAccounts} = hre;
     const {deploy, execute} = deployments;
     const {admin} = await getNamedAccounts();
-    await deploy("HivePayments.sol", {
+    await deploy("HivePayments", {
         from: admin,
         args: [],
         log: true,
     });
 
-    const tokenContract = await deployments.get("HiveToken.sol");
-    const paymentsContract = await deployments.get("HivePayments.sol");
+    const tokenContract = await deployments.get("HiveToken");
+    const paymentsContract = await deployments.get("HivePayments");
 
     await execute(
-        "HivePayments.sol",
+        "HivePayments",
         {
             from: admin,
             log: true,
@@ -27,7 +27,7 @@ const deployPayments: DeployFunction = async function (
     );
 
     await execute(
-        "HiveToken.sol",
+        "HiveToken",
         {
             from: admin,
             log: true,

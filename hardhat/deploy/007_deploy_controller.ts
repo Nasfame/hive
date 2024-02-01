@@ -7,21 +7,21 @@ const deployController: DeployFunction = async function (
     const {deployments, getNamedAccounts} = hre;
     const {deploy, execute} = deployments;
     const {admin} = await getNamedAccounts();
-    await deploy("HiveController.sol", {
+    await deploy("HiveController", {
         from: admin,
         args: [],
         log: true,
     });
 
-    const controllerContract = await deployments.get("HiveController.sol");
-    const storageContract = await deployments.get("HiveStorage.sol");
-    const usersContract = await deployments.get("HiveUsers.sol");
-    const mediationContract = await deployments.get("HiveMediationRandom.sol");
-    const paymentsContract = await deployments.get("HivePayments.sol");
-    const jobCreatorContract = await deployments.get("HiveOnChainJobCreator.sol");
+    const controllerContract = await deployments.get("HiveController");
+    const storageContract = await deployments.get("HiveStorage");
+    const usersContract = await deployments.get("HiveUsers");
+    const mediationContract = await deployments.get("HiveMediationRandom");
+    const paymentsContract = await deployments.get("HivePayments");
+    const jobCreatorContract = await deployments.get("HiveOnChainJobCreator");
 
     await execute(
-        "HiveController.sol",
+        "HiveController",
         {
             from: admin,
             log: true,
@@ -35,7 +35,7 @@ const deployController: DeployFunction = async function (
     );
 
     await execute(
-        "HiveStorage.sol",
+        "HiveStorage",
         {
             from: admin,
             log: true,
@@ -45,7 +45,7 @@ const deployController: DeployFunction = async function (
     );
 
     await execute(
-        "HivePayments.sol",
+        "HivePayments",
         {
             from: admin,
             log: true,
@@ -55,7 +55,7 @@ const deployController: DeployFunction = async function (
     );
 
     await execute(
-        "HiveMediationRandom.sol",
+        "HiveMediationRandom",
         {
             from: admin,
             log: true,
