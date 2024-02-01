@@ -99,7 +99,7 @@ contract HivePayments is ControllerOwnable, Initializable {
 
   // the HiveToken.sol we are calling payinEscrow and payoutEscrow on
   function setTokenAddress(address _tokenAddress) public onlyOwner {
-    require(_tokenAddress != address(0), "LilepadPayments: Token address must be defined");
+    require(_tokenAddress != address(0), "HivePayments: Token address must be defined");
     require(canChangeTokenAddress, "HiveToken: canChangeTokenAddress is disabled");
     tokenAddress = _tokenAddress;
     tokenContract = IHiveToken(_tokenAddress);
