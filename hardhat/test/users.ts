@@ -21,7 +21,7 @@ describe("Users", () => {
     const instructionCount = ethers.getBigInt(25);
 
     function setupUsers() {
-        return setupUsersFixture({});
+        return setupUsersFixture();
     }
 
     async function setupTestWithUsers() {
