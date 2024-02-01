@@ -12,7 +12,7 @@ const deployToken: DeployFunction = async function (
     console.log(`admin: ${admin}`);
     await deploy("HiveToken", {
         from: admin,
-        args: ["Hive Token", "LP", DEFAULT_TOKEN_SUPPLY],
+        args: ["Hive Token", "HIVE", DEFAULT_TOKEN_SUPPLY],
         log: true,
     });
     return true;
