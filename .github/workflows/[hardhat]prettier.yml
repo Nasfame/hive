@@ -1,8 +1,13 @@
 name: Hardhat Prettier
 
 on:
+
   pull_request:
     branches:
+
+    paths:
+      - hardhat/**
+
 
   workflow_dispatch:
     inputs:
