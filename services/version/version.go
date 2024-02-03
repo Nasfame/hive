@@ -1,4 +1,4 @@
-package hive
+package version
 
 import (
 	"fmt"

@@ -1,12 +1,13 @@
-package hive
+package resourceprovider
 
 import (
+	"github.com/spf13/cobra"
+
 	"github.com/CoopHive/hive/pkg/executor/bacalhau"
 	optionsfactory "github.com/CoopHive/hive/pkg/options"
 	"github.com/CoopHive/hive/pkg/resourceprovider"
 	"github.com/CoopHive/hive/pkg/system"
 	"github.com/CoopHive/hive/pkg/web3"
-	"github.com/spf13/cobra"
 )
 
 func newResourceProviderCmd() *cobra.Command {

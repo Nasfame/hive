@@ -1,12 +1,45 @@
-package hive
+package root
 
 import (
+	"fmt"
 	"os"
 	"strconv"
 	"strings"
 
 	"github.com/spf13/cobra"
+
+	"github.com/CoopHive/hive/config"
 )
+
+var Fatal = FatalErrorHandler
+
+func newRootCmd(subCommands ...*cobra.Command) *cobra.Command {
+
+	// RunCmd, SolverCmd, ResourceProviderCmd, mediatorCmd, JobCreatorCmd, VersionCmd *cobra.JobCreatorCmd
+
+	version := config.VERSION
+
+	commit := config.COMMIT_SHA
+
+	cmd := &cobra.Command{
+		Use:   getCommandLineExecutable(),
+		Short: "CoopHive",
+		Long:  fmt.Sprintf("CoopHive: %s \nCommit: %s \n", version, commit),
+	}
+	//
+	// cmd.AddCommand(SolverCmd)
+	// cmd.AddCommand(ResourceProviderCmd)
+	// cmd.AddCommand(RunCmd)
+	// cmd.AddCommand(mediatorCmd)
+	// cmd.AddCommand(JobCreatorCmd)
+	// cmd.AddCommand(VersionCmd)
+
+	for _, subCmd := range subCommands {
+		cmd.AddCommand(subCmd)
+	}
+
+	return cmd
+}
 
 /*
 command line processing

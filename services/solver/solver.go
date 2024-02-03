@@ -1,12 +1,13 @@
-package hive
+package solver
 
 import (
+	"github.com/spf13/cobra"
+
 	optionsfactory "github.com/CoopHive/hive/pkg/options"
 	"github.com/CoopHive/hive/pkg/solver"
 	memorystore "github.com/CoopHive/hive/pkg/solver/store/memory"
 	"github.com/CoopHive/hive/pkg/system"
 	"github.com/CoopHive/hive/pkg/web3"
-	"github.com/spf13/cobra"
 )
 
 func newSolverCmd() *cobra.Command {

@@ -1,0 +1,23 @@
+package services
+
+import (
+	"go.uber.org/fx"
+
+	"github.com/CoopHive/hive/services/jobcreator"
+	"github.com/CoopHive/hive/services/mediator"
+	"github.com/CoopHive/hive/services/resourceprovider"
+	"github.com/CoopHive/hive/services/root"
+	"github.com/CoopHive/hive/services/run"
+	"github.com/CoopHive/hive/services/solver"
+	"github.com/CoopHive/hive/services/version"
+)
+
+var Module = fx.Options(
+	version.Module,
+	run.Module,
+	jobcreator.Module,
+	resourceprovider.Module,
+	mediator.Module,
+	solver.Module,
+	root.Module,
+)

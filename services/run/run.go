@@ -1,4 +1,4 @@
-package hive
+package run
 
 import (
 	"fmt"
@@ -9,13 +9,15 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/fatih/color"
+	"github.com/spf13/cobra"
+
+	"github.com/CoopHive/hive/config"
 	"github.com/CoopHive/hive/pkg/data"
 	"github.com/CoopHive/hive/pkg/jobcreator"
 	optionsfactory "github.com/CoopHive/hive/pkg/options"
 	"github.com/CoopHive/hive/pkg/solver"
 	"github.com/CoopHive/hive/pkg/system"
-	"github.com/fatih/color"
-	"github.com/spf13/cobra"
 
 	"github.com/theckman/yacspin"
 )
@@ -51,7 +53,9 @@ func runJob(cmd *cobra.Command, options jobcreator.JobCreatorOptions) error {
 
   Decentralized Compute Network  https://coophive.network
 
+
 `
+	VERSION := config.VERSION
 	if VERSION != "" {
 		header = strings.Replace(header, "v0", VERSION, 1)
 	}

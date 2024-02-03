@@ -1,17 +1,18 @@
-package hive
+package jobcreator
 
 import (
+	"github.com/spf13/cobra"
+
 	"github.com/CoopHive/hive/pkg/jobcreator"
 	optionsfactory "github.com/CoopHive/hive/pkg/options"
 	"github.com/CoopHive/hive/pkg/system"
 	"github.com/CoopHive/hive/pkg/web3"
-	"github.com/spf13/cobra"
 )
 
 func newJobCreatorCmd() *cobra.Command {
 	options := optionsfactory.NewJobCreatorOptions()
 
-	solverCmd := &cobra.Command{
+	cmd := &cobra.Command{
 		Use:     "jobcreator",
 		Short:   "Start the CoopHive job creator service.",
 		Long:    "Start the CoopHive job creator service.",
@@ -25,9 +26,9 @@ func newJobCreatorCmd() *cobra.Command {
 		},
 	}
 
-	optionsfactory.AddJobCreatorCliFlags(solverCmd, &options)
+	optionsfactory.AddJobCreatorCliFlags(cmd, &options)
 
-	return solverCmd
+	return cmd
 }
 
 func runJobCreator(cmd *cobra.Command, options jobcreator.JobCreatorOptions) error {
