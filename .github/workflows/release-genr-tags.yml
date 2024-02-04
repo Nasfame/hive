@@ -26,7 +26,7 @@ jobs:
 
 
       - name: For Main
-        if: contains(github.ref, 'refs/heads/main')
+        if: github.ref == 'refs/heads/main'
         run: |
           git tag latest -f
           git push --tags -f
