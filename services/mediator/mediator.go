@@ -7,7 +7,6 @@ import (
 	"github.com/CoopHive/hive/pkg/executor/bacalhau"
 	"github.com/CoopHive/hive/pkg/system"
 	"github.com/CoopHive/hive/pkg/web3"
-	"github.com/CoopHive/hive/services/internal-mediator/mediator"
 )
 
 func newMediatorCmd() *cobra.Command {
@@ -32,7 +31,7 @@ func newMediatorCmd() *cobra.Command {
 	return mediatorCmd
 }
 
-func runMediator(cmd *cobra.Command, options mediator.MediatorOptions) error {
+func runMediator(cmd *cobra.Command, options MediatorOptions) error {
 	commandCtx := system.NewCommandContext(cmd)
 	defer commandCtx.Cleanup()
 
@@ -46,7 +45,7 @@ func runMediator(cmd *cobra.Command, options mediator.MediatorOptions) error {
 		return err
 	}
 
-	mediatorService, err := mediator.NewMediator(options, web3SDK, executor)
+	mediatorService, err := NewMediator(options, web3SDK, executor)
 	if err != nil {
 		return err
 	}

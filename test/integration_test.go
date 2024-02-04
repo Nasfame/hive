@@ -16,12 +16,11 @@ import (
 	"github.com/CoopHive/hive/pkg/executor/noop"
 	"github.com/CoopHive/hive/pkg/system"
 	"github.com/CoopHive/hive/pkg/web3"
-	"github.com/CoopHive/hive/services/internal-mediator/mediator"
 	"github.com/CoopHive/hive/services/jobcreator"
 	internal_job "github.com/CoopHive/hive/services/jobcreator/internal-job"
-	optionsfactory "github.com/CoopHive/hive/services/mediator"
+	"github.com/CoopHive/hive/services/mediator"
 	"github.com/CoopHive/hive/services/resourceprovider"
-	"github.com/CoopHive/hive/services/resourceprovider/internal-resourceprovider"
+	"github.com/CoopHive/hive/services/resourceprovider/internal"
 	"github.com/CoopHive/hive/services/solver"
 	solver2 "github.com/CoopHive/hive/services/solver/solver"
 	solvermemorystore "github.com/CoopHive/hive/services/solver/solver/store/memory"
@@ -60,7 +59,7 @@ func getResourceProvider(
 	t *testing.T,
 	systemContext *system.CommandContext,
 	options testOptions,
-) (*internal_resourceprovider.ResourceProvider, error) {
+) (*internal.ResourceProvider, error) {
 	resourceProviderOptions := resourceprovider.NewResourceProviderOptions()
 	resourceProviderOptions.Web3.PrivateKey = os.Getenv("RESOURCE_PROVIDER_PRIVATE_KEY")
 	if resourceProviderOptions.Web3.PrivateKey == "" {
@@ -81,7 +80,7 @@ func getResourceProvider(
 		return nil, err
 	}
 
-	return internal_resourceprovider.NewResourceProvider(resourceProviderOptions, web3SDK, executor)
+	return internal.NewResourceProvider(resourceProviderOptions, web3SDK, executor)
 }
 
 func getMediator(
@@ -89,12 +88,12 @@ func getMediator(
 	systemContext *system.CommandContext,
 	options testOptions,
 ) (*mediator.Mediator, error) {
-	mediatorOptions := optionsfactory.NewMediatorOptions()
+	mediatorOptions := mediator.NewMediatorOptions()
 	mediatorOptions.Web3.PrivateKey = os.Getenv("MEDIATOR_PRIVATE_KEY")
 	if mediatorOptions.Web3.PrivateKey == "" {
 		return nil, fmt.Errorf("MEDIATOR_PRIVATE_KEY is not defined")
 	}
-	mediatorOptions, err := optionsfactory.ProcessMediatorOptions(mediatorOptions)
+	mediatorOptions, err := mediator.ProcessMediatorOptions(mediatorOptions)
 	if err != nil {
 		return nil, err
 	}
