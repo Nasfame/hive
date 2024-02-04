@@ -33,17 +33,17 @@ func runVersion(conf *viper.Viper, cmd *cobra.Command) error {
 	commandCtx := system.NewCommandContext(cmd)
 	defer commandCtx.Cleanup()
 
-	VERSION := conf.GetString(enums.VERSION)
-	GO_BINARY_URL := conf.GetString(enums.RELEASE_URL)
+	version := conf.GetString(enums.VERSION)
+	releaseUrl := conf.GetString(enums.RELEASE_URL)
 	COMMIT := conf.GetString(enums.COMMIT_SHA)
 
-	if VERSION == "" {
-		fmt.Printf("version not found: download the latest binary from %s", GO_BINARY_URL)
+	if version == "" {
+		fmt.Printf("Version not found. Download the latest binary from %s\n", releaseUrl)
 		// unnecessary help shows up when returned as error, so shortciruting here
 		return nil
 	}
 
-	fmt.Printf("CoopHive: %s\n", VERSION)
+	fmt.Printf("CoopHive: %s\n", version)
 	fmt.Printf("Commit: %s\n", COMMIT)
 
 	// TODO: suggest auto updating to the latest version if the current version is not the latest version
