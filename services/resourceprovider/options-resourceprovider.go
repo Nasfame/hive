@@ -3,16 +3,15 @@ package resourceprovider
 import (
 	"fmt"
 
+	"github.com/spf13/cobra"
+
 	"github.com/CoopHive/hive/pkg/data"
 	options2 "github.com/CoopHive/hive/pkg/options"
 	"github.com/CoopHive/hive/pkg/system"
-	"github.com/CoopHive/hive/services/resourceprovider/internal"
-
-	"github.com/spf13/cobra"
 )
 
-func NewResourceProviderOptions() internal.ResourceProviderOptions {
-	options := internal.ResourceProviderOptions{
+func NewResourceProviderOptions() ResourceProviderOptions {
+	options := ResourceProviderOptions{
 		Bacalhau: options2.GetDefaultBacalhauOptions(),
 		Offers:   GetDefaultResourceProviderOfferOptions(),
 		Web3:     options2.GetDefaultWeb3Options(),
@@ -21,8 +20,8 @@ func NewResourceProviderOptions() internal.ResourceProviderOptions {
 	return options
 }
 
-func GetDefaultResourceProviderOfferOptions() internal.ResourceProviderOfferOptions {
-	return internal.ResourceProviderOfferOptions{
+func GetDefaultResourceProviderOfferOptions() ResourceProviderOfferOptions {
+	return ResourceProviderOfferOptions{
 		// by default let's offer 1 CPU, 0 GPU and 1GB RAM
 		OfferSpec: data.MachineSpec{
 			CPU: options2.GetDefaultServeOptionInt("OFFER_CPU", 1000), //nolint:gomnd
@@ -47,7 +46,7 @@ func GetDefaultResourceProviderOfferOptions() internal.ResourceProviderOfferOpti
 	}
 }
 
-func AddResourceProviderOfferCliFlags(cmd *cobra.Command, offerOptions *internal.ResourceProviderOfferOptions) {
+func AddResourceProviderOfferCliFlags(cmd *cobra.Command, offerOptions *ResourceProviderOfferOptions) {
 	cmd.PersistentFlags().IntVar(
 		&offerOptions.OfferSpec.CPU, "offer-cpu", offerOptions.OfferSpec.CPU,
 		`How many milli-cpus to offer the network (OFFER_CPU).`,
@@ -74,13 +73,13 @@ func AddResourceProviderOfferCliFlags(cmd *cobra.Command, offerOptions *internal
 	options2.AddServicesCliFlags(cmd, &offerOptions.Services)
 }
 
-func AddResourceProviderCliFlags(cmd *cobra.Command, options *internal.ResourceProviderOptions) {
+func AddResourceProviderCliFlags(cmd *cobra.Command, options *ResourceProviderOptions) {
 	options2.AddBacalhauCliFlags(cmd, &options.Bacalhau)
 	options2.AddWeb3CliFlags(cmd, &options.Web3)
 	AddResourceProviderOfferCliFlags(cmd, &options.Offers)
 }
 
-func CheckResourceProviderOfferOptions(options internal.ResourceProviderOfferOptions) error {
+func CheckResourceProviderOfferOptions(options ResourceProviderOfferOptions) error {
 	// loop over all specs and add up the total number of cpus
 	totalCPU := 0
 	for _, spec := range options.Specs {
@@ -104,7 +103,7 @@ func CheckResourceProviderOfferOptions(options internal.ResourceProviderOfferOpt
 	return nil
 }
 
-func CheckResourceProviderOptions(options internal.ResourceProviderOptions) error {
+func CheckResourceProviderOptions(options ResourceProviderOptions) error {
 	err := options2.CheckWeb3Options(options.Web3)
 	if err != nil {
 		return err
@@ -124,7 +123,7 @@ func CheckResourceProviderOptions(options internal.ResourceProviderOptions) erro
 	return nil
 }
 
-func ProcessResourceProviderOfferOptions(options internal.ResourceProviderOfferOptions) (internal.ResourceProviderOfferOptions, error) {
+func ProcessResourceProviderOfferOptions(options ResourceProviderOfferOptions) (ResourceProviderOfferOptions, error) {
 	// if there are no specs then populate with the single spec
 	if len(options.Specs) == 0 {
 		// loop the number of machines we want to offer
@@ -135,7 +134,7 @@ func ProcessResourceProviderOfferOptions(options internal.ResourceProviderOfferO
 	return options, nil
 }
 
-func ProcessResourceProviderOptions(options internal.ResourceProviderOptions) (internal.ResourceProviderOptions, error) {
+func ProcessResourceProviderOptions(options ResourceProviderOptions) (ResourceProviderOptions, error) {
 	newOfferOptions, err := ProcessResourceProviderOfferOptions(options.Offers)
 	if err != nil {
 		return options, err

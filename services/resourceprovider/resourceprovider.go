@@ -6,7 +6,6 @@ import (
 	"github.com/CoopHive/hive/pkg/executor/bacalhau"
 	"github.com/CoopHive/hive/pkg/system"
 	"github.com/CoopHive/hive/pkg/web3"
-	"github.com/CoopHive/hive/services/resourceprovider/internal"
 )
 
 func newResourceProviderCmd() *cobra.Command {
@@ -31,7 +30,7 @@ func newResourceProviderCmd() *cobra.Command {
 	return resourceProviderCmd
 }
 
-func runResourceProvider(cmd *cobra.Command, options internal.ResourceProviderOptions) error {
+func runResourceProvider(cmd *cobra.Command, options ResourceProviderOptions) error {
 	commandCtx := system.NewCommandContext(cmd)
 	defer commandCtx.Cleanup()
 
@@ -45,7 +44,7 @@ func runResourceProvider(cmd *cobra.Command, options internal.ResourceProviderOp
 		return err
 	}
 
-	resourceProviderService, err := internal.NewResourceProvider(options, web3SDK, executor)
+	resourceProviderService, err := NewResourceProvider(options, web3SDK, executor)
 	if err != nil {
 		return err
 	}

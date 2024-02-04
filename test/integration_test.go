@@ -20,7 +20,6 @@ import (
 	internal_job "github.com/CoopHive/hive/services/jobcreator/internal-job"
 	"github.com/CoopHive/hive/services/mediator"
 	"github.com/CoopHive/hive/services/resourceprovider"
-	"github.com/CoopHive/hive/services/resourceprovider/internal"
 	"github.com/CoopHive/hive/services/solver"
 	solver2 "github.com/CoopHive/hive/services/solver/solver"
 	solvermemorystore "github.com/CoopHive/hive/services/solver/solver/store/memory"
@@ -59,7 +58,7 @@ func getResourceProvider(
 	t *testing.T,
 	systemContext *system.CommandContext,
 	options testOptions,
-) (*internal.ResourceProvider, error) {
+) (*resourceprovider.ResourceProvider, error) {
 	resourceProviderOptions := resourceprovider.NewResourceProviderOptions()
 	resourceProviderOptions.Web3.PrivateKey = os.Getenv("RESOURCE_PROVIDER_PRIVATE_KEY")
 	if resourceProviderOptions.Web3.PrivateKey == "" {
@@ -80,7 +79,7 @@ func getResourceProvider(
 		return nil, err
 	}
 
-	return internal.NewResourceProvider(resourceProviderOptions, web3SDK, executor)
+	return resourceprovider.NewResourceProvider(resourceProviderOptions, web3SDK, executor)
 }
 
 func getMediator(
