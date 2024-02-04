@@ -15,7 +15,7 @@ permissions:
 jobs:
   genr-tags-branch:
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && contains(github.ref, 'refs/heads/release/')
+    #    if: github.event_name == 'push' && contains(github.ref, 'refs/heads/release/')
 
     steps:
       - name: Checkout
@@ -23,6 +23,13 @@ jobs:
         with:
           fetch-depth: 3
           fetch-tags: true
+
+
+      - name: For Main
+        if: contains(github.ref, 'refs/heads/main')
+        run: |
+          git tag latest -f
+          git push --tags -f
 
       - name: For Branches
         run: |
