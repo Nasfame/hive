@@ -15,6 +15,11 @@ before:
     # you may remove this if you don't need go generate
 #    - go generate ./...
 
+git:
+  tag_sort: -version:creatordate
+  prerelease_suffix: "-"
+
+
 builds:
   - id: "cli"
     binary: "bin/"
