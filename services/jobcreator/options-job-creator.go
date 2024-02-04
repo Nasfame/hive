@@ -29,7 +29,7 @@ func GetDefaultJobCreatorMediationOptions() internal_job.JobCreatorMediationOpti
 
 func GetDefaultJobCreatorOfferOptions() internal_job.JobCreatorOfferOptions {
 	return internal_job.JobCreatorOfferOptions{
-		Module: options2.GetDefaultModuleOptions(),
+		Module: GetDefaultModuleOptions(),
 		// this is the default pricing mode for an JC
 		Mode:     options2.GetDefaultPricingMode(data.MarketPrice),
 		Pricing:  options2.GetDefaultPricingOptions(),
@@ -55,7 +55,7 @@ func AddJobCreatorOfferCliFlags(cmd *cobra.Command, offerOptions *internal_job.J
 	options2.AddPricingModeCliFlags(cmd, &offerOptions.Mode)
 	options2.AddPricingCliFlags(cmd, &offerOptions.Pricing)
 	options2.AddTimeoutCliFlags(cmd, &offerOptions.Timeouts)
-	options2.AddModuleCliFlags(cmd, &offerOptions.Module)
+	AddModuleCliFlags(cmd, &offerOptions.Module)
 	options2.AddServicesCliFlags(cmd, &offerOptions.Services)
 }
 
@@ -70,7 +70,7 @@ func CheckJobCreatorOptions(options internal_job.JobCreatorOptions) error {
 	if err != nil {
 		return err
 	}
-	err = options2.CheckModuleOptions(options.Offer.Module)
+	err = CheckModuleOptions(options.Offer.Module)
 	if err != nil {
 		return err
 	}
@@ -96,7 +96,7 @@ func ProcessJobCreatorOptions(options internal_job.JobCreatorOptions, args []str
 		options.Offer.Module.Name = name
 	}
 
-	moduleOptions, err := options2.ProcessModuleOptions(options.Offer.Module)
+	moduleOptions, err := ProcessModuleOptions(options.Offer.Module)
 	if err != nil {
 		return options, err
 	}

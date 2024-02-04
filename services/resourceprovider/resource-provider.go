@@ -1,9 +1,10 @@
-package options
+package resourceprovider
 
 import (
 	"fmt"
 
 	"github.com/CoopHive/hive/pkg/data"
+	options2 "github.com/CoopHive/hive/pkg/options"
 	"github.com/CoopHive/hive/pkg/system"
 	"github.com/CoopHive/hive/services/resourceprovider/internal-resourceprovider"
 
@@ -12,9 +13,9 @@ import (
 
 func NewResourceProviderOptions() internal_resourceprovider.ResourceProviderOptions {
 	options := internal_resourceprovider.ResourceProviderOptions{
-		Bacalhau: GetDefaultBacalhauOptions(),
+		Bacalhau: options2.GetDefaultBacalhauOptions(),
 		Offers:   GetDefaultResourceProviderOfferOptions(),
-		Web3:     GetDefaultWeb3Options(),
+		Web3:     options2.GetDefaultWeb3Options(),
 	}
 	options.Web3.Service = system.ResourceProviderService
 	return options
@@ -24,25 +25,25 @@ func GetDefaultResourceProviderOfferOptions() internal_resourceprovider.Resource
 	return internal_resourceprovider.ResourceProviderOfferOptions{
 		// by default let's offer 1 CPU, 0 GPU and 1GB RAM
 		OfferSpec: data.MachineSpec{
-			CPU: GetDefaultServeOptionInt("OFFER_CPU", 1000), //nolint:gomnd
-			GPU: GetDefaultServeOptionInt("OFFER_GPU", 0),    //nolint:gomnd
-			RAM: GetDefaultServeOptionInt("OFFER_RAM", 1024), //nolint:gomnd
+			CPU: options2.GetDefaultServeOptionInt("OFFER_CPU", 1000), //nolint:gomnd
+			GPU: options2.GetDefaultServeOptionInt("OFFER_GPU", 0),    //nolint:gomnd
+			RAM: options2.GetDefaultServeOptionInt("OFFER_RAM", 1024), //nolint:gomnd
 		},
-		OfferCount: GetDefaultServeOptionInt("OFFER_COUNT", 1), //nolint:gomnd
+		OfferCount: options2.GetDefaultServeOptionInt("OFFER_COUNT", 1), //nolint:gomnd
 		// this can be populated by a config file
 		Specs: []data.MachineSpec{},
 		// if an RP wants to only run certain modules they list them here
 		// XXX SECURITY: enforce that they are specified with specific git hashes!
-		Modules: GetDefaultServeOptionStringArray("OFFER_MODULES", []string{}),
+		Modules: options2.GetDefaultServeOptionStringArray("OFFER_MODULES", []string{}),
 		// this is the default pricing mode for an RP
-		Mode: GetDefaultPricingMode(data.FixedPrice),
+		Mode: options2.GetDefaultPricingMode(data.FixedPrice),
 		// this is the default pricing for a module unless it has a specific price
-		DefaultPricing:  GetDefaultPricingOptions(),
-		DefaultTimeouts: GetDefaultTimeoutOptions(),
+		DefaultPricing:  options2.GetDefaultPricingOptions(),
+		DefaultTimeouts: options2.GetDefaultTimeoutOptions(),
 		// allows an RP to list specific prices for each module
 		ModulePricing:  map[string]data.DealPricing{},
 		ModuleTimeouts: map[string]data.DealTimeouts{},
-		Services:       GetDefaultServicesOptions(),
+		Services:       options2.GetDefaultServicesOptions(),
 	}
 }
 
@@ -67,15 +68,15 @@ func AddResourceProviderOfferCliFlags(cmd *cobra.Command, offerOptions *internal
 		&offerOptions.Modules, "offer-modules", offerOptions.Modules,
 		`The modules you are willing to run (OFFER_MODULES).`,
 	)
-	AddPricingModeCliFlags(cmd, &offerOptions.Mode)
-	AddPricingCliFlags(cmd, &offerOptions.DefaultPricing)
-	AddTimeoutCliFlags(cmd, &offerOptions.DefaultTimeouts)
-	AddServicesCliFlags(cmd, &offerOptions.Services)
+	options2.AddPricingModeCliFlags(cmd, &offerOptions.Mode)
+	options2.AddPricingCliFlags(cmd, &offerOptions.DefaultPricing)
+	options2.AddTimeoutCliFlags(cmd, &offerOptions.DefaultTimeouts)
+	options2.AddServicesCliFlags(cmd, &offerOptions.Services)
 }
 
 func AddResourceProviderCliFlags(cmd *cobra.Command, options *internal_resourceprovider.ResourceProviderOptions) {
-	AddBacalhauCliFlags(cmd, &options.Bacalhau)
-	AddWeb3CliFlags(cmd, &options.Web3)
+	options2.AddBacalhauCliFlags(cmd, &options.Bacalhau)
+	options2.AddWeb3CliFlags(cmd, &options.Web3)
 	AddResourceProviderOfferCliFlags(cmd, &options.Offers)
 }
 
@@ -104,7 +105,7 @@ func CheckResourceProviderOfferOptions(options internal_resourceprovider.Resourc
 }
 
 func CheckResourceProviderOptions(options internal_resourceprovider.ResourceProviderOptions) error {
-	err := CheckWeb3Options(options.Web3)
+	err := options2.CheckWeb3Options(options.Web3)
 	if err != nil {
 		return err
 	}
@@ -112,11 +113,11 @@ func CheckResourceProviderOptions(options internal_resourceprovider.ResourceProv
 	if err != nil {
 		return err
 	}
-	err = CheckServicesOptions(options.Offers.Services)
+	err = options2.CheckServicesOptions(options.Offers.Services)
 	if err != nil {
 		return err
 	}
-	err = CheckBacalhauOptions(options.Bacalhau)
+	err = options2.CheckBacalhauOptions(options.Bacalhau)
 	if err != nil {
 		return err
 	}
@@ -140,7 +141,7 @@ func ProcessResourceProviderOptions(options internal_resourceprovider.ResourcePr
 		return options, err
 	}
 	options.Offers = newOfferOptions
-	newWeb3Options, err := ProcessWeb3Options(options.Web3)
+	newWeb3Options, err := options2.ProcessWeb3Options(options.Web3)
 	if err != nil {
 		return options, err
 	}

@@ -5,14 +5,13 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/CoopHive/hive/pkg/executor/bacalhau"
-	optionsfactory "github.com/CoopHive/hive/pkg/options"
 	"github.com/CoopHive/hive/pkg/system"
 	"github.com/CoopHive/hive/pkg/web3"
 	"github.com/CoopHive/hive/services/internal-mediator/mediator"
 )
 
 func newMediatorCmd() *cobra.Command {
-	options := optionsfactory.NewMediatorOptions()
+	options := NewMediatorOptions()
 
 	mediatorCmd := &cobra.Command{
 		Use:     "mediator",
@@ -20,7 +19,7 @@ func newMediatorCmd() *cobra.Command {
 		Long:    "Start the CoopHive mediator service.",
 		Example: "",
 		RunE: func(cmd *cobra.Command, _ []string) error {
-			options, err := optionsfactory.ProcessMediatorOptions(options)
+			options, err := ProcessMediatorOptions(options)
 			if err != nil {
 				return err
 			}
@@ -28,7 +27,7 @@ func newMediatorCmd() *cobra.Command {
 		},
 	}
 
-	optionsfactory.AddMediatorCliFlags(mediatorCmd, &options)
+	AddMediatorCliFlags(mediatorCmd, &options)
 
 	return mediatorCmd
 }

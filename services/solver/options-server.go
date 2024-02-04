@@ -1,17 +1,19 @@
-package options
+package solver
 
 import (
 	"fmt"
 
-	"github.com/CoopHive/hive/pkg/http"
 	"github.com/spf13/cobra"
+
+	"github.com/CoopHive/hive/pkg/http"
+	"github.com/CoopHive/hive/pkg/options"
 )
 
 func GetDefaultServerOptions() http.ServerOptions {
 	return http.ServerOptions{
-		URL:  GetDefaultServeOptionString("SERVER_URL", ""),
-		Host: GetDefaultServeOptionString("SERVER_HOST", "0.0.0.0"),
-		Port: GetDefaultServeOptionInt("SERVER_PORT", 8080), //nolint:gomnd
+		URL:  options.GetDefaultServeOptionString("SERVER_URL", ""),
+		Host: options.GetDefaultServeOptionString("SERVER_HOST", "0.0.0.0"),
+		Port: options.GetDefaultServeOptionInt("SERVER_PORT", 8080), //nolint:gomnd
 	}
 }
 

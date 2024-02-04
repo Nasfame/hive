@@ -67,6 +67,8 @@ func executeCobraCommand(i inExec) {
 			log.Errorf("Error executing command: %s", err.Error())
 			Fatal(cmd, err.Error(), 1)
 		}
+
+		os.Exit(0)
 	}()
 
 }

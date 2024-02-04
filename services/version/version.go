@@ -7,13 +7,15 @@ import (
 	"github.com/spf13/viper"
 
 	"github.com/CoopHive/hive/enums"
-	optionsfactory "github.com/CoopHive/hive/pkg/options"
+	"github.com/CoopHive/hive/internal/genesis"
 	"github.com/CoopHive/hive/pkg/system"
 )
 
-func newVersionCmd(conf *viper.Viper) *cobra.Command {
-	options := optionsfactory.NewSolverOptions()
+type service struct {
+	*genesis.Service
+}
 
+func newVersionCmd(conf *viper.Viper) *cobra.Command {
 	versionCmd := &cobra.Command{
 		Use:     "version",
 		Short:   "Get the CoopHive version",
@@ -23,8 +25,6 @@ func newVersionCmd(conf *viper.Viper) *cobra.Command {
 			return runVersion(conf, cmd)
 		},
 	}
-
-	optionsfactory.AddSolverCliFlags(versionCmd, &options)
 
 	return versionCmd
 }

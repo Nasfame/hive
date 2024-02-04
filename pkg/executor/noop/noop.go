@@ -5,7 +5,7 @@ import (
 	"path/filepath"
 
 	"github.com/CoopHive/hive/pkg/data"
-	executorlib "github.com/CoopHive/hive/pkg/executor"
+	"github.com/CoopHive/hive/pkg/executor"
 	"github.com/CoopHive/hive/pkg/system"
 )
 
@@ -43,33 +43,33 @@ func NewNoopExecutor(options NoopExecutorOptions) (*NoopExecutor, error) {
 	}, nil
 }
 
-func (executor *NoopExecutor) RunJob(
+func (e *NoopExecutor) RunJob(
 	deal data.DealContainer,
 	module data.Module,
-) (*executorlib.ExecutorResults, error) {
+) (*executor.ExecutorResults, error) {
 	resultsDir, err := system.EnsureDataDir(filepath.Join(RESULTS_DIR, deal.ID))
 	if err != nil {
 		return nil, fmt.Errorf("error creating a local folder of results %s -> %s", deal.ID, err.Error())
 	}
-	err = system.WriteFile(filepath.Join(resultsDir, "stdout"), []byte(executor.Options.Stdout))
+	err = system.WriteFile(filepath.Join(resultsDir, "stdout"), []byte(e.Options.Stdout))
 	if err != nil {
 		return nil, fmt.Errorf("error creating stdout file %s -> %s", deal.ID, err.Error())
 	}
-	err = system.WriteFile(filepath.Join(resultsDir, "stderr"), []byte(executor.Options.Stdout))
+	err = system.WriteFile(filepath.Join(resultsDir, "stderr"), []byte(e.Options.Stdout))
 	if err != nil {
 		return nil, fmt.Errorf("error creating stderr file %s -> %s", deal.ID, err.Error())
 	}
-	err = system.WriteFile(filepath.Join(resultsDir, "exitCode"), []byte(executor.Options.ExitCode))
+	err = system.WriteFile(filepath.Join(resultsDir, "exitCode"), []byte(e.Options.ExitCode))
 	if err != nil {
 		return nil, fmt.Errorf("error creating exitCode file %s -> %s", deal.ID, err.Error())
 	}
-	results := &executorlib.ExecutorResults{
+	results := &executor.ExecutorResults{
 		ResultsDir:       resultsDir,
-		ResultsCID:       executor.Options.ResultsCID,
-		InstructionCount: executor.Options.InstructionCount,
+		ResultsCID:       e.Options.ResultsCID,
+		InstructionCount: e.Options.InstructionCount,
 	}
 	return results, nil
 }
 
 // Compile-time interface check:
-var _ executorlib.Executor = (*NoopExecutor)(nil)
+var _ executor.Executor = (*NoopExecutor)(nil)

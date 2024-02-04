@@ -1,8 +1,9 @@
-package options
+package mediator
 
 import (
 	"fmt"
 
+	options2 "github.com/CoopHive/hive/pkg/options"
 	"github.com/CoopHive/hive/pkg/system"
 	"github.com/CoopHive/hive/services/internal-mediator/mediator"
 
@@ -11,26 +12,26 @@ import (
 
 func NewMediatorOptions() mediator.MediatorOptions {
 	options := mediator.MediatorOptions{
-		Bacalhau: GetDefaultBacalhauOptions(),
-		Web3:     GetDefaultWeb3Options(),
-		Services: GetDefaultServicesOptions(),
+		Bacalhau: options2.GetDefaultBacalhauOptions(),
+		Web3:     options2.GetDefaultWeb3Options(),
+		Services: options2.GetDefaultServicesOptions(),
 	}
 	options.Web3.Service = system.MediatorService
 	return options
 }
 
 func AddMediatorCliFlags(cmd *cobra.Command, options *mediator.MediatorOptions) {
-	AddBacalhauCliFlags(cmd, &options.Bacalhau)
-	AddWeb3CliFlags(cmd, &options.Web3)
-	AddServicesCliFlags(cmd, &options.Services)
+	options2.AddBacalhauCliFlags(cmd, &options.Bacalhau)
+	options2.AddWeb3CliFlags(cmd, &options.Web3)
+	options2.AddServicesCliFlags(cmd, &options.Services)
 }
 
 func CheckMediatorOptions(options mediator.MediatorOptions) error {
-	err := CheckWeb3Options(options.Web3)
+	err := options2.CheckWeb3Options(options.Web3)
 	if err != nil {
 		return err
 	}
-	err = CheckBacalhauOptions(options.Bacalhau)
+	err = options2.CheckBacalhauOptions(options.Bacalhau)
 	if err != nil {
 		return err
 	}
@@ -42,7 +43,7 @@ func CheckMediatorOptions(options mediator.MediatorOptions) error {
 }
 
 func ProcessMediatorOptions(options mediator.MediatorOptions) (mediator.MediatorOptions, error) {
-	newWeb3Options, err := ProcessWeb3Options(options.Web3)
+	newWeb3Options, err := options2.ProcessWeb3Options(options.Web3)
 	if err != nil {
 		return options, err
 	}

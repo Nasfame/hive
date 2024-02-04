@@ -1,6 +1,7 @@
-package options
+package solver
 
 import (
+	options2 "github.com/CoopHive/hive/pkg/options"
 	"github.com/CoopHive/hive/pkg/system"
 	"github.com/CoopHive/hive/services/solver/solver"
 
@@ -10,19 +11,19 @@ import (
 func NewSolverOptions() solver.SolverOptions {
 	options := solver.SolverOptions{
 		Server: GetDefaultServerOptions(),
-		Web3:   GetDefaultWeb3Options(),
+		Web3:   options2.GetDefaultWeb3Options(),
 	}
 	options.Web3.Service = system.SolverService
 	return options
 }
 
 func AddSolverCliFlags(cmd *cobra.Command, options *solver.SolverOptions) {
-	AddWeb3CliFlags(cmd, &options.Web3)
+	options2.AddWeb3CliFlags(cmd, &options.Web3)
 	AddServerCliFlags(cmd, &options.Server)
 }
 
 func CheckSolverOptions(options solver.SolverOptions) error {
-	err := CheckWeb3Options(options.Web3)
+	err := options2.CheckWeb3Options(options.Web3)
 	if err != nil {
 		return err
 	}
@@ -34,7 +35,7 @@ func CheckSolverOptions(options solver.SolverOptions) error {
 }
 
 func ProcessSolverOptions(options solver.SolverOptions) (solver.SolverOptions, error) {
-	newWeb3Options, err := ProcessWeb3Options(options.Web3)
+	newWeb3Options, err := options2.ProcessWeb3Options(options.Web3)
 	if err != nil {
 		return options, err
 	}

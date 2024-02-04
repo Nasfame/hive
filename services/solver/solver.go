@@ -4,7 +4,6 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/CoopHive/hive/internal/genesis"
-	optionsfactory "github.com/CoopHive/hive/pkg/options"
 	"github.com/CoopHive/hive/pkg/system"
 	"github.com/CoopHive/hive/pkg/web3"
 	"github.com/CoopHive/hive/services/solver/solver"
@@ -16,7 +15,7 @@ type service struct {
 }
 
 func newSolverCmd(s0 *genesis.Service) *cobra.Command {
-	options := optionsfactory.NewSolverOptions()
+	options := NewSolverOptions()
 
 	s := &service{s0}
 
@@ -26,7 +25,7 @@ func newSolverCmd(s0 *genesis.Service) *cobra.Command {
 		Long:    "Start the CoopHive solver service.",
 		Example: "",
 		RunE: func(cmd *cobra.Command, _ []string) error {
-			options, err := optionsfactory.ProcessSolverOptions(options)
+			options, err := ProcessSolverOptions(options)
 			if err != nil {
 				return err
 			}
@@ -34,7 +33,7 @@ func newSolverCmd(s0 *genesis.Service) *cobra.Command {
 		},
 	}
 
-	optionsfactory.AddSolverCliFlags(solverCmd, &options)
+	AddSolverCliFlags(solverCmd, &options)
 
 	return solverCmd
 }

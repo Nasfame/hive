@@ -14,13 +14,15 @@ import (
 	"github.com/CoopHive/hive/config"
 	"github.com/CoopHive/hive/pkg/data"
 	"github.com/CoopHive/hive/pkg/executor/noop"
-	optionsfactory "github.com/CoopHive/hive/pkg/options"
 	"github.com/CoopHive/hive/pkg/system"
 	"github.com/CoopHive/hive/pkg/web3"
 	"github.com/CoopHive/hive/services/internal-mediator/mediator"
 	"github.com/CoopHive/hive/services/jobcreator"
 	internal_job "github.com/CoopHive/hive/services/jobcreator/internal-job"
+	optionsfactory "github.com/CoopHive/hive/services/mediator"
+	"github.com/CoopHive/hive/services/resourceprovider"
 	"github.com/CoopHive/hive/services/resourceprovider/internal-resourceprovider"
+	"github.com/CoopHive/hive/services/solver"
 	solver2 "github.com/CoopHive/hive/services/solver/solver"
 	solvermemorystore "github.com/CoopHive/hive/services/solver/solver/store/memory"
 )
@@ -31,7 +33,7 @@ type testOptions struct {
 }
 
 func getSolver(t *testing.T, options testOptions) (*solver2.Solver, error) {
-	solverOptions := optionsfactory.NewSolverOptions()
+	solverOptions := solver.NewSolverOptions()
 	solverOptions.Web3.PrivateKey = os.Getenv("SOLVER_PRIVATE_KEY")
 	solverOptions.Server.Port = 8080
 	solverOptions.Server.URL = "http://localhost:8080"
@@ -59,12 +61,12 @@ func getResourceProvider(
 	systemContext *system.CommandContext,
 	options testOptions,
 ) (*internal_resourceprovider.ResourceProvider, error) {
-	resourceProviderOptions := optionsfactory.NewResourceProviderOptions()
+	resourceProviderOptions := resourceprovider.NewResourceProviderOptions()
 	resourceProviderOptions.Web3.PrivateKey = os.Getenv("RESOURCE_PROVIDER_PRIVATE_KEY")
 	if resourceProviderOptions.Web3.PrivateKey == "" {
 		return nil, fmt.Errorf("RESOURCE_PROVIDER_PRIVATE_KEY is not defined")
 	}
-	resourceProviderOptions, err := optionsfactory.ProcessResourceProviderOptions(resourceProviderOptions)
+	resourceProviderOptions, err := resourceprovider.ProcessResourceProviderOptions(resourceProviderOptions)
 	if err != nil {
 		return nil, err
 	}

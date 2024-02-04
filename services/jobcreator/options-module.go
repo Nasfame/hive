@@ -1,21 +1,23 @@
-package options
+package jobcreator
 
 import (
+	"github.com/spf13/cobra"
+
 	"github.com/CoopHive/hive/pkg/data"
 	"github.com/CoopHive/hive/pkg/module"
-	"github.com/spf13/cobra"
+	"github.com/CoopHive/hive/pkg/options"
 )
 
 func GetDefaultModuleOptions() data.ModuleConfig {
 	return data.ModuleConfig{
 		// the shortcut name
-		Name: GetDefaultServeOptionString("MODULE_NAME", ""),
+		Name: options.GetDefaultServeOptionString("MODULE_NAME", ""),
 		// the repo we can clone from
-		Repo: GetDefaultServeOptionString("MODULE_REPO", ""),
+		Repo: options.GetDefaultServeOptionString("MODULE_REPO", ""),
 		// the hash to checkout the repo
-		Hash: GetDefaultServeOptionString("MODULE_HASH", ""),
+		Hash: options.GetDefaultServeOptionString("MODULE_HASH", ""),
 		// the path to the go template file
-		Path: GetDefaultServeOptionString("MODULE_PATH", ""),
+		Path: options.GetDefaultServeOptionString("MODULE_PATH", ""),
 	}
 }
 

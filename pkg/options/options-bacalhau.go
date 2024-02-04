@@ -3,8 +3,9 @@ package options
 import (
 	"fmt"
 
-	"github.com/CoopHive/hive/pkg/executor/bacalhau"
 	"github.com/spf13/cobra"
+
+	"github.com/CoopHive/hive/pkg/executor/bacalhau"
 )
 
 func GetDefaultBacalhauOptions() bacalhau.BacalhauExecutorOptions {

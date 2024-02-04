@@ -1,8 +1,9 @@
 package options
 
 import (
-	"github.com/CoopHive/hive/pkg/data"
 	"github.com/spf13/cobra"
+
+	"github.com/CoopHive/hive/pkg/data"
 )
 
 func GetDefaultPricingMode(mode data.PricingMode) data.PricingMode {

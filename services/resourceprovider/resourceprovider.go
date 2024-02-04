@@ -4,14 +4,13 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/CoopHive/hive/pkg/executor/bacalhau"
-	optionsfactory "github.com/CoopHive/hive/pkg/options"
 	"github.com/CoopHive/hive/pkg/system"
 	"github.com/CoopHive/hive/pkg/web3"
 	"github.com/CoopHive/hive/services/resourceprovider/internal-resourceprovider"
 )
 
 func newResourceProviderCmd() *cobra.Command {
-	options := optionsfactory.NewResourceProviderOptions()
+	options := NewResourceProviderOptions()
 
 	resourceProviderCmd := &cobra.Command{
 		Use:     "resource-provider",
@@ -19,7 +18,7 @@ func newResourceProviderCmd() *cobra.Command {
 		Long:    "Start the CoopHive resource-provider service.",
 		Example: "",
 		RunE: func(cmd *cobra.Command, _ []string) error {
-			options, err := optionsfactory.ProcessResourceProviderOptions(options)
+			options, err := ProcessResourceProviderOptions(options)
 			if err != nil {
 				return err
 			}
@@ -27,7 +26,7 @@ func newResourceProviderCmd() *cobra.Command {
 		},
 	}
 
-	optionsfactory.AddResourceProviderCliFlags(resourceProviderCmd, &options)
+	AddResourceProviderCliFlags(resourceProviderCmd, &options)
 
 	return resourceProviderCmd
 }
