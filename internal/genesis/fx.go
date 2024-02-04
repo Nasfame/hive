@@ -26,7 +26,7 @@ type out struct {
 
 func New(i in) (o out) {
 
-	logger := logrus.Logger{
+	logger := &logrus.Logger{
 		Out:       os.Stderr,
 		Formatter: new(logrus.TextFormatter),
 		Hooks:     make(logrus.LevelHooks),
