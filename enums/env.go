@@ -37,3 +37,7 @@ const (
 	APP_DATA_DIR = "APP_DATA_DIR"
 	MODULE_PATH  = "MODULE_PATH"
 )
+
+const (
+	JOBCREATOR_OPTION_INPUT = "i"
+)

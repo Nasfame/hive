@@ -6,9 +6,13 @@ import (
 
 var jobCreatorConfig = configMap[string]{
 	enums.APP_DATA_DIR: {
-		"app data directory : for storing github repos and downloaded results",
+		"App Data Location: typically used for storing github repos and results",
 		"/tmp/coophive/data",
 	},
+	// enums.JOBCREATOR_OPTION_INPUT: {
+	// 	"i : ",
+	// 	"",
+	// },
 }
 
-var APP_DATA_DIR string // use inject Conf , temporarily using this global variable
+var AppDataDir string // use inject Conf , temporarily using this global variable

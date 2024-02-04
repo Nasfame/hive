@@ -11,7 +11,7 @@ import (
 )
 
 func dataDirPath(path string) string {
-	basePath := config.APP_DATA_DIR
+	basePath := config.AppDataDir
 	return filepath.Join(basePath, path)
 }
 

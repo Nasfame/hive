@@ -1,8 +1,6 @@
 package config
 
 import (
-	"fmt"
-
 	"github.com/spf13/viper"
 
 	"github.com/CoopHive/hive/enums"
@@ -10,6 +8,7 @@ import (
 
 var version string
 var commit_sha string
+
 var buildConfig = configMap[string]{
 	// app specific
 	enums.APP_NAME: {
@@ -78,8 +77,6 @@ func init() {
 	stdModuleFormat := buildConfig[enums.STD_MODULE_FORMAT]
 	stdModuleFormat.defaultVal = CoophiveStdModule
 
-	fmt.Println(buildConfig[enums.STD_MODULE_FORMAT])
-
 }
 
 func tempInitForFx(conf *viper.Viper) {
@@ -96,8 +93,10 @@ func tempInitForFx(conf *viper.Viper) {
 	Conf = conf
 
 	MODULE_PATH = conf.GetString(enums.MODULE_PATH)
-	APP_DATA_DIR = conf.GetString(enums.APP_DATA_DIR)
+	AppDataDir = conf.GetString(enums.APP_DATA_DIR)
 
 	STD_MODULE_FORMAT = conf.GetString(enums.STD_MODULE_FORMAT)
+
+	// log.Println("app dat dir", AppDataDir)
 
 }

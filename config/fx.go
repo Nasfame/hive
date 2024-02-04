@@ -2,9 +2,13 @@ package config
 
 import (
 	"log"
+	"os"
 
+	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 	"go.uber.org/fx"
+
+	"github.com/CoopHive/hive/enums"
 )
 
 var Module = fx.Options(
@@ -16,6 +20,12 @@ var Module = fx.Options(
 )
 
 func newConfig() (config *viper.Viper) {
+
+	pf := pflag.NewFlagSet("conf", pflag.ContinueOnError)
+	pf.Parse(os.Args[1:])
+
+	// fmt.Println(os.Args)
+
 	config = viper.New()
 
 	checkDup := func(key string, block string) {
@@ -25,22 +35,29 @@ func newConfig() (config *viper.Viper) {
 
 	}
 
-	for key, val := range buildConfig {
+	for key, meta := range buildConfig {
 		checkDup(key, "build")
-		config.Set(key, val.defaultVal)
+		config.Set(key, meta.defaultVal)
 
 	}
 
-	for key, _ := range jobCreatorConfig {
+	for key, meta := range jobCreatorConfig {
 		checkDup(key, "jobCreator")
+
+		config.SetDefault(key, meta.defaultVal)
 
 		// automatic conversion of environment var key to `UPPER_CASE` will happen.
 		config.BindEnv(key)
+
+		if key == enums.APP_DATA_DIR {
+			// read command-line arguments
+			pf.String(key, meta.defaultVal, meta.desc)
+			pflag.String(key, meta.defaultVal, meta.desc) // to show in usage
+		}
 	}
 
-	// viper.AutomaticEnv() //replaces the default values//not required really
-	// pflag.Parse() //TODO: try to take
-	// config.BindPFlags(pflag.CommandLine)
+	config.BindPFlags(pf)
+
 	return
 }
 
