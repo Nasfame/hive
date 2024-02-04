@@ -4,18 +4,14 @@ import (
 	"fmt"
 
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 
+	"github.com/CoopHive/hive/enums"
 	optionsfactory "github.com/CoopHive/hive/pkg/options"
 	"github.com/CoopHive/hive/pkg/system"
 )
 
-var VERSION string
-
-var COMMIT_SHA string
-
-const GO_BINARY_URL = "https://github.com/CoopHive/hive/releases/"
-
-func newVersionCmd() *cobra.Command {
+func newVersionCmd(conf *viper.Viper) *cobra.Command {
 	options := optionsfactory.NewSolverOptions()
 
 	versionCmd := &cobra.Command{
@@ -24,7 +20,7 @@ func newVersionCmd() *cobra.Command {
 		Long:    "Get the CoopHive version",
 		Example: "CoopHive version",
 		RunE: func(cmd *cobra.Command, _ []string) error {
-			return runVersion(cmd)
+			return runVersion(conf, cmd)
 		},
 	}
 
@@ -33,9 +29,13 @@ func newVersionCmd() *cobra.Command {
 	return versionCmd
 }
 
-func runVersion(cmd *cobra.Command) error {
+func runVersion(conf *viper.Viper, cmd *cobra.Command) error {
 	commandCtx := system.NewCommandContext(cmd)
 	defer commandCtx.Cleanup()
+
+	VERSION := conf.GetString(enums.VERSION)
+	GO_BINARY_URL := conf.GetString(enums.RELEASE_URL)
+	COMMIT := conf.GetString(enums.COMMIT_SHA)
 
 	if VERSION == "" {
 		fmt.Printf("version not found: download the latest binary from %s", GO_BINARY_URL)
@@ -44,7 +44,7 @@ func runVersion(cmd *cobra.Command) error {
 	}
 
 	fmt.Printf("CoopHive: %s\n", VERSION)
-	fmt.Printf("Commit: %s\n", COMMIT_SHA)
+	fmt.Printf("Commit: %s\n", COMMIT)
 
 	// TODO: suggest auto updating to the latest version if the current version is not the latest version
 

@@ -17,8 +17,8 @@ func Hive() {
 		internal.Module,
 		services.Module,
 
-		fx.StartTimeout(0),
-		fx.StopTimeout(1),
+		// fx.StartTimeout(0),
+		// fx.StopTimeout(1),
 	)
 	app.Run()
 	<-app.Done()

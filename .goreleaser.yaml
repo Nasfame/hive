@@ -24,8 +24,8 @@ builds:
       - -v
 
     ldflags:
-      - -X "github.com/CoopHive/hive/cmd/hive.VERSION={{.Version}}"
-      - -X "github.com/CoopHive/hive/cmd/hive.COMMIT_SHA={{.Commit}}"
+      - -X " github.com/CoopHive/hive/config.version={{.Version}}"
+      - -X "github.com/CoopHive/hive/config.commitSha={{.Commit}}"
     env:
       - CGO_ENABLED=0
     goos:

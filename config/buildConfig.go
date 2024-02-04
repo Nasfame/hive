@@ -7,7 +7,14 @@ import (
 )
 
 var version string
-var commit_sha string
+var commitSha string
+
+// //go:embed version.txt
+// var version string TODO: another way to embed
+
+// // go:embed buildDate.txt
+// var buildDate string
+// TODO:
 
 var buildConfig = configMap[string]{
 	// app specific
@@ -19,18 +26,13 @@ var buildConfig = configMap[string]{
 		"environment",
 		enums.DEV,
 	},
-	enums.DEBUG: {
-		desc:       "debug mode",
-		defaultVal: "false",
-	},
-
 	enums.VERSION: {
 		desc:       "version",
 		defaultVal: version,
 	},
 	enums.COMMIT_SHA: {
 		desc:       "commit sha",
-		defaultVal: commit_sha,
+		defaultVal: commitSha,
 	},
 
 	enums.RELEASE_URL: {
@@ -81,22 +83,15 @@ func init() {
 
 func tempInitForFx(conf *viper.Viper) {
 
-	// StdRepoUri := buildConfig[enums.STD_REPO_URI].defaultVal
-	// StdModulePrefix := buildConfig[enums.STD_MODULE_PREFIX].defaultVal
-	// CoophiveStdModule := StdRepoUri + StdModulePrefix + "-%s"
-	//
-	// stdModuleFormat := buildConfig[enums.STD_MODULE_FORMAT]
-	// stdModuleFormat.defaultVal = CoophiveStdModule
-
-	// conf.Set(enums.STD_MODULE_FORMAT, stdModuleFormat.defaultVal)
-
 	Conf = conf
+
+	// log.Println("version", conf.GetString(enums.VERSION))
 
 	MODULE_PATH = conf.GetString(enums.MODULE_PATH)
 	AppDataDir = conf.GetString(enums.APP_DATA_DIR)
 
 	STD_MODULE_FORMAT = conf.GetString(enums.STD_MODULE_FORMAT)
 
-	// log.Println("app dat dir", AppDataDir)
+	// log.Println("app data dir", AppDataDir)
 
 }

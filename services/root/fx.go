@@ -4,6 +4,7 @@ import (
 	"context"
 	"os"
 
+	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"go.uber.org/fx"
@@ -15,7 +16,7 @@ var Module = fx.Options(
 	fx.Provide(
 		newServices,
 	),
-	fx.Invoke(executeRunCmd),
+	fx.Invoke(executeCobraCommand),
 )
 
 type in struct {
@@ -54,13 +55,18 @@ type inExec struct {
 	RootCmd *cobra.Command `name:"root"`
 }
 
-func executeRunCmd(i inExec) {
+func executeCobraCommand(i inExec) {
 	cmd := i.RootCmd
 
 	cmd.SetContext(context.Background())
-	cmd.SetOutput(os.Stdout)
-	if err := cmd.Execute(); err != nil {
-		Fatal(cmd, err.Error(), 1)
-	}
+	cmd.SetOut(os.Stdout)
+	cmd.SetErr(os.Stderr)
+
+	go func() {
+		if err := cmd.Execute(); err != nil {
+			log.Errorf("Error executing command: %s", err.Error())
+			Fatal(cmd, err.Error(), 1)
+		}
+	}()
 
 }

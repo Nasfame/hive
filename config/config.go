@@ -1,5 +1,9 @@
 package config
 
+import (
+	"github.com/joho/godotenv"
+)
+
 type configMap[T ~string] map[T]*argvMeta
 
 type argvMeta struct {
@@ -7,5 +11,13 @@ type argvMeta struct {
 	defaultVal string
 }
 
-// //go:embed version.txt
-// var version string TODO: another way to embed
+func init() {
+	// fmt.Printf("CoopHive: %s\n", hive.VERSION)
+
+	err := godotenv.Load()
+	if err != nil {
+		// log.Debug().Str("err", err.Error()).Msgf(".env not found")
+		// TODO: Doesn't look good, add custom flag
+	}
+
+}

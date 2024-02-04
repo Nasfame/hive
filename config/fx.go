@@ -7,6 +7,7 @@ import (
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 	"go.uber.org/fx"
+	"go.uber.org/fx/fxevent"
 
 	"github.com/CoopHive/hive/enums"
 )
@@ -16,17 +17,26 @@ var Module = fx.Options(
 		newConfig,
 	),
 	fx.Invoke(tempInitForFx),
-	fx.Provide(debuggerOptions),
-)
+	fx.WithLogger(func(conf *viper.Viper) (l fxevent.Logger) {
+		if conf.GetBool(enums.DEBUG) {
+			return &fxevent.ConsoleLogger{W: os.Stderr}
+		}
+		return fxevent.NopLogger
+	}))
 
-func newConfig() (config *viper.Viper) {
+type out struct {
+	fx.Out
 
+	Conf *viper.Viper
+}
+
+func newConfig() (o out) {
 	pf := pflag.NewFlagSet("conf", pflag.ContinueOnError)
 	pf.Parse(os.Args[1:])
 
 	// fmt.Println(os.Args)
 
-	config = viper.New()
+	config := viper.New()
 
 	checkDup := func(key string, block string) {
 		if config.IsSet(key) {
@@ -38,7 +48,15 @@ func newConfig() (config *viper.Viper) {
 	for key, meta := range buildConfig {
 		checkDup(key, "build")
 		config.Set(key, meta.defaultVal)
+	}
 
+	for key, meta := range appConfig {
+		checkDup(key, "app")
+
+		config.SetDefault(key, meta.defaultVal)
+
+		// automatic conversion of environment var key to `UPPER_CASE` will happen.
+		config.BindEnv(key)
 	}
 
 	for key, meta := range jobCreatorConfig {
@@ -58,13 +76,15 @@ func newConfig() (config *viper.Viper) {
 
 	config.BindPFlags(pf)
 
+	o.Conf = config
+
 	return
 }
 
 func debuggerOptions(conf *viper.Viper) fx.Option {
 
-	if conf.GetBool("DEBUG") {
-		log.Println("DEBUG MODE")
+	if conf.GetBool(enums.DEBUG) {
+		log.Fatal("DEBUG MODE")
 		return fx.Options()
 	}
 
