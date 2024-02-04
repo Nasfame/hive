@@ -21,6 +21,8 @@ prerelease:
 release:
 	goreleaser release --clean
 
+install-hive:
+	goreleaser build --single-target --clean -o ./bin --snapshot
 
 make-bin:
 	go build -v -ldflags="\
