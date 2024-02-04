@@ -56,7 +56,7 @@ jobs:
         run: |
           args=()
           
-          if [[ "${{ steps.version.outputs.is_valid }}" == "false" ]]; then
+          if [[ "${{ steps.version.outputs.is_valid }}" == "false" && "${{steps.vars.outputs.tag}}"!="latest" ]]; then
             args+='--snapshot'
           fi
           
