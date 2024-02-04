@@ -7,19 +7,20 @@ import (
 	"strings"
 
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 
-	"github.com/CoopHive/hive/config"
+	"github.com/CoopHive/hive/enums"
 )
 
 var Fatal = FatalErrorHandler
 
-func newRootCmd(subCommands ...*cobra.Command) *cobra.Command {
+func newRootCmd(conf *viper.Viper, subCommands ...*cobra.Command) *cobra.Command {
 
 	// RunCmd, SolverCmd, ResourceProviderCmd, mediatorCmd, JobCreatorCmd, VersionCmd *cobra.JobCreatorCmd
 
-	version := config.VERSION
+	version := conf.GetString(enums.VERSION)
 
-	commit := config.COMMIT_SHA
+	commit := conf.GetString(enums.COMMIT_SHA)
 
 	cmd := &cobra.Command{
 		Use:   getCommandLineExecutable(),

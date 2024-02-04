@@ -2,13 +2,16 @@ package store
 
 import (
 	"fmt"
-	"github.com/CoopHive/hive/config"
 	"os"
 	"sync"
 
+	"github.com/spf13/viper"
+
+	"github.com/CoopHive/hive/enums"
+	"github.com/CoopHive/hive/services/solver/solver/store"
+
 	"github.com/CoopHive/hive/pkg/data"
 	"github.com/CoopHive/hive/pkg/jsonl"
-	"github.com/CoopHive/hive/pkg/solver/store"
 )
 
 type SolverStoreMemory struct {
@@ -25,12 +28,12 @@ func getMatchID(resourceOffer string, jobOffer string) string {
 	return fmt.Sprintf("%s-%s", resourceOffer, jobOffer)
 }
 
-func NewSolverStoreMemory() (*SolverStoreMemory, error) {
+func NewSolverStoreMemory(conf *viper.Viper) (*SolverStoreMemory, error) {
 	logWriters := make(map[string]jsonl.Writer)
 
 	kinds := []string{"job_offers", "resource_offers", "deals", "decisions", "results"}
 	for k := range kinds {
-		logfile, err := os.OpenFile(fmt.Sprintf(config.LogFileFormat, kinds[k]), os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0644)
+		logfile, err := os.OpenFile(fmt.Sprintf(conf.GetString(enums.APP_LOG_FILE_FORMAT), kinds[k]), os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0644)
 		if err != nil {
 			return nil, err
 		}

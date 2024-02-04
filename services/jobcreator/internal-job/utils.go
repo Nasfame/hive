@@ -1,4 +1,4 @@
-package jobcreator
+package internal_job
 
 import (
 	"fmt"

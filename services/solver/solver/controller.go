@@ -5,13 +5,14 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/rs/zerolog/log"
+
 	"github.com/CoopHive/hive/pkg/data"
-	"github.com/CoopHive/hive/pkg/solver/store"
 	"github.com/CoopHive/hive/pkg/system"
 	"github.com/CoopHive/hive/pkg/web3"
 	"github.com/CoopHive/hive/pkg/web3/bindings/mediation"
 	"github.com/CoopHive/hive/pkg/web3/bindings/storage"
-	"github.com/rs/zerolog/log"
+	"github.com/CoopHive/hive/services/solver/solver/store"
 )
 
 // add an enum for various types of event

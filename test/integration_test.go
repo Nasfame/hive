@@ -11,16 +11,18 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/stretchr/testify/assert"
 
+	"github.com/CoopHive/hive/config"
 	"github.com/CoopHive/hive/pkg/data"
 	"github.com/CoopHive/hive/pkg/executor/noop"
-	"github.com/CoopHive/hive/pkg/jobcreator"
-	"github.com/CoopHive/hive/pkg/mediator"
 	optionsfactory "github.com/CoopHive/hive/pkg/options"
-	"github.com/CoopHive/hive/pkg/resourceprovider"
-	"github.com/CoopHive/hive/pkg/solver"
-	solvermemorystore "github.com/CoopHive/hive/pkg/solver/store/memory"
 	"github.com/CoopHive/hive/pkg/system"
 	"github.com/CoopHive/hive/pkg/web3"
+	"github.com/CoopHive/hive/services/internal-mediator/mediator"
+	"github.com/CoopHive/hive/services/jobcreator"
+	internal_job "github.com/CoopHive/hive/services/jobcreator/internal-job"
+	"github.com/CoopHive/hive/services/resourceprovider/internal-resourceprovider"
+	solver2 "github.com/CoopHive/hive/services/solver/solver"
+	solvermemorystore "github.com/CoopHive/hive/services/solver/solver/store/memory"
 )
 
 type testOptions struct {
@@ -28,7 +30,7 @@ type testOptions struct {
 	executor         noop.NoopExecutorOptions
 }
 
-func getSolver(t *testing.T, options testOptions) (*solver.Solver, error) {
+func getSolver(t *testing.T, options testOptions) (*solver2.Solver, error) {
 	solverOptions := optionsfactory.NewSolverOptions()
 	solverOptions.Web3.PrivateKey = os.Getenv("SOLVER_PRIVATE_KEY")
 	solverOptions.Server.Port = 8080
@@ -44,19 +46,19 @@ func getSolver(t *testing.T, options testOptions) (*solver.Solver, error) {
 		return nil, err
 	}
 
-	solverStore, err := solvermemorystore.NewSolverStoreMemory()
+	solverStore, err := solvermemorystore.NewSolverStoreMemory(config.Conf) // fx probably won't work fx injections TODO: to test FIXME
 	if err != nil {
 		return nil, err
 	}
 
-	return solver.NewSolver(solverOptions, solverStore, web3SDK)
+	return solver2.NewSolver(solverOptions, solverStore, web3SDK)
 }
 
 func getResourceProvider(
 	t *testing.T,
 	systemContext *system.CommandContext,
 	options testOptions,
-) (*resourceprovider.ResourceProvider, error) {
+) (*internal_resourceprovider.ResourceProvider, error) {
 	resourceProviderOptions := optionsfactory.NewResourceProviderOptions()
 	resourceProviderOptions.Web3.PrivateKey = os.Getenv("RESOURCE_PROVIDER_PRIVATE_KEY")
 	if resourceProviderOptions.Web3.PrivateKey == "" {
@@ -77,7 +79,7 @@ func getResourceProvider(
 		return nil, err
 	}
 
-	return resourceprovider.NewResourceProvider(resourceProviderOptions, web3SDK, executor)
+	return internal_resourceprovider.NewResourceProvider(resourceProviderOptions, web3SDK, executor)
 }
 
 func getMediator(
@@ -110,13 +112,13 @@ func getMediator(
 	return mediator.NewMediator(mediatorOptions, web3SDK, executor)
 }
 
-func getJobCreatorOptions(options testOptions) (jobcreator.JobCreatorOptions, error) {
-	jobCreatorOptions := optionsfactory.NewJobCreatorOptions()
+func getJobCreatorOptions(options testOptions) (internal_job.JobCreatorOptions, error) {
+	jobCreatorOptions := jobcreator.NewJobCreatorOptions()
 	jobCreatorOptions.Web3.PrivateKey = os.Getenv("JOB_CREATOR_PRIVATE_KEY")
 	if jobCreatorOptions.Web3.PrivateKey == "" {
 		return jobCreatorOptions, fmt.Errorf("JOB_CREATOR_PRIVATE_KEY is not defined")
 	}
-	ret, err := optionsfactory.ProcessJobCreatorOptions(jobCreatorOptions, []string{
+	ret, err := jobcreator.ProcessJobCreatorOptions(jobCreatorOptions, []string{
 		// this should point to the shortcut
 		"cowsay:v0.0.2",
 	})
@@ -133,7 +135,7 @@ func testStackWithOptions(
 	t *testing.T,
 	commandCtx *system.CommandContext,
 	options testOptions,
-) (*jobcreator.RunJobResults, error) {
+) (*internal_job.RunJobResults, error) {
 
 	solver, err := getSolver(t, options)
 	if err != nil {
@@ -165,7 +167,7 @@ func testStackWithOptions(
 		return nil, err
 	}
 
-	result, err := jobcreator.RunJob(commandCtx, jobCreatorOptions, func(evOffer data.JobOfferContainer) {
+	result, err := internal_job.RunJob(commandCtx, jobCreatorOptions, func(evOffer data.JobOfferContainer) {
 
 	})
 	if err != nil {
@@ -192,7 +194,7 @@ func TestNoModeration(t *testing.T) {
 	assert.NoError(t, err, "there was an error running the job")
 	assert.Equal(t, noop.NOOP_RESULTS_CID, result.Result.DataID, "the data ID was correct")
 
-	localPath := solver.GetDownloadsFilePath(result.Result.DealID)
+	localPath := solver2.GetDownloadsFilePath(result.Result.DealID)
 
 	fmt.Printf("result --------------------------------------\n")
 	spew.Dump(localPath)

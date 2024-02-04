@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 	"go.uber.org/fx"
 
 	"github.com/CoopHive/hive/internal/genesis"
@@ -21,10 +22,12 @@ type in struct {
 	fx.In
 	*genesis.Service
 
+	Conf *viper.Viper
+
 	VersionCmd          *cobra.Command `name:"version"`
 	RunCmd              *cobra.Command `name:"run"`
 	JobCreatorCmd       *cobra.Command `name:"jobcreator"`
-	ResourceProviderCmd *cobra.Command `name:"resourceprovider"`
+	ResourceProviderCmd *cobra.Command `name:"internal-resourceprovider"`
 	MediatorCmd         *cobra.Command `name:"mediator"`
 	SolverCmd           *cobra.Command `name:"solver"`
 }
@@ -36,7 +39,7 @@ type out struct {
 }
 
 func newServices(i in) (o out) {
-	cmd := newRootCmd(i.VersionCmd, i.RunCmd, i.JobCreatorCmd, i.ResourceProviderCmd, i.MediatorCmd, i.SolverCmd)
+	cmd := newRootCmd(i.Conf, i.VersionCmd, i.RunCmd, i.JobCreatorCmd, i.ResourceProviderCmd, i.MediatorCmd, i.SolverCmd)
 
 	o = out{
 		RootCmd: cmd,

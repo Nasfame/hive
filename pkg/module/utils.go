@@ -107,7 +107,6 @@ func CloneModule(module data.ModuleConfig) (repo *git.Repository, err error) {
 		return nil, err
 	}
 
-	// git fetch origin: Resolves #https://github.com/CoopHive/hive/issues/13
 	gitFetchOptions := &git.FetchOptions{
 		Tags:     git.AllTags,
 		Progress: os.Stdout,

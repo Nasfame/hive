@@ -5,19 +5,21 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/CoopHive/hive/config"
 	"io"
 	corehttp "net/http"
 	"os"
 	"path/filepath"
 	"time"
 
-	"github.com/CoopHive/hive/pkg/data"
-	"github.com/CoopHive/hive/pkg/http"
-	"github.com/CoopHive/hive/pkg/solver/store"
-	"github.com/CoopHive/hive/pkg/system"
+	"github.com/CoopHive/hive/config"
+	"github.com/CoopHive/hive/services/solver/solver/store"
+
 	"github.com/gorilla/mux"
 	"github.com/rs/zerolog/log"
+
+	"github.com/CoopHive/hive/pkg/data"
+	"github.com/CoopHive/hive/pkg/http"
+	"github.com/CoopHive/hive/pkg/system"
 )
 
 type solverServer struct {

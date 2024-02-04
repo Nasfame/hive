@@ -26,7 +26,7 @@ type out struct {
 
 func newServices(i in) (o out) {
 
-	cmd := newSolverCmd()
+	cmd := newSolverCmd(i.Service)
 
 	o = out{
 		SolverCmd: cmd,

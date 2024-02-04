@@ -1,8 +1,9 @@
 package options
 
 import (
-	"github.com/CoopHive/hive/pkg/solver"
 	"github.com/CoopHive/hive/pkg/system"
+	"github.com/CoopHive/hive/services/solver/solver"
+
 	"github.com/spf13/cobra"
 )
 

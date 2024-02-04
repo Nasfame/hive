@@ -4,13 +4,14 @@ import (
 	"fmt"
 
 	"github.com/CoopHive/hive/pkg/data"
-	"github.com/CoopHive/hive/pkg/resourceprovider"
 	"github.com/CoopHive/hive/pkg/system"
+	"github.com/CoopHive/hive/services/resourceprovider/internal-resourceprovider"
+
 	"github.com/spf13/cobra"
 )
 
-func NewResourceProviderOptions() resourceprovider.ResourceProviderOptions {
-	options := resourceprovider.ResourceProviderOptions{
+func NewResourceProviderOptions() internal_resourceprovider.ResourceProviderOptions {
+	options := internal_resourceprovider.ResourceProviderOptions{
 		Bacalhau: GetDefaultBacalhauOptions(),
 		Offers:   GetDefaultResourceProviderOfferOptions(),
 		Web3:     GetDefaultWeb3Options(),
@@ -19,8 +20,8 @@ func NewResourceProviderOptions() resourceprovider.ResourceProviderOptions {
 	return options
 }
 
-func GetDefaultResourceProviderOfferOptions() resourceprovider.ResourceProviderOfferOptions {
-	return resourceprovider.ResourceProviderOfferOptions{
+func GetDefaultResourceProviderOfferOptions() internal_resourceprovider.ResourceProviderOfferOptions {
+	return internal_resourceprovider.ResourceProviderOfferOptions{
 		// by default let's offer 1 CPU, 0 GPU and 1GB RAM
 		OfferSpec: data.MachineSpec{
 			CPU: GetDefaultServeOptionInt("OFFER_CPU", 1000), //nolint:gomnd
@@ -45,7 +46,7 @@ func GetDefaultResourceProviderOfferOptions() resourceprovider.ResourceProviderO
 	}
 }
 
-func AddResourceProviderOfferCliFlags(cmd *cobra.Command, offerOptions *resourceprovider.ResourceProviderOfferOptions) {
+func AddResourceProviderOfferCliFlags(cmd *cobra.Command, offerOptions *internal_resourceprovider.ResourceProviderOfferOptions) {
 	cmd.PersistentFlags().IntVar(
 		&offerOptions.OfferSpec.CPU, "offer-cpu", offerOptions.OfferSpec.CPU,
 		`How many milli-cpus to offer the network (OFFER_CPU).`,
@@ -72,13 +73,13 @@ func AddResourceProviderOfferCliFlags(cmd *cobra.Command, offerOptions *resource
 	AddServicesCliFlags(cmd, &offerOptions.Services)
 }
 
-func AddResourceProviderCliFlags(cmd *cobra.Command, options *resourceprovider.ResourceProviderOptions) {
+func AddResourceProviderCliFlags(cmd *cobra.Command, options *internal_resourceprovider.ResourceProviderOptions) {
 	AddBacalhauCliFlags(cmd, &options.Bacalhau)
 	AddWeb3CliFlags(cmd, &options.Web3)
 	AddResourceProviderOfferCliFlags(cmd, &options.Offers)
 }
 
-func CheckResourceProviderOfferOptions(options resourceprovider.ResourceProviderOfferOptions) error {
+func CheckResourceProviderOfferOptions(options internal_resourceprovider.ResourceProviderOfferOptions) error {
 	// loop over all specs and add up the total number of cpus
 	totalCPU := 0
 	for _, spec := range options.Specs {
@@ -102,7 +103,7 @@ func CheckResourceProviderOfferOptions(options resourceprovider.ResourceProvider
 	return nil
 }
 
-func CheckResourceProviderOptions(options resourceprovider.ResourceProviderOptions) error {
+func CheckResourceProviderOptions(options internal_resourceprovider.ResourceProviderOptions) error {
 	err := CheckWeb3Options(options.Web3)
 	if err != nil {
 		return err
@@ -122,7 +123,7 @@ func CheckResourceProviderOptions(options resourceprovider.ResourceProviderOptio
 	return nil
 }
 
-func ProcessResourceProviderOfferOptions(options resourceprovider.ResourceProviderOfferOptions) (resourceprovider.ResourceProviderOfferOptions, error) {
+func ProcessResourceProviderOfferOptions(options internal_resourceprovider.ResourceProviderOfferOptions) (internal_resourceprovider.ResourceProviderOfferOptions, error) {
 	// if there are no specs then populate with the single spec
 	if len(options.Specs) == 0 {
 		// loop the number of machines we want to offer
@@ -133,7 +134,7 @@ func ProcessResourceProviderOfferOptions(options resourceprovider.ResourceProvid
 	return options, nil
 }
 
-func ProcessResourceProviderOptions(options resourceprovider.ResourceProviderOptions) (resourceprovider.ResourceProviderOptions, error) {
+func ProcessResourceProviderOptions(options internal_resourceprovider.ResourceProviderOptions) (internal_resourceprovider.ResourceProviderOptions, error) {
 	newOfferOptions, err := ProcessResourceProviderOfferOptions(options.Offers)
 	if err != nil {
 		return options, err

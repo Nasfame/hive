@@ -3,11 +3,12 @@ package solver
 import (
 	"context"
 
+	"github.com/rs/zerolog/log"
+
 	"github.com/CoopHive/hive/pkg/http"
-	"github.com/CoopHive/hive/pkg/solver/store"
 	"github.com/CoopHive/hive/pkg/system"
 	"github.com/CoopHive/hive/pkg/web3"
-	"github.com/rs/zerolog/log"
+	"github.com/CoopHive/hive/services/solver/solver/store"
 )
 
 type SolverOptions struct {

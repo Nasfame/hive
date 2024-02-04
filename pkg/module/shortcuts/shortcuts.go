@@ -2,8 +2,9 @@ package shortcuts
 
 import (
 	"fmt"
-	"github.com/CoopHive/hive/config"
 	"strings"
+
+	"github.com/CoopHive/hive/config"
 
 	"github.com/CoopHive/hive/pkg/data"
 )
@@ -30,7 +31,7 @@ func GetModule(name string) (data.ModuleConfig, error) {
 		repo = fmt.Sprintf("https://%s", repo)
 	} else {
 		// CoopHive std module
-		repo = fmt.Sprintf(config.COOPHIVE_STD_MODULE, repo)
+		repo = fmt.Sprintf(config.STD_MODULE_FORMAT, repo)
 	}
 
 	// TODO: docs for authoring a module
@@ -38,7 +39,7 @@ func GetModule(name string) (data.ModuleConfig, error) {
 		Name: "", // TODO:
 		Repo: repo,
 		Hash: hash,
-		Path: config.COOPHIVE_MODULE_CONFIG_PATH,
+		Path: config.MODULE_PATH,
 	}
 
 	return module, nil

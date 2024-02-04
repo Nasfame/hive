@@ -4,8 +4,9 @@ import (
 	"fmt"
 	"path/filepath"
 
-	"github.com/CoopHive/hive/pkg/system"
 	"github.com/rs/zerolog/log"
+
+	"github.com/CoopHive/hive/pkg/system"
 )
 
 const FILES_DIR = "job-files"

@@ -1,4 +1,4 @@
-package resourceprovider
+package internal_resourceprovider
 
 import (
 	"context"

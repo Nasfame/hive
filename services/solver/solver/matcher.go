@@ -4,10 +4,11 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/CoopHive/hive/pkg/data"
-	"github.com/CoopHive/hive/pkg/solver/store"
-	"github.com/CoopHive/hive/pkg/system"
 	"github.com/rs/zerolog/log"
+
+	"github.com/CoopHive/hive/pkg/data"
+	"github.com/CoopHive/hive/pkg/system"
+	"github.com/CoopHive/hive/services/solver/solver/store"
 )
 
 type ListOfResourceOffers []data.ResourceOffer

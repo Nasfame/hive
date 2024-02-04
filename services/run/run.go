@@ -11,18 +11,19 @@ import (
 
 	"github.com/fatih/color"
 	"github.com/spf13/cobra"
-
-	"github.com/CoopHive/hive/config"
-	"github.com/CoopHive/hive/pkg/data"
-	"github.com/CoopHive/hive/pkg/jobcreator"
-	optionsfactory "github.com/CoopHive/hive/pkg/options"
-	"github.com/CoopHive/hive/pkg/solver"
-	"github.com/CoopHive/hive/pkg/system"
+	"github.com/spf13/viper"
 
 	"github.com/theckman/yacspin"
+
+	"github.com/CoopHive/hive/enums"
+	"github.com/CoopHive/hive/pkg/data"
+	"github.com/CoopHive/hive/pkg/system"
+	optionsfactory "github.com/CoopHive/hive/services/jobcreator"
+	internal_job "github.com/CoopHive/hive/services/jobcreator/internal-job"
+	"github.com/CoopHive/hive/services/solver/solver"
 )
 
-func newRunCmd() *cobra.Command {
+func newRunCmd(conf *viper.Viper) *cobra.Command {
 	options := optionsfactory.NewJobCreatorOptions()
 	runCmd := &cobra.Command{
 		Use:     "run",
@@ -34,7 +35,7 @@ func newRunCmd() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			return runJob(cmd, options)
+			return runJob(cmd, options, conf)
 		},
 	}
 
@@ -43,7 +44,7 @@ func newRunCmd() *cobra.Command {
 	return runCmd
 }
 
-func runJob(cmd *cobra.Command, options jobcreator.JobCreatorOptions) error {
+func runJob(cmd *cobra.Command, options internal_job.JobCreatorOptions, conf *viper.Viper) error {
 	c := color.New(color.FgCyan).Add(color.Bold)
 	header := `
   ___  __    __  ____  _  _  __  _  _  ____ 
@@ -55,9 +56,9 @@ func runJob(cmd *cobra.Command, options jobcreator.JobCreatorOptions) error {
 
 
 `
-	VERSION := config.VERSION
-	if VERSION != "" {
-		header = strings.Replace(header, "v0", VERSION, 1)
+	version := conf.GetString(enums.VERSION)
+	if version != "" {
+		header = strings.Replace(header, "v0", version, 1)
 	}
 	c.Print(header)
 
@@ -86,7 +87,7 @@ func runJob(cmd *cobra.Command, options jobcreator.JobCreatorOptions) error {
 
 	commandCtx := system.NewCommandContext(cmd)
 	defer commandCtx.Cleanup()
-	result, err := jobcreator.RunJob(commandCtx, options, func(evOffer data.JobOfferContainer) {
+	result, err := internal_job.RunJob(commandCtx, options, func(evOffer data.JobOfferContainer) {
 		if err := spinner.Stop(); err != nil {
 			log.Fatalf("failed to stop spinner: %v", err)
 		}

@@ -31,7 +31,7 @@ mv bacalhau /usr/local/bin
 # Set the IPFS data path by exporting the `BACALHAU_SERVE_IPFS_PATH` variable to your desired location
 export BACALHAU_SERVE_IPFS_PATH=/tmp/hive/data/ipfs
 # Run Bacalhau as both a compute node and a requester node
-bacalhau serve --node-type compute,requester --peer none --private-internal-ipfs=false --job-selection-accept-networked
+bacalhau serve --node-type compute,requester --peer none --private-internal-job-ipfs=false --job-selection-accept-networked
 ```
 
 ### 2 - CoopHive

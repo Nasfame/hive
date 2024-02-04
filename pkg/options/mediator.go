@@ -3,8 +3,9 @@ package options
 import (
 	"fmt"
 
-	"github.com/CoopHive/hive/pkg/mediator"
 	"github.com/CoopHive/hive/pkg/system"
+	"github.com/CoopHive/hive/services/internal-mediator/mediator"
+
 	"github.com/spf13/cobra"
 )
 

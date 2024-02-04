@@ -6,19 +6,20 @@ import (
 	"sync"
 	"time"
 
+	"github.com/rs/zerolog/log"
+
 	"github.com/CoopHive/hive/pkg/data"
 	"github.com/CoopHive/hive/pkg/executor"
 	"github.com/CoopHive/hive/pkg/http"
 	"github.com/CoopHive/hive/pkg/module"
-	"github.com/CoopHive/hive/pkg/solver"
-	"github.com/CoopHive/hive/pkg/solver/store"
 	"github.com/CoopHive/hive/pkg/system"
 	"github.com/CoopHive/hive/pkg/web3"
-	"github.com/rs/zerolog/log"
+	solver2 "github.com/CoopHive/hive/services/solver/solver"
+	"github.com/CoopHive/hive/services/solver/solver/store"
 )
 
 type MediatorController struct {
-	solverClient *solver.SolverClient
+	solverClient *solver2.SolverClient
 	options      MediatorOptions
 	web3SDK      *web3.Web3SDK
 	web3Events   *web3.EventChannels
@@ -51,7 +52,7 @@ func NewMediatorController(
 		return nil, err
 	}
 
-	solverClient, err := solver.NewSolverClient(http.ClientOptions{
+	solverClient, err := solver2.NewSolverClient(http.ClientOptions{
 		URL:        solverUrl,
 		PrivateKey: options.Web3.PrivateKey,
 	})
@@ -98,9 +99,9 @@ func NewMediatorController(
 // to run fast and so we will wait for the solver to trigger the event
 // before we trigger our control loop (rambling comment of the day award goes to....)
 func (controller *MediatorController) subscribeToSolver() error {
-	controller.solverClient.SubscribeEvents(func(ev solver.SolverEvent) {
+	controller.solverClient.SubscribeEvents(func(ev solver2.SolverEvent) {
 		// we need to agree to the deal now we've heard about it
-		if ev.EventType == solver.DealMediatorUpdated {
+		if ev.EventType == solver2.DealMediatorUpdated {
 			if ev.Deal == nil {
 				controller.log.Error("solver event", fmt.Errorf("RP received nil deal"))
 				return
@@ -111,7 +112,7 @@ func (controller *MediatorController) subscribeToSolver() error {
 				return
 			}
 
-			solver.ServiceLogSolverEvent(system.MediatorService, ev)
+			solver2.ServiceLogSolverEvent(system.MediatorService, ev)
 
 			// trigger the solver
 			controller.loop.Trigger()

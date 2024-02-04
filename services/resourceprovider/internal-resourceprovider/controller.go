@@ -1,4 +1,4 @@
-package resourceprovider
+package internal_resourceprovider
 
 import (
 	"context"
@@ -10,15 +10,15 @@ import (
 	"github.com/CoopHive/hive/pkg/executor"
 	"github.com/CoopHive/hive/pkg/http"
 	"github.com/CoopHive/hive/pkg/module"
-	"github.com/CoopHive/hive/pkg/solver"
-	"github.com/CoopHive/hive/pkg/solver/store"
 	"github.com/CoopHive/hive/pkg/system"
 	"github.com/CoopHive/hive/pkg/web3"
 	"github.com/CoopHive/hive/pkg/web3/bindings/storage"
+	solver2 "github.com/CoopHive/hive/services/solver/solver"
+	"github.com/CoopHive/hive/services/solver/solver/store"
 )
 
 type ResourceProviderController struct {
-	solverClient *solver.SolverClient
+	solverClient *solver2.SolverClient
 	options      ResourceProviderOptions
 	web3SDK      *web3.Web3SDK
 	web3Events   *web3.EventChannels
@@ -49,7 +49,7 @@ func NewResourceProviderController(
 		return nil, err
 	}
 
-	solverClient, err := solver.NewSolverClient(http.ClientOptions{
+	solverClient, err := solver2.NewSolverClient(http.ClientOptions{
 		URL:        solverUrl,
 		PrivateKey: options.Web3.PrivateKey,
 	})
@@ -81,9 +81,9 @@ func NewResourceProviderController(
 *
 */
 func (controller *ResourceProviderController) subscribeToSolver() error {
-	controller.solverClient.SubscribeEvents(func(ev solver.SolverEvent) {
+	controller.solverClient.SubscribeEvents(func(ev solver2.SolverEvent) {
 		// we need to agree to the deal now we've heard about it
-		if ev.EventType == solver.DealAdded {
+		if ev.EventType == solver2.DealAdded {
 			if ev.Deal == nil {
 				controller.log.Error("solver event", fmt.Errorf("RP received nil deal"))
 				return
@@ -94,7 +94,7 @@ func (controller *ResourceProviderController) subscribeToSolver() error {
 				return
 			}
 
-			solver.ServiceLogSolverEvent(system.ResourceProviderService, ev)
+			solver2.ServiceLogSolverEvent(system.ResourceProviderService, ev)
 
 			// trigger the solver
 			controller.loop.Trigger()

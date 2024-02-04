@@ -3,14 +3,13 @@ package jobcreator
 import (
 	"github.com/spf13/cobra"
 
-	"github.com/CoopHive/hive/pkg/jobcreator"
-	optionsfactory "github.com/CoopHive/hive/pkg/options"
 	"github.com/CoopHive/hive/pkg/system"
 	"github.com/CoopHive/hive/pkg/web3"
+	"github.com/CoopHive/hive/services/jobcreator/internal-job"
 )
 
 func newJobCreatorCmd() *cobra.Command {
-	options := optionsfactory.NewJobCreatorOptions()
+	options := NewJobCreatorOptions()
 
 	cmd := &cobra.Command{
 		Use:     "jobcreator",
@@ -18,7 +17,7 @@ func newJobCreatorCmd() *cobra.Command {
 		Long:    "Start the CoopHive job creator service.",
 		Example: "",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			options, err := optionsfactory.ProcessOnChainJobCreatorOptions(options, args)
+			options, err := ProcessOnChainJobCreatorOptions(options, args)
 			if err != nil {
 				return err
 			}
@@ -26,12 +25,12 @@ func newJobCreatorCmd() *cobra.Command {
 		},
 	}
 
-	optionsfactory.AddJobCreatorCliFlags(cmd, &options)
+	AddJobCreatorCliFlags(cmd, &options)
 
 	return cmd
 }
 
-func runJobCreator(cmd *cobra.Command, options jobcreator.JobCreatorOptions) error {
+func runJobCreator(cmd *cobra.Command, options internal_job.JobCreatorOptions) error {
 	commandCtx := system.NewCommandContext(cmd)
 	defer commandCtx.Cleanup()
 
@@ -41,7 +40,7 @@ func runJobCreator(cmd *cobra.Command, options jobcreator.JobCreatorOptions) err
 	}
 
 	// create the job creator and start it's control loop
-	jobCreatorService, err := jobcreator.NewOnChainJobCreator(options, web3SDK)
+	jobCreatorService, err := internal_job.NewOnChainJobCreator(options, web3SDK)
 	if err != nil {
 		return err
 	}

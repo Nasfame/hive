@@ -21,7 +21,7 @@ type in struct {
 type out struct {
 	fx.Out
 
-	VersionCmd *cobra.Command `name:"mediator"`
+	MediatorCmd *cobra.Command `name:"mediator"`
 }
 
 func newServices(i in) (o out) {
@@ -29,7 +29,7 @@ func newServices(i in) (o out) {
 	cmd := newMediatorCmd()
 
 	o = out{
-		VersionCmd: cmd,
+		MediatorCmd: cmd,
 	}
 	return
 }

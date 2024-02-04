@@ -3,14 +3,15 @@ package system
 import (
 	"archive/tar"
 	"bytes"
-	"github.com/CoopHive/hive/config"
 	"io"
 	"os"
 	"path/filepath"
+
+	"github.com/CoopHive/hive/config"
 )
 
 func dataDirPath(path string) string {
-	basePath := config.COOPHIVE_DATA_DIR
+	basePath := config.APP_DATA_DIR
 	return filepath.Join(basePath, path)
 }
 

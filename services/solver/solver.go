@@ -3,15 +3,22 @@ package solver
 import (
 	"github.com/spf13/cobra"
 
+	"github.com/CoopHive/hive/internal/genesis"
 	optionsfactory "github.com/CoopHive/hive/pkg/options"
-	"github.com/CoopHive/hive/pkg/solver"
-	memorystore "github.com/CoopHive/hive/pkg/solver/store/memory"
 	"github.com/CoopHive/hive/pkg/system"
 	"github.com/CoopHive/hive/pkg/web3"
+	"github.com/CoopHive/hive/services/solver/solver"
+	memorystore "github.com/CoopHive/hive/services/solver/solver/store/memory"
 )
 
-func newSolverCmd() *cobra.Command {
+type service struct {
+	*genesis.Service
+}
+
+func newSolverCmd(s0 *genesis.Service) *cobra.Command {
 	options := optionsfactory.NewSolverOptions()
+
+	s := &service{s0}
 
 	solverCmd := &cobra.Command{
 		Use:     "solver",
@@ -23,7 +30,7 @@ func newSolverCmd() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			return runSolver(cmd, options)
+			return s.runSolver(cmd, options)
 		},
 	}
 
@@ -32,7 +39,7 @@ func newSolverCmd() *cobra.Command {
 	return solverCmd
 }
 
-func runSolver(cmd *cobra.Command, options solver.SolverOptions) error {
+func (s *service) runSolver(cmd *cobra.Command, options solver.SolverOptions) error {
 	commandCtx := system.NewCommandContext(cmd)
 	defer commandCtx.Cleanup()
 
@@ -41,7 +48,7 @@ func runSolver(cmd *cobra.Command, options solver.SolverOptions) error {
 		return err
 	}
 
-	solverStore, err := memorystore.NewSolverStoreMemory()
+	solverStore, err := memorystore.NewSolverStoreMemory(s.Conf)
 	if err != nil {
 		return err
 	}

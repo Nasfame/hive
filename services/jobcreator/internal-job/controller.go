@@ -1,4 +1,4 @@
-package jobcreator
+package internal_job
 
 import (
 	"context"
@@ -7,17 +7,17 @@ import (
 
 	"github.com/CoopHive/hive/pkg/data"
 	"github.com/CoopHive/hive/pkg/http"
-	"github.com/CoopHive/hive/pkg/solver"
-	"github.com/CoopHive/hive/pkg/solver/store"
 	"github.com/CoopHive/hive/pkg/system"
 	"github.com/CoopHive/hive/pkg/web3"
 	"github.com/CoopHive/hive/pkg/web3/bindings/storage"
+	solver2 "github.com/CoopHive/hive/services/solver/solver"
+	"github.com/CoopHive/hive/services/solver/solver/store"
 )
 
 type JobOfferSubscriber func(offer data.JobOfferContainer)
 
 type JobCreatorController struct {
-	solverClient          *solver.SolverClient
+	solverClient          *solver2.SolverClient
 	options               JobCreatorOptions
 	web3SDK               *web3.Web3SDK
 	web3Events            *web3.EventChannels
@@ -42,7 +42,7 @@ func NewJobCreatorController(
 		return nil, err
 	}
 
-	solverClient, err := solver.NewSolverClient(http.ClientOptions{
+	solverClient, err := solver2.NewSolverClient(http.ClientOptions{
 		URL:        solverUrl,
 		PrivateKey: options.Web3.PrivateKey,
 	})
@@ -94,9 +94,9 @@ func (controller *JobCreatorController) SubscribeToJobOfferUpdates(sub JobOfferS
 *
 */
 func (controller *JobCreatorController) subscribeToSolver() error {
-	controller.solverClient.SubscribeEvents(func(ev solver.SolverEvent) {
+	controller.solverClient.SubscribeEvents(func(ev solver2.SolverEvent) {
 		switch ev.EventType {
-		case solver.DealAdded:
+		case solver2.DealAdded:
 			if ev.Deal == nil {
 				controller.log.Error("solver event", fmt.Errorf("JC received nil deal"))
 				return
@@ -107,11 +107,11 @@ func (controller *JobCreatorController) subscribeToSolver() error {
 				return
 			}
 
-			solver.ServiceLogSolverEvent(system.JobCreatorService, ev)
+			solver2.ServiceLogSolverEvent(system.JobCreatorService, ev)
 
 			// trigger the solver
 			controller.loop.Trigger()
-		case solver.JobOfferStateUpdated:
+		case solver2.JobOfferStateUpdated:
 			if ev.JobOffer == nil {
 				controller.log.Error("solver event", fmt.Errorf("RP received nil job offer"))
 				return
@@ -310,12 +310,12 @@ func (controller *JobCreatorController) checkResults() error {
 }
 
 func (controller *JobCreatorController) downloadResult(dealContainer data.DealContainer) error {
-	err := controller.solverClient.DownloadResultFiles(dealContainer.ID, solver.GetDownloadsFilePath(dealContainer.ID))
+	err := controller.solverClient.DownloadResultFiles(dealContainer.ID, solver2.GetDownloadsFilePath(dealContainer.ID))
 	if err != nil {
 		return fmt.Errorf("error downloading results for deal: %s", err.Error())
 	}
 
-	controller.log.Debug("Downloaded results for job", solver.GetDownloadsFilePath(dealContainer.ID))
+	controller.log.Debug("Downloaded results for job", solver2.GetDownloadsFilePath(dealContainer.ID))
 
 	// TODO: activate the mediation check here
 	controller.acceptResult(dealContainer)

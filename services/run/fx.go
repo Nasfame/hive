@@ -2,6 +2,7 @@ package run
 
 import (
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 	"go.uber.org/fx"
 
 	"github.com/CoopHive/hive/internal/genesis"
@@ -16,6 +17,7 @@ var Module = fx.Options(
 type in struct {
 	fx.In
 	*genesis.Service
+	Conf *viper.Viper
 }
 
 type out struct {
@@ -26,7 +28,7 @@ type out struct {
 
 func newServices(i in) (o out) {
 
-	cmd := newRunCmd()
+	cmd := newRunCmd(i.Conf)
 
 	o = out{
 		RunCmd: cmd,

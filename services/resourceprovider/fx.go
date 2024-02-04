@@ -21,7 +21,7 @@ type in struct {
 type out struct {
 	fx.Out
 
-	ResourceProviderCmd *cobra.Command `name:"resourceprovider"`
+	ResourceProviderCmd *cobra.Command `name:"internal-resourceprovider"`
 }
 
 func newServices(i in) (o out) {

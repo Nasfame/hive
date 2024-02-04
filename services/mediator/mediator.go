@@ -5,10 +5,10 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/CoopHive/hive/pkg/executor/bacalhau"
-	"github.com/CoopHive/hive/pkg/mediator"
 	optionsfactory "github.com/CoopHive/hive/pkg/options"
 	"github.com/CoopHive/hive/pkg/system"
 	"github.com/CoopHive/hive/pkg/web3"
+	"github.com/CoopHive/hive/services/internal-mediator/mediator"
 )
 
 func newMediatorCmd() *cobra.Command {
