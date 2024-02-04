@@ -22,7 +22,7 @@ release:
 	goreleaser release --clean
 
 install-hive:
-	goreleaser build --single-target --clean -o ./bin --snapshot
+	goreleaser build --single-target --clean -o ./bin/${binName} --snapshot
 
 make-bin:
 	go build -v -ldflags="\
