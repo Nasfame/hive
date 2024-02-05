@@ -53,7 +53,7 @@ jobs:
           cache-dependency-path: "hardhat/yarn.lock"
 
       - name: Yarn
-        uses: borales/actions-yarn@v4
+        uses: borales/actions-yarn@v5
         with:
           cmd: install
           dir: hardhat
