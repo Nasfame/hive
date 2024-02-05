@@ -1,14 +1,16 @@
 package config
 
 import (
+	"strings"
+
 	"github.com/CoopHive/hive/utils"
 )
 
 // this is the address of the user
-var X_COOPHIVE_USER_HEADER = utils.Base64DecodeFast("WC1MaWx5cGFkLVVzZXIK")
+var X_COOPHIVE_USER_HEADER = strings.Trim(utils.Base64DecodeFast("WC1MaWx5cGFkLVVzZXI="), "\n")
 
 // this is the signature of the message
-var X_COOPHIVE_SIGNATURE_HEADER = utils.Base64DecodeFast("WC1MaWx5cGFkLVNpZ25hdHVyZQo=")
+var X_COOPHIVE_SIGNATURE_HEADER = utils.Base64DecodeFast("WC1MaWx5cGFkLVNpZ25hdHVyZQ==")
 
 // the context name we keep the address
 const CONTEXT_ADDRESS = "address"
