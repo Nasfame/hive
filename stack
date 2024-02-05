@@ -188,9 +188,60 @@ function go-binding() {
   echo "Generated go binding hardhat/artifacts/bindings/$pkg/$pkg.go"
 }
 
+function go-binding-with-go() { #TODO: rename 'with-go' to 'dev'
+  local name="$1"
+  local pkg="$2"
+
+  # compile the sol files into bytecode and ABI
+  cd hardhat
+  solc \
+    --base-path . \
+    --include-path node_modules \
+    --overwrite \
+    --abi --bin \
+    "contracts/$name.sol" \
+    -o artifacts
+
+
+#  sudo chown -R $USER:$USER hardhat/artifacts
+  mkdir -p artifacts/bindings/$pkg
+
+  # generate the go bindings
+  abigen \
+    "--bin=artifacts/$name.bin" \
+    "--abi=artifacts/$name.abi" \
+    "--pkg=$pkg" "--out=artifacts/bindings/$pkg/$pkg.go"
+
+  cd ..
+
+#  sudo chown -R $USER:$USER hardhat/artifacts/bindings/$pkg
+#  sudo chmod 0644 hardhat/artifacts/bindings/$pkg/$pkg.go
+  cp -r hardhat/artifacts/bindings/$pkg pkg/web3/bindings/$pkg
+
+  echo "Generated go binding hardhat/artifacts/bindings/$pkg/$pkg.go"
+}
+
+function go-bindings-with-go() {
+  # check if the hive-solc image exists
+  # and only build it if it doesn't
+
+  rm -rf pkg/web3/bindings
+  mkdir -p pkg/web3/bindings
+  go-binding-with-go HiveToken token
+  go-binding-with-go HivePayments payments
+  go-binding-with-go HiveStorage storage
+  go-binding-with-go HiveUsers users
+  go-binding-with-go HiveMediationRandom mediation
+  go-binding-with-go HiveOnChainJobCreator jobcreator
+  go-binding-with-go HiveController controller
+  
+  echo "Generated all go bindings pkg/contract/bindings/"
+}
+
 function go-bindings() {
   # check if the hive-solc image exists
   # and only build it if it doesn't
+
   if [[ -z $(docker images -q coophive-solc) ]]; then
     docker build -t coophive-solc hardhat/solc
   fi
@@ -203,7 +254,7 @@ function go-bindings() {
   go-binding HiveMediationRandom mediation
   go-binding HiveOnChainJobCreator jobcreator
   go-binding HiveController controller
-  
+
   echo "Generated all go bindings pkg/contract/bindings/"
 }
 

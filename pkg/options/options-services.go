@@ -5,18 +5,18 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/CoopHive/hive/pkg/data"
+	"github.com/CoopHive/hive/pkg/dto"
 )
 
-func GetDefaultServicesOptions() data.ServiceConfig {
-	return data.ServiceConfig{
+func GetDefaultServicesOptions() dto.ServiceConfig {
+	return dto.ServiceConfig{
 		// TODO: refactor to config
 		Solver:   GetDefaultServeOptionString("SERVICE_SOLVER", "0xd4646ef9f7336b06841db3019b617ceadf435316"),
 		Mediator: GetDefaultServeOptionStringArray("SERVICE_MEDIATORS", []string{"0x2d83ced7562e406151bd49c749654429907543b4"}),
 	}
 }
 
-func AddServicesCliFlags(cmd *cobra.Command, servicesConfig *data.ServiceConfig) {
+func AddServicesCliFlags(cmd *cobra.Command, servicesConfig *dto.ServiceConfig) {
 	cmd.PersistentFlags().StringVar(
 		&servicesConfig.Solver, "service-solver", servicesConfig.Solver,
 		`The solver to connect to (SERVICE_SOLVER)`,
@@ -27,11 +27,11 @@ func AddServicesCliFlags(cmd *cobra.Command, servicesConfig *data.ServiceConfig)
 	)
 }
 
-func ProcessServicesOptions(options data.ServiceConfig) (data.ServiceConfig, error) {
+func ProcessServicesOptions(options dto.ServiceConfig) (dto.ServiceConfig, error) {
 	return options, nil
 }
 
-func CheckServicesOptions(options data.ServiceConfig) error {
+func CheckServicesOptions(options dto.ServiceConfig) error {
 	if options.Solver == "" {
 		return fmt.Errorf("No solver service specified - please use SERVICE_SOLVER or --service-solver")
 	}

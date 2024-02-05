@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"path/filepath"
 
-	"github.com/CoopHive/hive/pkg/data"
+	"github.com/CoopHive/hive/pkg/dto"
 	"github.com/CoopHive/hive/pkg/executor"
 	"github.com/CoopHive/hive/pkg/system"
 )
@@ -44,8 +44,8 @@ func NewNoopExecutor(options NoopExecutorOptions) (*NoopExecutor, error) {
 }
 
 func (e *NoopExecutor) RunJob(
-	deal data.DealContainer,
-	module data.Module,
+	deal dto.DealContainer,
+	module dto.Module,
 ) (*executor.ExecutorResults, error) {
 	resultsDir, err := system.EnsureDataDir(filepath.Join(RESULTS_DIR, deal.ID))
 	if err != nil {

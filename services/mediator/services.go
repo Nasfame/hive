@@ -5,7 +5,7 @@ import (
 
 	"github.com/rs/zerolog/log"
 
-	"github.com/CoopHive/hive/pkg/data"
+	"github.com/CoopHive/hive/pkg/dto"
 	"github.com/CoopHive/hive/pkg/executor"
 	"github.com/CoopHive/hive/pkg/executor/bacalhau"
 	"github.com/CoopHive/hive/pkg/system"
@@ -14,7 +14,7 @@ import (
 
 type MediatorOptions struct {
 	Bacalhau bacalhau.BacalhauExecutorOptions
-	Services data.ServiceConfig
+	Services dto.ServiceConfig
 	Web3     web3.Web3Options
 }
 

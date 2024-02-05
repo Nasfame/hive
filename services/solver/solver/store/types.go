@@ -1,6 +1,8 @@
 package store
 
-import "github.com/CoopHive/hive/pkg/data"
+import (
+	"github.com/CoopHive/hive/pkg/dto"
+)
 
 type GetJobOffersQuery struct {
 	JobCreator string `json:"job_creator"`
@@ -43,26 +45,26 @@ type GetDealsQuery struct {
 }
 
 type SolverStore interface {
-	AddJobOffer(jobOffer data.JobOfferContainer) (*data.JobOfferContainer, error)
-	AddResourceOffer(jobOffer data.ResourceOfferContainer) (*data.ResourceOfferContainer, error)
-	AddDeal(deal data.DealContainer) (*data.DealContainer, error)
-	AddResult(result data.Result) (*data.Result, error)
-	AddMatchDecision(resourceOffer string, jobOffer string, deal string, result bool) (*data.MatchDecision, error)
-	GetJobOffers(query GetJobOffersQuery) ([]data.JobOfferContainer, error)
-	GetResourceOffers(query GetResourceOffersQuery) ([]data.ResourceOfferContainer, error)
-	GetDeals(query GetDealsQuery) ([]data.DealContainer, error)
-	GetJobOffer(id string) (*data.JobOfferContainer, error)
-	GetResourceOffer(id string) (*data.ResourceOfferContainer, error)
-	GetDeal(id string) (*data.DealContainer, error)
-	GetResult(id string) (*data.Result, error)
-	GetMatchDecision(resourceOffer string, jobOffer string) (*data.MatchDecision, error)
-	UpdateJobOfferState(id string, dealID string, state uint8) (*data.JobOfferContainer, error)
-	UpdateResourceOfferState(id string, dealID string, state uint8) (*data.ResourceOfferContainer, error)
-	UpdateDealState(id string, state uint8) (*data.DealContainer, error)
-	UpdateDealMediator(id string, mediator string) (*data.DealContainer, error)
-	UpdateDealTransactionsJobCreator(id string, data data.DealTransactionsJobCreator) (*data.DealContainer, error)
-	UpdateDealTransactionsResourceProvider(id string, data data.DealTransactionsResourceProvider) (*data.DealContainer, error)
-	UpdateDealTransactionsMediator(id string, data data.DealTransactionsMediator) (*data.DealContainer, error)
+	AddJobOffer(jobOffer dto.JobOfferContainer) (*dto.JobOfferContainer, error)
+	AddResourceOffer(jobOffer dto.ResourceOfferContainer) (*dto.ResourceOfferContainer, error)
+	AddDeal(deal dto.DealContainer) (*dto.DealContainer, error)
+	AddResult(result dto.Result) (*dto.Result, error)
+	AddMatchDecision(resourceOffer string, jobOffer string, deal string, result bool) (*dto.MatchDecision, error)
+	GetJobOffers(query GetJobOffersQuery) ([]dto.JobOfferContainer, error)
+	GetResourceOffers(query GetResourceOffersQuery) ([]dto.ResourceOfferContainer, error)
+	GetDeals(query GetDealsQuery) ([]dto.DealContainer, error)
+	GetJobOffer(id string) (*dto.JobOfferContainer, error)
+	GetResourceOffer(id string) (*dto.ResourceOfferContainer, error)
+	GetDeal(id string) (*dto.DealContainer, error)
+	GetResult(id string) (*dto.Result, error)
+	GetMatchDecision(resourceOffer string, jobOffer string) (*dto.MatchDecision, error)
+	UpdateJobOfferState(id string, dealID string, state uint8) (*dto.JobOfferContainer, error)
+	UpdateResourceOfferState(id string, dealID string, state uint8) (*dto.ResourceOfferContainer, error)
+	UpdateDealState(id string, state uint8) (*dto.DealContainer, error)
+	UpdateDealMediator(id string, mediator string) (*dto.DealContainer, error)
+	UpdateDealTransactionsJobCreator(id string, data dto.DealTransactionsJobCreator) (*dto.DealContainer, error)
+	UpdateDealTransactionsResourceProvider(id string, data dto.DealTransactionsResourceProvider) (*dto.DealContainer, error)
+	UpdateDealTransactionsMediator(id string, data dto.DealTransactionsMediator) (*dto.DealContainer, error)
 	RemoveJobOffer(id string) error
 	RemoveResourceOffer(id string) error
 }

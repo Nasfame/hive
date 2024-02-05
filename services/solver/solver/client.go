@@ -6,11 +6,11 @@ import (
 	"fmt"
 
 	"github.com/CoopHive/hive/config"
+	"github.com/CoopHive/hive/pkg/dto"
 	"github.com/CoopHive/hive/services/solver/solver/store"
 
 	"github.com/rs/zerolog/log"
 
-	"github.com/CoopHive/hive/pkg/data"
 	"github.com/CoopHive/hive/pkg/http"
 	"github.com/CoopHive/hive/pkg/system"
 )
@@ -64,7 +64,7 @@ func (client *SolverClient) SubscribeEvents(handler func(SolverEvent)) {
 	client.solverEventSubs = append(client.solverEventSubs, handler)
 }
 
-func (client *SolverClient) GetJobOffers(query store.GetJobOffersQuery) ([]data.JobOfferContainer, error) {
+func (client *SolverClient) GetJobOffers(query store.GetJobOffersQuery) ([]dto.JobOfferContainer, error) {
 	queryParams := map[string]string{}
 	if query.JobCreator != "" {
 		queryParams["job_creator"] = query.JobCreator
@@ -72,10 +72,10 @@ func (client *SolverClient) GetJobOffers(query store.GetJobOffersQuery) ([]data.
 	if query.NotMatched {
 		queryParams["not_matched"] = "true"
 	}
-	return http.GetRequest[[]data.JobOfferContainer](client.options, "/job_offers", queryParams)
+	return http.GetRequest[[]dto.JobOfferContainer](client.options, "/job_offers", queryParams)
 }
 
-func (client *SolverClient) GetResourceOffers(query store.GetResourceOffersQuery) ([]data.ResourceOfferContainer, error) {
+func (client *SolverClient) GetResourceOffers(query store.GetResourceOffersQuery) ([]dto.ResourceOfferContainer, error) {
 	queryParams := map[string]string{}
 	if query.ResourceProvider != "" {
 		queryParams["resource_provider"] = query.ResourceProvider
@@ -86,10 +86,10 @@ func (client *SolverClient) GetResourceOffers(query store.GetResourceOffersQuery
 	if query.NotMatched {
 		queryParams["not_matched"] = "true"
 	}
-	return http.GetRequest[[]data.ResourceOfferContainer](client.options, "/resource_offers", queryParams)
+	return http.GetRequest[[]dto.ResourceOfferContainer](client.options, "/resource_offers", queryParams)
 }
 
-func (client *SolverClient) GetDeals(query store.GetDealsQuery) ([]data.DealContainer, error) {
+func (client *SolverClient) GetDeals(query store.GetDealsQuery) ([]dto.DealContainer, error) {
 	queryParams := map[string]string{}
 	if query.JobCreator != "" {
 		queryParams["job_creator"] = query.JobCreator
@@ -100,23 +100,23 @@ func (client *SolverClient) GetDeals(query store.GetDealsQuery) ([]data.DealCont
 	if query.State != "" {
 		queryParams["state"] = query.State
 	}
-	return http.GetRequest[[]data.DealContainer](client.options, "/deals", queryParams)
+	return http.GetRequest[[]dto.DealContainer](client.options, "/deals", queryParams)
 }
 
-func (client *SolverClient) GetDeal(id string) (data.DealContainer, error) {
-	return http.GetRequest[data.DealContainer](client.options, fmt.Sprintf("/deals/%s", id), map[string]string{})
+func (client *SolverClient) GetDeal(id string) (dto.DealContainer, error) {
+	return http.GetRequest[dto.DealContainer](client.options, fmt.Sprintf("/deals/%s", id), map[string]string{})
 }
 
-func (client *SolverClient) GetResult(id string) (data.Result, error) {
-	return http.GetRequest[data.Result](client.options, fmt.Sprintf("/deals/%s/result", id), map[string]string{})
+func (client *SolverClient) GetResult(id string) (dto.Result, error) {
+	return http.GetRequest[dto.Result](client.options, fmt.Sprintf("/deals/%s/result", id), map[string]string{})
 }
 
-func (client *SolverClient) GetDealsWithFilter(query store.GetDealsQuery, filter func(data.DealContainer) bool) ([]data.DealContainer, error) {
+func (client *SolverClient) GetDealsWithFilter(query store.GetDealsQuery, filter func(dto.DealContainer) bool) ([]dto.DealContainer, error) {
 	deals, err := client.GetDeals(query)
 	if err != nil {
 		return nil, err
 	}
-	ret := []data.DealContainer{}
+	ret := []dto.DealContainer{}
 	for _, deal := range deals {
 		if filter(deal) {
 			ret = append(ret, deal)
@@ -125,36 +125,36 @@ func (client *SolverClient) GetDealsWithFilter(query store.GetDealsQuery, filter
 	return ret, nil
 }
 
-func (client *SolverClient) AddJobOffer(jobOffer data.JobOffer) (data.JobOfferContainer, error) {
-	return http.PostRequest[data.JobOffer, data.JobOfferContainer](client.options, "/job_offers", jobOffer)
+func (client *SolverClient) AddJobOffer(jobOffer dto.JobOffer) (dto.JobOfferContainer, error) {
+	return http.PostRequest[dto.JobOffer, dto.JobOfferContainer](client.options, "/job_offers", jobOffer)
 }
 
-func (client *SolverClient) AddResourceOffer(resourceOffer data.ResourceOffer) (data.ResourceOfferContainer, error) {
-	return http.PostRequest[data.ResourceOffer, data.ResourceOfferContainer](client.options, "/resource_offers", resourceOffer)
+func (client *SolverClient) AddResourceOffer(resourceOffer dto.ResourceOffer) (dto.ResourceOfferContainer, error) {
+	return http.PostRequest[dto.ResourceOffer, dto.ResourceOfferContainer](client.options, "/resource_offers", resourceOffer)
 }
 
-func (client *SolverClient) AddResult(result data.Result) (data.Result, error) {
-	return http.PostRequest[data.Result, data.Result](client.options, fmt.Sprintf("/deals/%s/result", result.DealID), result)
+func (client *SolverClient) AddResult(result dto.Result) (dto.Result, error) {
+	return http.PostRequest[dto.Result, dto.Result](client.options, fmt.Sprintf("/deals/%s/result", result.DealID), result)
 }
 
-func (client *SolverClient) UpdateTransactionsResourceProvider(id string, payload data.DealTransactionsResourceProvider) (data.DealContainer, error) {
-	return http.PostRequest[data.DealTransactionsResourceProvider, data.DealContainer](client.options, fmt.Sprintf("/deals/%s/txs/resource_provider", id), payload)
+func (client *SolverClient) UpdateTransactionsResourceProvider(id string, payload dto.DealTransactionsResourceProvider) (dto.DealContainer, error) {
+	return http.PostRequest[dto.DealTransactionsResourceProvider, dto.DealContainer](client.options, fmt.Sprintf("/deals/%s/txs/resource_provider", id), payload)
 }
 
-func (client *SolverClient) UpdateTransactionsJobCreator(id string, payload data.DealTransactionsJobCreator) (data.DealContainer, error) {
-	return http.PostRequest[data.DealTransactionsJobCreator, data.DealContainer](client.options, fmt.Sprintf("/deals/%s/txs/job_creator", id), payload)
+func (client *SolverClient) UpdateTransactionsJobCreator(id string, payload dto.DealTransactionsJobCreator) (dto.DealContainer, error) {
+	return http.PostRequest[dto.DealTransactionsJobCreator, dto.DealContainer](client.options, fmt.Sprintf("/deals/%s/txs/job_creator", id), payload)
 }
 
-func (client *SolverClient) UpdateTransactionsMediator(id string, payload data.DealTransactionsMediator) (data.DealContainer, error) {
-	return http.PostRequest[data.DealTransactionsMediator, data.DealContainer](client.options, fmt.Sprintf("/deals/%s/txs/mediator", id), payload)
+func (client *SolverClient) UpdateTransactionsMediator(id string, payload dto.DealTransactionsMediator) (dto.DealContainer, error) {
+	return http.PostRequest[dto.DealTransactionsMediator, dto.DealContainer](client.options, fmt.Sprintf("/deals/%s/txs/mediator", id), payload)
 }
 
-func (client *SolverClient) UploadResultFiles(id string, localPath string) (data.Result, error) {
+func (client *SolverClient) UploadResultFiles(id string, localPath string) (dto.Result, error) {
 	buf, err := system.GetTarBuffer(localPath)
 	if err != nil {
-		return data.Result{}, err
+		return dto.Result{}, err
 	}
-	return http.PostRequestBuffer[data.Result](client.options, fmt.Sprintf("/deals/%s/files", id), buf)
+	return http.PostRequestBuffer[dto.Result](client.options, fmt.Sprintf("/deals/%s/files", id), buf)
 }
 
 func (client *SolverClient) DownloadResultFiles(id string, localPath string) error {

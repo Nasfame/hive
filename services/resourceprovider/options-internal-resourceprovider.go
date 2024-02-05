@@ -3,7 +3,7 @@ package resourceprovider
 import (
 	"context"
 
-	"github.com/CoopHive/hive/pkg/data"
+	"github.com/CoopHive/hive/pkg/dto"
 	"github.com/CoopHive/hive/pkg/executor"
 	"github.com/CoopHive/hive/pkg/executor/bacalhau"
 	"github.com/CoopHive/hive/pkg/system"
@@ -14,7 +14,7 @@ import (
 type ResourceProviderOfferOptions struct {
 	// if we are configuring a single machine then
 	// these values are populated by the flags
-	OfferSpec data.MachineSpec
+	OfferSpec dto.MachineSpec
 	// we can dupliate the single spec to create a list of specs
 	OfferCount int
 	// this represents how many machines we will keep
@@ -22,25 +22,25 @@ type ResourceProviderOfferOptions struct {
 	// we can configure this with a config file
 	// to start with we will just add --cpu --gpu and --ram flags
 	// to the resource provider CLI which constrains them to a single machine
-	Specs []data.MachineSpec
+	Specs []dto.MachineSpec
 	// the list of modules we are willing to run
 	// an empty list means anything
 	Modules []string
 
 	// this will normally be FixedPrice for RP's
-	Mode data.PricingMode
+	Mode dto.PricingMode
 
 	// the default pricing for this resource provider
 	// for all modules that don't have a specific price
-	DefaultPricing  data.DealPricing
-	DefaultTimeouts data.DealTimeouts
+	DefaultPricing  dto.DealPricing
+	DefaultTimeouts dto.DealTimeouts
 
 	// allow different pricing for different modules
-	ModulePricing  map[string]data.DealPricing
-	ModuleTimeouts map[string]data.DealTimeouts
+	ModulePricing  map[string]dto.DealPricing
+	ModuleTimeouts map[string]dto.DealTimeouts
 
 	// which mediators and directories this RP will trust
-	Services data.ServiceConfig
+	Services dto.ServiceConfig
 }
 
 type ResourceProviderOptions struct {

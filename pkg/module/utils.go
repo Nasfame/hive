@@ -15,7 +15,7 @@ import (
 	"github.com/go-git/go-git/v5/plumbing"
 	"github.com/rs/zerolog/log"
 
-	"github.com/CoopHive/hive/pkg/data"
+	"github.com/CoopHive/hive/pkg/dto"
 	"github.com/CoopHive/hive/pkg/module/shortcuts"
 	"github.com/CoopHive/hive/pkg/system"
 )
@@ -36,7 +36,7 @@ func getRepoLocalPath(repoURL string) (string, error) {
 	return filepath.Join(REPO_DIR, pathParts[0], pathParts[1]), nil
 }
 
-func CheckModuleOptions(options data.ModuleConfig) error {
+func CheckModuleOptions(options dto.ModuleConfig) error {
 	if options.Repo == "" {
 		return fmt.Errorf("MODULE_REPO is required")
 	}
@@ -51,7 +51,7 @@ func CheckModuleOptions(options data.ModuleConfig) error {
 
 // given a module - check if it's a shortcut and if yes
 // expand the shortcut into the other module props
-func ProcessModule(module data.ModuleConfig) (data.ModuleConfig, error) {
+func ProcessModule(module dto.ModuleConfig) (dto.ModuleConfig, error) {
 	// we have been given a shortcut
 	// let's try to resolve this shortcut into a full module definition
 	if module.Name != "" {
@@ -72,7 +72,7 @@ func ProcessModule(module data.ModuleConfig) (data.ModuleConfig, error) {
 // TODO: check if we have the repo already cloned
 // handle fetching new changes perhaps the commit hash is not the latest
 // at the moment we will do the slow thing and clone the repo every time
-func CloneModule(module data.ModuleConfig) (repo *git.Repository, err error) {
+func CloneModule(module dto.ModuleConfig) (repo *git.Repository, err error) {
 	repoPath, err := getRepoLocalPath(module.Repo)
 	if err != nil {
 		return nil, err
@@ -140,7 +140,7 @@ func CloneModule(module data.ModuleConfig) (repo *git.Repository, err error) {
 //   - check if we have the repo cloned
 //   - checkout the correct hash
 //   - check and read the file
-func PrepareModule(module data.ModuleConfig) (string, error) {
+func PrepareModule(module dto.ModuleConfig) (string, error) {
 	module, err := ProcessModule(module)
 	if err != nil {
 		return "", err
@@ -209,7 +209,7 @@ func subst(format string, jsonEncodedInputs ...string) string {
 // - prepare the module - now we have the text of the template
 // - inject the given values using template syntax
 // - JSON parse and check we don't have errors
-func LoadModule(module data.ModuleConfig, inputs map[string]string) (*data.Module, error) {
+func LoadModule(module dto.ModuleConfig, inputs map[string]string) (*dto.Module, error) {
 	moduleText, err := PrepareModule(module)
 	if err != nil {
 		return nil, err
@@ -245,7 +245,7 @@ func LoadModule(module data.ModuleConfig, inputs map[string]string) (*data.Modul
 		)
 	}
 
-	var moduleData data.Module
+	var moduleData dto.Module
 	bs := template.Bytes()
 	if err := json.Unmarshal(bs, &moduleData); err != nil {
 		return nil, fmt.Errorf(

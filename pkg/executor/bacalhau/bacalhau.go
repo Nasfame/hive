@@ -8,11 +8,12 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/CoopHive/hive/pkg/data"
-	"github.com/CoopHive/hive/pkg/data/bacalhau"
+	"github.com/rs/zerolog/log"
+
+	bacalhau2 "github.com/CoopHive/hive/pkg/bacalhau"
+	"github.com/CoopHive/hive/pkg/dto"
 	executorlib "github.com/CoopHive/hive/pkg/executor"
 	"github.com/CoopHive/hive/pkg/system"
-	"github.com/rs/zerolog/log"
 )
 
 const RESULTS_DIR = "bacalhau-results"
@@ -39,8 +40,8 @@ func NewBacalhauExecutor(options BacalhauExecutorOptions) (*BacalhauExecutor, er
 }
 
 func (executor *BacalhauExecutor) RunJob(
-	deal data.DealContainer,
-	module data.Module,
+	deal dto.DealContainer,
+	module dto.Module,
 ) (*executorlib.ExecutorResults, error) {
 	id, err := executor.getJobID(deal, module)
 	if err != nil {
@@ -61,7 +62,7 @@ func (executor *BacalhauExecutor) RunJob(
 		return nil, fmt.Errorf("no executions found for job %s", id)
 	}
 
-	if jobState.State.State != bacalhau.JobStateCompleted {
+	if jobState.State.State != bacalhau2.JobStateCompleted {
 		return nil, fmt.Errorf("job %s did not complete successfully: %s", id, jobState.State.State.String())
 	}
 
@@ -77,8 +78,8 @@ func (executor *BacalhauExecutor) RunJob(
 
 // run the bacalhau job and return the job ID
 func (executor *BacalhauExecutor) getJobID(
-	deal data.DealContainer,
-	module data.Module,
+	deal dto.DealContainer,
+	module dto.Module,
 ) (string, error) {
 	// get a JSON string of the job
 	jsonBytes, err := json.Marshal(module.Job)
@@ -137,7 +138,7 @@ func (executor *BacalhauExecutor) copyJobResults(dealID string, jobID string) (s
 	return resultsDir, nil
 }
 
-func (executor *BacalhauExecutor) getJobState(dealID string, jobID string) (*bacalhau.JobWithInfo, error) {
+func (executor *BacalhauExecutor) getJobState(dealID string, jobID string) (*bacalhau2.JobWithInfo, error) {
 	describeCmd := exec.Command(
 		"bacalhau",
 		"describe",
@@ -151,7 +152,7 @@ func (executor *BacalhauExecutor) getJobState(dealID string, jobID string) (*bac
 		return nil, fmt.Errorf("error calling describe command results %s -> %s", dealID, err.Error())
 	}
 
-	var job bacalhau.JobWithInfo
+	var job bacalhau2.JobWithInfo
 	err = json.Unmarshal(output, &job)
 	if err != nil {
 		return nil, fmt.Errorf("error unmarshalling job JSON %s -> %s", dealID, err.Error())

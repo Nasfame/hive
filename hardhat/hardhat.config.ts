@@ -59,6 +59,11 @@ const config: HardhatUserConfig = {
             url: "https://api.node.glif.io",
             accounts: PRIVATE_KEYS,
         },
+        coophive: {
+            chainId: 1337,
+            url: "http://testnet.co-ophive.network:8545",
+            accounts: PRIVATE_KEYS,
+        }
     },
     etherscan: {
         apiKey: process.env.ETHERSCAN_API_KEY,

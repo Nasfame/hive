@@ -1,17 +1,17 @@
-package internal_job
+package jobCreatorService
 
 import (
 	"fmt"
 	"time"
 
-	"github.com/CoopHive/hive/pkg/data"
+	"github.com/CoopHive/hive/pkg/dto"
 	"github.com/CoopHive/hive/pkg/system"
 	"github.com/CoopHive/hive/pkg/web3"
 )
 
 type RunJobResults struct {
-	JobOffer data.JobOfferContainer
-	Result   data.Result
+	JobOffer dto.JobOfferContainer
+	Result   dto.Result
 }
 
 func RunJob(
@@ -49,9 +49,9 @@ func RunJob(
 		return nil, err
 	}
 
-	updateChan := make(chan data.JobOfferContainer)
+	updateChan := make(chan dto.JobOfferContainer)
 
-	jobCreatorService.SubscribeToJobOfferUpdates(func(evOffer data.JobOfferContainer) {
+	jobCreatorService.SubscribeToJobOfferUpdates(func(evOffer dto.JobOfferContainer) {
 		// spew.Dump(evOffer)
 		if evOffer.JobOffer.ID != jobOfferContainer.ID {
 			return
@@ -59,7 +59,7 @@ func RunJob(
 		updateChan <- evOffer
 	})
 
-	var finalJobOffer data.JobOfferContainer
+	var finalJobOffer dto.JobOfferContainer
 
 	// now we wait on the state of the job
 waitloop:
@@ -71,7 +71,7 @@ waitloop:
 		case <-ctx.Ctx.Done():
 			return nil, fmt.Errorf("job cancelled")
 		case finalJobOffer = <-updateChan:
-			if data.IsTerminalAgreementState(finalJobOffer.State) {
+			if dto.IsTerminalAgreementState(finalJobOffer.State) {
 				break waitloop
 			}
 		}

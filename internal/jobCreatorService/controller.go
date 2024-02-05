@@ -1,11 +1,11 @@
-package internal_job
+package jobCreatorService
 
 import (
 	"context"
 	"fmt"
 	"time"
 
-	"github.com/CoopHive/hive/pkg/data"
+	"github.com/CoopHive/hive/pkg/dto"
 	"github.com/CoopHive/hive/pkg/http"
 	"github.com/CoopHive/hive/pkg/system"
 	"github.com/CoopHive/hive/pkg/web3"
@@ -14,7 +14,7 @@ import (
 	"github.com/CoopHive/hive/services/solver/solver/store"
 )
 
-type JobOfferSubscriber func(offer data.JobOfferContainer)
+type JobOfferSubscriber func(offer dto.JobOfferContainer)
 
 type JobCreatorController struct {
 	solverClient          *solver2.SolverClient
@@ -51,8 +51,8 @@ func NewJobCreatorController(
 	}
 
 	controller := &JobCreatorController{
-		solverClient:          solverClient,
-		options:               options,
+		solverClient: solverClient,
+		// options:               options,
 		web3SDK:               web3SDK,
 		web3Events:            web3.NewEventChannels(),
 		log:                   system.NewServiceLogger(system.JobCreatorService),
@@ -73,7 +73,7 @@ func NewJobCreatorController(
  *
 */
 
-func (controller *JobCreatorController) AddJobOffer(offer data.JobOffer) (data.JobOfferContainer, error) {
+func (controller *JobCreatorController) AddJobOffer(offer dto.JobOffer) (dto.JobOfferContainer, error) {
 	controller.log.Debug("add job offer", offer)
 	return controller.solverClient.AddJobOffer(offer)
 }
@@ -134,7 +134,7 @@ func (controller *JobCreatorController) subscribeToWeb3() error {
 		if deal.JobCreator != controller.web3SDK.GetAddress().String() {
 			return
 		}
-		controller.log.Debug("StorageDealStateChange", data.GetAgreementStateString(ev.State))
+		controller.log.Debug("StorageDealStateChange", dto.GetAgreementStateString(ev.State))
 		system.DumpObjectDebug(ev)
 		controller.loop.Trigger()
 	})
@@ -235,7 +235,7 @@ func (controller *JobCreatorController) agreeToDeals() error {
 			State:      "DealNegotiating",
 		},
 		// this is where the solver has found us a match and we need to agree to it
-		func(dealContainer data.DealContainer) bool {
+		func(dealContainer dto.DealContainer) bool {
 			return dealContainer.Transactions.JobCreator.Agree == ""
 		},
 	)
@@ -258,7 +258,7 @@ func (controller *JobCreatorController) agreeToDeals() error {
 		controller.log.Debug("agree tx", txHash)
 
 		// we have agreed to the deal so we need to update the tx in the solver
-		_, err = controller.solverClient.UpdateTransactionsJobCreator(dealContainer.ID, data.DealTransactionsJobCreator{
+		_, err = controller.solverClient.UpdateTransactionsJobCreator(dealContainer.ID, dto.DealTransactionsJobCreator{
 			Agree: txHash,
 		})
 		if err != nil {
@@ -283,7 +283,7 @@ func (controller *JobCreatorController) checkResults() error {
 			State:      "ResultsSubmitted",
 		},
 		// this is where the solver has found us a match and we need to agree to it
-		func(dealContainer data.DealContainer) bool {
+		func(dealContainer dto.DealContainer) bool {
 			return dealContainer.Transactions.JobCreator.AcceptResult == "" && dealContainer.Transactions.JobCreator.CheckResult == ""
 		},
 	)
@@ -309,7 +309,7 @@ func (controller *JobCreatorController) checkResults() error {
 	return err
 }
 
-func (controller *JobCreatorController) downloadResult(dealContainer data.DealContainer) error {
+func (controller *JobCreatorController) downloadResult(dealContainer dto.DealContainer) error {
 	err := controller.solverClient.DownloadResultFiles(dealContainer.ID, solver2.GetDownloadsFilePath(dealContainer.ID))
 	if err != nil {
 		return fmt.Errorf("error downloading results for deal: %s", err.Error())
@@ -345,7 +345,7 @@ func (controller *JobCreatorController) downloadResult(dealContainer data.DealCo
 	return nil
 }
 
-func (controller *JobCreatorController) acceptResult(deal data.DealContainer) error {
+func (controller *JobCreatorController) acceptResult(deal dto.DealContainer) error {
 	controller.log.Debug("Accepting results for job", deal.ID)
 	txHash, err := controller.web3SDK.AcceptResult(deal.ID)
 	if err != nil {
@@ -354,7 +354,7 @@ func (controller *JobCreatorController) acceptResult(deal data.DealContainer) er
 	controller.log.Debug("accept result tx", txHash)
 
 	// we have agreed to the deal so we need to update the tx in the solver
-	_, err = controller.solverClient.UpdateTransactionsJobCreator(deal.ID, data.DealTransactionsJobCreator{
+	_, err = controller.solverClient.UpdateTransactionsJobCreator(deal.ID, dto.DealTransactionsJobCreator{
 		AcceptResult: txHash,
 	})
 	if err != nil {
@@ -363,7 +363,7 @@ func (controller *JobCreatorController) acceptResult(deal data.DealContainer) er
 	return nil
 }
 
-func (controller *JobCreatorController) checkResult(deal data.DealContainer) error {
+func (controller *JobCreatorController) checkResult(deal dto.DealContainer) error {
 	controller.log.Debug("Checking results for job", deal.ID)
 	txHash, err := controller.web3SDK.CheckResult(deal.ID)
 	if err != nil {
@@ -372,7 +372,7 @@ func (controller *JobCreatorController) checkResult(deal data.DealContainer) err
 	controller.log.Debug("check result tx", txHash)
 
 	// we have agreed to the deal so we need to update the tx in the solver
-	_, err = controller.solverClient.UpdateTransactionsJobCreator(deal.ID, data.DealTransactionsJobCreator{
+	_, err = controller.solverClient.UpdateTransactionsJobCreator(deal.ID, dto.DealTransactionsJobCreator{
 		CheckResult: txHash,
 	})
 	if err != nil {

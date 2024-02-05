@@ -7,6 +7,13 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/ethereum/go-ethereum/accounts/abi/bind"
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/core/types"
+	"github.com/ethereum/go-ethereum/crypto"
+	"github.com/ethereum/go-ethereum/ethclient"
+	"github.com/rs/zerolog/log"
+
 	"github.com/CoopHive/hive/pkg/web3/bindings/controller"
 	"github.com/CoopHive/hive/pkg/web3/bindings/jobcreator"
 	"github.com/CoopHive/hive/pkg/web3/bindings/mediation"
@@ -14,12 +21,6 @@ import (
 	"github.com/CoopHive/hive/pkg/web3/bindings/storage"
 	"github.com/CoopHive/hive/pkg/web3/bindings/token"
 	"github.com/CoopHive/hive/pkg/web3/bindings/users"
-	"github.com/ethereum/go-ethereum/accounts/abi/bind"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/ethereum/go-ethereum/ethclient"
-	"github.com/rs/zerolog/log"
 )
 
 // these are the go-binding wrappers for the various deployed contracts

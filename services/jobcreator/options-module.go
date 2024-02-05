@@ -3,13 +3,13 @@ package jobcreator
 import (
 	"github.com/spf13/cobra"
 
-	"github.com/CoopHive/hive/pkg/data"
+	"github.com/CoopHive/hive/pkg/dto"
 	"github.com/CoopHive/hive/pkg/module"
 	"github.com/CoopHive/hive/pkg/options"
 )
 
-func GetDefaultModuleOptions() data.ModuleConfig {
-	return data.ModuleConfig{
+func GetDefaultModuleOptions() dto.ModuleConfig {
+	return dto.ModuleConfig{
 		// the shortcut name
 		Name: options.GetDefaultServeOptionString("MODULE_NAME", ""),
 		// the repo we can clone from
@@ -21,7 +21,7 @@ func GetDefaultModuleOptions() data.ModuleConfig {
 	}
 }
 
-func AddModuleCliFlags(cmd *cobra.Command, moduleConfig *data.ModuleConfig) {
+func AddModuleCliFlags(cmd *cobra.Command, moduleConfig *dto.ModuleConfig) {
 	cmd.PersistentFlags().StringVar(
 		&moduleConfig.Name, "module-name", moduleConfig.Name,
 		`The name of the shortcut module (MODULE_NAME)`,
@@ -41,10 +41,10 @@ func AddModuleCliFlags(cmd *cobra.Command, moduleConfig *data.ModuleConfig) {
 }
 
 // see if we have a shortcut and fill in the other values if we do
-func ProcessModuleOptions(options data.ModuleConfig) (data.ModuleConfig, error) {
+func ProcessModuleOptions(options dto.ModuleConfig) (dto.ModuleConfig, error) {
 	return module.ProcessModule(options)
 }
 
-func CheckModuleOptions(options data.ModuleConfig) error {
+func CheckModuleOptions(options dto.ModuleConfig) error {
 	return module.CheckModuleOptions(options)
 }

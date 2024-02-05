@@ -1,12 +1,13 @@
-package data
+package dto
 
 import (
 	"encoding/json"
 	"fmt"
 	"math/big"
 
-	"github.com/CoopHive/hive/pkg/web3/bindings/controller"
 	"github.com/ethereum/go-ethereum/common"
+
+	"github.com/CoopHive/hive/pkg/web3/bindings/controller"
 
 	mdag "github.com/ipfs/go-merkledag"
 )

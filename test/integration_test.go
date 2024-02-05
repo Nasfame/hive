@@ -12,12 +12,12 @@ import (
 	"github.com/stretchr/testify/assert"
 
 	"github.com/CoopHive/hive/config"
-	"github.com/CoopHive/hive/pkg/data"
+	"github.com/CoopHive/hive/internal/jobCreatorService"
+	"github.com/CoopHive/hive/pkg/dto"
 	"github.com/CoopHive/hive/pkg/executor/noop"
 	"github.com/CoopHive/hive/pkg/system"
 	"github.com/CoopHive/hive/pkg/web3"
 	"github.com/CoopHive/hive/services/jobcreator"
-	internal_job "github.com/CoopHive/hive/services/jobcreator/internal-job"
 	"github.com/CoopHive/hive/services/mediator"
 	"github.com/CoopHive/hive/services/resourceprovider"
 	"github.com/CoopHive/hive/services/solver"
@@ -112,7 +112,7 @@ func getMediator(
 	return mediator.NewMediator(mediatorOptions, web3SDK, executor)
 }
 
-func getJobCreatorOptions(options testOptions) (internal_job.JobCreatorOptions, error) {
+func getJobCreatorOptions(options testOptions) (jobCreatorService.JobCreatorOptions, error) {
 	jobCreatorOptions := jobcreator.NewJobCreatorOptions()
 	jobCreatorOptions.Web3.PrivateKey = os.Getenv("JOB_CREATOR_PRIVATE_KEY")
 	if jobCreatorOptions.Web3.PrivateKey == "" {
@@ -135,7 +135,7 @@ func testStackWithOptions(
 	t *testing.T,
 	commandCtx *system.CommandContext,
 	options testOptions,
-) (*internal_job.RunJobResults, error) {
+) (*jobCreatorService.RunJobResults, error) {
 
 	solver, err := getSolver(t, options)
 	if err != nil {
@@ -167,7 +167,7 @@ func testStackWithOptions(
 		return nil, err
 	}
 
-	result, err := internal_job.RunJob(commandCtx, jobCreatorOptions, func(evOffer data.JobOfferContainer) {
+	result, err := jobCreatorService.RunJob(commandCtx, jobCreatorOptions, func(evOffer dto.JobOfferContainer) {
 
 	})
 	if err != nil {

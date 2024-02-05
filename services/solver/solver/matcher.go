@@ -6,12 +6,12 @@ import (
 
 	"github.com/rs/zerolog/log"
 
-	"github.com/CoopHive/hive/pkg/data"
+	"github.com/CoopHive/hive/pkg/dto"
 	"github.com/CoopHive/hive/pkg/system"
 	"github.com/CoopHive/hive/services/solver/solver/store"
 )
 
-type ListOfResourceOffers []data.ResourceOffer
+type ListOfResourceOffers []dto.ResourceOffer
 
 func (a ListOfResourceOffers) Len() int { return len(a) }
 func (a ListOfResourceOffers) Less(i, j int) bool {
@@ -23,8 +23,8 @@ func (a ListOfResourceOffers) Swap(i, j int) { a[i], a[j] = a[j], a[i] }
 // basically just check if the resource offer >= job offer cpu, gpu & ram
 // if the job offer is zero then it will match any resource offer
 func doOffersMatch(
-	resourceOffer data.ResourceOffer,
-	jobOffer data.JobOffer,
+	resourceOffer dto.ResourceOffer,
+	jobOffer dto.JobOffer,
 ) bool {
 	if resourceOffer.Spec.CPU < jobOffer.Spec.CPU {
 		log.Trace().
@@ -56,7 +56,7 @@ func doOffersMatch(
 
 	// if the resource provider has specified modules then check them
 	if len(resourceOffer.Modules) > 0 {
-		moduleID, err := data.GetModuleID(jobOffer.Module)
+		moduleID, err := dto.GetModuleID(jobOffer.Module)
 		if err != nil {
 			log.Error().
 				Err(err).
@@ -83,7 +83,7 @@ func doOffersMatch(
 	}
 
 	// we don't currently support market priced resource offers
-	if resourceOffer.Mode == data.MarketPrice {
+	if resourceOffer.Mode == dto.MarketPrice {
 		log.Trace().
 			Str("resource offer", resourceOffer.ID).
 			Str("job offer", jobOffer.ID).
@@ -92,7 +92,7 @@ func doOffersMatch(
 	}
 
 	// if both are fixed price then we filter out "cannot afford"
-	if resourceOffer.Mode == data.FixedPrice && jobOffer.Mode == data.FixedPrice {
+	if resourceOffer.Mode == dto.FixedPrice && jobOffer.Mode == dto.FixedPrice {
 		if resourceOffer.DefaultPricing.InstructionPrice > jobOffer.Pricing.InstructionPrice {
 			log.Trace().
 				Str("resource offer", resourceOffer.ID).
@@ -102,7 +102,7 @@ func doOffersMatch(
 		}
 	}
 
-	mutualMediators := data.GetMutualServices(resourceOffer.Services.Mediator, jobOffer.Services.Mediator)
+	mutualMediators := dto.GetMutualServices(resourceOffer.Services.Mediator, jobOffer.Services.Mediator)
 	if len(mutualMediators) == 0 {
 		log.Trace().
 			Str("resource offer", resourceOffer.ID).
@@ -124,8 +124,8 @@ func doOffersMatch(
 
 func getMatchingDeals(
 	db store.SolverStore,
-) ([]data.Deal, error) {
-	deals := []data.Deal{}
+) ([]dto.Deal, error) {
+	deals := []dto.Deal{}
 
 	resourceOffers, err := db.GetResourceOffers(store.GetResourceOffersQuery{
 		NotMatched: true,
@@ -145,7 +145,7 @@ func getMatchingDeals(
 	for _, jobOffer := range jobOffers {
 
 		// loop over resource offers
-		matchingResourceOffers := []data.ResourceOffer{}
+		matchingResourceOffers := []dto.ResourceOffer{}
 		for _, resourceOffer := range resourceOffers {
 			decision, err := db.GetMatchDecision(resourceOffer.ID, jobOffer.ID)
 			if err != nil {
@@ -174,7 +174,7 @@ func getMatchingDeals(
 			sort.Sort(ListOfResourceOffers(matchingResourceOffers))
 
 			cheapestResourceOffer := matchingResourceOffers[0]
-			deal, err := data.GetDeal(jobOffer.JobOffer, cheapestResourceOffer)
+			deal, err := dto.GetDeal(jobOffer.JobOffer, cheapestResourceOffer)
 			if err != nil {
 				return nil, err
 			}

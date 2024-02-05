@@ -7,7 +7,7 @@ import (
 
 	"github.com/rs/zerolog/log"
 
-	"github.com/CoopHive/hive/pkg/data"
+	"github.com/CoopHive/hive/pkg/dto"
 	"github.com/CoopHive/hive/pkg/system"
 	"github.com/CoopHive/hive/pkg/web3"
 	"github.com/CoopHive/hive/pkg/web3/bindings/mediation"
@@ -32,10 +32,10 @@ const (
 )
 
 type SolverEvent struct {
-	EventType     SolverEventType              `json:"event_type"`
-	JobOffer      *data.JobOfferContainer      `json:"job_offer"`
-	ResourceOffer *data.ResourceOfferContainer `json:"resource_offer"`
-	Deal          *data.DealContainer          `json:"deal"`
+	EventType     SolverEventType             `json:"event_type"`
+	JobOffer      *dto.JobOfferContainer      `json:"job_offer"`
+	ResourceOffer *dto.ResourceOfferContainer `json:"resource_offer"`
+	Deal          *dto.DealContainer          `json:"deal"`
 }
 
 type SolverController struct {
@@ -141,7 +141,7 @@ func (controller *SolverController) subscribeToWeb3() error {
 			controller.log.Error("error updating deal state", err)
 			return
 		}
-		controller.log.Info("StorageDealStateChange", data.GetAgreementStateString(ev.State))
+		controller.log.Info("StorageDealStateChange", dto.GetAgreementStateString(ev.State))
 		system.DumpObjectDebug(ev)
 		// update the store with the state change
 		controller.loop.Trigger()
@@ -199,7 +199,7 @@ func (controller *SolverController) writeEvent(ev SolverEvent) {
 
 func (controller *SolverController) registerAsSolver() error {
 	selfAddress := controller.web3SDK.GetAddress()
-	solverType, err := data.GetServiceType("Solver")
+	solverType, err := dto.GetServiceType("Solver")
 	if err != nil {
 		return err
 	}
@@ -293,8 +293,8 @@ func (controller *SolverController) solve() error {
 *
 *
 */
-func (controller *SolverController) addJobOffer(jobOffer data.JobOffer) (*data.JobOfferContainer, error) {
-	id, err := data.GetJobOfferID(jobOffer)
+func (controller *SolverController) addJobOffer(jobOffer dto.JobOffer) (*dto.JobOfferContainer, error) {
+	id, err := dto.GetJobOfferID(jobOffer)
 	if err != nil {
 		return nil, err
 	}
@@ -302,7 +302,7 @@ func (controller *SolverController) addJobOffer(jobOffer data.JobOffer) (*data.J
 
 	controller.log.Info("add job offer", jobOffer)
 
-	ret, err := controller.store.AddJobOffer(data.GetJobOfferContainer(jobOffer))
+	ret, err := controller.store.AddJobOffer(dto.GetJobOfferContainer(jobOffer))
 	if err != nil {
 		return nil, err
 	}
@@ -313,8 +313,8 @@ func (controller *SolverController) addJobOffer(jobOffer data.JobOffer) (*data.J
 	return ret, nil
 }
 
-func (controller *SolverController) addResourceOffer(resourceOffer data.ResourceOffer) (*data.ResourceOfferContainer, error) {
-	id, err := data.GetResourceOfferID(resourceOffer)
+func (controller *SolverController) addResourceOffer(resourceOffer dto.ResourceOffer) (*dto.ResourceOfferContainer, error) {
+	id, err := dto.GetResourceOfferID(resourceOffer)
 	if err != nil {
 		return nil, err
 	}
@@ -322,7 +322,7 @@ func (controller *SolverController) addResourceOffer(resourceOffer data.Resource
 
 	controller.log.Info("add resource offer", resourceOffer)
 
-	ret, err := controller.store.AddResourceOffer(data.GetResourceOfferContainer(resourceOffer))
+	ret, err := controller.store.AddResourceOffer(dto.GetResourceOfferContainer(resourceOffer))
 	if err != nil {
 		return nil, err
 	}
@@ -333,8 +333,8 @@ func (controller *SolverController) addResourceOffer(resourceOffer data.Resource
 	return ret, nil
 }
 
-func (controller *SolverController) addDeal(deal data.Deal) (*data.DealContainer, error) {
-	id, err := data.GetDealID(deal)
+func (controller *SolverController) addDeal(deal dto.Deal) (*dto.DealContainer, error) {
+	id, err := dto.GetDealID(deal)
 	if err != nil {
 		return nil, err
 	}
@@ -342,7 +342,7 @@ func (controller *SolverController) addDeal(deal data.Deal) (*data.DealContainer
 
 	controller.log.Info("add deal", deal)
 
-	ret, err := controller.store.AddDeal(data.GetDealContainer(deal))
+	ret, err := controller.store.AddDeal(dto.GetDealContainer(deal))
 	if err != nil {
 		return nil, err
 	}
@@ -372,8 +372,8 @@ func (controller *SolverController) addDeal(deal data.Deal) (*data.DealContainer
 *
 *
 */
-func (controller *SolverController) updateJobOfferState(id string, dealID string, state uint8) (*data.JobOfferContainer, error) {
-	controller.log.Info("update job offer", fmt.Sprintf("%s %s", id, data.GetAgreementStateString(state)))
+func (controller *SolverController) updateJobOfferState(id string, dealID string, state uint8) (*dto.JobOfferContainer, error) {
+	controller.log.Info("update job offer", fmt.Sprintf("%s %s", id, dto.GetAgreementStateString(state)))
 
 	ret, err := controller.store.UpdateJobOfferState(id, dealID, state)
 	if err != nil {
@@ -386,8 +386,8 @@ func (controller *SolverController) updateJobOfferState(id string, dealID string
 	return ret, nil
 }
 
-func (controller *SolverController) updateResourceOfferState(id string, dealID string, state uint8) (*data.ResourceOfferContainer, error) {
-	controller.log.Info("update resource offer", fmt.Sprintf("%s %s", id, data.GetAgreementStateString(state)))
+func (controller *SolverController) updateResourceOfferState(id string, dealID string, state uint8) (*dto.ResourceOfferContainer, error) {
+	controller.log.Info("update resource offer", fmt.Sprintf("%s %s", id, dto.GetAgreementStateString(state)))
 
 	ret, err := controller.store.UpdateResourceOfferState(id, dealID, state)
 	if err != nil {
@@ -401,8 +401,8 @@ func (controller *SolverController) updateResourceOfferState(id string, dealID s
 }
 
 // this will also update the job and resource offer states
-func (controller *SolverController) updateDealState(id string, state uint8) (*data.DealContainer, error) {
-	controller.log.Info("update deal", fmt.Sprintf("%s %s", id, data.GetAgreementStateString(state)))
+func (controller *SolverController) updateDealState(id string, state uint8) (*dto.DealContainer, error) {
+	controller.log.Info("update deal", fmt.Sprintf("%s %s", id, dto.GetAgreementStateString(state)))
 
 	dealContainer, err := controller.store.UpdateDealState(id, state)
 	if err != nil {
@@ -425,7 +425,7 @@ func (controller *SolverController) updateDealState(id string, state uint8) (*da
 }
 
 // this will also update the job and resource offer states
-func (controller *SolverController) updateDealMediator(id string, mediator string) (*data.DealContainer, error) {
+func (controller *SolverController) updateDealMediator(id string, mediator string) (*dto.DealContainer, error) {
 	controller.log.Info("update mediator", fmt.Sprintf("%s %s", id, mediator))
 	dealContainer, err := controller.store.UpdateDealMediator(id, mediator)
 	if err != nil {
@@ -449,7 +449,7 @@ func (controller *SolverController) updateDealMediator(id string, mediator strin
 *
 *
 */
-func (controller *SolverController) updateDealTransactionsResourceProvider(id string, payload data.DealTransactionsResourceProvider) (*data.DealContainer, error) {
+func (controller *SolverController) updateDealTransactionsResourceProvider(id string, payload dto.DealTransactionsResourceProvider) (*dto.DealContainer, error) {
 	controller.log.Info("update resource provider txs", payload)
 	dealContainer, err := controller.store.UpdateDealTransactionsResourceProvider(id, payload)
 	if err != nil {
@@ -462,7 +462,7 @@ func (controller *SolverController) updateDealTransactionsResourceProvider(id st
 	return dealContainer, nil
 }
 
-func (controller *SolverController) updateDealTransactionsJobCreator(id string, payload data.DealTransactionsJobCreator) (*data.DealContainer, error) {
+func (controller *SolverController) updateDealTransactionsJobCreator(id string, payload dto.DealTransactionsJobCreator) (*dto.DealContainer, error) {
 	controller.log.Info("update job creator txs", payload)
 	dealContainer, err := controller.store.UpdateDealTransactionsJobCreator(id, payload)
 	if err != nil {
@@ -475,7 +475,7 @@ func (controller *SolverController) updateDealTransactionsJobCreator(id string, 
 	return dealContainer, nil
 }
 
-func (controller *SolverController) updateDealTransactionsMediator(id string, payload data.DealTransactionsMediator) (*data.DealContainer, error) {
+func (controller *SolverController) updateDealTransactionsMediator(id string, payload dto.DealTransactionsMediator) (*dto.DealContainer, error) {
 	controller.log.Info("update mediator txs", payload)
 	dealContainer, err := controller.store.UpdateDealTransactionsMediator(id, payload)
 	if err != nil {

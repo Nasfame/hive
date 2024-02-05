@@ -5,7 +5,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/CoopHive/hive/pkg/data"
+	"github.com/CoopHive/hive/pkg/dto"
 	options2 "github.com/CoopHive/hive/pkg/options"
 	"github.com/CoopHive/hive/pkg/system"
 )
@@ -23,25 +23,25 @@ func NewResourceProviderOptions() ResourceProviderOptions {
 func GetDefaultResourceProviderOfferOptions() ResourceProviderOfferOptions {
 	return ResourceProviderOfferOptions{
 		// by default let's offer 1 CPU, 0 GPU and 1GB RAM
-		OfferSpec: data.MachineSpec{
+		OfferSpec: dto.MachineSpec{
 			CPU: options2.GetDefaultServeOptionInt("OFFER_CPU", 1000), //nolint:gomnd
 			GPU: options2.GetDefaultServeOptionInt("OFFER_GPU", 0),    //nolint:gomnd
 			RAM: options2.GetDefaultServeOptionInt("OFFER_RAM", 1024), //nolint:gomnd
 		},
 		OfferCount: options2.GetDefaultServeOptionInt("OFFER_COUNT", 1), //nolint:gomnd
 		// this can be populated by a config file
-		Specs: []data.MachineSpec{},
+		Specs: []dto.MachineSpec{},
 		// if an RP wants to only run certain modules they list them here
 		// XXX SECURITY: enforce that they are specified with specific git hashes!
 		Modules: options2.GetDefaultServeOptionStringArray("OFFER_MODULES", []string{}),
 		// this is the default pricing mode for an RP
-		Mode: options2.GetDefaultPricingMode(data.FixedPrice),
+		Mode: options2.GetDefaultPricingMode(dto.FixedPrice),
 		// this is the default pricing for a module unless it has a specific price
 		DefaultPricing:  options2.GetDefaultPricingOptions(),
 		DefaultTimeouts: options2.GetDefaultTimeoutOptions(),
 		// allows an RP to list specific prices for each module
-		ModulePricing:  map[string]data.DealPricing{},
-		ModuleTimeouts: map[string]data.DealTimeouts{},
+		ModulePricing:  map[string]dto.DealPricing{},
+		ModuleTimeouts: map[string]dto.DealTimeouts{},
 		Services:       options2.GetDefaultServicesOptions(),
 	}
 }

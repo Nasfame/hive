@@ -7,11 +7,11 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/CoopHive/hive/pkg/data"
+	"github.com/CoopHive/hive/pkg/dto"
 )
 
 func TestPrepareModule(t *testing.T) {
-	text, err := PrepareModule(data.ModuleConfig{
+	text, err := PrepareModule(dto.ModuleConfig{
 		Name: "cowsay:v0.0.2",
 	})
 
@@ -21,7 +21,7 @@ func TestPrepareModule(t *testing.T) {
 }
 
 func TestLoadModule(t *testing.T) {
-	module, err := LoadModule(data.ModuleConfig{
+	module, err := LoadModule(dto.ModuleConfig{
 		Name: "cowsay:v0.0.2",
 	}, map[string]string{
 		"Message": "Hello, world!",

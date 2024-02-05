@@ -8,7 +8,7 @@ import (
 
 	"github.com/rs/zerolog/log"
 
-	"github.com/CoopHive/hive/pkg/data"
+	"github.com/CoopHive/hive/pkg/dto"
 	"github.com/CoopHive/hive/pkg/executor"
 	"github.com/CoopHive/hive/pkg/http"
 	"github.com/CoopHive/hive/pkg/module"
@@ -205,7 +205,7 @@ func (controller *MediatorController) runJobs() error {
 			Mediator: controller.web3SDK.GetAddress().String(),
 			State:    "ResultsChecked",
 		},
-		func(dealContainer data.DealContainer) bool {
+		func(dealContainer dto.DealContainer) bool {
 			controller.runningJobsMutex.RLock()
 			defer controller.runningJobsMutex.RUnlock()
 			_, ok := controller.runningJobs[dealContainer.ID]
@@ -235,9 +235,9 @@ func (controller *MediatorController) runJobs() error {
 	return err
 }
 
-func (controller *MediatorController) runJob(deal data.DealContainer) {
+func (controller *MediatorController) runJob(deal dto.DealContainer) {
 	controller.log.Info("mediator run job", deal)
-	mediatorResult := data.Result{
+	mediatorResult := dto.Result{
 		DealID: deal.ID,
 		Error:  "",
 	}
@@ -289,7 +289,7 @@ func (controller *MediatorController) runJob(deal data.DealContainer) {
 			return
 		}
 
-		_, err = controller.solverClient.UpdateTransactionsMediator(deal.ID, data.DealTransactionsMediator{
+		_, err = controller.solverClient.UpdateTransactionsMediator(deal.ID, dto.DealTransactionsMediator{
 			MediationAcceptResult: txHash,
 		})
 		if err != nil {
@@ -305,7 +305,7 @@ func (controller *MediatorController) runJob(deal data.DealContainer) {
 			return
 		}
 
-		_, err = controller.solverClient.UpdateTransactionsMediator(deal.ID, data.DealTransactionsMediator{
+		_, err = controller.solverClient.UpdateTransactionsMediator(deal.ID, dto.DealTransactionsMediator{
 			MediationRejectResult: txHash,
 		})
 		if err != nil {

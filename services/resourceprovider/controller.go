@@ -6,7 +6,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/CoopHive/hive/pkg/data"
+	"github.com/CoopHive/hive/pkg/dto"
 	"github.com/CoopHive/hive/pkg/executor"
 	"github.com/CoopHive/hive/pkg/http"
 	"github.com/CoopHive/hive/pkg/module"
@@ -113,7 +113,7 @@ func (controller *ResourceProviderController) subscribeToWeb3() error {
 		if deal.ResourceProvider != controller.web3SDK.GetAddress().String() {
 			return
 		}
-		controller.log.Info("StorageDealStateChange", data.GetAgreementStateString(ev.State))
+		controller.log.Info("StorageDealStateChange", dto.GetAgreementStateString(ev.State))
 		system.DumpObjectDebug(ev)
 		controller.loop.Trigger()
 	})
@@ -219,8 +219,8 @@ func (controller *ResourceProviderController) solve() error {
 Ensure resource offers are posted to the solve
 */
 
-func (controller *ResourceProviderController) getResourceOffer(index int, spec data.MachineSpec) data.ResourceOffer {
-	return data.ResourceOffer{
+func (controller *ResourceProviderController) getResourceOffer(index int, spec dto.MachineSpec) dto.ResourceOffer {
+	return dto.ResourceOffer{
 		// assign CreatedAt to the current millisecond timestamp
 		CreatedAt:        int(time.Now().UnixNano() / int64(time.Millisecond)),
 		ResourceProvider: controller.web3SDK.GetAddress().String(),
@@ -230,8 +230,8 @@ func (controller *ResourceProviderController) getResourceOffer(index int, spec d
 		Mode:             controller.options.Offers.Mode,
 		DefaultPricing:   controller.options.Offers.DefaultPricing,
 		DefaultTimeouts:  controller.options.Offers.DefaultTimeouts,
-		ModulePricing:    map[string]data.DealPricing{},
-		ModuleTimeouts:   map[string]data.DealTimeouts{},
+		ModulePricing:    map[string]dto.DealPricing{},
+		ModuleTimeouts:   map[string]dto.DealTimeouts{},
 		Services:         controller.options.Offers.Services,
 	}
 }
@@ -250,12 +250,12 @@ func (controller *ResourceProviderController) ensureResourceOffers() error {
 	// this will allow us to check if we need to create a new one
 	// or update an existing one - we use the "index" because
 	// the id's are changing because of the timestamps
-	existingResourceOffersMap := map[int]data.ResourceOfferContainer{}
+	existingResourceOffersMap := map[int]dto.ResourceOfferContainer{}
 	for _, existingResourceOffer := range activeResourceOffers {
 		existingResourceOffersMap[existingResourceOffer.ResourceOffer.Index] = existingResourceOffer
 	}
 
-	addResourceOffers := []data.ResourceOffer{}
+	addResourceOffers := []dto.ResourceOffer{}
 
 	// map over the specs we have in the config
 	for index, spec := range controller.options.Offers.Specs {
@@ -302,7 +302,7 @@ func (controller *ResourceProviderController) agreeToDeals() error {
 			State:            "DealNegotiating",
 		},
 		// if we have already submitted an agree tx then don't do it again
-		func(dealContainer data.DealContainer) bool {
+		func(dealContainer dto.DealContainer) bool {
 			return dealContainer.Transactions.ResourceProvider.Agree == ""
 		},
 	)
@@ -327,7 +327,7 @@ func (controller *ResourceProviderController) agreeToDeals() error {
 		controller.log.Info("agree tx", txHash)
 
 		// we have agreed to the deal so we need to update the tx in the solver
-		_, err = controller.solverClient.UpdateTransactionsResourceProvider(dealContainer.ID, data.DealTransactionsResourceProvider{
+		_, err = controller.solverClient.UpdateTransactionsResourceProvider(dealContainer.ID, dto.DealTransactionsResourceProvider{
 			Agree: txHash,
 		})
 		if err != nil {
@@ -363,7 +363,7 @@ func (controller *ResourceProviderController) runJobs() error {
 			State:            "DealAgreed",
 		},
 		// this is where the solver has found us a match and we need to agree to it
-		func(dealContainer data.DealContainer) bool {
+		func(dealContainer dto.DealContainer) bool {
 			controller.runningJobsMutex.RLock()
 			defer controller.runningJobsMutex.RUnlock()
 			_, ok := controller.runningJobs[dealContainer.ID]
@@ -401,9 +401,9 @@ func (controller *ResourceProviderController) runJobs() error {
 // this is run in it's own go-routine
 // we've already updated controller.runningJobs so we know this will only
 // run once
-func (controller *ResourceProviderController) runJob(deal data.DealContainer) {
+func (controller *ResourceProviderController) runJob(deal dto.DealContainer) {
 	controller.log.Info("run job", deal)
-	result := data.Result{
+	result := dto.Result{
 		DealID: deal.ID,
 		Error:  "",
 	}
@@ -463,7 +463,7 @@ func (controller *ResourceProviderController) runJob(deal data.DealContainer) {
 		return
 	}
 
-	_, err = controller.solverClient.UpdateTransactionsResourceProvider(deal.ID, data.DealTransactionsResourceProvider{
+	_, err = controller.solverClient.UpdateTransactionsResourceProvider(deal.ID, dto.DealTransactionsResourceProvider{
 		AddResult: txHash,
 	})
 	if err != nil {

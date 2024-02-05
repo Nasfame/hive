@@ -3,16 +3,16 @@ package jobcreator
 import (
 	"fmt"
 
-	"github.com/CoopHive/hive/pkg/data"
+	"github.com/CoopHive/hive/internal/jobCreatorService"
+	"github.com/CoopHive/hive/pkg/dto"
 	options2 "github.com/CoopHive/hive/pkg/options"
 	"github.com/CoopHive/hive/pkg/system"
-	"github.com/CoopHive/hive/services/jobcreator/internal-job"
 
 	"github.com/spf13/cobra"
 )
 
-func NewJobCreatorOptions() internal_job.JobCreatorOptions {
-	options := internal_job.JobCreatorOptions{
+func NewJobCreatorOptions() jobCreatorService.JobCreatorOptions {
+	options := jobCreatorService.JobCreatorOptions{
 		Offer:     GetDefaultJobCreatorOfferOptions(),
 		Web3:      options2.GetDefaultWeb3Options(),
 		Mediation: GetDefaultJobCreatorMediationOptions(),
@@ -21,17 +21,17 @@ func NewJobCreatorOptions() internal_job.JobCreatorOptions {
 	return options
 }
 
-func GetDefaultJobCreatorMediationOptions() internal_job.JobCreatorMediationOptions {
-	return internal_job.JobCreatorMediationOptions{
+func GetDefaultJobCreatorMediationOptions() jobCreatorService.JobCreatorMediationOptions {
+	return jobCreatorService.JobCreatorMediationOptions{
 		CheckResultsPercentage: options2.GetDefaultServeOptionInt("MEDIATION_CHANCE", 0),
 	}
 }
 
-func GetDefaultJobCreatorOfferOptions() internal_job.JobCreatorOfferOptions {
-	return internal_job.JobCreatorOfferOptions{
+func GetDefaultJobCreatorOfferOptions() jobCreatorService.JobCreatorOfferOptions {
+	return jobCreatorService.JobCreatorOfferOptions{
 		Module: GetDefaultModuleOptions(),
 		// this is the default pricing mode for an JC
-		Mode:     options2.GetDefaultPricingMode(data.MarketPrice),
+		Mode:     options2.GetDefaultPricingMode(dto.MarketPrice),
 		Pricing:  options2.GetDefaultPricingOptions(),
 		Timeouts: options2.GetDefaultTimeoutOptions(),
 		Inputs:   map[string]string{},
@@ -39,7 +39,7 @@ func GetDefaultJobCreatorOfferOptions() internal_job.JobCreatorOfferOptions {
 	}
 }
 
-func AddJobCreatorMediationCliFlags(cmd *cobra.Command, mediationOptions *internal_job.JobCreatorMediationOptions) {
+func AddJobCreatorMediationCliFlags(cmd *cobra.Command, mediationOptions *jobCreatorService.JobCreatorMediationOptions) {
 	cmd.PersistentFlags().IntVar(
 		&mediationOptions.CheckResultsPercentage,
 		"mediation-chance",
@@ -48,7 +48,7 @@ func AddJobCreatorMediationCliFlags(cmd *cobra.Command, mediationOptions *intern
 	)
 }
 
-func AddJobCreatorOfferCliFlags(cmd *cobra.Command, offerOptions *internal_job.JobCreatorOfferOptions) {
+func AddJobCreatorOfferCliFlags(cmd *cobra.Command, offerOptions *jobCreatorService.JobCreatorOfferOptions) {
 	// add the inputs that we will merge into the module template file
 	cmd.PersistentFlags().StringToStringVarP(&offerOptions.Inputs, "input", "i", offerOptions.Inputs, "Input key-value pairs")
 
@@ -59,13 +59,13 @@ func AddJobCreatorOfferCliFlags(cmd *cobra.Command, offerOptions *internal_job.J
 	options2.AddServicesCliFlags(cmd, &offerOptions.Services)
 }
 
-func AddJobCreatorCliFlags(cmd *cobra.Command, options *internal_job.JobCreatorOptions) {
+func AddJobCreatorCliFlags(cmd *cobra.Command, options *jobCreatorService.JobCreatorOptions) {
 	AddJobCreatorMediationCliFlags(cmd, &options.Mediation)
 	options2.AddWeb3CliFlags(cmd, &options.Web3)
 	AddJobCreatorOfferCliFlags(cmd, &options.Offer)
 }
 
-func CheckJobCreatorOptions(options internal_job.JobCreatorOptions) error {
+func CheckJobCreatorOptions(options jobCreatorService.JobCreatorOptions) error {
 	err := options2.CheckWeb3Options(options.Web3)
 	if err != nil {
 		return err
@@ -86,7 +86,7 @@ func CheckJobCreatorOptions(options internal_job.JobCreatorOptions) error {
 	return nil
 }
 
-func ProcessJobCreatorOptions(options internal_job.JobCreatorOptions, args []string) (internal_job.JobCreatorOptions, error) {
+func ProcessJobCreatorOptions(options jobCreatorService.JobCreatorOptions, args []string) (jobCreatorService.JobCreatorOptions, error) {
 	name := ""
 	if len(args) == 1 {
 		name = args[0]
@@ -109,7 +109,7 @@ func ProcessJobCreatorOptions(options internal_job.JobCreatorOptions, args []str
 	return options, CheckJobCreatorOptions(options)
 }
 
-func ProcessOnChainJobCreatorOptions(options internal_job.JobCreatorOptions, args []string) (internal_job.JobCreatorOptions, error) {
+func ProcessOnChainJobCreatorOptions(options jobCreatorService.JobCreatorOptions, args []string) (jobCreatorService.JobCreatorOptions, error) {
 	newWeb3Options, err := options2.ProcessWeb3Options(options.Web3)
 	if err != nil {
 		return options, err

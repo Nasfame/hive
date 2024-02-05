@@ -1,7 +1,7 @@
 package executor
 
 import (
-	"github.com/CoopHive/hive/pkg/data"
+	"github.com/CoopHive/hive/pkg/dto"
 )
 
 type ExecutorResults struct {
@@ -14,7 +14,7 @@ type Executor interface {
 	// run the given job and return a local folder
 	// that contains the results
 	RunJob(
-		deal data.DealContainer,
-		module data.Module,
+		deal dto.DealContainer,
+		module dto.Module,
 	) (*ExecutorResults, error)
 }

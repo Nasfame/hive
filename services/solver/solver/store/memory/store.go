@@ -8,18 +8,18 @@ import (
 	"github.com/spf13/viper"
 
 	"github.com/CoopHive/hive/enums"
+	"github.com/CoopHive/hive/pkg/dto"
 	"github.com/CoopHive/hive/services/solver/solver/store"
 
-	"github.com/CoopHive/hive/pkg/data"
 	"github.com/CoopHive/hive/pkg/jsonl"
 )
 
 type SolverStoreMemory struct {
-	jobOfferMap      map[string]*data.JobOfferContainer
-	resourceOfferMap map[string]*data.ResourceOfferContainer
-	dealMap          map[string]*data.DealContainer
-	resultMap        map[string]*data.Result
-	matchDecisionMap map[string]*data.MatchDecision
+	jobOfferMap      map[string]*dto.JobOfferContainer
+	resourceOfferMap map[string]*dto.ResourceOfferContainer
+	dealMap          map[string]*dto.DealContainer
+	resultMap        map[string]*dto.Result
+	matchDecisionMap map[string]*dto.MatchDecision
 	mutex            sync.RWMutex
 	logWriters       map[string]jsonl.Writer
 }
@@ -41,16 +41,16 @@ func NewSolverStoreMemory(conf *viper.Viper) (*SolverStoreMemory, error) {
 	}
 
 	return &SolverStoreMemory{
-		jobOfferMap:      map[string]*data.JobOfferContainer{},
-		resourceOfferMap: map[string]*data.ResourceOfferContainer{},
-		dealMap:          map[string]*data.DealContainer{},
-		resultMap:        map[string]*data.Result{},
-		matchDecisionMap: map[string]*data.MatchDecision{},
+		jobOfferMap:      map[string]*dto.JobOfferContainer{},
+		resourceOfferMap: map[string]*dto.ResourceOfferContainer{},
+		dealMap:          map[string]*dto.DealContainer{},
+		resultMap:        map[string]*dto.Result{},
+		matchDecisionMap: map[string]*dto.MatchDecision{},
 		logWriters:       logWriters,
 	}, nil
 }
 
-func (s *SolverStoreMemory) AddJobOffer(jobOffer data.JobOfferContainer) (*data.JobOfferContainer, error) {
+func (s *SolverStoreMemory) AddJobOffer(jobOffer dto.JobOfferContainer) (*dto.JobOfferContainer, error) {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
 	s.jobOfferMap[jobOffer.ID] = &jobOffer
@@ -59,7 +59,7 @@ func (s *SolverStoreMemory) AddJobOffer(jobOffer data.JobOfferContainer) (*data.
 	return &jobOffer, nil
 }
 
-func (s *SolverStoreMemory) AddResourceOffer(resourceOffer data.ResourceOfferContainer) (*data.ResourceOfferContainer, error) {
+func (s *SolverStoreMemory) AddResourceOffer(resourceOffer dto.ResourceOfferContainer) (*dto.ResourceOfferContainer, error) {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
 	s.resourceOfferMap[resourceOffer.ID] = &resourceOffer
@@ -68,7 +68,7 @@ func (s *SolverStoreMemory) AddResourceOffer(resourceOffer data.ResourceOfferCon
 	return &resourceOffer, nil
 }
 
-func (s *SolverStoreMemory) AddDeal(deal data.DealContainer) (*data.DealContainer, error) {
+func (s *SolverStoreMemory) AddDeal(deal dto.DealContainer) (*dto.DealContainer, error) {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
 	s.dealMap[deal.ID] = &deal
@@ -76,7 +76,7 @@ func (s *SolverStoreMemory) AddDeal(deal data.DealContainer) (*data.DealContaine
 	return &deal, nil
 }
 
-func (s *SolverStoreMemory) AddResult(result data.Result) (*data.Result, error) {
+func (s *SolverStoreMemory) AddResult(result dto.Result) (*dto.Result, error) {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
 	s.resultMap[result.DealID] = &result
@@ -84,7 +84,7 @@ func (s *SolverStoreMemory) AddResult(result data.Result) (*data.Result, error) 
 	return &result, nil
 }
 
-func (s *SolverStoreMemory) AddMatchDecision(resourceOffer string, jobOffer string, deal string, result bool) (*data.MatchDecision, error) {
+func (s *SolverStoreMemory) AddMatchDecision(resourceOffer string, jobOffer string, deal string, result bool) (*dto.MatchDecision, error) {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
 	id := getMatchID(resourceOffer, jobOffer)
@@ -92,7 +92,7 @@ func (s *SolverStoreMemory) AddMatchDecision(resourceOffer string, jobOffer stri
 	if ok {
 		return nil, fmt.Errorf("that match already exists")
 	}
-	decision := &data.MatchDecision{
+	decision := &dto.MatchDecision{
 		ResourceOffer: resourceOffer,
 		JobOffer:      jobOffer,
 		Deal:          deal,
@@ -103,10 +103,10 @@ func (s *SolverStoreMemory) AddMatchDecision(resourceOffer string, jobOffer stri
 	return decision, nil
 }
 
-func (s *SolverStoreMemory) GetJobOffers(query store.GetJobOffersQuery) ([]data.JobOfferContainer, error) {
+func (s *SolverStoreMemory) GetJobOffers(query store.GetJobOffersQuery) ([]dto.JobOfferContainer, error) {
 	s.mutex.RLock()
 	defer s.mutex.RUnlock()
-	jobOffers := []data.JobOfferContainer{}
+	jobOffers := []dto.JobOfferContainer{}
 	for _, jobOffer := range s.jobOfferMap {
 		matching := true
 		if query.JobCreator != "" && jobOffer.JobCreator != query.JobCreator {
@@ -124,16 +124,16 @@ func (s *SolverStoreMemory) GetJobOffers(query store.GetJobOffersQuery) ([]data.
 	return jobOffers, nil
 }
 
-func (s *SolverStoreMemory) GetResourceOffers(query store.GetResourceOffersQuery) ([]data.ResourceOfferContainer, error) {
+func (s *SolverStoreMemory) GetResourceOffers(query store.GetResourceOffersQuery) ([]dto.ResourceOfferContainer, error) {
 	s.mutex.RLock()
 	defer s.mutex.RUnlock()
-	resourceOffers := []data.ResourceOfferContainer{}
+	resourceOffers := []dto.ResourceOfferContainer{}
 	for _, resourceOffer := range s.resourceOfferMap {
 		matching := true
 		if query.ResourceProvider != "" && resourceOffer.ResourceProvider != query.ResourceProvider {
 			matching = false
 		}
-		if query.Active && !data.IsActiveAgreementState(resourceOffer.State) {
+		if query.Active && !dto.IsActiveAgreementState(resourceOffer.State) {
 			matching = false
 		}
 		if query.NotMatched {
@@ -148,13 +148,13 @@ func (s *SolverStoreMemory) GetResourceOffers(query store.GetResourceOffersQuery
 	return resourceOffers, nil
 }
 
-func (s *SolverStoreMemory) GetDeals(query store.GetDealsQuery) ([]data.DealContainer, error) {
+func (s *SolverStoreMemory) GetDeals(query store.GetDealsQuery) ([]dto.DealContainer, error) {
 	s.mutex.RLock()
 	defer s.mutex.RUnlock()
-	deals := []data.DealContainer{}
+	deals := []dto.DealContainer{}
 	queryState := uint8(0)
 	if query.State != "" {
-		parsedState, err := data.GetAgreementState(query.State)
+		parsedState, err := dto.GetAgreementState(query.State)
 		if err != nil {
 			return nil, err
 		}
@@ -181,7 +181,7 @@ func (s *SolverStoreMemory) GetDeals(query store.GetDealsQuery) ([]data.DealCont
 	return deals, nil
 }
 
-func (s *SolverStoreMemory) GetJobOffer(id string) (*data.JobOfferContainer, error) {
+func (s *SolverStoreMemory) GetJobOffer(id string) (*dto.JobOfferContainer, error) {
 	s.mutex.RLock()
 	defer s.mutex.RUnlock()
 	jobOffer, ok := s.jobOfferMap[id]
@@ -191,7 +191,7 @@ func (s *SolverStoreMemory) GetJobOffer(id string) (*data.JobOfferContainer, err
 	return jobOffer, nil
 }
 
-func (s *SolverStoreMemory) GetResourceOffer(id string) (*data.ResourceOfferContainer, error) {
+func (s *SolverStoreMemory) GetResourceOffer(id string) (*dto.ResourceOfferContainer, error) {
 	s.mutex.RLock()
 	defer s.mutex.RUnlock()
 	resourceOffer, ok := s.resourceOfferMap[id]
@@ -201,7 +201,7 @@ func (s *SolverStoreMemory) GetResourceOffer(id string) (*data.ResourceOfferCont
 	return resourceOffer, nil
 }
 
-func (s *SolverStoreMemory) GetDeal(id string) (*data.DealContainer, error) {
+func (s *SolverStoreMemory) GetDeal(id string) (*dto.DealContainer, error) {
 	s.mutex.RLock()
 	defer s.mutex.RUnlock()
 	deal, ok := s.dealMap[id]
@@ -211,7 +211,7 @@ func (s *SolverStoreMemory) GetDeal(id string) (*data.DealContainer, error) {
 	return deal, nil
 }
 
-func (s *SolverStoreMemory) GetResult(id string) (*data.Result, error) {
+func (s *SolverStoreMemory) GetResult(id string) (*dto.Result, error) {
 	s.mutex.RLock()
 	defer s.mutex.RUnlock()
 	result, ok := s.resultMap[id]
@@ -221,7 +221,7 @@ func (s *SolverStoreMemory) GetResult(id string) (*data.Result, error) {
 	return result, nil
 }
 
-func (s *SolverStoreMemory) GetMatchDecision(resourceOffer string, jobOffer string) (*data.MatchDecision, error) {
+func (s *SolverStoreMemory) GetMatchDecision(resourceOffer string, jobOffer string) (*dto.MatchDecision, error) {
 	s.mutex.RLock()
 	defer s.mutex.RUnlock()
 	id := getMatchID(resourceOffer, jobOffer)
@@ -232,7 +232,7 @@ func (s *SolverStoreMemory) GetMatchDecision(resourceOffer string, jobOffer stri
 	return decision, nil
 }
 
-func (s *SolverStoreMemory) UpdateJobOfferState(id string, dealID string, state uint8) (*data.JobOfferContainer, error) {
+func (s *SolverStoreMemory) UpdateJobOfferState(id string, dealID string, state uint8) (*dto.JobOfferContainer, error) {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
 	jobOffer, ok := s.jobOfferMap[id]
@@ -245,7 +245,7 @@ func (s *SolverStoreMemory) UpdateJobOfferState(id string, dealID string, state 
 	return jobOffer, nil
 }
 
-func (s *SolverStoreMemory) UpdateResourceOfferState(id string, dealID string, state uint8) (*data.ResourceOfferContainer, error) {
+func (s *SolverStoreMemory) UpdateResourceOfferState(id string, dealID string, state uint8) (*dto.ResourceOfferContainer, error) {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
 	resourceOffer, ok := s.resourceOfferMap[id]
@@ -258,7 +258,7 @@ func (s *SolverStoreMemory) UpdateResourceOfferState(id string, dealID string, s
 	return resourceOffer, nil
 }
 
-func (s *SolverStoreMemory) UpdateDealState(id string, state uint8) (*data.DealContainer, error) {
+func (s *SolverStoreMemory) UpdateDealState(id string, state uint8) (*dto.DealContainer, error) {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
 	deal, ok := s.dealMap[id]
@@ -270,7 +270,7 @@ func (s *SolverStoreMemory) UpdateDealState(id string, state uint8) (*data.DealC
 	return deal, nil
 }
 
-func (s *SolverStoreMemory) UpdateDealMediator(id string, mediator string) (*data.DealContainer, error) {
+func (s *SolverStoreMemory) UpdateDealMediator(id string, mediator string) (*dto.DealContainer, error) {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
 	deal, ok := s.dealMap[id]
@@ -282,7 +282,7 @@ func (s *SolverStoreMemory) UpdateDealMediator(id string, mediator string) (*dat
 	return deal, nil
 }
 
-func (s *SolverStoreMemory) UpdateDealTransactionsResourceProvider(id string, data data.DealTransactionsResourceProvider) (*data.DealContainer, error) {
+func (s *SolverStoreMemory) UpdateDealTransactionsResourceProvider(id string, data dto.DealTransactionsResourceProvider) (*dto.DealContainer, error) {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
 	deal, ok := s.dealMap[id]
@@ -307,7 +307,7 @@ func (s *SolverStoreMemory) UpdateDealTransactionsResourceProvider(id string, da
 	}
 	return deal, nil
 }
-func (s *SolverStoreMemory) UpdateDealTransactionsJobCreator(id string, data data.DealTransactionsJobCreator) (*data.DealContainer, error) {
+func (s *SolverStoreMemory) UpdateDealTransactionsJobCreator(id string, data dto.DealTransactionsJobCreator) (*dto.DealContainer, error) {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
 	deal, ok := s.dealMap[id]
@@ -337,7 +337,7 @@ func (s *SolverStoreMemory) UpdateDealTransactionsJobCreator(id string, data dat
 	return deal, nil
 }
 
-func (s *SolverStoreMemory) UpdateDealTransactionsMediator(id string, data data.DealTransactionsMediator) (*data.DealContainer, error) {
+func (s *SolverStoreMemory) UpdateDealTransactionsMediator(id string, data dto.DealTransactionsMediator) (*dto.DealContainer, error) {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
 	deal, ok := s.dealMap[id]

@@ -3,31 +3,31 @@ package options
 import (
 	"github.com/spf13/cobra"
 
-	"github.com/CoopHive/hive/pkg/data"
+	"github.com/CoopHive/hive/pkg/dto"
 )
 
-func GetDefaultTimeoutOptions() data.DealTimeouts {
-	return data.DealTimeouts{
-		Agree: data.DealTimeout{
+func GetDefaultTimeoutOptions() dto.DealTimeouts {
+	return dto.DealTimeouts{
+		Agree: dto.DealTimeout{
 			Timeout:    GetDefaultServeOptionUint64("TIMEOUT_AGREE_TIME", 3600),
 			Collateral: GetDefaultServeOptionUint64("TIMEOUT_AGREE_COLLATERAL", 1),
 		},
-		SubmitResults: data.DealTimeout{
+		SubmitResults: dto.DealTimeout{
 			Timeout:    GetDefaultServeOptionUint64("TIMEOUT_SUBMIT_RESULTS_COLLATERAL", 3600),
 			Collateral: GetDefaultServeOptionUint64("TIMEOUT_SUBMIT_RESULTS_COLLATERAL", 1),
 		},
-		JudgeResults: data.DealTimeout{
+		JudgeResults: dto.DealTimeout{
 			Timeout:    GetDefaultServeOptionUint64("TIMEOUT_JUDGE_RESULTS_COLLATERAL", 3600),
 			Collateral: GetDefaultServeOptionUint64("TIMEOUT_JUDGE_RESULTS_COLLATERAL", 1),
 		},
-		MediateResults: data.DealTimeout{
+		MediateResults: dto.DealTimeout{
 			Timeout:    GetDefaultServeOptionUint64("TIMEOUT_MEDIATE_RESULTS_COLLATERAL", 3600),
 			Collateral: GetDefaultServeOptionUint64("TIMEOUT_MEDIATE_RESULTS_COLLATERAL", 1),
 		},
 	}
 }
 
-func AddTimeoutCliFlags(cmd *cobra.Command, timeoutConfig *data.DealTimeouts) {
+func AddTimeoutCliFlags(cmd *cobra.Command, timeoutConfig *dto.DealTimeouts) {
 	cmd.PersistentFlags().Uint64Var(
 		&timeoutConfig.Agree.Timeout, "timeout-agree-time", timeoutConfig.Agree.Timeout,
 		`The number of seconds to timeout a deal when agreeing (TIMEOUT_AGREE_TIME)`,

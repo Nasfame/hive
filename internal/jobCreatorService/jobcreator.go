@@ -1,9 +1,9 @@
-package internal_job
+package jobCreatorService
 
 import (
 	"context"
 
-	"github.com/CoopHive/hive/pkg/data"
+	"github.com/CoopHive/hive/pkg/dto"
 	"github.com/CoopHive/hive/pkg/system"
 	"github.com/CoopHive/hive/pkg/web3"
 )
@@ -16,21 +16,21 @@ type JobCreatorMediationOptions struct {
 type JobCreatorOfferOptions struct {
 	// the module that is wanting to be run
 	// this contains the spec that is required to run the module
-	Module data.ModuleConfig
+	Module dto.ModuleConfig
 	// the required spec hoisted from the module
-	Spec data.MachineSpec
+	Spec dto.MachineSpec
 	// this will normally be MarketPrice for JC's
-	Mode data.PricingMode
+	Mode dto.PricingMode
 	// this is so clients can put limit orders for jobs
 	// and the solver will match as soon as a resource offer
 	// is added that matches the bid
-	Pricing data.DealPricing
+	Pricing dto.DealPricing
 	// the timeouts we are offering with the deal
-	Timeouts data.DealTimeouts
+	Timeouts dto.DealTimeouts
 	// the inputs to the module
 	Inputs map[string]string
 	// which mediators and directories this RP will trust
-	Services data.ServiceConfig
+	Services dto.ServiceConfig
 }
 
 type JobCreatorOptions struct {
@@ -65,12 +65,12 @@ func (jobCreator *JobCreator) Start(ctx context.Context, cm *system.CleanupManag
 	return jobCreator.controller.Start(ctx, cm)
 }
 
-func (jobCreator *JobCreator) GetJobOfferFromOptions(options JobCreatorOfferOptions) (data.JobOffer, error) {
+func (jobCreator *JobCreator) GetJobOfferFromOptions(options JobCreatorOfferOptions) (dto.JobOffer, error) {
 	return getJobOfferFromOptions(options, jobCreator.web3SDK.GetAddress().String())
 }
 
 // adds the job offer to the solver
-func (jobCreator *JobCreator) AddJobOffer(offer data.JobOffer) (data.JobOfferContainer, error) {
+func (jobCreator *JobCreator) AddJobOffer(offer dto.JobOffer) (dto.JobOfferContainer, error) {
 	return jobCreator.controller.AddJobOffer(offer)
 }
 
@@ -78,6 +78,6 @@ func (jobCreator *JobCreator) SubscribeToJobOfferUpdates(sub JobOfferSubscriber)
 	jobCreator.controller.SubscribeToJobOfferUpdates(sub)
 }
 
-func (jobCreator *JobCreator) GetResult(dealId string) (data.Result, error) {
+func (jobCreator *JobCreator) GetResult(dealId string) (dto.Result, error) {
 	return jobCreator.controller.solverClient.GetResult(dealId)
 }

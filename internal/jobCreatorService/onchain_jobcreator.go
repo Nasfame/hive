@@ -1,4 +1,4 @@
-package internal_job
+package jobCreatorService
 
 import (
 	"context"
@@ -8,7 +8,7 @@ import (
 
 	"github.com/davecgh/go-spew/spew"
 
-	"github.com/CoopHive/hive/pkg/data"
+	"github.com/CoopHive/hive/pkg/dto"
 	"github.com/CoopHive/hive/pkg/system"
 	"github.com/CoopHive/hive/pkg/web3"
 	jobcreatorweb3 "github.com/CoopHive/hive/pkg/web3/bindings/jobcreator"
@@ -64,8 +64,8 @@ func (jobCreator *OnChainJobCreator) Start(ctx context.Context, cm *system.Clean
 		return errorChan
 	}
 
-	jobCreator.controller.SubscribeToJobOfferUpdates(func(evOffer data.JobOfferContainer) {
-		if evOffer.State != data.GetAgreementStateIndex("ResultsAccepted") {
+	jobCreator.controller.SubscribeToJobOfferUpdates(func(evOffer dto.JobOfferContainer) {
+		if evOffer.State != dto.GetAgreementStateIndex("ResultsAccepted") {
 			return
 		}
 
@@ -137,12 +137,12 @@ func (jobCreator *OnChainJobCreator) Start(ctx context.Context, cm *system.Clean
 	return errorChan
 }
 
-func (jobCreator *OnChainJobCreator) GetJobOfferFromOptions(options JobCreatorOfferOptions) (data.JobOffer, error) {
+func (jobCreator *OnChainJobCreator) GetJobOfferFromOptions(options JobCreatorOfferOptions) (dto.JobOffer, error) {
 	return getJobOfferFromOptions(options, jobCreator.web3SDK.GetAddress().String())
 }
 
 // adds the job offer to the solver
-func (jobCreator *OnChainJobCreator) AddJobOffer(offer data.JobOffer) (data.JobOfferContainer, error) {
+func (jobCreator *OnChainJobCreator) AddJobOffer(offer dto.JobOffer) (dto.JobOfferContainer, error) {
 	return jobCreator.controller.AddJobOffer(offer)
 }
 
@@ -150,6 +150,6 @@ func (jobCreator *OnChainJobCreator) SubscribeToJobOfferUpdates(sub JobOfferSubs
 	jobCreator.controller.SubscribeToJobOfferUpdates(sub)
 }
 
-func (jobCreator *OnChainJobCreator) GetResult(dealId string) (data.Result, error) {
+func (jobCreator *OnChainJobCreator) GetResult(dealId string) (dto.Result, error) {
 	return jobCreator.controller.solverClient.GetResult(dealId)
 }

@@ -5,15 +5,16 @@ import (
 	"fmt"
 	"math/big"
 
-	"github.com/CoopHive/hive/pkg/data"
-	"github.com/CoopHive/hive/pkg/system"
-	"github.com/CoopHive/hive/pkg/web3/bindings/users"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/rs/zerolog/log"
+
+	"github.com/CoopHive/hive/pkg/dto"
+	"github.com/CoopHive/hive/pkg/system"
+	"github.com/CoopHive/hive/pkg/web3/bindings/users"
 )
 
 func (sdk *Web3SDK) GetServiceAddresses(serviceType string) ([]common.Address, error) {
-	solverType, err := data.GetServiceType(serviceType)
+	solverType, err := dto.GetServiceType(serviceType)
 	if err != nil {
 		return nil, err
 	}
@@ -101,7 +102,7 @@ func (sdk *Web3SDK) GetSolverUrl(address string) (string, error) {
 }
 
 func (sdk *Web3SDK) Agree(
-	deal data.Deal,
+	deal dto.Deal,
 ) (string, error) {
 	mediators := []common.Address{}
 	for _, mediator := range deal.Members.Mediators {
@@ -110,9 +111,9 @@ func (sdk *Web3SDK) Agree(
 	tx, err := sdk.Contracts.Controller.Agree(
 		sdk.TransactOpts,
 		deal.ID,
-		data.ConvertDealMembers(deal.Members),
-		data.ConvertDealTimeouts(deal.Timeouts),
-		data.ConvertDealPricing(deal.Pricing),
+		dto.ConvertDealMembers(deal.Members),
+		dto.ConvertDealTimeouts(deal.Timeouts),
+		dto.ConvertDealPricing(deal.Pricing),
 	)
 	if err != nil {
 		system.Error(sdk.Options.Service, "error submitting controller.Agree() tx", err)

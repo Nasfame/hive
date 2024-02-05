@@ -16,10 +16,10 @@ import (
 	"github.com/theckman/yacspin"
 
 	"github.com/CoopHive/hive/enums"
-	"github.com/CoopHive/hive/pkg/data"
+	"github.com/CoopHive/hive/internal/jobCreatorService"
+	"github.com/CoopHive/hive/pkg/dto"
 	"github.com/CoopHive/hive/pkg/system"
 	optionsfactory "github.com/CoopHive/hive/services/jobcreator"
-	internal_job "github.com/CoopHive/hive/services/jobcreator/internal-job"
 	"github.com/CoopHive/hive/services/solver/solver"
 )
 
@@ -44,7 +44,7 @@ func newRunCmd(conf *viper.Viper) *cobra.Command {
 	return runCmd
 }
 
-func runJob(cmd *cobra.Command, options internal_job.JobCreatorOptions, conf *viper.Viper) error {
+func runJob(cmd *cobra.Command, options jobCreatorService.JobCreatorOptions, conf *viper.Viper) error {
 	c := color.New(color.FgCyan).Add(color.Bold)
 	header := `
   ___  __    __  ____  _  _  __  _  _  ____ 
@@ -87,11 +87,11 @@ func runJob(cmd *cobra.Command, options internal_job.JobCreatorOptions, conf *vi
 
 	commandCtx := system.NewCommandContext(cmd)
 	defer commandCtx.Cleanup()
-	result, err := internal_job.RunJob(commandCtx, options, func(evOffer data.JobOfferContainer) {
+	result, err := jobCreatorService.RunJob(commandCtx, options, func(evOffer dto.JobOfferContainer) {
 		if err := spinner.Stop(); err != nil {
 			log.Fatalf("failed to stop spinner: %v", err)
 		}
-		st := data.GetAgreementStateString(evOffer.State)
+		st := dto.GetAgreementStateString(evOffer.State)
 		var desc string
 		var emoji string
 		switch st {

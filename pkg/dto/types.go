@@ -1,7 +1,7 @@
-package data
+package dto
 
 import (
-	"github.com/CoopHive/hive/pkg/data/bacalhau"
+	"github.com/CoopHive/hive/pkg/bacalhau"
 )
 
 // used by resource providers to describe their resources

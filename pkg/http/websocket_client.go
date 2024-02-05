@@ -2,6 +2,7 @@ package http
 
 import (
 	"context"
+	"sync/atomic"
 	"time"
 
 	"github.com/gorilla/websocket"
@@ -14,29 +15,26 @@ func ConnectWebSocket(
 	messageChan chan []byte,
 	ctx context.Context,
 ) *websocket.Conn {
-	closed := false
+	closed := &atomic.Bool{}
 
 	var conn *websocket.Conn
 
 	// if we ever get a cancellation from the context, try to close the connection
 	go func() {
 		<-ctx.Done()
-		closed = true
+		closed.Store(true)
 		if conn != nil {
 			conn.Close()
 		}
 	}()
 
 	// retry connecting until we get a connection
-	for {
+	for !closed.Load() { // TODO: test
 		var err error
 		log.Debug().Msgf("WebSocket connection connecting: %s", url)
 		conn, _, err = websocket.DefaultDialer.Dial(url, nil)
 		if err != nil {
 			log.Error().Msgf("WebSocket connection failed: %s\nReconnecting in 2 seconds...", err)
-			if closed {
-				break
-			}
 			time.Sleep(2 * time.Second)
 			continue
 		}
@@ -46,12 +44,12 @@ func ConnectWebSocket(
 	// now that we have a connection, if we haven't been closed yet, forever
 	// read from the connection and send messages down the channel, unless we
 	// fail a read in which case we try to reconnect
-	if !closed {
+	if !closed.Load() {
 		go func() {
 			for {
 				messageType, p, err := conn.ReadMessage()
 				if err != nil {
-					if closed {
+					if closed.Load() {
 						return
 					}
 					log.Error().Msgf("Read error: %s\nReconnecting in 2 seconds...", err)

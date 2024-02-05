@@ -3,15 +3,15 @@ package options
 import (
 	"github.com/spf13/cobra"
 
-	"github.com/CoopHive/hive/pkg/data"
+	"github.com/CoopHive/hive/pkg/dto"
 )
 
-func GetDefaultPricingMode(mode data.PricingMode) data.PricingMode {
-	return data.PricingMode(GetDefaultServeOptionString("PRICING_MODE", string(mode)))
+func GetDefaultPricingMode(mode dto.PricingMode) dto.PricingMode {
+	return dto.PricingMode(GetDefaultServeOptionString("PRICING_MODE", string(mode)))
 }
 
-func GetDefaultPricingOptions() data.DealPricing {
-	return data.DealPricing{
+func GetDefaultPricingOptions() dto.DealPricing {
+	return dto.DealPricing{
 		// let's make the default price 1 ether
 		InstructionPrice: GetDefaultServeOptionUint64("PRICING_INSTRUCTION_PRICE", 1),
 		// 2 x ether for payment collateral (assuming modules that have a single instruction count)
@@ -23,14 +23,14 @@ func GetDefaultPricingOptions() data.DealPricing {
 	}
 }
 
-func AddPricingModeCliFlags(cmd *cobra.Command, pricingMode *data.PricingMode) {
+func AddPricingModeCliFlags(cmd *cobra.Command, pricingMode *dto.PricingMode) {
 	cmd.PersistentFlags().StringVar(
 		(*string)(pricingMode), "pricing-mode", string(*pricingMode),
 		"set pricing mode (MarketPrice/FixedPrice)",
 	)
 }
 
-func AddPricingCliFlags(cmd *cobra.Command, pricingConfig *data.DealPricing) {
+func AddPricingCliFlags(cmd *cobra.Command, pricingConfig *dto.DealPricing) {
 	cmd.PersistentFlags().Uint64Var(
 		&pricingConfig.InstructionPrice, "pricing-instruction-price", pricingConfig.InstructionPrice,
 		`The price per instruction to offer (PRICING_INSTRUCTION_PRICE)`,

@@ -43,3 +43,7 @@ install-win:
 	cp ./bin/$(binName) ./bin/hive.exe
 	cp ./bin/hive.exe $$GOBIN
 #Ps1: cmd	cp ./bin/hive.exe $env:GOBIN
+
+
+generate-sol-bindings-for-go:
+	./stack go-bindings-with-go;

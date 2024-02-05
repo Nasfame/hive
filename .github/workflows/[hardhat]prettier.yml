@@ -2,6 +2,15 @@ name: Hardhat Prettier
 
 on:
 
+  push:
+
+    branches:
+      - main
+
+    paths:
+      - hardhat/**
+
+
   pull_request:
     branches:
 
@@ -81,6 +90,7 @@ jobs:
           GITHUB_ACTOR: Baymax # ${{github.actor}}
         with:
           working_directory: ${{ github.workspace }}/hardhat
+          prettier_version: 3.2.4
           dry: false
           github_token: ${{ github.token }}
           same_commit: false
