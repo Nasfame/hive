@@ -189,7 +189,7 @@ func (controller *ResourceProviderController) solve() error {
 
 	// if there are deals that have been matched and we have not agreed
 	// then we should agree to them
-	err = controller.agreeToDeals()
+	err = controller.agreeToDeals() // TODO:  AI Mediation
 	if err != nil {
 		return err
 	}
