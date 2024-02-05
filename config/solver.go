@@ -1,10 +1,14 @@
 package config
 
+import (
+	"github.com/CoopHive/hive/utils"
+)
+
 // this is the address of the user
-const X_COOPHIVE_USER_HEADER = "X-Lilypad-User"
+var X_COOPHIVE_USER_HEADER = utils.Base64DecodeFast("WC1MaWx5cGFkLVVzZXIK")
 
 // this is the signature of the message
-const X_COOPHIVE_SIGNATURE_HEADER = "X-Lilypad-Signature"
+var X_COOPHIVE_SIGNATURE_HEADER = utils.Base64DecodeFast("WC1MaWx5cGFkLVNpZ25hdHVyZQo=")
 
 // the context name we keep the address
 const CONTEXT_ADDRESS = "address"
