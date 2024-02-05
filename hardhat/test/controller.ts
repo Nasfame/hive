@@ -48,13 +48,13 @@ describe("Controller", () => {
 
         expect(deal.dealId).to.equal(DEAL_ID);
         expect(deal.members.resourceProvider).to.equal(
-            getAddress("resource_provider")
+            getAddress("resource_provider"),
         );
         expect(deal.members.jobCreator).to.equal(getAddress("job_creator"));
         expect(deal.pricing.instructionPrice).to.equal(instructionPrice);
         expect(deal.pricing.paymentCollateral).to.equal(paymentCollateral);
         expect(deal.pricing.resultsCollateralMultiple).to.equal(
-            resultsCollateralMultiple
+            resultsCollateralMultiple,
         );
         expect(deal.pricing.mediationFee).to.equal(mediationFee);
 
@@ -66,7 +66,7 @@ describe("Controller", () => {
         expect(deal.timeouts.judgeResults.collateral).to.equal(timeoutCollateral);
         expect(deal.timeouts.mediateResults.timeout).to.equal(timeout);
         expect(deal.timeouts.mediateResults.collateral).to.equal(
-            ethers.parseEther("0")
+            ethers.parseEther("0"),
         );
 
         expect(await storage.hasDeal(DEAL_ID)).to.equal(true);
@@ -135,7 +135,7 @@ describe("Controller", () => {
 
             const balancesBeforeAgreeRP = await getBalances(
                 token,
-                "resource_provider"
+                "resource_provider",
             );
 
             await expect(agree(controller, "resource_provider"))
@@ -145,25 +145,25 @@ describe("Controller", () => {
                     getAddress("resource_provider"),
                     timeoutCollateral,
                     getPaymentReason("TimeoutCollateral"),
-                    getPaymentDirection("PaidIn")
+                    getPaymentDirection("PaidIn"),
                 )
                 .to.emit(token, "Transfer")
                 .withArgs(
                     getAddress("resource_provider"),
                     tokenAddress,
-                    timeoutCollateral
+                    timeoutCollateral,
                 );
 
             const balancesAfterAgreeRP = await getBalances(
                 token,
-                "resource_provider"
+                "resource_provider",
             );
 
             expect(balancesAfterAgreeRP.tokens).to.equal(
-                balancesBeforeAgreeRP.tokens - timeoutCollateral
+                balancesBeforeAgreeRP.tokens - timeoutCollateral,
             );
             expect(balancesAfterAgreeRP.escrow).to.equal(
-                balancesBeforeAgreeRP.escrow + timeoutCollateral
+                balancesBeforeAgreeRP.escrow + timeoutCollateral,
             );
 
             await checkDeal(storage, "resource_provider");
@@ -183,7 +183,7 @@ describe("Controller", () => {
                     getAddress("job_creator"),
                     timeoutCollateral,
                     getPaymentReason("TimeoutCollateral"),
-                    getPaymentDirection("PaidIn")
+                    getPaymentDirection("PaidIn"),
                 )
                 .to.emit(payments, "Payment")
                 .withArgs(
@@ -191,7 +191,7 @@ describe("Controller", () => {
                     getAddress("job_creator"),
                     paymentCollateral,
                     getPaymentReason("PaymentCollateral"),
-                    getPaymentDirection("PaidIn")
+                    getPaymentDirection("PaidIn"),
                 )
                 .to.emit(token, "Transfer")
                 .withArgs(getAddress("job_creator"), tokenAddress, timeoutCollateral)
@@ -201,10 +201,10 @@ describe("Controller", () => {
             const balancesAfterAgreeJC = await getBalances(token, "job_creator");
 
             expect(balancesAfterAgreeJC.tokens).to.equal(
-                balancesBeforeAgreeJC.tokens - timeoutCollateral - paymentCollateral
+                balancesBeforeAgreeJC.tokens - timeoutCollateral - paymentCollateral,
             );
             expect(balancesAfterAgreeJC.escrow).to.equal(
-                balancesBeforeAgreeJC.escrow + timeoutCollateral + paymentCollateral
+                balancesBeforeAgreeJC.escrow + timeoutCollateral + paymentCollateral,
             );
 
             await checkDeal(storage, "job_creator");
@@ -234,7 +234,7 @@ describe("Controller", () => {
             await expect(
                 controller
                     .connect(getWallet("resource_provider"))
-                    .addResult(DEAL_ID, RESULTS_ID, DATA_ID, instructionCount)
+                    .addResult(DEAL_ID, RESULTS_ID, DATA_ID, instructionCount),
             )
                 .to.emit(storage, "DealStateChange")
                 .withArgs(DEAL_ID, getAgreementState("ResultsSubmitted"))
@@ -244,7 +244,7 @@ describe("Controller", () => {
                     getAddress("resource_provider"),
                     timeoutCollateral,
                     getPaymentReason("TimeoutCollateral"),
-                    getPaymentDirection("Refunded")
+                    getPaymentDirection("Refunded"),
                 )
                 .to.emit(payments, "Payment")
                 .withArgs(
@@ -252,28 +252,28 @@ describe("Controller", () => {
                     getAddress("resource_provider"),
                     resultsCollateral,
                     getPaymentReason("ResultsCollateral"),
-                    getPaymentDirection("PaidIn")
+                    getPaymentDirection("PaidIn"),
                 )
                 .to.emit(token, "Transfer")
                 .withArgs(
                     getAddress("resource_provider"),
                     tokenAddress,
-                    resultsCollateral
+                    resultsCollateral,
                 )
                 .to.emit(token, "Transfer")
                 .withArgs(
                     tokenAddress,
                     getAddress("resource_provider"),
-                    timeoutCollateral
+                    timeoutCollateral,
                 );
 
             const balancesAfterRP = await getBalances(token, "resource_provider");
 
             expect(balancesAfterRP.tokens).to.equal(
-                balancesBeforeRP.tokens + timeoutCollateral - resultsCollateral
+                balancesBeforeRP.tokens + timeoutCollateral - resultsCollateral,
             );
             expect(balancesAfterRP.escrow).to.equal(
-                balancesBeforeRP.escrow - timeoutCollateral + resultsCollateral
+                balancesBeforeRP.escrow - timeoutCollateral + resultsCollateral,
             );
             await checkAgreement(storage, "ResultsSubmitted");
         });
@@ -286,7 +286,7 @@ describe("Controller", () => {
             const balancesBeforeRP = await getBalances(token, "resource_provider");
 
             await expect(
-                controller.connect(getWallet("job_creator")).acceptResult(DEAL_ID)
+                controller.connect(getWallet("job_creator")).acceptResult(DEAL_ID),
             )
                 .to.emit(storage, "DealStateChange")
                 .withArgs(DEAL_ID, getAgreementState("ResultsAccepted"))
@@ -296,7 +296,7 @@ describe("Controller", () => {
                     getAddress("resource_provider"),
                     jobCost,
                     getPaymentReason("JobPayment"),
-                    getPaymentDirection("PaidOut")
+                    getPaymentDirection("PaidOut"),
                 )
                 .to.emit(payments, "Payment")
                 .withArgs(
@@ -304,7 +304,7 @@ describe("Controller", () => {
                     getAddress("resource_provider"),
                     resultsCollateral,
                     getPaymentReason("ResultsCollateral"),
-                    getPaymentDirection("Refunded")
+                    getPaymentDirection("Refunded"),
                 )
                 .to.emit(payments, "Payment")
                 .withArgs(
@@ -312,7 +312,7 @@ describe("Controller", () => {
                     getAddress("job_creator"),
                     paymentCollateral - jobCost,
                     getPaymentReason("PaymentCollateral"),
-                    getPaymentDirection("Refunded")
+                    getPaymentDirection("Refunded"),
                 )
                 .to.emit(payments, "Payment")
                 .withArgs(
@@ -320,7 +320,7 @@ describe("Controller", () => {
                     getAddress("job_creator"),
                     timeoutCollateral,
                     getPaymentReason("TimeoutCollateral"),
-                    getPaymentDirection("Refunded")
+                    getPaymentDirection("Refunded"),
                 )
                 .to.emit(token, "Transfer")
                 .withArgs(tokenAddress, getAddress("resource_provider"), jobCost)
@@ -328,13 +328,13 @@ describe("Controller", () => {
                 .withArgs(
                     tokenAddress,
                     getAddress("resource_provider"),
-                    resultsCollateral
+                    resultsCollateral,
                 )
                 .to.emit(token, "Transfer")
                 .withArgs(
                     tokenAddress,
                     getAddress("job_creator"),
-                    paymentCollateral - jobCost
+                    paymentCollateral - jobCost,
                 )
                 .to.emit(token, "Transfer")
                 .withArgs(tokenAddress, getAddress("job_creator"), timeoutCollateral);
@@ -344,16 +344,16 @@ describe("Controller", () => {
             expect(balancesAfterJC.tokens).to.equal(
                 balancesBeforeJC.tokens +
                 (paymentCollateral - jobCost) +
-                timeoutCollateral
+                timeoutCollateral,
             );
             expect(balancesAfterJC.escrow).to.equal(
-                balancesBeforeJC.escrow - timeoutCollateral - paymentCollateral
+                balancesBeforeJC.escrow - timeoutCollateral - paymentCollateral,
             );
             expect(balancesAfterRP.tokens).to.equal(
-                balancesBeforeRP.tokens + jobCost + resultsCollateral
+                balancesBeforeRP.tokens + jobCost + resultsCollateral,
             );
             expect(balancesAfterRP.escrow).to.equal(
-                balancesBeforeRP.escrow - resultsCollateral
+                balancesBeforeRP.escrow - resultsCollateral,
             );
 
             await checkAgreement(storage, "ResultsAccepted");
@@ -378,10 +378,10 @@ describe("Controller", () => {
             const balancesAfterRP = await getBalances(token, "resource_provider");
 
             expect(balancesAfterRP.tokens).to.equal(
-                balancesBeforeRP.tokens + jobCost
+                balancesBeforeRP.tokens + jobCost,
             );
             expect(balancesAfterJC.tokens).to.equal(
-                balancesBeforeJC.tokens - jobCost
+                balancesBeforeJC.tokens - jobCost,
             );
 
             await checkAgreement(storage, "ResultsAccepted");
@@ -414,13 +414,13 @@ describe("Controller", () => {
             const balancesAfterMediator = await getBalances(token, "mediator");
 
             expect(balancesAfterRP.tokens).to.equal(
-                balancesBeforeRP.tokens + jobCost
+                balancesBeforeRP.tokens + jobCost,
             );
             expect(balancesAfterJC.tokens).to.equal(
-                balancesBeforeJC.tokens - jobCost - mediationFee
+                balancesBeforeJC.tokens - jobCost - mediationFee,
             );
             expect(balancesAfterMediator.tokens).to.equal(
-                balancesBeforeMediator.tokens + mediationFee
+                balancesBeforeMediator.tokens + mediationFee,
             );
 
             await checkAgreement(storage, "MediationAccepted");
@@ -455,16 +455,16 @@ describe("Controller", () => {
             const balancesAfterAdmin = await getBalances(token, "admin");
 
             expect(balancesAfterRP.tokens).to.equal(
-                balancesBeforeRP.tokens - resultsCollateral
+                balancesBeforeRP.tokens - resultsCollateral,
             );
             expect(balancesAfterJC.tokens).to.equal(
-                balancesBeforeJC.tokens - mediationFee
+                balancesBeforeJC.tokens - mediationFee,
             );
             expect(balancesAfterMediator.tokens).to.equal(
-                balancesBeforeMediator.tokens + mediationFee
+                balancesBeforeMediator.tokens + mediationFee,
             );
             expect(balancesAfterAdmin.tokens).to.equal(
-                balancesBeforeAdmin.tokens + resultsCollateral
+                balancesBeforeAdmin.tokens + resultsCollateral,
             );
 
             await checkAgreement(storage, "MediationRejected");
@@ -474,7 +474,7 @@ describe("Controller", () => {
             const {token, controller} = await loadFixture(setupController);
             await token.connect(getWallet("admin")).pause();
             await expect(agree(controller, "job_creator")).to.be.revertedWith(
-                "ERC20Pausable: token transfer while paused"
+                "ERC20Pausable: token transfer while paused",
             );
         });
     });

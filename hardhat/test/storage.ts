@@ -57,7 +57,7 @@ describe("Storage", () => {
         expect(
             await storage
                 .connect(getWallet("admin"))
-                .ensureDeal(dealID, members, timeouts, pricing)
+                .ensureDeal(dealID, members, timeouts, pricing),
         ).to.not.be.reverted;
         return storage;
     }
@@ -66,7 +66,7 @@ describe("Storage", () => {
         const storage = await setupStorageAndDeal();
 
         expect(
-            await storage.connect(getWallet("admin")).agreeResourceProvider(dealID)
+            await storage.connect(getWallet("admin")).agreeResourceProvider(dealID),
         ).to.not.be.reverted;
 
         await expect(storage.connect(getWallet("admin")).agreeJobCreator(dealID))
@@ -82,7 +82,7 @@ describe("Storage", () => {
         await expect(
             storage
                 .connect(getWallet("admin"))
-                .addResult(dealID, resultsID, DATA_ID, instructionCount)
+                .addResult(dealID, resultsID, DATA_ID, instructionCount),
         )
             .to.emit(storage, "DealStateChange")
             .withArgs(dealID, getAgreementState("ResultsSubmitted"));
@@ -123,15 +123,15 @@ describe("Storage", () => {
             await expect(
                 storage
                     .connect(getWallet("resource_provider"))
-                    .ensureDeal(dealID, members, timeouts, pricing)
+                    .ensureDeal(dealID, members, timeouts, pricing),
             ).to.be.revertedWith(
-                "ControllerOwnable: Controller address must be defined"
+                "ControllerOwnable: Controller address must be defined",
             );
         });
 
         it("Can only run ensureDeal by the controller", async function () {
             const storage = await loadFixture(
-                setupStorageNoTestWithControllerAddress
+                setupStorageNoTestWithControllerAddress,
             );
 
             const members: SharedStructs.DealMembersStruct = {
@@ -146,9 +146,9 @@ describe("Storage", () => {
             await expect(
                 storage
                     .connect(getWallet("resource_provider"))
-                    .ensureDeal(dealID, members, timeouts, pricing)
+                    .ensureDeal(dealID, members, timeouts, pricing),
             ).to.be.revertedWith(
-                "ControllerOwnable: Only the controller can call this method"
+                "ControllerOwnable: Only the controller can call this method",
             );
         });
 
@@ -158,23 +158,23 @@ describe("Storage", () => {
             await expect(
                 storage
                     .connect(getWallet("resource_provider"))
-                    .agreeResourceProvider(dealID)
+                    .agreeResourceProvider(dealID),
             ).to.be.revertedWith(
-                "ControllerOwnable: Controller address must be defined"
+                "ControllerOwnable: Controller address must be defined",
             );
         });
 
         it("Can only run agreeResourceProvider by the controller", async function () {
             const storage = await loadFixture(
-                setupStorageNoTestWithControllerAddress
+                setupStorageNoTestWithControllerAddress,
             );
 
             await expect(
                 storage
                     .connect(getWallet("resource_provider"))
-                    .agreeResourceProvider(dealID)
+                    .agreeResourceProvider(dealID),
             ).to.be.revertedWith(
-                "ControllerOwnable: Only the controller can call this method"
+                "ControllerOwnable: Only the controller can call this method",
             );
         });
 
@@ -182,21 +182,21 @@ describe("Storage", () => {
             const storage = await loadFixture(setupStorageNoTest);
 
             await expect(
-                storage.connect(getWallet("resource_provider")).agreeJobCreator(dealID)
+                storage.connect(getWallet("resource_provider")).agreeJobCreator(dealID),
             ).to.be.revertedWith(
-                "ControllerOwnable: Controller address must be defined"
+                "ControllerOwnable: Controller address must be defined",
             );
         });
 
         it("Can only run agreeJobCreator by the controller", async function () {
             const storage = await loadFixture(
-                setupStorageNoTestWithControllerAddress
+                setupStorageNoTestWithControllerAddress,
             );
 
             await expect(
-                storage.connect(getWallet("resource_provider")).agreeJobCreator(dealID)
+                storage.connect(getWallet("resource_provider")).agreeJobCreator(dealID),
             ).to.be.revertedWith(
-                "ControllerOwnable: Only the controller can call this method"
+                "ControllerOwnable: Only the controller can call this method",
             );
         });
 
@@ -206,23 +206,23 @@ describe("Storage", () => {
             await expect(
                 storage
                     .connect(getWallet("resource_provider"))
-                    .addResult(dealID, "1", DATA_ID, ethers.parseEther("1"))
+                    .addResult(dealID, "1", DATA_ID, ethers.parseEther("1")),
             ).to.be.revertedWith(
-                "ControllerOwnable: Controller address must be defined"
+                "ControllerOwnable: Controller address must be defined",
             );
         });
 
         it("Can only run addResult by the controller", async function () {
             const storage = await loadFixture(
-                setupStorageNoTestWithControllerAddress
+                setupStorageNoTestWithControllerAddress,
             );
 
             await expect(
                 storage
                     .connect(getWallet("resource_provider"))
-                    .addResult(dealID, "1", DATA_ID, ethers.parseEther("1"))
+                    .addResult(dealID, "1", DATA_ID, ethers.parseEther("1")),
             ).to.be.revertedWith(
-                "ControllerOwnable: Only the controller can call this method"
+                "ControllerOwnable: Only the controller can call this method",
             );
         });
 
@@ -230,21 +230,21 @@ describe("Storage", () => {
             const storage = await loadFixture(setupStorageNoTest);
 
             await expect(
-                storage.connect(getWallet("resource_provider")).acceptResult(dealID)
+                storage.connect(getWallet("resource_provider")).acceptResult(dealID),
             ).to.be.revertedWith(
-                "ControllerOwnable: Controller address must be defined"
+                "ControllerOwnable: Controller address must be defined",
             );
         });
 
         it("Can only run acceptResult by the controller", async function () {
             const storage = await loadFixture(
-                setupStorageNoTestWithControllerAddress
+                setupStorageNoTestWithControllerAddress,
             );
 
             await expect(
-                storage.connect(getWallet("resource_provider")).acceptResult(dealID)
+                storage.connect(getWallet("resource_provider")).acceptResult(dealID),
             ).to.be.revertedWith(
-                "ControllerOwnable: Only the controller can call this method"
+                "ControllerOwnable: Only the controller can call this method",
             );
         });
 
@@ -252,21 +252,21 @@ describe("Storage", () => {
             const storage = await loadFixture(setupStorageNoTest);
 
             await expect(
-                storage.connect(getWallet("resource_provider")).checkResult(dealID)
+                storage.connect(getWallet("resource_provider")).checkResult(dealID),
             ).to.be.revertedWith(
-                "ControllerOwnable: Controller address must be defined"
+                "ControllerOwnable: Controller address must be defined",
             );
         });
 
         it("Can only run checkResult by the controller", async function () {
             const storage = await loadFixture(
-                setupStorageNoTestWithControllerAddress
+                setupStorageNoTestWithControllerAddress,
             );
 
             await expect(
-                storage.connect(getWallet("resource_provider")).checkResult(dealID)
+                storage.connect(getWallet("resource_provider")).checkResult(dealID),
             ).to.be.revertedWith(
-                "ControllerOwnable: Only the controller can call this method"
+                "ControllerOwnable: Only the controller can call this method",
             );
         });
 
@@ -276,23 +276,23 @@ describe("Storage", () => {
             await expect(
                 storage
                     .connect(getWallet("resource_provider"))
-                    .mediationAcceptResult(dealID)
+                    .mediationAcceptResult(dealID),
             ).to.be.revertedWith(
-                "ControllerOwnable: Controller address must be defined"
+                "ControllerOwnable: Controller address must be defined",
             );
         });
 
         it("Can only run mediationAcceptResult by the controller", async function () {
             const storage = await loadFixture(
-                setupStorageNoTestWithControllerAddress
+                setupStorageNoTestWithControllerAddress,
             );
 
             await expect(
                 storage
                     .connect(getWallet("resource_provider"))
-                    .mediationAcceptResult(dealID)
+                    .mediationAcceptResult(dealID),
             ).to.be.revertedWith(
-                "ControllerOwnable: Only the controller can call this method"
+                "ControllerOwnable: Only the controller can call this method",
             );
         });
 
@@ -302,23 +302,23 @@ describe("Storage", () => {
             await expect(
                 storage
                     .connect(getWallet("resource_provider"))
-                    .mediationRejectResult(dealID)
+                    .mediationRejectResult(dealID),
             ).to.be.revertedWith(
-                "ControllerOwnable: Controller address must be defined"
+                "ControllerOwnable: Controller address must be defined",
             );
         });
 
         it("Can only run mediationRejectResult by the controller", async function () {
             const storage = await loadFixture(
-                setupStorageNoTestWithControllerAddress
+                setupStorageNoTestWithControllerAddress,
             );
 
             await expect(
                 storage
                     .connect(getWallet("resource_provider"))
-                    .mediationRejectResult(dealID)
+                    .mediationRejectResult(dealID),
             ).to.be.revertedWith(
-                "ControllerOwnable: Only the controller can call this method"
+                "ControllerOwnable: Only the controller can call this method",
             );
         });
 
@@ -328,23 +328,23 @@ describe("Storage", () => {
             await expect(
                 storage
                     .connect(getWallet("resource_provider"))
-                    .timeoutSubmitResult(dealID)
+                    .timeoutSubmitResult(dealID),
             ).to.be.revertedWith(
-                "ControllerOwnable: Controller address must be defined"
+                "ControllerOwnable: Controller address must be defined",
             );
         });
 
         it("Can only run timeoutSubmitResult by the controller", async function () {
             const storage = await loadFixture(
-                setupStorageNoTestWithControllerAddress
+                setupStorageNoTestWithControllerAddress,
             );
 
             await expect(
                 storage
                     .connect(getWallet("resource_provider"))
-                    .timeoutSubmitResult(dealID)
+                    .timeoutSubmitResult(dealID),
             ).to.be.revertedWith(
-                "ControllerOwnable: Only the controller can call this method"
+                "ControllerOwnable: Only the controller can call this method",
             );
         });
 
@@ -354,23 +354,23 @@ describe("Storage", () => {
             await expect(
                 storage
                     .connect(getWallet("resource_provider"))
-                    .timeoutJudgeResult(dealID)
+                    .timeoutJudgeResult(dealID),
             ).to.be.revertedWith(
-                "ControllerOwnable: Controller address must be defined"
+                "ControllerOwnable: Controller address must be defined",
             );
         });
 
         it("Can only run timeoutJudgeResult by the controller", async function () {
             const storage = await loadFixture(
-                setupStorageNoTestWithControllerAddress
+                setupStorageNoTestWithControllerAddress,
             );
 
             await expect(
                 storage
                     .connect(getWallet("resource_provider"))
-                    .timeoutJudgeResult(dealID)
+                    .timeoutJudgeResult(dealID),
             ).to.be.revertedWith(
-                "ControllerOwnable: Only the controller can call this method"
+                "ControllerOwnable: Only the controller can call this method",
             );
         });
 
@@ -380,23 +380,23 @@ describe("Storage", () => {
             await expect(
                 storage
                     .connect(getWallet("resource_provider"))
-                    .timeoutMediateResult(dealID)
+                    .timeoutMediateResult(dealID),
             ).to.be.revertedWith(
-                "ControllerOwnable: Controller address must be defined"
+                "ControllerOwnable: Controller address must be defined",
             );
         });
 
         it("Can only run timeoutMediateResult by the controller", async function () {
             const storage = await loadFixture(
-                setupStorageNoTestWithControllerAddress
+                setupStorageNoTestWithControllerAddress,
             );
 
             await expect(
                 storage
                     .connect(getWallet("resource_provider"))
-                    .timeoutMediateResult(dealID)
+                    .timeoutMediateResult(dealID),
             ).to.be.revertedWith(
-                "ControllerOwnable: Only the controller can call this method"
+                "ControllerOwnable: Only the controller can call this method",
             );
         });
     });
@@ -409,40 +409,40 @@ describe("Storage", () => {
 
             expect(deal.dealId).to.equal(dealID);
             expect(deal.members.resourceProvider).to.equal(
-                getAddress("resource_provider")
+                getAddress("resource_provider"),
             );
             expect(deal.members.jobCreator).to.equal(getAddress("job_creator"));
 
             expect(deal.pricing.instructionPrice).to.equal(
-                DEFAULT_VALUES.instructionPrice
+                DEFAULT_VALUES.instructionPrice,
             );
             expect(deal.pricing.paymentCollateral).to.equal(
-                DEFAULT_VALUES.paymentCollateral
+                DEFAULT_VALUES.paymentCollateral,
             );
             expect(deal.pricing.resultsCollateralMultiple).to.equal(
-                DEFAULT_VALUES.resultsCollateralMultiple
+                DEFAULT_VALUES.resultsCollateralMultiple,
             );
             expect(deal.pricing.mediationFee).to.equal(DEFAULT_VALUES.mediationFee);
 
             expect(deal.timeouts.agree.timeout).to.equal(DEFAULT_VALUES.timeout);
             expect(deal.timeouts.agree.collateral).to.equal(ethers.parseEther("0"));
             expect(deal.timeouts.submitResults.timeout).to.equal(
-                DEFAULT_VALUES.timeout
+                DEFAULT_VALUES.timeout,
             );
             expect(deal.timeouts.submitResults.collateral).to.equal(
-                DEFAULT_VALUES.timeoutCollateral
+                DEFAULT_VALUES.timeoutCollateral,
             );
             expect(deal.timeouts.judgeResults.timeout).to.equal(
-                DEFAULT_VALUES.timeout
+                DEFAULT_VALUES.timeout,
             );
             expect(deal.timeouts.judgeResults.collateral).to.equal(
-                DEFAULT_VALUES.timeoutCollateral
+                DEFAULT_VALUES.timeoutCollateral,
             );
             expect(deal.timeouts.mediateResults.timeout).to.equal(
-                DEFAULT_VALUES.timeout
+                DEFAULT_VALUES.timeout,
             );
             expect(deal.timeouts.mediateResults.collateral).to.equal(
-                ethers.parseEther("0")
+                ethers.parseEther("0"),
             );
 
             expect(await storage.hasDeal(dealID)).to.equal(true);
@@ -451,13 +451,13 @@ describe("Storage", () => {
         it("Should be able to see deals for specific parties", async function () {
             const storage = await loadFixture(setupStorageAndDeal);
             expect(
-                await storage.getDealsForParty(getAddress("resource_provider"))
+                await storage.getDealsForParty(getAddress("resource_provider")),
             ).to.deep.equal([dealID]);
             expect(
-                await storage.getDealsForParty(getAddress("job_creator"))
+                await storage.getDealsForParty(getAddress("job_creator")),
             ).to.deep.equal([dealID]);
             expect(
-                await storage.getDealsForParty(getAddress("mediator"))
+                await storage.getDealsForParty(getAddress("mediator")),
             ).to.deep.equal([]);
         });
 
@@ -475,7 +475,7 @@ describe("Storage", () => {
             await expect(
                 storage
                     .connect(getWallet("admin"))
-                    .ensureDeal(dealID, members, timeouts, pricing)
+                    .ensureDeal(dealID, members, timeouts, pricing),
             ).to.be.revertedWith("RP / JC same");
         });
 
@@ -493,7 +493,7 @@ describe("Storage", () => {
             await expect(
                 storage
                     .connect(getWallet("admin"))
-                    .ensureDeal(dealID, members, timeouts, pricing)
+                    .ensureDeal(dealID, members, timeouts, pricing),
             ).to.be.revertedWith("RP missing");
         });
 
@@ -510,7 +510,7 @@ describe("Storage", () => {
             await expect(
                 storage
                     .connect(getWallet("admin"))
-                    .ensureDeal(dealID, members, timeouts, pricing)
+                    .ensureDeal(dealID, members, timeouts, pricing),
             ).to.be.revertedWith("JC missing");
         });
 
@@ -561,7 +561,7 @@ describe("Storage", () => {
         it("Should be negotiating before agreements are made", async function () {
             const storage = await loadFixture(setupStorageAndDeal);
             expect(
-                await storage.isState(dealID, getAgreementState("DealNegotiating"))
+                await storage.isState(dealID, getAgreementState("DealNegotiating")),
             ).to.equal(true);
         });
 
@@ -571,23 +571,23 @@ describe("Storage", () => {
             const agreement = await storage.getAgreement(dealID);
             expect(agreement.state).to.equal(getAgreementState("DealAgreed"));
             expect(agreement.resourceProviderAgreedAt).to.not.equal(
-                ethers.parseEther("0")
+                ethers.parseEther("0"),
             );
             expect(agreement.jobCreatorAgreedAt).to.not.equal(ethers.parseEther("0"));
             expect(agreement.dealAgreedAt).to.not.equal(ethers.parseEther("0"));
 
             expect(
-                await storage.isState(dealID, getAgreementState("DealAgreed"))
+                await storage.isState(dealID, getAgreementState("DealAgreed")),
             ).to.equal(true);
         });
 
         it("Should throw if we agree the second time", async function () {
             const storage = await loadFixture(setupStorageAndDealAndAgreement);
             await expect(
-                storage.connect(getWallet("admin")).agreeResourceProvider(dealID)
+                storage.connect(getWallet("admin")).agreeResourceProvider(dealID),
             ).to.be.revertedWith("RP has already agreed");
             await expect(
-                storage.connect(getWallet("admin")).agreeJobCreator(dealID)
+                storage.connect(getWallet("admin")).agreeJobCreator(dealID),
             ).to.be.revertedWith("JC has already agreed");
         });
     });
@@ -595,7 +595,7 @@ describe("Storage", () => {
     describe("Results", () => {
         it("Should be able to add and get a result", async function () {
             const storage = await loadFixture(
-                setupStorageAndDealAndAgreementAndResult
+                setupStorageAndDealAndAgreementAndResult,
             );
 
             const result = await storage.getResult(dealID);
@@ -614,13 +614,13 @@ describe("Storage", () => {
             await expect(
                 storage
                     .connect(getWallet("admin"))
-                    .addResult(dealID, resultsID, DATA_ID, instructionCount)
+                    .addResult(dealID, resultsID, DATA_ID, instructionCount),
             ).to.be.revertedWith("DealAgreed");
         });
 
         it("Should be able to accept a result", async function () {
             const storage = await loadFixture(
-                setupStorageAndDealAndAgreementAndResult
+                setupStorageAndDealAndAgreementAndResult,
             );
 
             await expect(storage.connect(getWallet("admin")).acceptResult(dealID))
@@ -634,7 +634,7 @@ describe("Storage", () => {
 
         it("Should be able to challenge a result", async function () {
             const storage = await loadFixture(
-                setupStorageAndDealAndAgreementAndResult
+                setupStorageAndDealAndAgreementAndResult,
             );
 
             await expect(storage.connect(getWallet("admin")).checkResult(dealID))
@@ -650,7 +650,7 @@ describe("Storage", () => {
             const storage = await loadFixture(setupStorageAndDealAndAgreement);
 
             await expect(
-                storage.connect(getWallet("admin")).acceptResult(dealID)
+                storage.connect(getWallet("admin")).acceptResult(dealID),
             ).to.be.revertedWith("ResultsSubmitted");
         });
 
@@ -658,7 +658,7 @@ describe("Storage", () => {
             const storage = await loadFixture(setupStorageAndDealAndAgreement);
 
             await expect(
-                storage.connect(getWallet("admin")).checkResult(dealID)
+                storage.connect(getWallet("admin")).checkResult(dealID),
             ).to.be.revertedWith("ResultsSubmitted");
         });
 
@@ -668,36 +668,36 @@ describe("Storage", () => {
     describe("Mediation", () => {
         it("Should be able to mediator -> accept a result", async function () {
             const storage = await loadFixture(
-                setupStorageAndDealAndAgreementAndResultAndChallenge
+                setupStorageAndDealAndAgreementAndResultAndChallenge,
             );
 
             await expect(
-                storage.connect(getWallet("admin")).mediationAcceptResult(dealID)
+                storage.connect(getWallet("admin")).mediationAcceptResult(dealID),
             )
                 .to.emit(storage, "DealStateChange")
                 .withArgs(dealID, getAgreementState("MediationAccepted"));
 
             const agreement = await storage.getAgreement(dealID);
             expect(agreement.mediationAcceptedAt).to.not.equal(
-                ethers.parseEther("0")
+                ethers.parseEther("0"),
             );
             expect(agreement.state).to.equal(getAgreementState("MediationAccepted"));
         });
 
         it("Should be able to mediator -> reject a result", async function () {
             const storage = await loadFixture(
-                setupStorageAndDealAndAgreementAndResultAndChallenge
+                setupStorageAndDealAndAgreementAndResultAndChallenge,
             );
 
             await expect(
-                storage.connect(getWallet("admin")).mediationRejectResult(dealID)
+                storage.connect(getWallet("admin")).mediationRejectResult(dealID),
             )
                 .to.emit(storage, "DealStateChange")
                 .withArgs(dealID, getAgreementState("MediationRejected"));
 
             const agreement = await storage.getAgreement(dealID);
             expect(agreement.mediationRejectedAt).to.not.equal(
-                ethers.parseEther("0")
+                ethers.parseEther("0"),
             );
             expect(agreement.state).to.equal(getAgreementState("MediationRejected"));
         });
@@ -706,7 +706,7 @@ describe("Storage", () => {
             const storage = await loadFixture(setupStorageAndDealAndAgreement);
 
             await expect(
-                storage.connect(getWallet("admin")).mediationAcceptResult(dealID)
+                storage.connect(getWallet("admin")).mediationAcceptResult(dealID),
             ).to.be.revertedWith("ResultsChecked");
         });
 
@@ -714,7 +714,7 @@ describe("Storage", () => {
             const storage = await loadFixture(setupStorageAndDealAndAgreement);
 
             await expect(
-                storage.connect(getWallet("admin")).mediationRejectResult(dealID)
+                storage.connect(getWallet("admin")).mediationRejectResult(dealID),
             ).to.be.revertedWith("ResultsChecked");
         });
     });
@@ -724,57 +724,57 @@ describe("Storage", () => {
             const storage = await loadFixture(setupStorageAndDealAndAgreement);
 
             await expect(
-                storage.connect(getWallet("admin")).timeoutSubmitResult(dealID)
+                storage.connect(getWallet("admin")).timeoutSubmitResult(dealID),
             )
                 .to.emit(storage, "DealStateChange")
                 .withArgs(dealID, getAgreementState("TimeoutSubmitResults"));
 
             const agreement = await storage.getAgreement(dealID);
             expect(agreement.timeoutSubmitResultsAt).to.not.equal(
-                ethers.parseEther("0")
+                ethers.parseEther("0"),
             );
             expect(agreement.state).to.equal(
-                getAgreementState("TimeoutSubmitResults")
+                getAgreementState("TimeoutSubmitResults"),
             );
         });
 
         it("Should be able to timeout a judge result", async function () {
             const storage = await loadFixture(
-                setupStorageAndDealAndAgreementAndResult
+                setupStorageAndDealAndAgreementAndResult,
             );
 
             await expect(
-                storage.connect(getWallet("admin")).timeoutJudgeResult(dealID)
+                storage.connect(getWallet("admin")).timeoutJudgeResult(dealID),
             )
                 .to.emit(storage, "DealStateChange")
                 .withArgs(dealID, getAgreementState("TimeoutJudgeResults"));
 
             const agreement = await storage.getAgreement(dealID);
             expect(agreement.timeoutJudgeResultsAt).to.not.equal(
-                ethers.parseEther("0")
+                ethers.parseEther("0"),
             );
             expect(agreement.state).to.equal(
-                getAgreementState("TimeoutJudgeResults")
+                getAgreementState("TimeoutJudgeResults"),
             );
         });
 
         it("Should be able to timeout a mediation result", async function () {
             const storage = await loadFixture(
-                setupStorageAndDealAndAgreementAndResultAndChallenge
+                setupStorageAndDealAndAgreementAndResultAndChallenge,
             );
 
             await expect(
-                storage.connect(getWallet("admin")).timeoutMediateResult(dealID)
+                storage.connect(getWallet("admin")).timeoutMediateResult(dealID),
             )
                 .to.emit(storage, "DealStateChange")
                 .withArgs(dealID, getAgreementState("TimeoutMediateResults"));
 
             const agreement = await storage.getAgreement(dealID);
             expect(agreement.timeoutMediateResultsAt).to.not.equal(
-                ethers.parseEther("0")
+                ethers.parseEther("0"),
             );
             expect(agreement.state).to.equal(
-                getAgreementState("TimeoutMediateResults")
+                getAgreementState("TimeoutMediateResults"),
             );
         });
     });

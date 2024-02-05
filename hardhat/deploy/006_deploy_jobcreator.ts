@@ -2,7 +2,7 @@ import {HardhatRuntimeEnvironment} from "hardhat/types";
 import {DeployFunction} from "hardhat-deploy/types";
 
 const deployJobCreator: DeployFunction = async function (
-    hre: HardhatRuntimeEnvironment
+    hre: HardhatRuntimeEnvironment,
 ) {
     const {deployments, getNamedAccounts} = hre;
     const {deploy, execute} = deployments;
@@ -29,7 +29,7 @@ const deployJobCreator: DeployFunction = async function (
             log: true,
         },
         "initialize",
-        tokenContract.address
+        tokenContract.address,
     );
 
     await execute(
@@ -39,7 +39,7 @@ const deployJobCreator: DeployFunction = async function (
             log: true,
         },
         "initialize",
-        jobCreator.address
+        jobCreator.address,
     );
 
     // we set the controller of the job creator to be the solver
@@ -51,7 +51,7 @@ const deployJobCreator: DeployFunction = async function (
             log: true,
         },
         "setControllerAddress",
-        solver
+        solver,
     );
     return true;
 };

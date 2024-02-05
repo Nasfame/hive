@@ -4,10 +4,10 @@ async function main() {
     // loop over accounts and print env for address and private key
     ACCOUNTS.forEach((account) => {
         console.log(
-            `export ${account.name.toUpperCase()}_ADDRESS=${account.address}`
+            `export ${account.name.toUpperCase()}_ADDRESS=${account.address}`,
         );
         console.log(
-            `export ${account.name.toUpperCase()}_PRIVATE_KEY=${account.privateKey}`
+            `export ${account.name.toUpperCase()}_PRIVATE_KEY=${account.privateKey}`,
         );
     });
     console.log("export INFURA_KEY=");

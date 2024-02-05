@@ -3,7 +3,7 @@ import {DeployFunction} from "hardhat-deploy/types";
 import {DEFAULT_TOKEN_SUPPLY} from "../utils/web3";
 
 const deployToken: DeployFunction = async function (
-    hre: HardhatRuntimeEnvironment
+    hre: HardhatRuntimeEnvironment,
 ) {
     const {deployments, getNamedAccounts} = hre;
     const {deploy} = deployments;

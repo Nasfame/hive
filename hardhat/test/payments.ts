@@ -56,7 +56,7 @@ describe("Payments", () => {
             .agreeResourceProvider(
                 dealID,
                 getAddress("resource_provider"),
-                timeoutCollateral
+                timeoutCollateral,
             );
 
         await payments
@@ -65,7 +65,7 @@ describe("Payments", () => {
                 dealID,
                 getAddress("job_creator"),
                 paymentCollateral,
-                timeoutCollateral
+                timeoutCollateral,
             );
 
         return {
@@ -85,7 +85,7 @@ describe("Payments", () => {
                 dealID,
                 getAddress("resource_provider"),
                 resultsCollateral,
-                timeoutCollateral
+                timeoutCollateral,
             );
 
         return {
@@ -104,7 +104,7 @@ describe("Payments", () => {
                 dealID,
                 getAddress("job_creator"),
                 timeoutCollateral,
-                mediationFee
+                mediationFee,
             );
 
         return {
@@ -125,9 +125,8 @@ describe("Payments", () => {
 
     describe("Deals", () => {
         it("Should agreeResourceProvider", async function () {
-            const {payments, token, tokenAddress} = await loadFixture(
-                setupPayments
-            );
+            const {payments, token, tokenAddress} =
+                await loadFixture(setupPayments);
 
             const balanceBefore = await getBalances(token, "resource_provider");
 
@@ -137,8 +136,8 @@ describe("Payments", () => {
                     .agreeResourceProvider(
                         dealID,
                         getAddress("resource_provider"),
-                        timeoutCollateral
-                    )
+                        timeoutCollateral,
+                    ),
             )
                 .to.emit(payments, "Payment")
                 .withArgs(
@@ -146,29 +145,28 @@ describe("Payments", () => {
                     getAddress("resource_provider"),
                     timeoutCollateral,
                     getPaymentReason("TimeoutCollateral"),
-                    getPaymentDirection("PaidIn")
+                    getPaymentDirection("PaidIn"),
                 )
                 .to.emit(token, "Transfer")
                 .withArgs(
                     getAddress("resource_provider"),
                     tokenAddress,
-                    timeoutCollateral
+                    timeoutCollateral,
                 );
 
             const balanceAfter = await getBalances(token, "resource_provider");
 
             expect(balanceAfter.tokens).to.equal(
-                balanceBefore.tokens - timeoutCollateral
+                balanceBefore.tokens - timeoutCollateral,
             );
             expect(balanceAfter.escrow).to.equal(
-                balanceBefore.escrow + timeoutCollateral
+                balanceBefore.escrow + timeoutCollateral,
             );
         });
 
         it("Should agreeJobCreator", async function () {
-            const {token, payments, tokenAddress} = await loadFixture(
-                setupPayments
-            );
+            const {token, payments, tokenAddress} =
+                await loadFixture(setupPayments);
 
             const balanceBefore = await getBalances(token, "job_creator");
 
@@ -179,8 +177,8 @@ describe("Payments", () => {
                         dealID,
                         getAddress("job_creator"),
                         paymentCollateral,
-                        timeoutCollateral
-                    )
+                        timeoutCollateral,
+                    ),
             )
                 .to.emit(payments, "Payment")
                 .withArgs(
@@ -188,7 +186,7 @@ describe("Payments", () => {
                     getAddress("job_creator"),
                     paymentCollateral,
                     getPaymentReason("PaymentCollateral"),
-                    getPaymentDirection("PaidIn")
+                    getPaymentDirection("PaidIn"),
                 )
                 .to.emit(payments, "Payment")
                 .withArgs(
@@ -196,7 +194,7 @@ describe("Payments", () => {
                     getAddress("job_creator"),
                     timeoutCollateral,
                     getPaymentReason("TimeoutCollateral"),
-                    getPaymentDirection("PaidIn")
+                    getPaymentDirection("PaidIn"),
                 )
                 .to.emit(token, "Transfer")
                 .withArgs(getAddress("job_creator"), tokenAddress, paymentCollateral)
@@ -206,10 +204,10 @@ describe("Payments", () => {
             const balanceAfter = await getBalances(token, "job_creator");
 
             expect(balanceAfter.tokens).to.equal(
-                balanceBefore.tokens - paymentCollateral - timeoutCollateral
+                balanceBefore.tokens - paymentCollateral - timeoutCollateral,
             );
             expect(balanceAfter.escrow).to.equal(
-                balanceBefore.escrow + paymentCollateral + timeoutCollateral
+                balanceBefore.escrow + paymentCollateral + timeoutCollateral,
             );
         });
     });
@@ -217,7 +215,7 @@ describe("Payments", () => {
     describe("Results", () => {
         it("Should add a result", async function () {
             const {token, payments, tokenAddress} = await loadFixture(
-                setupPaymentsWithAgreement
+                setupPaymentsWithAgreement,
             );
 
             const balanceBefore = await getBalances(token, "resource_provider");
@@ -229,8 +227,8 @@ describe("Payments", () => {
                         dealID,
                         getAddress("resource_provider"),
                         resultsCollateral,
-                        timeoutCollateral
-                    )
+                        timeoutCollateral,
+                    ),
             )
                 .to.emit(payments, "Payment")
                 .withArgs(
@@ -238,7 +236,7 @@ describe("Payments", () => {
                     getAddress("resource_provider"),
                     timeoutCollateral,
                     getPaymentReason("TimeoutCollateral"),
-                    getPaymentDirection("Refunded")
+                    getPaymentDirection("Refunded"),
                 )
                 .to.emit(payments, "Payment")
                 .withArgs(
@@ -246,34 +244,34 @@ describe("Payments", () => {
                     getAddress("resource_provider"),
                     resultsCollateral,
                     getPaymentReason("ResultsCollateral"),
-                    getPaymentDirection("PaidIn")
+                    getPaymentDirection("PaidIn"),
                 )
                 .to.emit(token, "Transfer")
                 .withArgs(
                     getAddress("resource_provider"),
                     tokenAddress,
-                    resultsCollateral
+                    resultsCollateral,
                 )
                 .to.emit(token, "Transfer")
                 .withArgs(
                     tokenAddress,
                     getAddress("resource_provider"),
-                    timeoutCollateral
+                    timeoutCollateral,
                 );
 
             const balanceAfter = await getBalances(token, "resource_provider");
 
             expect(balanceAfter.tokens).to.equal(
-                balanceBefore.tokens + timeoutCollateral - resultsCollateral
+                balanceBefore.tokens + timeoutCollateral - resultsCollateral,
             );
             expect(balanceAfter.escrow).to.equal(
-                balanceBefore.escrow - timeoutCollateral + resultsCollateral
+                balanceBefore.escrow - timeoutCollateral + resultsCollateral,
             );
         });
 
         it("Should accept a result", async function () {
             const {token, payments, tokenAddress} = await loadFixture(
-                setupPaymentsWithResults
+                setupPaymentsWithResults,
             );
 
             const balanceBeforeJC = await getBalances(token, "job_creator");
@@ -289,8 +287,8 @@ describe("Payments", () => {
                         jobCost,
                         paymentCollateral,
                         resultsCollateral,
-                        timeoutCollateral
-                    )
+                        timeoutCollateral,
+                    ),
             )
                 .to.emit(payments, "Payment")
                 .withArgs(
@@ -298,7 +296,7 @@ describe("Payments", () => {
                     getAddress("resource_provider"),
                     jobCost,
                     getPaymentReason("JobPayment"),
-                    getPaymentDirection("PaidOut")
+                    getPaymentDirection("PaidOut"),
                 )
                 .to.emit(payments, "Payment")
                 .withArgs(
@@ -306,7 +304,7 @@ describe("Payments", () => {
                     getAddress("resource_provider"),
                     resultsCollateral,
                     getPaymentReason("ResultsCollateral"),
-                    getPaymentDirection("Refunded")
+                    getPaymentDirection("Refunded"),
                 )
                 .to.emit(payments, "Payment")
                 .withArgs(
@@ -314,7 +312,7 @@ describe("Payments", () => {
                     getAddress("job_creator"),
                     paymentCollateral - jobCost,
                     getPaymentReason("PaymentCollateral"),
-                    getPaymentDirection("Refunded")
+                    getPaymentDirection("Refunded"),
                 )
                 .to.emit(payments, "Payment")
                 .withArgs(
@@ -322,7 +320,7 @@ describe("Payments", () => {
                     getAddress("job_creator"),
                     timeoutCollateral,
                     getPaymentReason("TimeoutCollateral"),
-                    getPaymentDirection("Refunded")
+                    getPaymentDirection("Refunded"),
                 )
                 .to.emit(token, "Transfer")
                 .withArgs(tokenAddress, getAddress("resource_provider"), jobCost)
@@ -330,13 +328,13 @@ describe("Payments", () => {
                 .withArgs(
                     tokenAddress,
                     getAddress("resource_provider"),
-                    resultsCollateral
+                    resultsCollateral,
                 )
                 .to.emit(token, "Transfer")
                 .withArgs(
                     tokenAddress,
                     getAddress("job_creator"),
-                    paymentCollateral - jobCost
+                    paymentCollateral - jobCost,
                 )
                 .to.emit(token, "Transfer")
                 .withArgs(tokenAddress, getAddress("job_creator"), timeoutCollateral);
@@ -347,22 +345,22 @@ describe("Payments", () => {
             expect(balanceAfterJC.tokens).to.equal(
                 balanceBeforeJC.tokens +
                 (paymentCollateral - jobCost) +
-                timeoutCollateral
+                timeoutCollateral,
             );
             expect(balanceAfterJC.escrow).to.equal(
-                balanceBeforeJC.escrow - timeoutCollateral - paymentCollateral
+                balanceBeforeJC.escrow - timeoutCollateral - paymentCollateral,
             );
             expect(balanceAfterRP.tokens).to.equal(
-                balanceBeforeRP.tokens + jobCost + resultsCollateral
+                balanceBeforeRP.tokens + jobCost + resultsCollateral,
             );
             expect(balanceAfterRP.escrow).to.equal(
-                balanceBeforeRP.escrow - resultsCollateral
+                balanceBeforeRP.escrow - resultsCollateral,
             );
         });
 
         it("Should check a result", async function () {
             const {token, payments, tokenAddress} = await loadFixture(
-                setupPaymentsWithResults
+                setupPaymentsWithResults,
             );
 
             const balanceBeforeJC = await getBalances(token, "job_creator");
@@ -374,8 +372,8 @@ describe("Payments", () => {
                         dealID,
                         getAddress("job_creator"),
                         timeoutCollateral,
-                        mediationFee
-                    )
+                        mediationFee,
+                    ),
             )
                 .to.emit(payments, "Payment")
                 .withArgs(
@@ -383,7 +381,7 @@ describe("Payments", () => {
                     getAddress("job_creator"),
                     timeoutCollateral,
                     getPaymentReason("TimeoutCollateral"),
-                    getPaymentDirection("Refunded")
+                    getPaymentDirection("Refunded"),
                 )
                 .to.emit(payments, "Payment")
                 .withArgs(
@@ -391,7 +389,7 @@ describe("Payments", () => {
                     getAddress("job_creator"),
                     mediationFee,
                     getPaymentReason("MediationFee"),
-                    getPaymentDirection("PaidIn")
+                    getPaymentDirection("PaidIn"),
                 )
                 .to.emit(token, "Transfer")
                 .withArgs(tokenAddress, getAddress("job_creator"), timeoutCollateral)
@@ -401,10 +399,10 @@ describe("Payments", () => {
             const balanceAfterJC = await getBalances(token, "job_creator");
 
             expect(balanceAfterJC.tokens).to.equal(
-                balanceBeforeJC.tokens + timeoutCollateral - mediationFee
+                balanceBeforeJC.tokens + timeoutCollateral - mediationFee,
             );
             expect(balanceAfterJC.escrow).to.equal(
-                balanceBeforeJC.escrow - timeoutCollateral + mediationFee
+                balanceBeforeJC.escrow - timeoutCollateral + mediationFee,
             );
         });
     });
@@ -412,7 +410,7 @@ describe("Payments", () => {
     describe("Mediation", () => {
         it("Should accept mediation results", async function () {
             const {token, payments, tokenAddress} = await loadFixture(
-                setupPaymentsWithResultsCheck
+                setupPaymentsWithResultsCheck,
             );
 
             const balanceBeforeJC = await getBalances(token, "job_creator");
@@ -429,8 +427,8 @@ describe("Payments", () => {
                         jobCost,
                         paymentCollateral,
                         resultsCollateral,
-                        mediationFee
-                    )
+                        mediationFee,
+                    ),
             )
                 .to.emit(payments, "Payment")
                 .withArgs(
@@ -438,7 +436,7 @@ describe("Payments", () => {
                     getAddress("resource_provider"),
                     jobCost,
                     getPaymentReason("JobPayment"),
-                    getPaymentDirection("PaidOut")
+                    getPaymentDirection("PaidOut"),
                 )
                 .to.emit(payments, "Payment")
                 .withArgs(
@@ -446,7 +444,7 @@ describe("Payments", () => {
                     getAddress("resource_provider"),
                     resultsCollateral,
                     getPaymentReason("ResultsCollateral"),
-                    getPaymentDirection("Refunded")
+                    getPaymentDirection("Refunded"),
                 )
                 .to.emit(payments, "Payment")
                 .withArgs(
@@ -454,7 +452,7 @@ describe("Payments", () => {
                     getAddress("job_creator"),
                     paymentCollateral - jobCost,
                     getPaymentReason("PaymentCollateral"),
-                    getPaymentDirection("Refunded")
+                    getPaymentDirection("Refunded"),
                 )
                 .to.emit(payments, "Payment")
                 .withArgs(
@@ -462,7 +460,7 @@ describe("Payments", () => {
                     getAddress("mediator"),
                     mediationFee,
                     getPaymentReason("MediationFee"),
-                    getPaymentDirection("PaidOut")
+                    getPaymentDirection("PaidOut"),
                 )
                 .to.emit(token, "Transfer")
                 .withArgs(tokenAddress, getAddress("resource_provider"), jobCost)
@@ -470,13 +468,13 @@ describe("Payments", () => {
                 .withArgs(
                     tokenAddress,
                     getAddress("resource_provider"),
-                    resultsCollateral
+                    resultsCollateral,
                 )
                 .to.emit(token, "Transfer")
                 .withArgs(
                     tokenAddress,
                     getAddress("job_creator"),
-                    paymentCollateral - jobCost
+                    paymentCollateral - jobCost,
                 )
                 .to.emit(token, "Transfer")
                 .withArgs(tokenAddress, getAddress("mediator"), mediationFee);
@@ -486,25 +484,25 @@ describe("Payments", () => {
             const balanceAfterMediator = await getBalances(token, "mediator");
 
             expect(balanceAfterJC.tokens).to.equal(
-                balanceBeforeJC.tokens + (paymentCollateral - jobCost)
+                balanceBeforeJC.tokens + (paymentCollateral - jobCost),
             );
             expect(balanceAfterJC.escrow).to.equal(
-                balanceBeforeJC.escrow - paymentCollateral - mediationFee
+                balanceBeforeJC.escrow - paymentCollateral - mediationFee,
             );
             expect(balanceAfterRP.tokens).to.equal(
-                balanceBeforeRP.tokens + jobCost + resultsCollateral
+                balanceBeforeRP.tokens + jobCost + resultsCollateral,
             );
             expect(balanceAfterRP.escrow).to.equal(
-                balanceBeforeRP.escrow - resultsCollateral
+                balanceBeforeRP.escrow - resultsCollateral,
             );
             expect(balanceAfterMediator.tokens).to.equal(
-                balanceBeforeMediator.tokens + mediationFee
+                balanceBeforeMediator.tokens + mediationFee,
             );
         });
 
         it("Should reject mediation results", async function () {
             const {token, payments, tokenAddress} = await loadFixture(
-                setupPaymentsWithResultsCheck
+                setupPaymentsWithResultsCheck,
             );
 
             const balanceBeforeJC = await getBalances(token, "job_creator");
@@ -521,8 +519,8 @@ describe("Payments", () => {
                         getAddress("job_creator"),
                         paymentCollateral,
                         resultsCollateral,
-                        mediationFee
-                    )
+                        mediationFee,
+                    ),
             )
                 .to.emit(payments, "Payment")
                 .withArgs(
@@ -530,7 +528,7 @@ describe("Payments", () => {
                     getAddress("resource_provider"),
                     resultsCollateral,
                     getPaymentReason("ResultsCollateral"),
-                    getPaymentDirection("Slashed")
+                    getPaymentDirection("Slashed"),
                 )
                 .to.emit(payments, "Payment")
                 .withArgs(
@@ -538,7 +536,7 @@ describe("Payments", () => {
                     getAddress("job_creator"),
                     paymentCollateral,
                     getPaymentReason("PaymentCollateral"),
-                    getPaymentDirection("Refunded")
+                    getPaymentDirection("Refunded"),
                 )
                 .to.emit(payments, "Payment")
                 .withArgs(
@@ -546,7 +544,7 @@ describe("Payments", () => {
                     getAddress("mediator"),
                     mediationFee,
                     getPaymentReason("MediationFee"),
-                    getPaymentDirection("PaidOut")
+                    getPaymentDirection("PaidOut"),
                 )
                 // this is the RP results collateral being slashed
                 .to.emit(token, "Transfer")
@@ -562,20 +560,20 @@ describe("Payments", () => {
             const balanceAfterMediator = await getBalances(token, "mediator");
 
             expect(balanceAfterJC.tokens).to.equal(
-                balanceBeforeJC.tokens + paymentCollateral
+                balanceBeforeJC.tokens + paymentCollateral,
             );
             expect(balanceAfterJC.escrow).to.equal(
-                balanceBeforeJC.escrow - paymentCollateral - mediationFee
+                balanceBeforeJC.escrow - paymentCollateral - mediationFee,
             );
             expect(balanceAfterRP.tokens).to.equal(balanceBeforeRP.tokens);
             expect(balanceAfterRP.escrow).to.equal(
-                balanceBeforeRP.escrow - resultsCollateral
+                balanceBeforeRP.escrow - resultsCollateral,
             );
             expect(balanceAfterAdmin.tokens).to.equal(
-                balanceBeforeAdmin.tokens + resultsCollateral
+                balanceBeforeAdmin.tokens + resultsCollateral,
             );
             expect(balanceAfterMediator.tokens).to.equal(
-                balanceBeforeMediator.tokens + mediationFee
+                balanceBeforeMediator.tokens + mediationFee,
             );
         });
     });
@@ -583,7 +581,7 @@ describe("Payments", () => {
     describe("Timeouts", () => {
         it("Should timeout submit results", async function () {
             const {token, payments, tokenAddress} = await loadFixture(
-                setupPaymentsWithAgreement
+                setupPaymentsWithAgreement,
             );
 
             const balanceBeforeJC = await getBalances(token, "job_creator");
@@ -598,8 +596,8 @@ describe("Payments", () => {
                         getAddress("resource_provider"),
                         getAddress("job_creator"),
                         paymentCollateral,
-                        timeoutCollateral
-                    )
+                        timeoutCollateral,
+                    ),
             )
                 .to.emit(payments, "Payment")
                 .withArgs(
@@ -607,7 +605,7 @@ describe("Payments", () => {
                     getAddress("job_creator"),
                     paymentCollateral,
                     getPaymentReason("PaymentCollateral"),
-                    getPaymentDirection("Refunded")
+                    getPaymentDirection("Refunded"),
                 )
                 .to.emit(payments, "Payment")
                 .withArgs(
@@ -615,7 +613,7 @@ describe("Payments", () => {
                     getAddress("job_creator"),
                     timeoutCollateral,
                     getPaymentReason("TimeoutCollateral"),
-                    getPaymentDirection("Refunded")
+                    getPaymentDirection("Refunded"),
                 )
                 .to.emit(payments, "Payment")
                 .withArgs(
@@ -623,7 +621,7 @@ describe("Payments", () => {
                     getAddress("resource_provider"),
                     timeoutCollateral,
                     getPaymentReason("TimeoutCollateral"),
-                    getPaymentDirection("Slashed")
+                    getPaymentDirection("Slashed"),
                 )
                 .to.emit(token, "Transfer")
                 .withArgs(tokenAddress, getAddress("job_creator"), paymentCollateral)
@@ -637,23 +635,23 @@ describe("Payments", () => {
             const balanceAfterAdmin = await getBalances(token, "admin");
 
             expect(balanceAfterJC.tokens).to.equal(
-                balanceBeforeJC.tokens + paymentCollateral + timeoutCollateral
+                balanceBeforeJC.tokens + paymentCollateral + timeoutCollateral,
             );
             expect(balanceAfterJC.escrow).to.equal(
-                balanceBeforeJC.escrow - paymentCollateral - timeoutCollateral
+                balanceBeforeJC.escrow - paymentCollateral - timeoutCollateral,
             );
             expect(balanceAfterRP.tokens).to.equal(balanceBeforeRP.tokens);
             expect(balanceAfterRP.escrow).to.equal(
-                balanceBeforeRP.escrow - timeoutCollateral
+                balanceBeforeRP.escrow - timeoutCollateral,
             );
             expect(balanceAfterAdmin.tokens).to.equal(
-                balanceBeforeAdmin.tokens + timeoutCollateral
+                balanceBeforeAdmin.tokens + timeoutCollateral,
             );
         });
 
         it("Should timeout judge results", async function () {
             const {token, payments, tokenAddress} = await loadFixture(
-                setupPaymentsWithResults
+                setupPaymentsWithResults,
             );
 
             const balanceBeforeJC = await getBalances(token, "job_creator");
@@ -668,8 +666,8 @@ describe("Payments", () => {
                         getAddress("resource_provider"),
                         getAddress("job_creator"),
                         resultsCollateral,
-                        timeoutCollateral
-                    )
+                        timeoutCollateral,
+                    ),
             )
                 .to.emit(payments, "Payment")
                 .withArgs(
@@ -677,7 +675,7 @@ describe("Payments", () => {
                     getAddress("resource_provider"),
                     resultsCollateral,
                     getPaymentReason("ResultsCollateral"),
-                    getPaymentDirection("Refunded")
+                    getPaymentDirection("Refunded"),
                 )
                 .to.emit(payments, "Payment")
                 .withArgs(
@@ -685,13 +683,13 @@ describe("Payments", () => {
                     getAddress("job_creator"),
                     timeoutCollateral,
                     getPaymentReason("TimeoutCollateral"),
-                    getPaymentDirection("Slashed")
+                    getPaymentDirection("Slashed"),
                 )
                 .to.emit(token, "Transfer")
                 .withArgs(
                     tokenAddress,
                     getAddress("resource_provider"),
-                    resultsCollateral
+                    resultsCollateral,
                 )
                 .to.emit(token, "Transfer")
                 .withArgs(tokenAddress, getAddress("admin"), timeoutCollateral);
@@ -702,22 +700,22 @@ describe("Payments", () => {
 
             expect(balanceAfterJC.tokens).to.equal(balanceBeforeJC.tokens);
             expect(balanceAfterJC.escrow).to.equal(
-                balanceBeforeJC.escrow - timeoutCollateral
+                balanceBeforeJC.escrow - timeoutCollateral,
             );
             expect(balanceAfterRP.tokens).to.equal(
-                balanceBeforeRP.tokens + resultsCollateral
+                balanceBeforeRP.tokens + resultsCollateral,
             );
             expect(balanceAfterRP.escrow).to.equal(
-                balanceBeforeRP.escrow - resultsCollateral
+                balanceBeforeRP.escrow - resultsCollateral,
             );
             expect(balanceAfterAdmin.tokens).to.equal(
-                balanceBeforeAdmin.tokens + timeoutCollateral
+                balanceBeforeAdmin.tokens + timeoutCollateral,
             );
         });
 
         it("Should timeout mediate results", async function () {
             const {token, payments, tokenAddress} = await loadFixture(
-                setupPaymentsWithResults
+                setupPaymentsWithResults,
             );
 
             const balanceBeforeJC = await getBalances(token, "job_creator");
@@ -732,8 +730,8 @@ describe("Payments", () => {
                         getAddress("job_creator"),
                         paymentCollateral,
                         resultsCollateral,
-                        mediationFee
-                    )
+                        mediationFee,
+                    ),
             )
                 .to.emit(payments, "Payment")
                 .withArgs(
@@ -741,7 +739,7 @@ describe("Payments", () => {
                     getAddress("resource_provider"),
                     resultsCollateral,
                     getPaymentReason("ResultsCollateral"),
-                    getPaymentDirection("Refunded")
+                    getPaymentDirection("Refunded"),
                 )
                 .to.emit(payments, "Payment")
                 .withArgs(
@@ -749,7 +747,7 @@ describe("Payments", () => {
                     getAddress("job_creator"),
                     paymentCollateral,
                     getPaymentReason("PaymentCollateral"),
-                    getPaymentDirection("Refunded")
+                    getPaymentDirection("Refunded"),
                 )
                 .to.emit(payments, "Payment")
                 .withArgs(
@@ -757,13 +755,13 @@ describe("Payments", () => {
                     getAddress("job_creator"),
                     mediationFee,
                     getPaymentReason("MediationFee"),
-                    getPaymentDirection("Refunded")
+                    getPaymentDirection("Refunded"),
                 )
                 .to.emit(token, "Transfer")
                 .withArgs(
                     tokenAddress,
                     getAddress("resource_provider"),
-                    resultsCollateral
+                    resultsCollateral,
                 )
                 .to.emit(token, "Transfer")
                 .withArgs(tokenAddress, getAddress("job_creator"), paymentCollateral)
@@ -774,16 +772,16 @@ describe("Payments", () => {
             const balanceAfterRP = await getBalances(token, "resource_provider");
 
             expect(balanceAfterJC.tokens).to.equal(
-                balanceBeforeJC.tokens + paymentCollateral + mediationFee
+                balanceBeforeJC.tokens + paymentCollateral + mediationFee,
             );
             expect(balanceAfterJC.escrow).to.equal(
-                balanceBeforeJC.escrow - paymentCollateral - mediationFee
+                balanceBeforeJC.escrow - paymentCollateral - mediationFee,
             );
             expect(balanceAfterRP.tokens).to.equal(
-                balanceBeforeRP.tokens + resultsCollateral
+                balanceBeforeRP.tokens + resultsCollateral,
             );
             expect(balanceAfterRP.escrow).to.equal(
-                balanceBeforeRP.escrow - resultsCollateral
+                balanceBeforeRP.escrow - resultsCollateral,
             );
         });
     });
@@ -797,10 +795,10 @@ describe("Payments", () => {
                     .agreeResourceProvider(
                         dealID,
                         getAddress("resource_provider"),
-                        ethers.parseEther("1")
-                    )
+                        ethers.parseEther("1"),
+                    ),
             ).to.be.revertedWith(
-                "ControllerOwnable: Controller address must be defined"
+                "ControllerOwnable: Controller address must be defined",
             );
         });
 
@@ -812,10 +810,10 @@ describe("Payments", () => {
                     .agreeResourceProvider(
                         dealID,
                         getAddress("resource_provider"),
-                        ethers.parseEther("1")
-                    )
+                        ethers.parseEther("1"),
+                    ),
             ).to.be.revertedWith(
-                "ControllerOwnable: Only the controller can call this method"
+                "ControllerOwnable: Only the controller can call this method",
             );
         });
 
@@ -828,10 +826,10 @@ describe("Payments", () => {
                         dealID,
                         getAddress("job_creator"),
                         ethers.parseEther("1"),
-                        ethers.parseEther("1")
-                    )
+                        ethers.parseEther("1"),
+                    ),
             ).to.be.revertedWith(
-                "ControllerOwnable: Controller address must be defined"
+                "ControllerOwnable: Controller address must be defined",
             );
         });
 
@@ -844,10 +842,10 @@ describe("Payments", () => {
                         dealID,
                         getAddress("job_creator"),
                         ethers.parseEther("1"),
-                        ethers.parseEther("1")
-                    )
+                        ethers.parseEther("1"),
+                    ),
             ).to.be.revertedWith(
-                "ControllerOwnable: Only the controller can call this method"
+                "ControllerOwnable: Only the controller can call this method",
             );
         });
 
@@ -860,10 +858,10 @@ describe("Payments", () => {
                         dealID,
                         getAddress("resource_provider"),
                         ethers.parseEther("1"),
-                        ethers.parseEther("1")
-                    )
+                        ethers.parseEther("1"),
+                    ),
             ).to.be.revertedWith(
-                "ControllerOwnable: Controller address must be defined"
+                "ControllerOwnable: Controller address must be defined",
             );
         });
 
@@ -876,10 +874,10 @@ describe("Payments", () => {
                         dealID,
                         getAddress("resource_provider"),
                         ethers.parseEther("1"),
-                        ethers.parseEther("1")
-                    )
+                        ethers.parseEther("1"),
+                    ),
             ).to.be.revertedWith(
-                "ControllerOwnable: Only the controller can call this method"
+                "ControllerOwnable: Only the controller can call this method",
             );
         });
 
@@ -895,10 +893,10 @@ describe("Payments", () => {
                         ethers.parseEther("1"),
                         ethers.parseEther("1"),
                         ethers.parseEther("1"),
-                        ethers.parseEther("1")
-                    )
+                        ethers.parseEther("1"),
+                    ),
             ).to.be.revertedWith(
-                "ControllerOwnable: Controller address must be defined"
+                "ControllerOwnable: Controller address must be defined",
             );
         });
 
@@ -914,10 +912,10 @@ describe("Payments", () => {
                         ethers.parseEther("1"),
                         ethers.parseEther("1"),
                         ethers.parseEther("1"),
-                        ethers.parseEther("1")
-                    )
+                        ethers.parseEther("1"),
+                    ),
             ).to.be.revertedWith(
-                "ControllerOwnable: Only the controller can call this method"
+                "ControllerOwnable: Only the controller can call this method",
             );
         });
 
@@ -930,10 +928,10 @@ describe("Payments", () => {
                         dealID,
                         getAddress("resource_provider"),
                         ethers.parseEther("1"),
-                        ethers.parseEther("1")
-                    )
+                        ethers.parseEther("1"),
+                    ),
             ).to.be.revertedWith(
-                "ControllerOwnable: Controller address must be defined"
+                "ControllerOwnable: Controller address must be defined",
             );
         });
 
@@ -946,10 +944,10 @@ describe("Payments", () => {
                         dealID,
                         getAddress("resource_provider"),
                         ethers.parseEther("1"),
-                        ethers.parseEther("1")
-                    )
+                        ethers.parseEther("1"),
+                    ),
             ).to.be.revertedWith(
-                "ControllerOwnable: Only the controller can call this method"
+                "ControllerOwnable: Only the controller can call this method",
             );
         });
 
@@ -965,10 +963,10 @@ describe("Payments", () => {
                         ethers.parseEther("1"),
                         ethers.parseEther("1"),
                         ethers.parseEther("1"),
-                        ethers.parseEther("1")
-                    )
+                        ethers.parseEther("1"),
+                    ),
             ).to.be.revertedWith(
-                "ControllerOwnable: Controller address must be defined"
+                "ControllerOwnable: Controller address must be defined",
             );
         });
 
@@ -984,10 +982,10 @@ describe("Payments", () => {
                         ethers.parseEther("1"),
                         ethers.parseEther("1"),
                         ethers.parseEther("1"),
-                        ethers.parseEther("1")
-                    )
+                        ethers.parseEther("1"),
+                    ),
             ).to.be.revertedWith(
-                "ControllerOwnable: Only the controller can call this method"
+                "ControllerOwnable: Only the controller can call this method",
             );
         });
 
@@ -1002,10 +1000,10 @@ describe("Payments", () => {
                         getAddress("job_creator"),
                         ethers.parseEther("1"),
                         ethers.parseEther("1"),
-                        ethers.parseEther("1")
-                    )
+                        ethers.parseEther("1"),
+                    ),
             ).to.be.revertedWith(
-                "ControllerOwnable: Controller address must be defined"
+                "ControllerOwnable: Controller address must be defined",
             );
         });
 
@@ -1020,10 +1018,10 @@ describe("Payments", () => {
                         getAddress("job_creator"),
                         ethers.parseEther("1"),
                         ethers.parseEther("1"),
-                        ethers.parseEther("1")
-                    )
+                        ethers.parseEther("1"),
+                    ),
             ).to.be.revertedWith(
-                "ControllerOwnable: Only the controller can call this method"
+                "ControllerOwnable: Only the controller can call this method",
             );
         });
 
@@ -1037,10 +1035,10 @@ describe("Payments", () => {
                         getAddress("resource_provider"),
                         getAddress("job_creator"),
                         ethers.parseEther("1"),
-                        ethers.parseEther("1")
-                    )
+                        ethers.parseEther("1"),
+                    ),
             ).to.be.revertedWith(
-                "ControllerOwnable: Controller address must be defined"
+                "ControllerOwnable: Controller address must be defined",
             );
         });
 
@@ -1054,10 +1052,10 @@ describe("Payments", () => {
                         getAddress("resource_provider"),
                         getAddress("job_creator"),
                         ethers.parseEther("1"),
-                        ethers.parseEther("1")
-                    )
+                        ethers.parseEther("1"),
+                    ),
             ).to.be.revertedWith(
-                "ControllerOwnable: Only the controller can call this method"
+                "ControllerOwnable: Only the controller can call this method",
             );
         });
 
@@ -1071,10 +1069,10 @@ describe("Payments", () => {
                         getAddress("resource_provider"),
                         getAddress("job_creator"),
                         ethers.parseEther("1"),
-                        ethers.parseEther("1")
-                    )
+                        ethers.parseEther("1"),
+                    ),
             ).to.be.revertedWith(
-                "ControllerOwnable: Controller address must be defined"
+                "ControllerOwnable: Controller address must be defined",
             );
         });
 
@@ -1088,10 +1086,10 @@ describe("Payments", () => {
                         getAddress("resource_provider"),
                         getAddress("job_creator"),
                         ethers.parseEther("1"),
-                        ethers.parseEther("1")
-                    )
+                        ethers.parseEther("1"),
+                    ),
             ).to.be.revertedWith(
-                "ControllerOwnable: Only the controller can call this method"
+                "ControllerOwnable: Only the controller can call this method",
             );
         });
 
@@ -1106,10 +1104,10 @@ describe("Payments", () => {
                         getAddress("job_creator"),
                         ethers.parseEther("1"),
                         ethers.parseEther("1"),
-                        ethers.parseEther("1")
-                    )
+                        ethers.parseEther("1"),
+                    ),
             ).to.be.revertedWith(
-                "ControllerOwnable: Controller address must be defined"
+                "ControllerOwnable: Controller address must be defined",
             );
         });
 
@@ -1124,10 +1122,10 @@ describe("Payments", () => {
                         getAddress("job_creator"),
                         ethers.parseEther("1"),
                         ethers.parseEther("1"),
-                        ethers.parseEther("1")
-                    )
+                        ethers.parseEther("1"),
+                    ),
             ).to.be.revertedWith(
-                "ControllerOwnable: Only the controller can call this method"
+                "ControllerOwnable: Only the controller can call this method",
             );
         });
     });

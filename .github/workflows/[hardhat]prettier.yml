@@ -84,7 +84,10 @@ jobs:
           echo ".github/workflows/*.yaml" >> .prettierignore.ci
           echo ".github/workflows/*.yml" >> .prettierignore.ci
 
+
       - name: Prettify code
+        id: prettierAction
+        continue-on-error: true
         uses: creyD/prettier_action@v4.3
         env:
           GITHUB_ACTOR: Baymax # ${{github.actor}}
@@ -99,3 +102,17 @@ jobs:
           #  file_pattern: "**/*.{js,jsx,ts,tsx,css,scss,html,vue,json,md}`"
           only_changed: ${{ env.ONLY_CHANGED }}
           prettier_options: "--write . --ignore-path .prettierignore.ci"
+
+
+      - name: Style manually
+        if: steps.prettierAction.outcome == 'failure'
+        run: |
+          BASE=$(git merge-base HEAD~ HEAD) # change master to whatever your trunk branch is
+          #FILES=$(git diff --name-only $BASE HEAD | xargs) # diff filter otherwise deleted files will be there
+          FILES=$(git diff --name-only --diff-filter=d $BASE HEAD | xargs)
+          #npm run style
+          npx prettier--ignore-path .prettierignore.ci --write $FILES 
+          git add -u 
+          git commit -m "style: by ci"
+          git push origin ${{ github.head_ref }}
+          

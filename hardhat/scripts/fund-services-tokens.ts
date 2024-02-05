@@ -9,7 +9,7 @@ async function main() {
         await transferTokens(
             getAccount("admin"),
             toAccount,
-            DEFAULT_TOKENS_PER_ACCOUNT
+            DEFAULT_TOKENS_PER_ACCOUNT,
         );
     });
 }

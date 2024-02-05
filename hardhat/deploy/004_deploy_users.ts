@@ -2,7 +2,7 @@ import {HardhatRuntimeEnvironment} from "hardhat/types";
 import {DeployFunction} from "hardhat-deploy/types";
 
 const deployUsers: DeployFunction = async function (
-    hre: HardhatRuntimeEnvironment
+    hre: HardhatRuntimeEnvironment,
 ) {
     const {deployments, getNamedAccounts} = hre;
     const {deploy, execute} = deployments;
@@ -18,7 +18,7 @@ const deployUsers: DeployFunction = async function (
             from: admin,
             log: true,
         },
-        "initialize"
+        "initialize",
     );
     return true;
 };

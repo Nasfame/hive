@@ -9,7 +9,7 @@ import {
     HiveToken,
     HiveUsers,
 } from "../typechain-types";
-import {SharedStructs} from '../typechain-types/contracts/HiveStorage';
+import {SharedStructs} from "../typechain-types/contracts/HiveStorage";
 
 /*
 
@@ -19,7 +19,7 @@ import {SharedStructs} from '../typechain-types/contracts/HiveStorage';
 export async function deployContract<T extends any>(
     name: string,
     signer: Signer,
-    args: any[] = []
+    args: any[] = [],
 ): Promise<T> {
     const factory = await ethers.getContractFactory(name, signer);
     const contract = (await factory.deploy(...args)) as unknown as T;
@@ -29,23 +29,23 @@ export async function deployContract<T extends any>(
 export async function deployToken(
     signer: Signer,
     tokenSupply: BigNumberish = DEFAULT_TOKEN_SUPPLY,
-    testMode = false
+    testMode = false,
 ) {
     return deployContract<HiveToken>(
         testMode ? "HiveTokenTestable" : "HiveToken",
         signer,
-        ["Hive", "LLY", tokenSupply]
+        ["Hive", "LLY", tokenSupply],
     );
 }
 
 export async function deployPayments(
     signer: Signer,
     tokenAddress: AddressLike,
-    testMode = false
+    testMode = false,
 ) {
     const payments = await deployContract<HivePayments>(
         testMode ? "HivePaymentsTestable" : "HivePayments",
-        signer
+        signer,
     );
     await payments.connect(signer).initialize(tokenAddress);
     return payments;
@@ -54,7 +54,7 @@ export async function deployPayments(
 export async function deployStorage(signer: Signer, testMode = false) {
     return deployContract<HiveStorage>(
         testMode ? "HiveStorageTestable" : "HiveStorage",
-        signer
+        signer,
     );
 }
 
@@ -72,11 +72,11 @@ export async function deployController(
     usersAddress: AddressLike,
     paymentsAddress: AddressLike,
     mediationAddress: AddressLike,
-    jobCreatorAddress: AddressLike
+    jobCreatorAddress: AddressLike,
 ) {
     const controller = await deployContract<HiveController>(
         "HiveController",
-        signer
+        signer,
     );
     await controller
         .connect(signer)
@@ -85,7 +85,7 @@ export async function deployController(
             usersAddress,
             paymentsAddress,
             mediationAddress,
-            jobCreatorAddress
+            jobCreatorAddress,
         );
     return controller;
 }
@@ -259,7 +259,7 @@ export async function setupControllerFixture({
         usersAddress,
         paymentsAddress,
         mediationAddress,
-        jobCreator
+        jobCreator,
     );
     const controllerAddress = await controller.getAddress();
     await (payments as any)
@@ -297,7 +297,7 @@ export const DEFAULT_VALUES: Record<string, bigint> = {
 
 export function getDefaultTimeouts(
     timeout = DEFAULT_VALUES.timeout,
-    collateral = DEFAULT_VALUES.timeoutCollateral
+    collateral = DEFAULT_VALUES.timeoutCollateral,
 ) {
     const defaultTimeout: SharedStructs.DealTimeoutStruct = {
         timeout,
@@ -320,7 +320,7 @@ export function getDefaultPricing(
     instructionPrice = DEFAULT_VALUES.instructionPrice,
     paymentCollateral = DEFAULT_VALUES.paymentCollateral,
     resultsCollateralMultiple = DEFAULT_VALUES.resultsCollateralMultiple,
-    mediationFee = DEFAULT_VALUES.mediationFee
+    mediationFee = DEFAULT_VALUES.mediationFee,
 ) {
     const ret: SharedStructs.DealPricingStruct = {
         instructionPrice,

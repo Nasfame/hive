@@ -10,7 +10,7 @@ async function main() {
         Solver: storage.showUsersInList(getServiceType("Solver")),
         Mediator: storage.showUsersInList(getServiceType("Mediator")),
         ResourceProvider: storage.showUsersInList(
-            getServiceType("ResourceProvider")
+            getServiceType("ResourceProvider"),
         ),
         JobCreator: storage.showUsersInList(getServiceType("JobCreator")),
     });

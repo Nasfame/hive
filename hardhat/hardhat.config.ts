@@ -11,11 +11,11 @@ import {ACCOUNT_ADDRESSES, PRIVATE_KEYS} from "./utils/accounts";
 const ENV_FILE = process.env.DOTENV_CONFIG_PATH || "../.env";
 dotenv.config({path: ENV_FILE});
 
-console.log(`ENV_FILE is ${ENV_FILE}`)
+console.log(`ENV_FILE is ${ENV_FILE}`);
 
 const NETWORK = process.env.NETWORK || "hardhat";
 
-console.log(`network is ${NETWORK}`)
+console.log(`network is ${NETWORK}`);
 
 const INFURA_KEY = process.env.INFURA_KEY || "";
 
@@ -63,7 +63,7 @@ const config: HardhatUserConfig = {
             chainId: 1337,
             url: "http://testnet.co-ophive.network:8545",
             accounts: PRIVATE_KEYS,
-        }
+        },
     },
     etherscan: {
         apiKey: process.env.ETHERSCAN_API_KEY,

@@ -51,11 +51,11 @@ export const getRandomWallet = () => {
 export const transferEther = async (
     fromAccount: Account,
     toAccount: Account,
-    amount: BigNumberish
+    amount: BigNumberish,
 ) => {
     const signer = new hre.ethers.Wallet(
         fromAccount.privateKey,
-        hre.ethers.provider
+        hre.ethers.provider,
     );
     const tx = await signer.sendTransaction({
         to: toAccount.address,
@@ -63,14 +63,14 @@ export const transferEther = async (
     });
     await tx.wait();
     console.log(
-        `Moved ${amount} ETHER from ${fromAccount.name} (${fromAccount.address}) to ${toAccount.name} (${toAccount.address}) - ${tx.hash}.`
+        `Moved ${amount} ETHER from ${fromAccount.name} (${fromAccount.address}) to ${toAccount.name} (${toAccount.address}) - ${tx.hash}.`,
     );
 };
 
 export const transferTokens = async (
     fromAccount: Account,
     toAccount: Account,
-    amount: BigNumberish
+    amount: BigNumberish,
 ) => {
     const token = await connectToken();
     const tx = await token
@@ -78,7 +78,7 @@ export const transferTokens = async (
         .transfer(toAccount.address, amount);
     await tx.wait();
     console.log(
-        `Moved ${amount} TOKENS from ${fromAccount.name} (${fromAccount.address}) to ${toAccount.name} (${toAccount.address}) - ${tx.hash}.`
+        `Moved ${amount} TOKENS from ${fromAccount.name} (${fromAccount.address}) to ${toAccount.name} (${toAccount.address}) - ${tx.hash}.`,
     );
 };
 
@@ -90,7 +90,7 @@ export const transferTokens = async (
 export async function deployContract<T extends any>(
     name: string,
     signer: Signer,
-    args: any[] = []
+    args: any[] = [],
 ): Promise<T> {
     const factory = await ethers.getContractFactory(name, signer);
     const contract = (await factory.deploy(...args)) as unknown as T;
@@ -105,14 +105,14 @@ export async function deployContract<T extends any>(
 export async function fundTokens(
     tokenContract: HiveToken,
     address: AddressLike,
-    amount: BigNumberish = DEFAULT_TOKENS_PER_ACCOUNT
+    amount: BigNumberish = DEFAULT_TOKENS_PER_ACCOUNT,
 ) {
     await tokenContract.connect(getWallet("admin")).transfer(address, amount);
 }
 
 export async function fundAccountsWithTokens(
     tokenContract: HiveToken,
-    amount: BigNumberish = DEFAULT_TOKENS_PER_ACCOUNT
+    amount: BigNumberish = DEFAULT_TOKENS_PER_ACCOUNT,
 ) {
     await bluebird.mapSeries(ACCOUNTS, async (account) => {
         await fundTokens(tokenContract, account.address, amount);

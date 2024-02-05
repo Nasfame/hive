@@ -2,7 +2,7 @@ import {HardhatRuntimeEnvironment} from "hardhat/types";
 import {DeployFunction} from "hardhat-deploy/types";
 
 const deployPayments: DeployFunction = async function (
-    hre: HardhatRuntimeEnvironment
+    hre: HardhatRuntimeEnvironment,
 ) {
     const {deployments, getNamedAccounts} = hre;
     const {deploy, execute} = deployments;
@@ -23,7 +23,7 @@ const deployPayments: DeployFunction = async function (
             log: true,
         },
         "initialize",
-        tokenContract.address
+        tokenContract.address,
     );
 
     await execute(
@@ -33,7 +33,7 @@ const deployPayments: DeployFunction = async function (
             log: true,
         },
         "setControllerAddress",
-        paymentsContract.address
+        paymentsContract.address,
     );
 
     return true;

@@ -30,13 +30,13 @@ describe("Users", () => {
         expect(
             await users
                 .connect(getWallet("resource_provider"))
-                .updateUser(rpCID, rpURL, [getServiceType("ResourceProvider")])
+                .updateUser(rpCID, rpURL, [getServiceType("ResourceProvider")]),
         ).to.not.be.reverted;
 
         expect(
             await users
                 .connect(getWallet("job_creator"))
-                .updateUser(jcCID, jcURL, [getServiceType("JobCreator")])
+                .updateUser(jcCID, jcURL, [getServiceType("JobCreator")]),
         ).to.not.be.reverted;
         return users;
     }
@@ -66,7 +66,7 @@ describe("Users", () => {
             expect(
                 await storage
                     .connect(getWallet("job_creator"))
-                    .updateUser(newCID, newURL, [getServiceType("JobCreator")])
+                    .updateUser(newCID, newURL, [getServiceType("JobCreator")]),
             ).to.not.be.reverted;
 
             const jc = await storage.getUser(getAddress("job_creator"));
@@ -79,17 +79,17 @@ describe("Users", () => {
             const users = await loadFixture(setupTestWithUsers);
 
             expect(
-                await users.showUsersInList(getServiceType("JobCreator"))
+                await users.showUsersInList(getServiceType("JobCreator")),
             ).to.deep.equal([]);
 
             expect(
                 await users
                     .connect(getWallet("job_creator"))
-                    .addUserToList(getServiceType("JobCreator"))
+                    .addUserToList(getServiceType("JobCreator")),
             ).to.not.be.reverted;
 
             expect(
-                await users.showUsersInList(getServiceType("JobCreator"))
+                await users.showUsersInList(getServiceType("JobCreator")),
             ).to.deep.equal([getAddress("job_creator")]);
         });
 
@@ -99,7 +99,7 @@ describe("Users", () => {
             await expect(
                 users
                     .connect(getWallet("job_creator"))
-                    .addUserToList(getServiceType("ResourceProvider"))
+                    .addUserToList(getServiceType("ResourceProvider")),
             ).to.be.revertedWith("User must have that role");
         });
 
@@ -109,13 +109,13 @@ describe("Users", () => {
             expect(
                 await users
                     .connect(getWallet("job_creator"))
-                    .addUserToList(getServiceType("JobCreator"))
+                    .addUserToList(getServiceType("JobCreator")),
             ).to.not.be.reverted;
 
             await expect(
                 users
                     .connect(getWallet("job_creator"))
-                    .addUserToList(getServiceType("JobCreator"))
+                    .addUserToList(getServiceType("JobCreator")),
             ).to.be.revertedWith("User is already part of that list");
         });
 
@@ -125,17 +125,17 @@ describe("Users", () => {
             expect(
                 await users
                     .connect(getWallet("job_creator"))
-                    .addUserToList(getServiceType("JobCreator"))
+                    .addUserToList(getServiceType("JobCreator")),
             ).to.not.be.reverted;
 
             expect(
                 await users
                     .connect(getWallet("job_creator"))
-                    .removeUserFromList(getServiceType("JobCreator"))
+                    .removeUserFromList(getServiceType("JobCreator")),
             ).to.not.be.reverted;
 
             expect(
-                await users.showUsersInList(getServiceType("JobCreator"))
+                await users.showUsersInList(getServiceType("JobCreator")),
             ).to.deep.equal([]);
         });
 
@@ -145,7 +145,7 @@ describe("Users", () => {
             await expect(
                 users
                     .connect(getWallet("job_creator"))
-                    .removeUserFromList(getServiceType("JobCreator"))
+                    .removeUserFromList(getServiceType("JobCreator")),
             ).to.be.revertedWith("User is not part of that list");
         });
     });
