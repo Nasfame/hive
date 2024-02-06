@@ -110,7 +110,7 @@ jobs:
           #FILES=$(git diff --name-only $BASE HEAD | xargs) # diff filter otherwise deleted files will be there
           FILES=$(git diff --name-only --diff-filter=d $BASE HEAD | xargs)
           #npm run style
-          npx prettier  --ignore-path .prettierignore.ci --write $FILES 
+          npx prettier  --ignore-path hardhat/.prettierignore.ci --write $FILES 
           git add -u 
           git commit -m "style: by ci"
           git push origin ${{ github.head_ref }}
