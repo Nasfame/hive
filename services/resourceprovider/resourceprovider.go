@@ -3,25 +3,28 @@ package resourceprovider
 import (
 	"github.com/spf13/cobra"
 
+	"github.com/CoopHive/hive/internal/genesis"
 	"github.com/CoopHive/hive/pkg/executor/bacalhau"
 	"github.com/CoopHive/hive/pkg/system"
 	"github.com/CoopHive/hive/pkg/web3"
+	"github.com/CoopHive/hive/services/dealmaker"
 )
 
-func newResourceProviderCmd() *cobra.Command {
+func (s *service) newResourceProviderCmd() *cobra.Command {
 	options := NewResourceProviderOptions()
 
 	resourceProviderCmd := &cobra.Command{
 		Use:     "resource-provider",
 		Short:   "Start the CoopHive resource-provider service.",
 		Long:    "Start the CoopHive resource-provider service.",
+		Aliases: []string{"resourceprovider"},
 		Example: "",
 		RunE: func(cmd *cobra.Command, _ []string) error {
 			options, err := ProcessResourceProviderOptions(options)
 			if err != nil {
 				return err
 			}
-			return runResourceProvider(cmd, options)
+			return s.runResourceProvider(cmd, options)
 		},
 	}
 
@@ -30,7 +33,7 @@ func newResourceProviderCmd() *cobra.Command {
 	return resourceProviderCmd
 }
 
-func runResourceProvider(cmd *cobra.Command, options ResourceProviderOptions) error {
+func (s *service) runResourceProvider(cmd *cobra.Command, options ResourceProviderOptions) error {
 	commandCtx := system.NewCommandContext(cmd)
 	defer commandCtx.Cleanup()
 
@@ -44,7 +47,7 @@ func runResourceProvider(cmd *cobra.Command, options ResourceProviderOptions) er
 		return err
 	}
 
-	resourceProviderService, err := NewResourceProvider(options, web3SDK, executor)
+	resourceProviderService, err := NewResourceProvider(options, web3SDK, executor, s.dealMakerService)
 	if err != nil {
 		return err
 	}
@@ -59,4 +62,9 @@ func runResourceProvider(cmd *cobra.Command, options ResourceProviderOptions) er
 			return nil
 		}
 	}
+}
+
+type service struct {
+	dealMakerService *dealmaker.Service
+	*genesis.Service
 }

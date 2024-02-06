@@ -25,6 +25,7 @@ const config: HardhatUserConfig = {
     namedAccounts: ACCOUNT_ADDRESSES,
     networks: {
         hardhat: {
+            chainId: 1337,
             accounts: [
                 {
                     privateKey:
@@ -68,6 +69,11 @@ const config: HardhatUserConfig = {
     etherscan: {
         apiKey: process.env.ETHERSCAN_API_KEY,
     },
+    // sourcify: {
+    //     // Disabled by default
+    //     // Doesn't need an API key
+    //     enabled: true
+    // }
 };
 
 module.exports = config;

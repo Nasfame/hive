@@ -13,6 +13,7 @@ import (
 	"github.com/CoopHive/hive/pkg/system"
 	"github.com/CoopHive/hive/pkg/web3"
 	"github.com/CoopHive/hive/pkg/web3/bindings/storage"
+	"github.com/CoopHive/hive/services/dealmaker"
 	solver2 "github.com/CoopHive/hive/services/solver/solver"
 	"github.com/CoopHive/hive/services/solver/solver/store"
 )
@@ -30,6 +31,8 @@ type ResourceProviderController struct {
 	// whilst we are actually running a job
 	runningJobsMutex sync.RWMutex
 	runningJobs      map[string]bool
+
+	dealmakerService *dealmaker.Service
 }
 
 // the background "even if we have not heard of an event" loop
@@ -42,6 +45,7 @@ func NewResourceProviderController(
 	options ResourceProviderOptions,
 	web3SDK *web3.Web3SDK,
 	executor executor.Executor,
+	dealmakerService *dealmaker.Service,
 ) (*ResourceProviderController, error) {
 	// we know the address of the solver but what is it's url?
 	solverUrl, err := web3SDK.GetSolverUrl(options.Offers.Services.Solver)
@@ -58,13 +62,14 @@ func NewResourceProviderController(
 	}
 
 	controller := &ResourceProviderController{
-		solverClient: solverClient,
-		options:      options,
-		web3SDK:      web3SDK,
-		web3Events:   web3.NewEventChannels(),
-		log:          system.NewServiceLogger(system.ResourceProviderService),
-		executor:     executor,
-		runningJobs:  map[string]bool{},
+		solverClient:     solverClient,
+		options:          options,
+		web3SDK:          web3SDK,
+		web3Events:       web3.NewEventChannels(),
+		log:              system.NewServiceLogger(system.ResourceProviderService),
+		executor:         executor,
+		runningJobs:      map[string]bool{},
+		dealmakerService: dealmakerService,
 	}
 	return controller, nil
 }
@@ -189,7 +194,7 @@ func (controller *ResourceProviderController) solve() error {
 
 	// if there are deals that have been matched and we have not agreed
 	// then we should agree to them
-	err = controller.agreeToDeals() // TODO:  AI Mediation
+	err = controller.agreeToDeals()
 	if err != nil {
 		return err
 	}
@@ -313,35 +318,48 @@ func (controller *ResourceProviderController) agreeToDeals() error {
 		return nil
 	}
 
+	dealContainers := map[string]*dto.DealContainer{}
+
 	// map over the deals and agree to them
 	for _, dealContainer := range matchedDeals {
-		controller.log.Info("agree", dealContainer)
-		txHash, err := controller.web3SDK.Agree(dealContainer.Deal)
-		if err != nil {
-			// TODO: we need a way of deciding based on certain classes of error what happens
-			// some will be retryable - otherwise will be fatal
-			// we need a way to exit a job loop as a baseline
-			controller.log.Error("error calling agree tx for deal", err)
-			continue
-		}
-		controller.log.Info("agree tx", txHash)
-
-		// we have agreed to the deal so we need to update the tx in the solver
-		_, err = controller.solverClient.UpdateTransactionsResourceProvider(dealContainer.ID, dto.DealTransactionsResourceProvider{
-			Agree: txHash,
-		})
-		if err != nil {
-			// TODO: we need a way of deciding based on certain classes of error what happens
-			// some will be retryable - otherwise will be fatal
-			// we need a way to exit a job loop as a baseline
-			controller.log.Error("error adding agree tx hash for deal", err)
-			continue
-		}
-		controller.log.Info("updated deal with agree tx", txHash)
+		controller.log.Debug("dealContainer", dealContainer)
+		dealContainers[dealContainer.ID] = &dealContainer
+		go controller.dealmakerService.DealsMatched(dealContainer.ID)
 	}
+
+	controller.dealmakerService.DealsAgreed(func(dealID string) {
+		controller.agreeDeal(dealContainers[dealID])
+	})
 
 	return err
 
+}
+
+func (controller *ResourceProviderController) agreeDeal(dealContainer *dto.DealContainer) {
+	controller.log.Info("agree", dealContainer)
+
+	txHash, err := controller.web3SDK.Agree(dealContainer.Deal)
+	if err != nil {
+		// TODO: we need a way of deciding based on certain classes of error what happens
+		// some will be retryable - otherwise will be fatal
+		// we need a way to exit a job loop as a baseline
+		controller.log.Error("error calling agree tx for deal", err)
+		return
+	}
+	controller.log.Info("agree tx", txHash)
+
+	// we have agreed to the deal so we need to update the tx in the solver
+	_, err = controller.solverClient.UpdateTransactionsResourceProvider(dealContainer.ID, dto.DealTransactionsResourceProvider{
+		Agree: txHash,
+	})
+	if err != nil {
+		// TODO: we need a way of deciding based on certain classes of error what happens
+		// some will be retryable - otherwise will be fatal
+		// we need a way to exit a job loop as a baseline
+		controller.log.Error("error adding agree tx hash for deal", err)
+		return
+	}
+	controller.log.Info("updated deal with agree tx", txHash)
 }
 
 /*

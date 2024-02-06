@@ -1,5 +1,8 @@
 import {HardhatRuntimeEnvironment} from "hardhat/types";
 import {DeployFunction} from "hardhat-deploy/types";
+import * as fs from "fs";
+
+import {network} from "hardhat"
 
 const deployController: DeployFunction = async function (
     hre: HardhatRuntimeEnvironment,
@@ -64,9 +67,29 @@ const deployController: DeployFunction = async function (
         controllerContract.address,
     );
 
+    console.log("Deployed Contracts:");
+
+
+    const content = `
+HiveController=${controllerContract.address}
+HiveStorage=${storageContract.address}
+HivePayments=${paymentsContract.address}
+HiveMediationRandom=${mediationContract.address}
+HiveJobCreator=${jobCreatorContract.address}
+`.trim();
+    console.log(content)
+
+    writeToFile(content, `../config/contracts/${network.name}.env`);
+
     return true;
 };
 
 deployController.id = "deployController";
 
 export default deployController;
+
+function writeToFile(data: string, filename: string) {
+    fs.writeFileSync(filename, data);
+
+    console.log(`Wrote to ${filename}`);
+}

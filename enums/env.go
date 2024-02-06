@@ -41,3 +41,7 @@ const (
 const (
 	JOBCREATOR_OPTION_INPUT = "i"
 )
+
+const (
+	DEALER = "AutoAccept"
+)

@@ -9,4 +9,8 @@ var appConfig = configMap[string]{
 		desc:       "debug mode",
 		defaultVal: "false",
 	},
+	enums.DEALER: {
+		"Dealer name for resource provider",
+		"AutoAccept",
+	},
 }

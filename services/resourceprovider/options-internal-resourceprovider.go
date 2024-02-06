@@ -8,6 +8,7 @@ import (
 	"github.com/CoopHive/hive/pkg/executor/bacalhau"
 	"github.com/CoopHive/hive/pkg/system"
 	"github.com/CoopHive/hive/pkg/web3"
+	"github.com/CoopHive/hive/services/dealmaker"
 )
 
 // this configures the resource offers we will keep track of
@@ -53,14 +54,17 @@ type ResourceProvider struct {
 	web3SDK    *web3.Web3SDK
 	options    ResourceProviderOptions
 	controller *ResourceProviderController
+
+	dealmakerService *dealmaker.Service
 }
 
 func NewResourceProvider(
 	options ResourceProviderOptions,
 	web3SDK *web3.Web3SDK,
 	executor executor.Executor,
+	dealMakerService *dealmaker.Service,
 ) (*ResourceProvider, error) {
-	controller, err := NewResourceProviderController(options, web3SDK, executor)
+	controller, err := NewResourceProviderController(options, web3SDK, executor, dealMakerService)
 	if err != nil {
 		return nil, err
 	}

@@ -3,7 +3,7 @@ import Wallet from "ethereumjs-wallet";
 const generate = (name: string) => {
     const wallet = Wallet.generate();
     console.log(`export ${name}_PRIVATE_KEY=${wallet.getPrivateKeyString()}`);
-    console.log(`export ${name}_ADDRESS=${wallet.getAddressString()}`);
+    // console.log(`export ${name}_ADDRESS=${wallet.getAddressString()}`);
 };
 
 async function main() {
@@ -14,6 +14,10 @@ async function main() {
     generate("RESOURCE_PROVIDER");
     generate("JOB_CREATOR");
     generate("DIRECTORY");
+
+    console.log(`GENERATED_ON="${new Date()}"`)
+    console.log(`GENERATION_COMPLETED_AT=${new Date().toLocaleString()}`);
+
 }
 
 main().catch((error) => {
