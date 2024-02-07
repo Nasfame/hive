@@ -1,11 +1,7 @@
-# CoopHive v0
+# CoopHive 
 
-This cloud is just someone else's computer.
-
-
-CoopHive enables users to run AI workloads easily in a decentralized GPU network where anyone can get paid to connect
-their compute nodes to the network and run jobs. Users have access to easy Stable Diffusion XL and cutting edge open
-source LLMs both on chain, from CLI and via smart contracts deployed on FVM on the web.
+CoopHive is a two-sided marketplace for computational resources. It enables users to run computational workloads in a permissionless protocol, where anyone can get paid to connect
+their compute nodes to the network and run jobs. 
 
 # Getting started
 
@@ -36,20 +32,18 @@ The faucet will give you both ETH (to pay for gas) and HIVE (to stake and pay fo
 Download the latest release of CoopHive for your platform. Both the amd64/x86_64 and arm64 variants of macOS and Linux
 are supported. (If you are on Apple Silicon, you'll want arm64).
 
-Nb: to check your version use `which hive` - if an old version run `rm <path>` to remove that path then
-reinstall newest version
+To check your version use `which hive`. It it's an old version, run `rm <path>` to remove that path, and then reinstall the newest version.
 
-The commands below will automatically detect your OS and processor architecture and download the correct CoopHive build
-for your machine.
+The commands below will automatically detect your OS and processor architecture and download the correct CoopHive build for your machine.
 
-### On Comamand Line
+### On Command Line
 
 ```
 # Detect your machine's architecture and set it as $OSARCH
 OSARCH=$(uname -m | awk '{if ($0 ~ /arm64|aarch64/) print "arm64"; else if ($0 ~ /x86_64|amd64/) print "amd64"; else print "unsupported_arch"}') && export OSARCH
+
 # Detect your operating system and set it as $OSNAME
 OSNAME=$(uname -s | awk '{if ($1 == "Darwin") print "darwin"; else if ($1 == "Linux") print "linux"; else print "unsupported_os"}') && export OSNAME;
-
 
 # Download the latest production build
 curl -sSL -o hive https://github.com/CoopHive/hive/releases/download/v0.3.3/hive-$OSNAME-$OSARCH
@@ -72,17 +66,22 @@ sudo mv hive /usr/local/bin/hive
 
 ## Run a job
 
+First, make sure your Web3 private key is in the environment.
+
 ```
 export WEB3_PRIVATE_KEY=<your private key>
 ```
 
-(or arrange for the key to be in your environment in a more secure way that doesn't get written to your shell history)
+Alternatively, arrange for the key to be in your environment in a more secure way that doesn't get written to your shell history.
 
 ### Cows
+
+Hello World, now with cows.
 
 ```
 hive run cowsay:v0.1.1 -i Message="CoopHive"
 ```
+should output
 
 ```
 cat /tmp/coophive/data/downloaded-files/Qmbxgp8wyqrQgYYrAMjyUpNdnTuk1Ly8adv8nqQC69rPVQ/stdout
@@ -100,6 +99,8 @@ cat /tmp/coophive/data/downloaded-files/Qmbxgp8wyqrQgYYrAMjyUpNdnTuk1Ly8adv8nqQC
 ```
 
 ### SDXL
+
+Stable diffusion:
 
 ```
 hive run sdxl:v0.1.0 -i PROMPT="beautiful view of iceland with a record player"
@@ -136,7 +137,7 @@ Total 11 (delta 1), reused 11 (delta 1), pack-reused 0
 ```
 
 Not working?
-Try `rm -rf /tmp/coophive/data/repos` uninstall hive path and reinstall from the start
+Try `rm -rf /tmp/coophive/data/repos`. Uninstall hive path, and reinstall from the start.
 
 ## Run a node, earn HIVE
 
@@ -144,8 +145,7 @@ Try `rm -rf /tmp/coophive/data/repos` uninstall hive path and reinstall from the
 hive resourceprovider
 ```
 
-Deploy seamlessly on linux by
-utilizing [these systemd configuration files](https://github.com/CoopHive/hive/tree/main/ops)
+Deploy seamlessly on linux by utilizing [these systemd configuration files](https://github.com/CoopHive/hive/tree/main/ops).
 
 ## Available modules
 
@@ -163,13 +163,9 @@ Check the github releases page for each module or just use the git hash as the t
 
 ## Write a module
 
-A module is just a git repo.
+A module is just a git repo, and module versions are just git tags.
 
-Module versions are just git tags.
-
-In your repo, create a file called `module.coophive`
-
-See [cowsay](https://github.com/CoopHive/coophive-module-cowsay) for example
+In your repo, create a file called `module.coophive`. For an example, see [cowsay](https://github.com/CoopHive/coophive-module-cowsay).
 
 This is a json template with Go text/template style `{{.Message}}` sections which will be replaced by CoopHive with json
 encoded inputs to modules. You can also do fancy things with go templates like setting defaults, see cowsay for example.
@@ -183,19 +179,8 @@ hive run github.com/username/repo:tag -i InputVar=value
 
 Inputs are a map of strings to strings.
 
-**YOU MUST MAKE YOUR MODULE DETERMINISTIC**
 
-Tips:
-
-- Make the output reproducible, for example for the diffusers library,
-  see [here](https://huggingface.co/docs/diffusers/using-diffusers/reproducibility)
-- Strip timestamps and time measurements out of the output, including to stdout/stderr
-- Don't read any sources of entropy (e.g. /dev/random)
-- When referencing docker images, you MUST specify their sha256 hashes, as shown in this example
-
-If your module is not deterministic, compute providers will not adopt it and blacklist your module
-
-.### Writing Advanced Modules
+### Writing Advanced Modules
 
 1. `subt`:
    The `subt` function allows for substitutions in your template.
