@@ -1,3 +1,6 @@
+include .env
+export
+
 binName = hive-$(shell uname -s)-$(shell uname -m)
 
 build-ci:
@@ -47,3 +50,7 @@ install-win:
 
 generate-sol-bindings-for-go:
 	./stack go-bindings-with-go;
+
+
+plugin-autoacceptdealer:
+	./stack build-plugin-autoaccept;

@@ -413,4 +413,12 @@ function integration-tests() {
   )
 }
 
+function build-plugin-autoaccept(){
+  APP_DIR="${APP_DIR:="./data"}"
+  PLUGIN_DIR="${APP_DIR}/plugins"
+  EXT_DIR="${PLUGIN_DIR}/autoaccept.so"
+  go build -buildmode=plugin -o "${EXT_DIR}" ./exp/dealer/autoacceptDealer/main.go
+}
+
+
 eval "$@"

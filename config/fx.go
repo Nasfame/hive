@@ -42,7 +42,12 @@ func newConfig() (o out) {
 		if config.IsSet(key) {
 			log.Fatalf("duplicate key found in config[%s]: %s", block, key)
 		}
+	}
 
+	cmdFlags := map[string]bool{
+		enums.APP_DIR:        true,
+		enums.APP_DATA_DIR:   true,
+		enums.APP_PLUGIN_DIR: true,
 	}
 
 	for key, meta := range buildConfig {
@@ -53,10 +58,18 @@ func newConfig() (o out) {
 	for key, meta := range appConfig {
 		checkDup(key, "app")
 
-		config.SetDefault(key, meta.defaultVal)
+		if key != enums.APP_DATA_DIR || key != enums.APP_PLUGIN_DIR {
+			config.SetDefault(key, meta.defaultVal)
+		}
 
 		// automatic conversion of environment var key to `UPPER_CASE` will happen.
 		config.BindEnv(key)
+
+		if cmdFlags[key] {
+			// read command-line arguments
+			pf.String(key, meta.defaultVal, meta.desc)
+			pflag.String(key, meta.defaultVal, meta.desc) // to show in usage
+		}
 	}
 
 	for key, meta := range jobCreatorConfig {
@@ -66,12 +79,6 @@ func newConfig() (o out) {
 
 		// automatic conversion of environment var key to `UPPER_CASE` will happen.
 		config.BindEnv(key)
-
-		if key == enums.APP_DATA_DIR {
-			// read command-line arguments
-			pf.String(key, meta.defaultVal, meta.desc)
-			pflag.String(key, meta.defaultVal, meta.desc) // to show in usage
-		}
 	}
 
 	config.BindPFlags(pf)

@@ -4,8 +4,10 @@ import (
 	"context"
 	"os"
 	"os/signal"
+	"path"
 	"plugin"
 
+	"github.com/CoopHive/hive/enums"
 	"github.com/CoopHive/hive/exp/dealer"
 	"github.com/CoopHive/hive/internal/genesis"
 )
@@ -90,7 +92,9 @@ func (d *Service) setPlugin(plugin dealer.Dealer) {
 }
 
 func (d *Service) loadPlugin(pluginName string) {
-	p, err := plugin.Open(pluginName)
+	pluginPath := path.Join(d.Conf.GetString(enums.APP_PLUGIN_DIR), pluginName+".so")
+	d.Log.Infof("Loading plugin %s from %s", pluginName, pluginPath)
+	p, err := plugin.Open(pluginPath)
 	if err != nil {
 		d.Log.Fatal(err)
 	}
@@ -100,5 +104,5 @@ func (d *Service) loadPlugin(pluginName string) {
 		d.Log.Fatal(err)
 	}
 
-	d.dealer = newFunction.(dealer.New)(d.ctx)
+	d.dealer = newFunction.(func(ctx context.Context) dealer.Dealer)(d.ctx)
 }

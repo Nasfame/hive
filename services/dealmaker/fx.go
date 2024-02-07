@@ -2,7 +2,6 @@ package dealmaker
 
 import (
 	"runtime"
-	"strings"
 
 	"github.com/spf13/viper"
 	"go.uber.org/fx"
@@ -42,8 +41,7 @@ func newServices(i in) (o out) {
 		dealer := internal.NewAutoDealer(s.ctx)
 		s.setPlugin(dealer)
 	} else {
-		dealerPath := strings.TrimRight(dealerName, ".so") + ".so"
-		s.loadPlugin(dealerPath)
+		s.loadPlugin(dealerName)
 	}
 
 	o = out{

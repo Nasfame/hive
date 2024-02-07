@@ -90,10 +90,10 @@ func tempInitForFx(conf *viper.Viper) {
 	// log.Println("version", conf.GetString(enums.VERSION))
 
 	MODULE_PATH = conf.GetString(enums.MODULE_PATH)
-	AppDataDir = conf.GetString(enums.APP_DATA_DIR)
+	APP_DATA_DIR = conf.GetString(enums.APP_DATA_DIR)
 
 	STD_MODULE_FORMAT = conf.GetString(enums.STD_MODULE_FORMAT)
 
-	// log.Println("app data dir", AppDataDir)
+	// log.Println("app data dir", APP_DATA_DIR)
 
 }

@@ -34,8 +34,11 @@ const (
 )
 
 const (
+	APP_DIR      = "APP_DIR"
 	APP_DATA_DIR = "APP_DATA_DIR"
 	MODULE_PATH  = "MODULE_PATH"
+
+	APP_PLUGIN_DIR = "APP_PLUGIN_DIR"
 )
 
 const (

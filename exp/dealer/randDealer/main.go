@@ -4,29 +4,32 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"math/rand"
 	"time"
 
 	"github.com/CoopHive/hive/exp/dealer"
 )
 
-// AutoAcceptPlugin implements the Dealer interface.
-type AutoAcceptPlugin struct {
+// randDealer implements the Dealer interface.
+type randDealer struct {
 	dealAgreedChan chan string
 	ctx            context.Context
 	closed         bool
+	randGenr       *rand.Rand
 }
 
-// New creates a new instance of AutoAcceptPlugin.
+// New creates a new instance of randDealer.
 func New(ctx context.Context) dealer.Dealer {
-	return &AutoAcceptPlugin{
+	return &randDealer{
 		dealAgreedChan: make(chan string),
 		ctx:            ctx,
+		randGenr:       rand.New(rand.NewSource(time.Now().UnixNano())),
 	}
 }
 
 // DealMatched is called when a deal is matched.
-func (a *AutoAcceptPlugin) DealMatched(dealID string) {
-	fmt.Printf("Deal %s is matched\n", dealID)
+func (a *randDealer) DealMatched(dealID string) {
+	log.Printf("Deal %s matched\n", dealID)
 
 	// Simulate processing time
 	time.Sleep(time.Millisecond * 200)
@@ -36,25 +39,32 @@ func (a *AutoAcceptPlugin) DealMatched(dealID string) {
 		return
 	}
 
-	a.agree(dealID)
+	agreeCond := a.randGenr.Intn(2) == 0
+
+	if agreeCond {
+		log.Printf("Deal:%s is agreed\n", dealID)
+		a.agree(dealID)
+		return
+	}
+	log.Printf("Deal:%s not agreed\n", dealID)
 }
 
-func (a *AutoAcceptPlugin) agree(dealID string) {
+func (a *randDealer) agree(dealID string) {
 	select {
 	case <-a.ctx.Done():
 		log.Printf("Cannot process deal %s due to stop signal: %v\n", dealID, a.ctx.Err())
 		a.close()
 	case a.dealAgreedChan <- dealID:
-		log.Printf("Deal %s is agreed\n", dealID)
+		log.Printf("Deal %s successfully agreed\n", dealID)
 	}
 }
 
 // DealsAgreed returns a channel to receive agreed deals.
-func (a *AutoAcceptPlugin) DealsAgreed() <-chan string {
+func (a *randDealer) DealsAgreed() <-chan string {
 	return a.dealAgreedChan
 }
 
-func (a *AutoAcceptPlugin) close() {
+func (a *randDealer) close() {
 	if !a.closed {
 		a.closed = true
 		close(a.dealAgreedChan)
@@ -64,7 +74,7 @@ func (a *AutoAcceptPlugin) close() {
 
 func main() {
 	// Create a context with cancellation ability
-	ctx, cancel := context.WithDeadline(context.Background(), time.Now().Add(time.Millisecond*500))
+	ctx, cancel := context.WithDeadline(context.Background(), time.Now().Add(time.Second*3))
 	defer cancel()
 
 	// Instantiate the plugin
@@ -88,7 +98,7 @@ RECV_AGREE_DEALS:
 				log.Println("Channel closed. Exiting...")
 				break RECV_AGREE_DEALS
 			}
-			log.Printf("Deal %s is agreed upon\n", dealID)
+			log.Printf("Deal %s rcvd \n", dealID)
 		case <-ctx.Done():
 			log.Println("Context done. Exiting...")
 			return
