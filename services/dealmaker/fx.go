@@ -37,11 +37,20 @@ func newServices(i in) (o out) {
 
 	s := newService(dealerName, i.Service)
 
-	if dealerName == "std-autoaccept" || runtime.GOOS == "windows" {
+	useDefaultPlugin := dealerName == "std-autoaccept" || runtime.GOOS == "windows"
+
+CHOOSE_PLUGIN:
+	if useDefaultPlugin {
 		dealer := internal.NewAutoDealer(s.ctx)
 		s.setPlugin(dealer)
+		s.Log.Infof("Using default plugin %s", dealerName)
 	} else {
-		s.loadPlugin(dealerName)
+		err := s.loadPlugin(dealerName)
+		if err != nil {
+			s.Log.Errorf("Failed to load plugin %s: %v", dealerName, err)
+			useDefaultPlugin = true
+			goto CHOOSE_PLUGIN
+		}
 	}
 
 	o = out{

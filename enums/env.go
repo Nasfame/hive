@@ -34,11 +34,11 @@ const (
 )
 
 const (
-	APP_DIR      = "APP_DIR"
-	APP_DATA_DIR = "APP_DATA_DIR"
+	APP_DIR      = "app_dir"
+	APP_DATA_DIR = "app-data-dir"
 	MODULE_PATH  = "MODULE_PATH"
 
-	APP_PLUGIN_DIR = "APP_PLUGIN_DIR"
+	APP_PLUGIN_DIR = "app-plugin-dir"
 )
 
 const (
@@ -47,5 +47,5 @@ const (
 
 const (
 	DEALER      = "dealer"
-	DEALER_PATH = "DEALER_PATH"
+	DEALER_PATH = "dealer-path"
 )

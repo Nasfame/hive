@@ -79,7 +79,8 @@ func getResourceProvider(
 		return nil, err
 	}
 
-	return resourceprovider.NewResourceProvider(resourceProviderOptions, web3SDK, executor)
+	// FIXME:pass dealmaker service
+	return resourceprovider.NewResourceProvider(resourceProviderOptions, web3SDK, executor, nil)
 }
 
 func getMediator(

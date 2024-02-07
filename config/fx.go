@@ -3,6 +3,7 @@ package config
 import (
 	"log"
 	"os"
+	"path"
 
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
@@ -44,10 +45,16 @@ func newConfig() (o out) {
 		}
 	}
 
+	// formatEnvVar := func(key string) string {
+	// 	k := strings.Replace("-", "_", key, -1)
+	// 	k = strings.ToLower(k)
+	// 	return k
+	// }
+
 	cmdFlags := map[string]bool{
-		enums.APP_DIR:        true,
-		enums.APP_DATA_DIR:   true,
-		enums.APP_PLUGIN_DIR: true,
+		enums.APP_DIR: true,
+		// enums.APP_DATA_DIR:   true,
+		// enums.APP_PLUGIN_DIR: true,
 	}
 
 	for key, meta := range buildConfig {
@@ -58,14 +65,13 @@ func newConfig() (o out) {
 	for key, meta := range appConfig {
 		checkDup(key, "app")
 
-		if key != enums.APP_DATA_DIR || key != enums.APP_PLUGIN_DIR {
-			config.SetDefault(key, meta.defaultVal)
-		}
+		config.SetDefault(key, meta.defaultVal)
 
 		// automatic conversion of environment var key to `UPPER_CASE` will happen.
 		config.BindEnv(key)
 
 		if cmdFlags[key] {
+			// key := strings.Replace("_", "-", key, -1)
 			// read command-line arguments
 			pf.String(key, meta.defaultVal, meta.desc)
 			pflag.String(key, meta.defaultVal, meta.desc) // to show in usage
@@ -84,6 +90,16 @@ func newConfig() (o out) {
 	config.BindPFlags(pf)
 
 	o.Conf = config
+
+	appDir := config.GetString(enums.APP_DIR)
+
+	log.Println("setting plugin, data dirs based on app dir")
+	config.Set(enums.APP_PLUGIN_DIR, path.Join(appDir, "plugins"))
+	config.Set(enums.APP_DATA_DIR, path.Join(appDir, "data"))
+
+	if appDir == appConfig[enums.APP_DIR].defaultVal {
+		log.Fatal("app dir not set")
+	}
 
 	return
 }

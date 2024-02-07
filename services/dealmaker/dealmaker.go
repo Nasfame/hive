@@ -91,18 +91,19 @@ func (d *Service) setPlugin(plugin dealer.Dealer) {
 	d.dealer = plugin
 }
 
-func (d *Service) loadPlugin(pluginName string) {
+func (d *Service) loadPlugin(pluginName string) error {
 	pluginPath := path.Join(d.Conf.GetString(enums.APP_PLUGIN_DIR), pluginName+".so")
 	d.Log.Infof("Loading plugin %s from %s", pluginName, pluginPath)
 	p, err := plugin.Open(pluginPath)
 	if err != nil {
-		d.Log.Fatal(err)
+		return err
 	}
-
 	newFunction, err := p.Lookup("New")
 	if err != nil {
-		d.Log.Fatal(err)
+		return err
 	}
 
 	d.dealer = newFunction.(func(ctx context.Context) dealer.Dealer)(d.ctx)
+
+	return nil
 }
