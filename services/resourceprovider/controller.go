@@ -324,7 +324,7 @@ func (controller *ResourceProviderController) agreeToDeals() error {
 	for _, dealContainer := range matchedDeals {
 		controller.log.Debug("dealContainer", dealContainer)
 		dealContainers[dealContainer.ID] = &dealContainer
-		go controller.dealmakerService.DealsMatched(dealContainer.ID)
+		go controller.dealmakerService.DealMatched(dealContainer.ID)
 	}
 
 	controller.dealmakerService.DealsAgreed(func(dealID string) {

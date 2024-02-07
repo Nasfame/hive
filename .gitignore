@@ -21,3 +21,5 @@ vendor/
 dist/
 
 hive
+
+*.so

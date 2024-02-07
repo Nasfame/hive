@@ -4,6 +4,7 @@ import (
 	"context"
 	"os"
 	"os/signal"
+	"plugin"
 
 	"github.com/CoopHive/hive/exp/dealer"
 	"github.com/CoopHive/hive/internal/genesis"
@@ -11,7 +12,7 @@ import (
 
 type Service struct {
 	name       string
-	plugin     dealer.Dealer
+	dealer     dealer.Dealer // can be a plugin
 	ctx        context.Context
 	cancelFunc context.CancelFunc
 
@@ -22,16 +23,28 @@ func (d *Service) Name() string {
 	return d.name
 }
 
-func (d *Service) DealsMatched(dealID string) {
-	d.plugin.DealsMatched(dealID)
+func (d *Service) DealMatched(dealID string) {
+	defer func() {
+		if r := recover(); r != nil {
+			d.Log.Errorf("Deal %s is matched but error occurred: %v", dealID, r)
+			panic("plugin paniced")
+		}
+	}()
+	d.dealer.DealMatched(dealID)
 }
 
 func (d *Service) DealsAgreed(f func(dealID string)) {
+	defer func() {
+		if r := recover(); r != nil {
+			d.Log.Fatalf("Critical error occurred: %v", r)
+		}
+	}()
+
 RECV_AGREE_DEALS:
 	for {
 		select {
 
-		case dealID, ok := <-d.plugin.DealsAgreed():
+		case dealID, ok := <-d.dealer.DealsAgreed():
 
 			if !ok {
 				d.Log.Debug("Channel closed. Exiting...")
@@ -73,5 +86,19 @@ func newService(name string, g *genesis.Service) *Service {
 }
 
 func (d *Service) setPlugin(plugin dealer.Dealer) {
-	d.plugin = plugin
+	d.dealer = plugin
+}
+
+func (d *Service) loadPlugin(pluginName string) {
+	p, err := plugin.Open(pluginName)
+	if err != nil {
+		d.Log.Fatal(err)
+	}
+
+	newFunction, err := p.Lookup("New")
+	if err != nil {
+		d.Log.Fatal(err)
+	}
+
+	d.dealer = newFunction.(dealer.New)(d.ctx)
 }

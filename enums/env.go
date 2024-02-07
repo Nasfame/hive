@@ -43,5 +43,6 @@ const (
 )
 
 const (
-	DEALER = "AutoAccept"
+	DEALER      = "dealer"
+	DEALER_PATH = "DEALER_PATH"
 )

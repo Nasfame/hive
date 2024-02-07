@@ -1,10 +1,15 @@
 package dealmaker
 
 import (
+	"runtime"
+	"strings"
+
+	"github.com/spf13/viper"
 	"go.uber.org/fx"
 
-	autoacceptdeals "github.com/CoopHive/hive/exp/dealer/autoAccept"
+	"github.com/CoopHive/hive/enums"
 	"github.com/CoopHive/hive/internal/genesis"
+	"github.com/CoopHive/hive/services/dealmaker/internal"
 )
 
 var Module = fx.Options(
@@ -16,20 +21,30 @@ var Module = fx.Options(
 type in struct {
 	fx.In
 	*genesis.Service
+
+	Conf *viper.Viper
 }
 
 type out struct {
 	fx.Out
-	DealerMaker *Service `name:"dealmaker"` // this should be fx.Annotated
+	DealerMaker *Service `name:"dealmaker"`
 }
 
 func newServices(i in) (o out) {
+	conf := i.Conf
 
-	s := newService("autoaccept", i.Service)
+	dealerName := conf.GetString(enums.DEALER)
+	// dealerPath := conf.GetString(enums.DEALER_PATH)
 
-	a := autoacceptdeals.New(s.ctx)
+	s := newService(dealerName, i.Service)
 
-	s.setPlugin(a)
+	if dealerName == "std-autoaccept" || runtime.GOOS == "windows" {
+		dealer := internal.NewAutoDealer(s.ctx)
+		s.setPlugin(dealer)
+	} else {
+		dealerPath := strings.TrimRight(dealerName, ".so") + ".so"
+		s.loadPlugin(dealerPath)
+	}
 
 	o = out{
 		DealerMaker: s,

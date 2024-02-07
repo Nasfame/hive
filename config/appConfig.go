@@ -11,6 +11,10 @@ var appConfig = configMap[string]{
 	},
 	enums.DEALER: {
 		"Dealer name for resource provider",
-		"AutoAccept",
+		"autoaccept", // std-autoaccept
 	},
+	// 	enums.DEALER_PATH: {
+	// 		"Dealer path for resource provider",
+	// 		"./autoaccept.so", // TODO: set default to empty
+	// 	},
 }
