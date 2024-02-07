@@ -46,7 +46,7 @@ OSARCH=$(uname -m | awk '{if ($0 ~ /arm64|aarch64/) print "arm64"; else if ($0 ~
 OSNAME=$(uname -s | awk '{if ($1 == "Darwin") print "darwin"; else if ($1 == "Linux") print "linux"; else print "unsupported_os"}') && export OSNAME;
 
 # Download the latest production build
-curl -sSL -o hive https://github.com/CoopHive/hive/releases/download/v0.3.3/hive-$OSNAME-$OSARCH
+curl -sSL -o hive https://github.com/CoopHive/hive/releases/download/v0.1.18/hive-$OSNAME-$OSARCH
 chmod +x hive
 
 # Check the version
