@@ -33,10 +33,10 @@ func ProcessServicesOptions(options dto.ServiceConfig) (dto.ServiceConfig, error
 
 func CheckServicesOptions(options dto.ServiceConfig) error {
 	if options.Solver == "" {
-		return fmt.Errorf("No solver service specified - please use SERVICE_SOLVER or --service-solver")
+		return fmt.Errorf("no solver service specified - please use SERVICE_SOLVER or --service-solver")
 	}
 	if len(options.Mediator) == 0 {
-		return fmt.Errorf("No mediators services specified - please use SERVICE_MEDIATORS or --service-mediators")
+		return fmt.Errorf("no mediators services specified - please use SERVICE_MEDIATORS or --service-mediators")
 	}
 	return nil
 }

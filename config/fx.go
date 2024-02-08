@@ -5,6 +5,7 @@ import (
 	"os"
 	"path"
 
+	"github.com/sirupsen/logrus"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 	"go.uber.org/fx"
@@ -53,6 +54,8 @@ func newConfig() (o out) {
 
 	cmdFlags := map[string]bool{
 		enums.APP_DIR: true,
+
+		enums.COOPHIVE_CONTROLLER_ADDRESS: true,
 		// enums.APP_DATA_DIR:   true,
 		// enums.APP_PLUGIN_DIR: true,
 	}
@@ -89,24 +92,18 @@ func newConfig() (o out) {
 
 	config.BindPFlags(pf)
 
-	o.Conf = config
+	if config.GetBool(enums.DEBUG) {
+		logrus.SetLevel(logrus.DebugLevel)
+		logrus.SetReportCaller(true)
+	}
 
 	appDir := config.GetString(enums.APP_DIR)
 
-	log.Println("appDir: ", appDir)
+	logrus.Debugln("appDir: ", appDir)
+
 	config.Set(enums.APP_PLUGIN_DIR, path.Join(appDir, "plugins"))
 	config.Set(enums.APP_DATA_DIR, path.Join(appDir, "data"))
 
+	o.Conf = config
 	return
-}
-
-func debuggerOptions(conf *viper.Viper) fx.Option {
-
-	if conf.GetBool(enums.DEBUG) {
-		log.Fatal("DEBUG MODE")
-		return fx.Options()
-	}
-
-	return fx.NopLogger
-
 }

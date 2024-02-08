@@ -25,7 +25,7 @@ var appConfig = configMap[string]{
 		"App Location Directory",
 		"$HOME/coophive",
 	},
-
+	// derived
 	// enums.APP_DATA_DIR: {
 	// 	"App Data Location: typically used for storing github repos and results",
 	// 	"$APP_DIR/data",
@@ -35,6 +35,11 @@ var appConfig = configMap[string]{
 	// 	"Plugin Path: typically used for storing plugins",
 	// 	"$APP_DIR/plugins",
 	// },
+
+	enums.COOPHIVE_CONTROLLER_ADDRESS: { // TODO: network dependent
+		"Web3 Controller Address",
+		"0xCCAaFD2AdD790788436f10e2C84585C46388b9aF",
+	},
 }
 
 func init() {

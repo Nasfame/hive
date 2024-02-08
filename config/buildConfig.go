@@ -68,7 +68,8 @@ var buildConfig = configMap[string]{
 
 // TODO: add network related contract configs but keep it open to recevie from env
 
-var MODULE_PATH string // temporary init for shortcuts pkg, use Conf injected
+var APP_DATA_DIR string // use inject Conf , temporarily using this global variable
+var MODULE_PATH string  // temporary init for shortcuts pkg, use Conf injected
 
 var STD_MODULE_FORMAT string
 var Conf *viper.Viper

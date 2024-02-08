@@ -43,11 +43,11 @@ CHOOSE_PLUGIN:
 	if useDefaultPlugin {
 		dealer := internal.NewAutoDealer(s.ctx)
 		s.setPlugin(dealer)
-		s.Log.Infof("Using default plugin %s", dealerName)
+		s.Log.Debugf("Using default plugin %s\n", dealerName)
 	} else {
 		err := s.loadPlugin(dealerName)
 		if err != nil {
-			s.Log.Errorf("Failed to load plugin %s: %v", dealerName, err)
+			s.Log.Errorf("Failed to load plugin %s: %v\n", dealerName, err)
 			useDefaultPlugin = true
 			goto CHOOSE_PLUGIN
 		}

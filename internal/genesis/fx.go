@@ -6,6 +6,8 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 	"go.uber.org/fx"
+
+	"github.com/CoopHive/hive/enums"
 )
 
 var Module = fx.Options(
@@ -26,14 +28,19 @@ type out struct {
 
 func New(i in) (o out) {
 
+	conf := i.Conf
+
 	logger := &logrus.Logger{
-		Out:       os.Stderr,
-		Formatter: new(logrus.TextFormatter),
-		Hooks:     make(logrus.LevelHooks),
-		Level:     logrus.DebugLevel,
+		Out:          os.Stderr,
+		Formatter:    new(logrus.TextFormatter),
+		Hooks:        make(logrus.LevelHooks),
+		Level:        logrus.InfoLevel,
+		ReportCaller: true,
 	}
 
-	logger.SetReportCaller(true)
+	if conf.GetBool(enums.DEBUG) {
+		logger.SetLevel(logrus.DebugLevel)
+	}
 
 	o = out{
 		Service: &Service{

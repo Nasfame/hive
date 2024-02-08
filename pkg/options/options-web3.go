@@ -6,6 +6,8 @@ import (
 
 	"github.com/spf13/cobra"
 
+	"github.com/CoopHive/hive/config"
+	"github.com/CoopHive/hive/enums"
 	"github.com/CoopHive/hive/pkg/system"
 	"github.com/CoopHive/hive/pkg/web3"
 )
@@ -19,7 +21,7 @@ func GetDefaultWeb3Options() web3.Web3Options {
 		ChainID:    GetDefaultServeOptionInt("WEB3_CHAIN_ID", 1337), //nolint:gomnd
 
 		// contract addresses
-		ControllerAddress: GetDefaultServeOptionString("WEB3_CONTROLLER_ADDRESS", "0xCCAaFD2AdD790788436f10e2C84585C46388b9aF"),
+		ControllerAddress: GetDefaultServeOptionString("WEB3_CONTROLLER_ADDRESS", config.Conf.GetString(enums.COOPHIVE_CONTROLLER_ADDRESS)),
 		PaymentsAddress:   GetDefaultServeOptionString("WEB3_PAYMENTS_ADDRESS", ""),
 		StorageAddress:    GetDefaultServeOptionString("WEB3_STORAGE_ADDRESS", ""),
 		UsersAddress:      GetDefaultServeOptionString("WEB3_USERS_ADDRESS", ""),

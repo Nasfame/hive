@@ -93,7 +93,7 @@ func (d *Service) setPlugin(plugin dealer.Dealer) {
 
 func (d *Service) loadPlugin(pluginName string) error {
 	pluginPath := path.Join(d.Conf.GetString(enums.APP_PLUGIN_DIR), pluginName+".so")
-	d.Log.Infof("Loading plugin %s from %s", pluginName, pluginPath)
+	d.Log.Infof("Loading plugin %s from %s\n", pluginName, pluginPath)
 	p, err := plugin.Open(pluginPath)
 	if err != nil {
 		return err

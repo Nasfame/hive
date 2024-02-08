@@ -6,5 +6,3 @@ var jobCreatorConfig = configMap[string]{
 	// 	"",
 	// },
 }
-
-var APP_DATA_DIR string // use inject Conf , temporarily using this global variable
