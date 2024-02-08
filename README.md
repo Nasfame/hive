@@ -59,6 +59,8 @@ chmod +x hive
 sudo mv hive /usr/local/bin/hive
 ````
 
+</details>
+
 ### GUI
 
 1. Go to https://github.com/CoopHive/hive/releases/
