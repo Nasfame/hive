@@ -93,13 +93,9 @@ func newConfig() (o out) {
 
 	appDir := config.GetString(enums.APP_DIR)
 
-	log.Println("setting plugin, data dirs based on app dir")
+	log.Println("appDir: ", appDir)
 	config.Set(enums.APP_PLUGIN_DIR, path.Join(appDir, "plugins"))
 	config.Set(enums.APP_DATA_DIR, path.Join(appDir, "data"))
-
-	if appDir == appConfig[enums.APP_DIR].defaultVal {
-		log.Fatal("app dir not set")
-	}
 
 	return
 }
