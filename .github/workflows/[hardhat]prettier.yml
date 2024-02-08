@@ -108,10 +108,17 @@ jobs:
         run: |
           BASE=$(git merge-base HEAD~ HEAD) # change master to whatever your trunk branch is
           #FILES=$(git diff --name-only $BASE HEAD | xargs) # diff filter otherwise deleted files will be there
-          FILES=$(git diff --name-only --diff-filter=d $BASE HEAD | xargs)
+          FILES=$(git diff --name-only --diff-filter=d $BASE HEAD | grep -E '\.(js|jsx|ts|tsx|css|scss|html|vue|json|md)$' | xargs)
           #npm run style
-          npx prettier  --ignore-path hardhat/.prettierignore.ci --write $FILES 
-          git add -u 
-          git commit -m "style: by ci"
-          git push origin ${{ github.head_ref }}
-          
+          if [ -n "$FILES" ]; then
+            npx prettier --ignore-path hardhat/.prettierignore.ci --write $FILES
+          else
+            echo "No matching files found. Skipping prettier."
+          fi
+          if [[ -n $(git status --porcelain) ]]; then
+             git add -u 
+             git commit -m "style: by ci"
+             git push origin ${{ github.head_ref }}
+          else
+            echo "Nothing to pretty"
+          fi
