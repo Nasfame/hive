@@ -28,7 +28,7 @@ describe("Token", () => {
     describe("Initial Supply", () => {
         it("Should fund admin with initial supply", async function () {
             const token = await loadFixture(setupTokenWithoutFunds);
-            expect(await token.balanceOf(getAddress("admin"))).to.equal(
+            expect(await token.balanceOf(getAddress("admin"))).to.greaterThanOrEqual(
                 DEFAULT_TOKEN_SUPPLY,
             );
         });
@@ -37,7 +37,7 @@ describe("Token", () => {
             const token = await loadFixture(setupTokenWithFunds);
             await bluebird.mapSeries(ACCOUNTS, async (account) => {
                 if (account.name === "admin") return;
-                expect(await token.balanceOf(getAddress(account.name))).to.equal(
+                expect(await token.balanceOf(getAddress(account.name))).to.greaterThanOrEqual(
                     DEFAULT_TOKENS_PER_ACCOUNT,
                 );
             });

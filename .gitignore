@@ -6,6 +6,9 @@ hardhat/deployments/localhost
 hardhat/deployments/geth
 hardhat/deployments/*
 hardhat/typechain-types
+
+hardhat/.prettierignore.ci
+
 .env
 *.env
 .env.*

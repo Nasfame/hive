@@ -86,6 +86,7 @@ jobs:
 
 
       - name: Prettify code
+        continue-on-error: true
         uses: creyD/prettier_action@v4.3
         env:
           GITHUB_ACTOR: Baymax # ${{github.actor}}
@@ -103,8 +104,8 @@ jobs:
 
 
       - name: Style manually
+        if: steps.prettierAction.outcome == 'failure'
         working-directory: ${{github.workspace}}
-        if: failure()
         run: |
           BASE=$(git merge-base HEAD~ HEAD) # change master to whatever your trunk branch is
           #FILES=$(git diff --name-only $BASE HEAD | xargs) # diff filter otherwise deleted files will be there
