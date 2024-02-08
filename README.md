@@ -38,22 +38,26 @@ The commands below will automatically detect your OS and processor architecture 
 
 ### On Command Line
 
-```
-# Detect your machine's architecture and set it as $OSARCH
+1. Detect your operating system and set it as $OSNAME
+2. Detect your machine's architecture and set it as $OSARCH
+3. Download the latest production build
+4. Check the version
+5. Install `hive`
+
+<details> 
+<summary>Installation script for Linux and MacOS</summary>
+
+```bash
 OSARCH=$(uname -m | awk '{if ($0 ~ /arm64|aarch64/) print "arm64"; else if ($0 ~ /x86_64|amd64/) print "amd64"; else print "unsupported_arch"}') && export OSARCH
-
-# Detect your operating system and set it as $OSNAME
+echo $OSARCH
 OSNAME=$(uname -s | awk '{if ($1 == "Darwin") print "darwin"; else if ($1 == "Linux") print "linux"; else print "unsupported_os"}') && export OSNAME;
-
-# Download the latest production build
+echo $OSNAME
 curl -sSL -o hive https://github.com/CoopHive/hive/releases/download/v0.5.6/hive-$OSNAME-$OSARCH
 chmod +x hive
-
-# Check the version
 ./hive version 
 
 sudo mv hive /usr/local/bin/hive
-```
+````
 
 ### GUI
 
