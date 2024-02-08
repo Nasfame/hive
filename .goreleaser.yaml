@@ -39,7 +39,7 @@ builds:
       - darwin
     goarch:
       - amd64
-      #      - arm
+      #- arm
       - arm64
     ignore:
       - goos: windows
@@ -54,7 +54,7 @@ archives:
     name_template: >-
       {{ .ProjectName }}-
       {{- title .Os }}-
-      {{- if eq .Arch "amd64" }}x86_64
+      {{- if eq .Arch "amd64" }}amd64
       {{- else if eq .Arch "386" }}i386
       {{- else }}{{ .Arch }}{{ end }}
       {{- if .Arm }}v{{ .Arm }}{{ end }}
