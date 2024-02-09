@@ -1,7 +1,8 @@
 // IMPORTANT: we cannot import hardhat directly here
 // because it will cause a circular dependency
-import { Account } from "./types";
-import { Wallet } from "ethers";
+import {Account} from "./types";
+import {Wallet} from "ethers";
+import * as process from "process";
 
 export const loadEnv = (name: string, defaultValue: string) => {
   return process.env[name] || defaultValue;
@@ -134,3 +135,4 @@ export const getAccount = (name: string) => {
   }
   return account;
 };
+

@@ -23,7 +23,7 @@ env:
   envfile: ${{secrets.ENV}}
   MODE: test
   NODE_ENV: testing
-  DOTENV_CONFIG_PATH: "./hardhat/.env"
+  CONFIG: "./hardhat/.env"
 
 jobs:
   build-docker:

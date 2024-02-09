@@ -7,7 +7,7 @@
   "author": "Hiro <laciferin@gmail.com>",
   "scripts": {
     "setup": "remixd -i slither",
-    "gen-env": "cd ..; ./stack ts-node scripts/print-env.ts > .env.gen",
+    "gen-env": "ts-node scripts/generate-addresses.ts > .env.gen",
     "postinstall": "npm run setup",
     "dev": "remixd",
     "style": "prettier -w .",
@@ -15,11 +15,13 @@
     "build": "hardhat compile",
     "clean": "hardhat clean",
     "hardhat:local": "hardhat node",
-    "test": "DOTENV_CONFIG_PATH=../.env.hardhat hardhat test",
+    "test": "CONFIG=./.env.hardhat hardhat test",
     "deploy": "hardhat deploy",
-    "deploy:calibration": "DOTENV_CONFIG_PATH=../.env.calibration hardhat deploy --network calibration",
-    "deploy:coophive": "DOTENV_CONFIG_PATH=../.env.coophive hardhat deploy --network coophive",
-    "deploy:sepolia": "DOTENV_CONFIG_PATH=../.env.sepolia hardhat deploy --network sepolia"
+    "deploy:calibration": "CONFIG=./.env.calibration hardhat deploy --network calibration",
+    "deploy:coophive": "CONFIG=./.env.coophive hardhat deploy --network coophive",
+    "deploy:sepolia": "CONFIG=./.env.sepolia hardhat deploy --network sepolia",
+    "deploy:chaos": "CONFIG=./.env.chaos hardhat deploy --network chaos",
+    "deploy:titanAI": "CONFIG=./.env.chaos hardhat deploy --network titanAI"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-chai-matchers": "^2.0.4",
