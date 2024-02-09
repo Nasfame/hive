@@ -21,7 +21,7 @@ func GetDefaultWeb3Options() web3.Web3Options {
 		ChainID:    GetDefaultServeOptionInt("WEB3_CHAIN_ID", 1337), //nolint:gomnd
 
 		// contract addresses
-		ControllerAddress: GetDefaultServeOptionString("WEB3_CONTROLLER_ADDRESS", config.Conf.GetString(enums.COOPHIVE_CONTROLLER_ADDRESS)),
+		ControllerAddress: GetDefaultServeOptionString("WEB3_CONTROLLER_ADDRESS", config.Conf.GetString(enums.HIVE_CONTROLLER)),
 		PaymentsAddress:   GetDefaultServeOptionString("WEB3_PAYMENTS_ADDRESS", ""),
 		StorageAddress:    GetDefaultServeOptionString("WEB3_STORAGE_ADDRESS", ""),
 		UsersAddress:      GetDefaultServeOptionString("WEB3_USERS_ADDRESS", ""),

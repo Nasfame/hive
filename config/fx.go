@@ -4,6 +4,7 @@ import (
 	"log"
 	"os"
 	"path"
+	"strings"
 
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/pflag"
@@ -53,9 +54,9 @@ func newConfig() (o out) {
 	// }
 
 	cmdFlags := map[string]bool{
-		enums.APP_DIR: true,
-
-		enums.COOPHIVE_CONTROLLER_ADDRESS: true,
+		enums.APP_DIR:         true,
+		enums.NETWORK:         true,
+		enums.HIVE_CONTROLLER: true,
 		// enums.APP_DATA_DIR:   true,
 		// enums.APP_PLUGIN_DIR: true,
 	}
@@ -103,6 +104,29 @@ func newConfig() (o out) {
 
 	config.Set(enums.APP_PLUGIN_DIR, path.Join(appDir, "plugins"))
 	config.Set(enums.APP_DATA_DIR, path.Join(appDir, "data"))
+
+	/*Network related config*/
+
+	network := config.GetString(enums.NETWORK)
+
+	logrus.Debugln("network: ", network)
+
+	if network != defaultNetwork {
+		c, err := loadDApp(network)
+
+		if err != nil {
+			log.Fatal("failed to load the network related dApps")
+		}
+
+		for key, val := range c {
+			key = strings.ToLower(key)
+			logrus.Debugln("setting network config: ", key, val)
+			config.Set(key, val)
+		}
+		controller := config.Get(enums.HIVE_CONTROLLER)
+		logrus.Debugln("controller: ", controller)
+
+	}
 
 	o.Conf = config
 	return

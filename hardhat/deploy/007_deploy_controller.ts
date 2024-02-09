@@ -71,15 +71,16 @@ const deployController: DeployFunction = async function (
 
 
     const content = `
-HiveController=${controllerContract.address}
-HiveStorage=${storageContract.address}
-HivePayments=${paymentsContract.address}
-HiveMediationRandom=${mediationContract.address}
-HiveJobCreator=${jobCreatorContract.address}
+HIVE_CONTROLLER=${controllerContract.address}
+HIVE_STORAGE=${storageContract.address}
+HIVE_PAYMENT=${paymentsContract.address}
+HIVE_MEDIATION_RANDOM=${mediationContract.address}
+HIVE_JOBCREATOR=${jobCreatorContract.address}
 `.trim();
     console.log(content)
 
-    writeToFile(content, `../config/contracts/${network.name}.env`);
+    writeToFile(content, `../config/dApps/${network.name}.env`);
+
 
     return true;
 };

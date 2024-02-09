@@ -1,6 +1,7 @@
 package config
 
 import (
+	"fmt"
 	"os"
 	"path"
 
@@ -36,11 +37,18 @@ var appConfig = configMap[string]{
 	// 	"$APP_DIR/plugins",
 	// },
 
-	enums.COOPHIVE_CONTROLLER_ADDRESS: { // TODO: network dependent
+	enums.HIVE_CONTROLLER: { // TODO: network dependent
 		"Web3 Controller Address",
 		"0xCCAaFD2AdD790788436f10e2C84585C46388b9aF",
 	},
+
+	enums.NETWORK: {
+		fmt.Sprintf("supported networks:%v", NETWORKS),
+		defaultNetwork,
+	},
 }
+
+const defaultNetwork = "builtin" // coophive
 
 func init() {
 	userDir, err := os.UserHomeDir()

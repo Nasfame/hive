@@ -60,6 +60,7 @@ func GetMutualServices(a []string, b []string) []string {
 	return mutual
 }
 
+// GetDeal: creates deals from job offers
 func GetDeal(
 	jobOffer JobOffer,
 	resourceOffer ResourceOffer,
