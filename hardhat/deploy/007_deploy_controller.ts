@@ -76,6 +76,8 @@ HIVE_STORAGE=${storageContract.address}
 HIVE_PAYMENT=${paymentsContract.address}
 HIVE_MEDIATION_RANDOM=${mediationContract.address}
 HIVE_JOBCREATOR=${jobCreatorContract.address}
+WEB3_RPC_URL=${hre.network.config.url ?? 'http://localhost:8545'} 
+WEB3_CHAIN_ID=${network.config.chainId}
 `.trim();
     console.log(content)
 

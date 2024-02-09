@@ -16,18 +16,18 @@ func GetDefaultWeb3Options() web3.Web3Options {
 	return web3.Web3Options{
 		// TODO: refactor this to use the new config package
 		// core settings
-		RpcURL:     GetDefaultServeOptionString("WEB3_RPC_URL", "ws://testnet.co-ophive.network:8546"),
-		PrivateKey: GetDefaultServeOptionString("WEB3_PRIVATE_KEY", ""),
-		ChainID:    GetDefaultServeOptionInt("WEB3_CHAIN_ID", 1337), //nolint:gomnd
+		RpcURL:     config.Conf.GetString(enums.WEB3_RPC_URL),
+		PrivateKey: config.Conf.GetString(enums.WEB3_PRIVATE_KEY),
+		ChainID:    config.Conf.GetInt(enums.WEB3_CHAIN_ID), //nolint:gomnd
 
 		// contract addresses
-		ControllerAddress: GetDefaultServeOptionString("WEB3_CONTROLLER_ADDRESS", config.Conf.GetString(enums.HIVE_CONTROLLER)),
-		PaymentsAddress:   GetDefaultServeOptionString("WEB3_PAYMENTS_ADDRESS", ""),
-		StorageAddress:    GetDefaultServeOptionString("WEB3_STORAGE_ADDRESS", ""),
-		UsersAddress:      GetDefaultServeOptionString("WEB3_USERS_ADDRESS", ""),
-		TokenAddress:      GetDefaultServeOptionString("WEB3_TOKEN_ADDRESS", ""),
-		MediationAddress:  GetDefaultServeOptionString("WEB3_MEDIATION_ADDRESS", ""),
-		JobCreatorAddress: GetDefaultServeOptionString("WEB3_JOBCREATOR_ADDRESS", ""),
+		ControllerAddress: config.Conf.GetString(enums.HIVE_CONTROLLER),
+		PaymentsAddress:   config.Conf.GetString(enums.HIVE_PAYMENTS),
+		StorageAddress:    config.Conf.GetString(enums.HIVE_STORAGE),
+		UsersAddress:      config.Conf.GetString(enums.HIVE_USERS),
+		TokenAddress:      config.Conf.GetString(enums.HIVE_TOKEN),
+		MediationAddress:  config.Conf.GetString(enums.HIVE_MEDIATION),
+		JobCreatorAddress: config.Conf.GetString(enums.HIVE_JOBCREATOR),
 
 		// misc
 		Service: system.DefaultService,
