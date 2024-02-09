@@ -54,7 +54,7 @@ RECV_AGREE_DEALS:
 			}
 			f(dealID)
 
-			d.Log.Debug("Deal %s is agreed upon\n", dealID)
+			d.Log.Debugf("Deal %s is agreed upon\n", dealID)
 		case <-d.ctx.Done():
 
 			d.Log.Printf("Context done. Exiting...")
