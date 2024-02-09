@@ -87,11 +87,7 @@ Hello World, now with cows.
 ```
 hive run cowsay:v0.1.1 -i Message="CoopHive"
 ```
-should output
 
-```
-cat /tmp/coophive/data/downloaded-files/Qmbxgp8wyqrQgYYrAMjyUpNdnTuk1Ly8adv8nqQC69rPVQ/stdout
-```
 
 ```stdout
  __________
