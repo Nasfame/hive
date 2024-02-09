@@ -10,8 +10,14 @@ hardhat/typechain-types
 hardhat/.prettierignore.ci
 
 .env
-*.env
-.env.*
+./.env
+./*.env
+./.env.*
+
+hardhat/.env
+hardhat/*.env
+hardhat/.env.*
+
 ops/testnet/.terraform/providers
 .idea/
 .vscode/

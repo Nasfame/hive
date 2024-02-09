@@ -8,6 +8,8 @@ import (
 
 	"github.com/joho/godotenv"
 	"github.com/sirupsen/logrus"
+
+	"github.com/CoopHive/hive/enums"
 )
 
 //go:embed dApps/*.env
@@ -53,7 +55,30 @@ func loadDApp(network string) (envMap map[string]string, err error) {
 
 	if err != nil {
 		logrus.Debugf("Error loading .env file: %v\n", err)
+		return
 	}
+
+	logrus.Debugln("envMap", envMap)
+
+	isMediator := func(key string) bool {
+		return strings.HasPrefix(key, strings.ToUpper(enums.HIVE_MEDIATION))
+	}
+
+	curMediators := []string{}
+
+	for key, value := range envMap {
+
+		if isMediator(key) {
+			logrus.Debugln("found mediator:", key, value)
+			curMediators = append(curMediators, value)
+		}
+	}
+
+	if len(curMediators) == 0 {
+		logrus.Fatalln("no mediators found")
+	}
+
+	envMap[enums.HIVE_MEDIATION] = strings.Join(curMediators, ",")
 
 	return
 

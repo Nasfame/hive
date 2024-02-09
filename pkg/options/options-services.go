@@ -2,17 +2,20 @@ package options
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/spf13/cobra"
 
+	"github.com/CoopHive/hive/config"
+	"github.com/CoopHive/hive/enums"
 	"github.com/CoopHive/hive/pkg/dto"
 )
 
 func GetDefaultServicesOptions() dto.ServiceConfig {
 	return dto.ServiceConfig{
 		// TODO: refactor to config
-		Solver:   GetDefaultServeOptionString("SERVICE_SOLVER", "0xd4646ef9f7336b06841db3019b617ceadf435316"),
-		Mediator: GetDefaultServeOptionStringArray("SERVICE_MEDIATORS", []string{"0x2d83ced7562e406151bd49c749654429907543b4"}),
+		Solver:   config.Conf.GetString(enums.HIVE_SOLVER),
+		Mediator: strings.Split(config.Conf.GetString(enums.HIVE_MEDIATION), ","),
 	}
 }
 

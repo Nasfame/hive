@@ -41,7 +41,14 @@ var appConfig = configMap[string]{
 		"Web3 Controller Address",
 		"0xCCAaFD2AdD790788436f10e2C84585C46388b9aF",
 	},
-
+	enums.HIVE_SOLVER: {
+		"Hive Solver  Address",
+		"0xd4646ef9f7336b06841db3019b617ceadf435316",
+	},
+	enums.HIVE_MEDIATION: {
+		"Hive Mediation Addresss : can be set of addresses separated by ','",
+		"0x2d83ced7562e406151bd49c749654429907543b4",
+	},
 	enums.NETWORK: {
 		fmt.Sprintf("supported networks:%v", NETWORKS),
 		defaultNetwork,
