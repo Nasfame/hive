@@ -11,6 +11,7 @@ import (
 
 func GetDefaultServerOptions() http.ServerOptions {
 	return http.ServerOptions{
+		// TODO: move to appConfig
 		URL:  options.GetDefaultServeOptionString("SERVER_URL", ""),
 		Host: options.GetDefaultServeOptionString("SERVER_HOST", "0.0.0.0"),
 		Port: options.GetDefaultServeOptionInt("SERVER_PORT", 8080), //nolint:gomnd
