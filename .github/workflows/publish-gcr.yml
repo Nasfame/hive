@@ -23,7 +23,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          depth: 2
+          fetch-depth: 2
           fetch-tags: true
 
       - name: Log in to the Container registry
