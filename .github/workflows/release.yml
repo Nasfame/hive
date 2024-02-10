@@ -30,7 +30,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          fetch-tags: true
+          #          don't fetch tag for manual flow
+          fetch-tags: ${{ github.event_name != 'workflow_dispatch' }}
           fetch-depth: 2
           ref: ${{ github.event.inputs.branch || github.event.ref }}
 
