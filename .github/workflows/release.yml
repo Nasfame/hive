@@ -40,6 +40,11 @@ jobs:
           go-version-file: go.mod
           check-latest: true
 
+      - name: Git config
+        run: |
+          git config --global user.name Hiro
+          git config --global user.email laciferin@gmail.com
+
       - name: Tag
         if: ${{ github.event_name == 'workflow_dispatch' }}
         run: |
