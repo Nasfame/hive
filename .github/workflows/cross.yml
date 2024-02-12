@@ -20,7 +20,7 @@ concurrency:
 jobs:
   cross:
     strategy:
-      max-parallel: 3 #cpu cores /- runner
+      max-parallel: 5 #cpu cores /- runner
       fail-fast: true
       matrix:
         #        go-version: go #[ '1.21.x' ]
