@@ -27,8 +27,8 @@ type in struct {
 
 	VersionCmd          *cobra.Command `name:"version"`
 	RunCmd              *cobra.Command `name:"run"`
-	JobCreatorCmd       *cobra.Command `name:"jobcreator"`
-	ResourceProviderCmd *cobra.Command `name:"internal-resourceprovider"`
+	JobCreatorCmd       *cobra.Command `name:"jc"`
+	ResourceProviderCmd *cobra.Command `name:"rp"`
 	MediatorCmd         *cobra.Command `name:"mediator"`
 	SolverCmd           *cobra.Command `name:"solver"`
 }

@@ -25,7 +25,7 @@ type in struct {
 type out struct {
 	fx.Out
 
-	ResourceProviderCmd *cobra.Command `name:"internal-resourceprovider"`
+	ResourceProviderCmd *cobra.Command `name:"rp"`
 }
 
 func newServices(i in) (o out) {
@@ -41,4 +41,27 @@ func newServices(i in) (o out) {
 		ResourceProviderCmd: cmd,
 	}
 	return
+}
+
+func (s *service) newResourceProviderCmd() *cobra.Command {
+	options := NewResourceProviderOptions()
+
+	resourceProviderCmd := &cobra.Command{
+		Use:     "resourceprovider",
+		Aliases: []string{"resource-provider", "rp"},
+		Short:   "Start the CoopHive resource provider service.",
+		Long:    "Start the CoopHive resource provider service.",
+		Example: "",
+		RunE: func(cmd *cobra.Command, _ []string) error {
+			options, err := ProcessResourceProviderOptions(options)
+			if err != nil {
+				return err
+			}
+			return s.runResourceProvider(cmd, options)
+		},
+	}
+
+	AddResourceProviderCliFlags(resourceProviderCmd, &options)
+
+	return resourceProviderCmd
 }

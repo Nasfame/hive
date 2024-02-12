@@ -27,13 +27,6 @@ func newRootCmd(conf *viper.Viper, subCommands ...*cobra.Command) *cobra.Command
 		Short: "CoopHive",
 		Long:  fmt.Sprintf("CoopHive: %s \nCommit: %s \n", version, commit),
 	}
-	//
-	// cmd.AddCommand(SolverCmd)
-	// cmd.AddCommand(ResourceProviderCmd)
-	// cmd.AddCommand(RunCmd)
-	// cmd.AddCommand(mediatorCmd)
-	// cmd.AddCommand(JobCreatorCmd)
-	// cmd.AddCommand(VersionCmd)
 
 	for _, subCmd := range subCommands {
 		cmd.AddCommand(subCmd)

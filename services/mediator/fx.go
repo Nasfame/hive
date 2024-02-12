@@ -33,3 +33,26 @@ func newServices(i in) (o out) {
 	}
 	return
 }
+
+func newMediatorCmd() *cobra.Command {
+	options := NewMediatorOptions()
+
+	mediatorCmd := &cobra.Command{
+		Use:     "mediator",
+		Aliases: []string{"mediate"},
+		Short:   "Start the CoopHive mediator service.",
+		Long:    "Start the CoopHive mediator service.",
+		Example: "",
+		RunE: func(cmd *cobra.Command, _ []string) error {
+			options, err := ProcessMediatorOptions(options)
+			if err != nil {
+				return err
+			}
+			return runMediator(cmd, options)
+		},
+	}
+
+	AddMediatorCliFlags(mediatorCmd, &options)
+
+	return mediatorCmd
+}

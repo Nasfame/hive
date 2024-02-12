@@ -10,29 +10,6 @@ import (
 	"github.com/CoopHive/hive/services/dealmaker"
 )
 
-func (s *service) newResourceProviderCmd() *cobra.Command {
-	options := NewResourceProviderOptions()
-
-	resourceProviderCmd := &cobra.Command{
-		Use:     "resource-provider",
-		Short:   "Start the CoopHive resource-provider service.",
-		Long:    "Start the CoopHive resource-provider service.",
-		Aliases: []string{"resourceprovider"},
-		Example: "",
-		RunE: func(cmd *cobra.Command, _ []string) error {
-			options, err := ProcessResourceProviderOptions(options)
-			if err != nil {
-				return err
-			}
-			return s.runResourceProvider(cmd, options)
-		},
-	}
-
-	AddResourceProviderCliFlags(resourceProviderCmd, &options)
-
-	return resourceProviderCmd
-}
-
 func (s *service) runResourceProvider(cmd *cobra.Command, options ResourceProviderOptions) error {
 	commandCtx := system.NewCommandContext(cmd)
 	defer commandCtx.Cleanup()

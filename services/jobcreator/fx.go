@@ -25,7 +25,7 @@ type in struct {
 type out struct {
 	fx.Out
 
-	JobCreatorCmd *cobra.Command `name:"jobcreator"`
+	JobCreatorCmd *cobra.Command `name:"jc"`
 }
 
 func newServices(i in) (o out) {
@@ -43,6 +43,7 @@ func newJobCreatorCmd() *cobra.Command {
 
 	cmd := &cobra.Command{
 		Use:     "jobcreator",
+		Aliases: []string{"jc", "job-creator"},
 		Short:   "Start the CoopHive job creator service.",
 		Long:    "Start the CoopHive job creator service.",
 		Example: "",
