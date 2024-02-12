@@ -36,7 +36,7 @@ jobs:
           BRANCH_NAME=${GITHUB_REF#refs/heads/}
           BRANCH_NAME=${BRANCH_NAME//\//-}
           #BRANCH_NAME="$CUR_TAG-br$BRANCH_NAME"
-          BRANCH_NAME="v0.0.0-br$BRANCH_NAME"
+          BRANCH_NAME="v0.0.0-br-$BRANCH_NAME"
           git tag "$BRANCH_NAME" -f
           git push --tags -f
 
