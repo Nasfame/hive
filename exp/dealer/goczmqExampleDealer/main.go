@@ -73,3 +73,5 @@ func main() {
 
 	log.Printf("dealer received '%s'", string(reply[0]))
 }
+
+// TODO: https://pkg.go.dev/github.com/zeromq/gomq
