@@ -1,4 +1,4 @@
-module github.com/CoopHive/exp/dealer/goczmqExampleDealer
+module github.com/CoopHive/hive/exp/dealer/goczmqExampleDealer
 
 go 1.21
 
