@@ -136,5 +136,3 @@ require (
 	moul.io/http2curl v1.0.0 // indirect
 	rsc.io/tmplfunc v0.0.3 // indirect
 )
-
-replace github.com/vitalfrog/jsonl v0.0.0-20230718192858-195f01ae6957 => github.com/simonfrey/jsonl v0.0.0-20230718192858-195f01ae6957
