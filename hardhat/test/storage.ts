@@ -4,7 +4,12 @@ import chaiAsPromised from "chai-as-promised";
 import {ethers} from "hardhat";
 import {getAddress, getWallet} from "../utils/web3";
 import {getAgreementState} from "../utils/enums";
-import {DEFAULT_VALUES, getDefaultPricing, getDefaultTimeouts, setupStorageFixture,} from "./fixtures";
+import {
+    DEFAULT_VALUES,
+    getDefaultPricing,
+    getDefaultTimeouts,
+    setupStorageFixture,
+} from "./fixtures";
 
 import {SharedStructs} from "../typechain-types/contracts/HiveStorage";
 

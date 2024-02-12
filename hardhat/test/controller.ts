@@ -2,7 +2,11 @@ import {loadFixture} from "@nomicfoundation/hardhat-toolbox/network-helpers";
 import chai from "chai";
 import chaiAsPromised from "chai-as-promised";
 import {ethers} from "hardhat";
-import {getAgreementState, getPaymentDirection, getPaymentReason,} from "../utils/enums";
+import {
+    getAgreementState,
+    getPaymentDirection,
+    getPaymentReason,
+} from "../utils/enums";
 import {getAddress, getWallet} from "../utils/web3";
 import {
     DATA_ID,

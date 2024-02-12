@@ -1,7 +1,7 @@
-# CoopHive 
+# CoopHive
 
 CoopHive is a two-sided marketplace for computational resources. It enables users to run computational workloads in a permissionless protocol, where anyone can get paid to connect
-their compute nodes to the network and run jobs. 
+their compute nodes to the network and run jobs.
 
 # Getting started
 
@@ -54,10 +54,10 @@ OSNAME=$(uname -s | awk '{if ($1 == "Darwin") print "darwin"; else if ($1 == "Li
 echo $OSNAME
 curl -sSL -o hive https://github.com/CoopHive/hive/releases/download/v0.5.6/hive-$OSNAME-$OSARCH
 chmod +x hive
-./hive version 
+./hive version
 
 sudo mv hive /usr/local/bin/hive
-````
+```
 
 </details>
 
@@ -88,7 +88,6 @@ Hello World, now with cows.
 hive run cowsay:v0.1.1 -i Message="CoopHive"
 ```
 
-
 ```stdout
  __________
 < CoopHive >
@@ -109,15 +108,15 @@ hive run sdxl:v0.1.0 -i PROMPT="beautiful view of iceland with a record player"
 ```
 
 ```stdout
- ___  __    __  ____  _  _  __  _  _  ____ 
+ ___  __    __  ____  _  _  __  _  _  ____
  / __)/  \  /  \(  _ \/ )( \(  )/ )( \(  __)
-( (__(  O )(  O )) __/) __ ( )( \ \/ / ) _) 
+( (__(  O )(  O )) __/) __ ( )( \ \/ / ) _)
  \___)\__/  \__/(__)  \_)(_/(__) \__/ (____) 0.4.0
 
   Decentralized Compute Network  https://coophive.network
 
 
-∙∙● CoopHive submitting job 2024-02-07T05:11:18+05:30 
+∙∙● CoopHive submitting job 2024-02-07T05:11:18+05:30
 ∙●∙ CoopHive submitting jobEnumerating objects: 11, done.
 Counting objects: 100% (11/11), done.
 Compressing objects: 100% (10/10), done.
@@ -180,7 +179,6 @@ hive run github.com/username/repo:tag -i InputVar=value
 ```
 
 Inputs are a map of strings to strings.
-
 
 ### Writing Advanced Modules
 

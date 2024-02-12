@@ -1,22 +1,18 @@
 name: Hardhat Prettier
 
 on:
-
   push:
-
     branches:
       - main
 
     paths:
   #      - hardhat/**
 
-
   pull_request:
     branches:
 
     paths:
       - hardhat/**
-
 
   workflow_dispatch:
     inputs:
@@ -84,7 +80,6 @@ jobs:
           echo ".github/workflows/*.yaml" >> .prettierignore.ci
           echo ".github/workflows/*.yml" >> .prettierignore.ci
 
-
       - name: Prettify code
         continue-on-error: true
         uses: creyD/prettier_action@v4.3
@@ -101,7 +96,6 @@ jobs:
           #  file_pattern: "**/*.{js,jsx,ts,tsx,css,scss,html,vue,json,md}`"
           only_changed: ${{ env.ONLY_CHANGED }}
           prettier_options: "--write . --ignore-path .prettierignore.ci"
-
 
       - name: Style manually
         if: steps.prettierAction.outcome == 'failure'

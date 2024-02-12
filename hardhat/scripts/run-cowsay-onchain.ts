@@ -1,5 +1,11 @@
 import bluebird from "bluebird";
-import {connectExampleClient, connectJobManager, connectToken, getAddress, getWallet,} from "../utils/web3";
+import {
+    connectExampleClient,
+    connectJobManager,
+    connectToken,
+    getAddress,
+    getWallet,
+} from "../utils/web3";
 import {ethers} from "hardhat";
 
 async function main() {

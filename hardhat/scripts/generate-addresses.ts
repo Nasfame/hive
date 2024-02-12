@@ -15,11 +15,10 @@ async function main() {
     generate("JOB_CREATOR");
     generate("DIRECTORY");
 
-    console.log('\n\n')
+    console.log("\n\n");
 
-    console.log(`GENERATED_ON="${new Date()}"`)
+    console.log(`GENERATED_ON="${new Date()}"`);
     console.log(`GENERATION_COMPLETED_AT="${new Date().toLocaleString()}"`);
-
 }
 
 main().catch((error) => {

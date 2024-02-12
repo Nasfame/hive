@@ -1,6 +1,11 @@
 import {ethers} from "hardhat";
 import {AddressLike, BigNumberish, Signer} from "ethers";
-import {DEFAULT_TOKEN_SUPPLY, DEFAULT_TOKENS_PER_ACCOUNT, fundAccountsWithTokens, getWallet,} from "../utils/web3";
+import {
+    DEFAULT_TOKEN_SUPPLY,
+    DEFAULT_TOKENS_PER_ACCOUNT,
+    fundAccountsWithTokens,
+    getWallet,
+} from "../utils/web3";
 import {
     HiveController,
     HiveMediationRandom,

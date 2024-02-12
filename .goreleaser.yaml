@@ -19,7 +19,6 @@ git:
   tag_sort: -version:creatordate
   prerelease_suffix: "-"
 
-
 builds:
   - id: "cli"
     binary: "bin/"

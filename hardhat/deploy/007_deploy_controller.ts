@@ -2,7 +2,7 @@ import {HardhatRuntimeEnvironment} from "hardhat/types";
 import {DeployFunction} from "hardhat-deploy/types";
 import * as fs from "fs";
 
-import {network} from "hardhat"
+import {network} from "hardhat";
 
 const deployController: DeployFunction = async function (
     hre: HardhatRuntimeEnvironment,
@@ -69,20 +69,18 @@ const deployController: DeployFunction = async function (
 
     console.log("Deployed Contracts:");
 
-
     const content = `
 HIVE_CONTROLLER=${controllerContract.address}
 HIVE_STORAGE=${storageContract.address}
 HIVE_PAYMENT=${paymentsContract.address}
 HIVE_MEDIATION_RANDOM=${mediationContract.address}
 HIVE_JOBCREATOR=${jobCreatorContract.address}
-WEB3_RPC_URL=${hre.network.config.url ?? 'http://localhost:8545'} 
+WEB3_RPC_URL=${hre.network.config.url ?? "http://localhost:8545"} 
 WEB3_CHAIN_ID=${network.config.chainId}
 `.trim();
-    console.log(content)
+    console.log(content);
 
     writeToFile(content, `../config/dApps/${network.name}.env`);
-
 
     return true;
 };

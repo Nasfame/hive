@@ -3,7 +3,12 @@ import chai from "chai";
 import bluebird from "bluebird";
 import chaiAsPromised from "chai-as-promised";
 import {ethers} from "hardhat";
-import {DEFAULT_TOKEN_SUPPLY, DEFAULT_TOKENS_PER_ACCOUNT, getAddress, getWallet,} from "../utils/web3";
+import {
+    DEFAULT_TOKEN_SUPPLY,
+    DEFAULT_TOKENS_PER_ACCOUNT,
+    getAddress,
+    getWallet,
+} from "../utils/web3";
 import {ACCOUNTS} from "../utils/accounts";
 import {setupTokenFixture} from "./fixtures";
 
@@ -37,9 +42,9 @@ describe("Token", () => {
             const token = await loadFixture(setupTokenWithFunds);
             await bluebird.mapSeries(ACCOUNTS, async (account) => {
                 if (account.name === "admin") return;
-                expect(await token.balanceOf(getAddress(account.name))).to.greaterThanOrEqual(
-                    DEFAULT_TOKENS_PER_ACCOUNT,
-                );
+                expect(
+                    await token.balanceOf(getAddress(account.name)),
+                ).to.greaterThanOrEqual(DEFAULT_TOKENS_PER_ACCOUNT);
             });
         });
     });

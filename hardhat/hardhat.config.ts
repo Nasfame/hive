@@ -1,4 +1,4 @@
-import {HardhatUserConfig} from "hardhat/config";
+import {HardhatUserConfig, task} from "hardhat/config";
 import "@typechain/hardhat";
 import "@nomicfoundation/hardhat-toolbox";
 import "@nomicfoundation/hardhat-ethers";
@@ -6,7 +6,6 @@ import "@nomicfoundation/hardhat-chai-matchers";
 import "hardhat-deploy";
 import * as dotenv from "dotenv";
 import * as process from "process";
-
 
 const ENV_FILE = process.env.CONFIG || "./.env";
 
@@ -19,12 +18,11 @@ import {ACCOUNT_ADDRESSES, PRIVATE_KEYS} from "./utils/accounts";
 const NETWORK = process.env.NETWORK || "hardhat";
 const INFURA_KEY = process.env.INFURA_KEY || "";
 
-
 console.log(`infura key is ${INFURA_KEY}`);
 
 const config: HardhatUserConfig = {
   solidity: "0.8.21",
-  defaultNetwork: NETWORK,
+  defaultNetwork: "hardhat",
   namedAccounts: ACCOUNT_ADDRESSES,
   networks: {
     hardhat: {
@@ -69,20 +67,21 @@ const config: HardhatUserConfig = {
       url: "http://testnet.co-ophive.network:8545",
       accounts: PRIVATE_KEYS,
     },
-    chaos: { //skale testnet
+    chaos: {
+      //skale testnet
       chainId: 1351057110,
       url: "https://staging-v3.skalenodes.com/v1/staging-fast-active-bellatrix",
       accounts: PRIVATE_KEYS,
       // faucet: "https://sfuel.skale.network/staging/chaos",
       // explorer: "https://staging-fast-active-bellatrix.explorer.staging-v3.skalenodes.com",
     },
-    titanAI: { //skale testnet
+    titanAI: {
+      //skale testnet
       chainId: 1020352220,
       url: "https://testnet.skalenodes.com/v1/aware-fake-trim-testnet",
       accounts: PRIVATE_KEYS,
       // https://testnet.portal.skale.space/chains/titan
     },
-
   },
   etherscan: {
     apiKey: process.env.ETHERSCAN_API_KEY,
@@ -94,5 +93,6 @@ const config: HardhatUserConfig = {
   // }
 };
 
+import "./tasks";
 
 module.exports = config;

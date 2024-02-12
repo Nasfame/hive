@@ -21,7 +21,10 @@
     "deploy:coophive": "CONFIG=./.env.coophive hardhat deploy --network coophive",
     "deploy:sepolia": "CONFIG=./.env.sepolia hardhat deploy --network sepolia",
     "deploy:chaos": "CONFIG=./.env.chaos hardhat deploy --network chaos",
-    "deploy:titanAI": "CONFIG=./.env.chaos hardhat deploy --network titanAI"
+    "deploy:titanAI": "CONFIG=./.env.chaos hardhat deploy --network titanAI",
+    "task:accounts": "hardhat accounts",
+    "task:balance": "hardhat balance --network calibration --account",
+    "task:bal": "hardhat bal --network calibration"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-chai-matchers": "^2.0.4",

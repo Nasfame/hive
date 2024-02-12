@@ -24,7 +24,6 @@ jobs:
           fetch-depth: 3
           fetch-tags: true
 
-
       - name: For Main
         if: github.ref == 'refs/heads/main'
         run: |
@@ -76,7 +75,6 @@ jobs:
         with:
           go-version-file: go.mod
           check-latest: true
-
 
       - name: Run GoReleaser
         continue-on-error: true

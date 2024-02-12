@@ -1,8 +1,9 @@
 // IMPORTANT: we cannot import hardhat directly here
 // because it will cause a circular dependency
 import {Account} from "./types";
-import {Wallet} from "ethers";
+import {ethers, Wallet} from "ethers";
 import * as process from "process";
+import {HardhatRuntimeEnvironment} from "hardhat/types";
 
 export const loadEnv = (name: string, defaultValue: string) => {
   return process.env[name] || defaultValue;
@@ -136,3 +137,29 @@ export const getAccount = (name: string) => {
   return account;
 };
 
+export async function getBalance(
+    account: string,
+    hre: HardhatRuntimeEnvironment,
+) {
+  const balance = await hre.ethers.provider.getBalance(account);
+
+  // console.debug("getBal", account, hre.ethers.formatEther(balance), "ETH");
+
+  return balance;
+}
+
+export function formatEther(balance: bigint) {
+  return ethers.formatEther(balance);
+}
+
+export function getPublicAddress(
+    privateKey: string,
+    hre?: HardhatRuntimeEnvironment,
+): string {
+  let Wallet = hre?.ethers?.Wallet ?? ethers.Wallet;
+
+  const wallet = new Wallet(privateKey);
+  let address = wallet.address;
+
+  return address;
+}
