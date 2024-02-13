@@ -119,6 +119,14 @@ func doOffersMatch(
 		return false
 	}
 
+	if resourceOffer.ResourceProvider == jobOffer.JobCreator {
+		log.Trace().
+			Str("resource offer", resourceOffer.ID).
+			Str("job offer", jobOffer.ID).
+			Msgf("JC==RP")
+		return false
+	}
+
 	return true
 }
 
