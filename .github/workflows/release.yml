@@ -89,6 +89,7 @@ jobs:
           echo "args=$args" >> $GITHUB_OUTPUT
 
       - name: Run GoReleaser
+        id: goreleaser
         continue-on-error: true
         uses: goreleaser/goreleaser-action@v5
         with:
@@ -101,6 +102,12 @@ jobs:
 
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+
+      - name: Post goreleaser
+        run: |
+          echo Metadata ${{steps.goreleaser.metadata}}
+          echo Artifacts ${{steps.goreleaser.artifacts}}
 
       - name: Upload assets
         uses: actions/upload-artifact@v4
