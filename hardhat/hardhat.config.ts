@@ -81,6 +81,7 @@ const config: HardhatUserConfig = {
       url: "https://testnet.skalenodes.com/v1/aware-fake-trim-testnet",
       accounts: PRIVATE_KEYS,
       // https://testnet.portal.skale.space/chains/titan
+      // https://aware-fake-trim-testnet.explorer.testnet.skalenodes.com
     },
   },
   etherscan: {
