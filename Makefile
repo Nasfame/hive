@@ -55,3 +55,7 @@ generate-sol-bindings-for-go:
 plugin-autoacceptdealer:
 	#this plugin is very platform specific and can only be build in that specific platform
 	./stack build-plugin-autoaccept;
+
+
+plugin-websocket:
+	./stack build-plugin-websocket

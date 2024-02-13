@@ -57,6 +57,7 @@ func newConfig() (o out) {
 		enums.APP_DIR:         true,
 		enums.NETWORK:         true,
 		enums.HIVE_CONTROLLER: true,
+		enums.DEALER:          true,
 		// enums.APP_DATA_DIR:   true,
 		// enums.APP_PLUGIN_DIR: true,
 	}

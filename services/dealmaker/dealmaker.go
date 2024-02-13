@@ -2,8 +2,6 @@ package dealmaker
 
 import (
 	"context"
-	"os"
-	"os/signal"
 	"path"
 	"plugin"
 
@@ -63,35 +61,13 @@ RECV_AGREE_DEALS:
 	}
 }
 
-func newService(name string, g *genesis.Service) *Service {
-	ctx, cancelFunc := context.WithCancel(context.Background())
-
-	c := make(chan os.Signal, 1)
-
-	signal.Notify(c, os.Interrupt)
-
-	s := &Service{
-		name,
-		nil,
-		ctx,
-		cancelFunc,
-		g,
-	}
-
-	go func() {
-		sig := <-c
-		s.Log.Errorf("Got signal:%s", sig) // TODO: use fx signals if possible
-		cancelFunc()
-	}()
-
-	return s
-}
-
 func (d *Service) setPlugin(plugin dealer.Dealer) {
+	d.Log.Info("Setting plugin")
 	d.dealer = plugin
 }
 
-func (d *Service) loadPlugin(pluginName string) error {
+func (d *Service) LoadPlugin(pluginName string) error {
+
 	pluginPath := path.Join(d.Conf.GetString(enums.APP_PLUGIN_DIR), pluginName+".so")
 	d.Log.Infof("Loading plugin %s from %s\n", pluginName, pluginPath)
 	p, err := plugin.Open(pluginPath)
@@ -103,7 +79,8 @@ func (d *Service) loadPlugin(pluginName string) error {
 		return err
 	}
 
-	d.dealer = newFunction.(func(ctx context.Context) dealer.Dealer)(d.ctx)
+	customDealer := newFunction.(func(ctx context.Context) dealer.Dealer)(d.ctx)
+	d.setPlugin(customDealer)
 
 	return nil
 }

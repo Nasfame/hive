@@ -5,6 +5,8 @@ import (
 
 	"github.com/spf13/cobra"
 
+	"github.com/CoopHive/hive/config"
+	"github.com/CoopHive/hive/enums"
 	"github.com/CoopHive/hive/pkg/dto"
 	options2 "github.com/CoopHive/hive/pkg/options"
 	"github.com/CoopHive/hive/pkg/system"
@@ -15,6 +17,7 @@ func NewResourceProviderOptions() ResourceProviderOptions {
 		Bacalhau: options2.GetDefaultBacalhauOptions(),
 		Offers:   GetDefaultResourceProviderOfferOptions(),
 		Web3:     options2.GetDefaultWeb3Options(),
+		Dealer:   config.Conf.GetString(enums.DEALER),
 	}
 	options.Web3.Service = system.ResourceProviderService
 	return options
@@ -77,6 +80,7 @@ func AddResourceProviderCliFlags(cmd *cobra.Command, options *ResourceProviderOp
 	options2.AddBacalhauCliFlags(cmd, &options.Bacalhau)
 	options2.AddWeb3CliFlags(cmd, &options.Web3)
 	AddResourceProviderOfferCliFlags(cmd, &options.Offers)
+	cmd.PersistentFlags().StringVar(&options.Dealer, "dealer", options.Dealer, "Choose Dealer for accepting/denying solver-matched deals")
 }
 
 func CheckResourceProviderOfferOptions(options ResourceProviderOfferOptions) error {

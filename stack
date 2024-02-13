@@ -421,4 +421,11 @@ function build-plugin-autoaccept(){
 }
 
 
+function build-plugin-websocket(){
+  APP_DIR="${APP_DIR:="./data"}"
+  PLUGIN_DIR="${APP_DIR}/plugins"
+  EXT_DIR="${PLUGIN_DIR}/websocket.so"
+  go build -buildmode=plugin -o "${EXT_DIR}" ./exp/dealer/websocketDealer/main.go
+}
+
 eval "$@"

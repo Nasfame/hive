@@ -48,6 +48,7 @@ type ResourceProviderOptions struct {
 	Bacalhau bacalhau.BacalhauExecutorOptions
 	Offers   ResourceProviderOfferOptions
 	Web3     web3.Web3Options
+	Dealer   string
 }
 
 type ResourceProvider struct {

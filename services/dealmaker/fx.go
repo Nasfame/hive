@@ -1,7 +1,9 @@
 package dealmaker
 
 import (
-	"runtime"
+	"context"
+	"os"
+	"os/signal"
 
 	"github.com/spf13/viper"
 	"go.uber.org/fx"
@@ -37,25 +39,45 @@ func newServices(i in) (o out) {
 
 	s := newService(dealerName, i.Service)
 
-	useDefaultPlugin := dealerName == "std-autoaccept" || runtime.GOOS == "windows"
+	/*	useDefaultPlugin := dealerName == "std-autoaccept" || runtime.GOOS == "windows"
 
-CHOOSE_PLUGIN:
-	if useDefaultPlugin {
-		dealer := internal.NewAutoDealer(s.ctx)
-		s.setPlugin(dealer)
-		s.Log.Debugf("Using default plugin %s\n", dealerName)
-	} else {
-		err := s.loadPlugin(dealerName)
-		if err != nil {
-			s.Log.Errorf("Failed to load plugin %s: %v\n", dealerName, err)
-			useDefaultPlugin = true
-			goto CHOOSE_PLUGIN
-		}
-	}
+		CHOOSE_PLUGIN:
+			if !useDefaultPlugin {
+				err := s.LoadPlugin(dealerName)
+				if err != nil {
+					s.Log.Errorf("Failed to load plugin %s: %v\n", dealerName, err)
+					useDefaultPlugin = true
+					goto CHOOSE_PLUGIN
+				}
+			}*/
 
 	o = out{
 		DealerMaker: s,
 	}
 
 	return
+}
+
+func newService(name string, g *genesis.Service) *Service {
+	ctx, cancelFunc := context.WithCancel(context.Background())
+
+	c := make(chan os.Signal, 1)
+
+	signal.Notify(c, os.Interrupt)
+
+	s := &Service{
+		name,
+		internal.NewAutoDealer(ctx),
+		ctx,
+		cancelFunc,
+		g,
+	}
+
+	go func() {
+		sig := <-c
+		s.Log.Errorf("Got signal:%s", sig) // TODO: use fx signals if possible
+		cancelFunc()
+	}()
+
+	return s
 }

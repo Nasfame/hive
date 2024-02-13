@@ -14,7 +14,7 @@ var appConfig = configMap[string]{
 		defaultVal: "false",
 	},
 	enums.DEALER: {
-		"Dealer name for resource provider",
+		"Dealer for accepting/denying solver-matched deals",
 		"std-autoaccept", // std-autoaccept
 	},
 	// 	enums.DEALER_PATH: {

@@ -1,6 +1,8 @@
 package resourceprovider
 
 import (
+	"runtime"
+
 	"github.com/spf13/cobra"
 	"go.uber.org/fx"
 
@@ -41,6 +43,14 @@ func newServices(i in) (o out) {
 		ResourceProviderCmd: cmd,
 	}
 	return
+}
+
+func hasPluginSupport() bool {
+	if runtime.GOOS == "windows" {
+		return false
+	}
+
+	return true
 }
 
 func (s *service) newResourceProviderCmd() *cobra.Command {

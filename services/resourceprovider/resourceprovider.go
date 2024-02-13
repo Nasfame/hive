@@ -3,6 +3,7 @@ package resourceprovider
 import (
 	"github.com/spf13/cobra"
 
+	"github.com/CoopHive/hive/enums"
 	"github.com/CoopHive/hive/internal/genesis"
 	"github.com/CoopHive/hive/pkg/executor/bacalhau"
 	"github.com/CoopHive/hive/pkg/system"
@@ -13,6 +14,12 @@ import (
 func (s *service) runResourceProvider(cmd *cobra.Command, options ResourceProviderOptions) error {
 	commandCtx := system.NewCommandContext(cmd)
 	defer commandCtx.Cleanup()
+
+	if hasPluginSupport() {
+		s.dealMakerService.LoadPlugin(options.Dealer)
+	} else if options.Dealer != s.Conf.GetString(enums.DEALER) {
+		s.Log.Errorf("Dealer %s is not supported on this platform", options.Dealer)
+	}
 
 	web3SDK, err := web3.NewContractSDK(options.Web3)
 	if err != nil {
