@@ -27,7 +27,7 @@ jobs:
         #        arch: [ x64, arm, arm64 ]
         os: [
           windows-latest, macos-latest, ubuntu-latest,
-          macos-latest-xl, macos-13, macos-13-xl, macos-11, macos-12, macos-12-xl,
+          #          macos-latest-xl, macos-13, macos-13-xl, macos-11, macos-12, macos-12-xl,
           windows-2022, windows-2019,
           ubuntu-20.04, ubuntu-22.04
         ]
