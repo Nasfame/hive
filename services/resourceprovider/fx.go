@@ -1,8 +1,6 @@
 package resourceprovider
 
 import (
-	"runtime"
-
 	"github.com/spf13/cobra"
 	"go.uber.org/fx"
 
@@ -11,7 +9,6 @@ import (
 )
 
 var Module = fx.Options(
-	dealmaker.Module,
 	fx.Provide(
 		newServices,
 	),
@@ -43,14 +40,6 @@ func newServices(i in) (o out) {
 		ResourceProviderCmd: cmd,
 	}
 	return
-}
-
-func hasPluginSupport() bool {
-	if runtime.GOOS == "windows" {
-		return false
-	}
-
-	return true
 }
 
 func (s *service) newResourceProviderCmd() *cobra.Command {

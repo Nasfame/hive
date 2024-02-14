@@ -3,6 +3,7 @@ package jobcreator
 import (
 	"fmt"
 
+	"github.com/CoopHive/hive/config"
 	"github.com/CoopHive/hive/internal/jobCreatorService"
 	"github.com/CoopHive/hive/pkg/dto"
 	options2 "github.com/CoopHive/hive/pkg/options"
@@ -13,9 +14,10 @@ import (
 
 func NewJobCreatorOptions() jobCreatorService.JobCreatorOptions {
 	options := jobCreatorService.JobCreatorOptions{
-		Offer:     GetDefaultJobCreatorOfferOptions(),
-		Web3:      options2.GetDefaultWeb3Options(),
-		Mediation: GetDefaultJobCreatorMediationOptions(),
+		GetDefaultJobCreatorMediationOptions(),
+		GetDefaultJobCreatorOfferOptions(),
+		options2.GetDefaultWeb3Options(),
+		config.DEFAULT_DEALER,
 	}
 	options.Web3.Service = system.JobCreatorService
 	return options
@@ -63,6 +65,7 @@ func AddJobCreatorCliFlags(cmd *cobra.Command, options *jobCreatorService.JobCre
 	AddJobCreatorMediationCliFlags(cmd, &options.Mediation)
 	options2.AddWeb3CliFlags(cmd, &options.Web3)
 	AddJobCreatorOfferCliFlags(cmd, &options.Offer)
+	cmd.PersistentFlags().StringVar(&options.Dealer, "dealer", options.Dealer, "Choose Dealer for accepting/denying solver-matched deals")
 }
 
 func CheckJobCreatorOptions(options jobCreatorService.JobCreatorOptions) error {

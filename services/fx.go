@@ -3,6 +3,7 @@ package services
 import (
 	"go.uber.org/fx"
 
+	"github.com/CoopHive/hive/services/dealmaker"
 	"github.com/CoopHive/hive/services/jobcreator"
 	"github.com/CoopHive/hive/services/mediator"
 	"github.com/CoopHive/hive/services/resourceprovider"
@@ -13,6 +14,7 @@ import (
 )
 
 var Module = fx.Options(
+	dealmaker.Module, // TODO: refactor to internal
 	version.Module,
 	run.Module,
 	jobcreator.Module,

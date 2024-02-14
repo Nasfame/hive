@@ -8,6 +8,8 @@ import (
 	"github.com/CoopHive/hive/enums"
 )
 
+const DEFAULT_DEALER = "std-autoaccept"
+
 var appConfig = configMap[string]{
 	enums.DEBUG: {
 		desc:       "debug mode",
@@ -15,7 +17,7 @@ var appConfig = configMap[string]{
 	},
 	enums.DEALER: {
 		"Dealer for accepting/denying solver-matched deals",
-		"std-autoaccept", // std-autoaccept
+		DEFAULT_DEALER,
 	},
 	// 	enums.DEALER_PATH: {
 	// 		"Dealer path for resource provider",

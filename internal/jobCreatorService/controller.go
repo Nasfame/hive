@@ -10,6 +10,7 @@ import (
 	"github.com/CoopHive/hive/pkg/system"
 	"github.com/CoopHive/hive/pkg/web3"
 	"github.com/CoopHive/hive/pkg/web3/bindings/storage"
+	"github.com/CoopHive/hive/services/dealmaker"
 	solver2 "github.com/CoopHive/hive/services/solver/solver"
 	"github.com/CoopHive/hive/services/solver/solver/store"
 )
@@ -24,6 +25,8 @@ type JobCreatorController struct {
 	loop                  *system.ControlLoop
 	log                   *system.ServiceLogger
 	jobOfferSubscriptions []JobOfferSubscriber
+
+	dealmakerService *dealmaker.Service
 }
 
 // the background "even if we have not heard of an event" loop
@@ -35,6 +38,7 @@ const CONTROL_LOOP_INTERVAL = 10 * time.Second
 func NewJobCreatorController(
 	options JobCreatorOptions,
 	web3SDK *web3.Web3SDK,
+	dealmakerService *dealmaker.Service,
 ) (*JobCreatorController, error) {
 	// we know the address of the solver but what is it's url?
 	solverUrl, err := web3SDK.GetSolverUrl(options.Offer.Services.Solver)
@@ -57,6 +61,7 @@ func NewJobCreatorController(
 		web3Events:            web3.NewEventChannels(),
 		log:                   system.NewServiceLogger(system.JobCreatorService),
 		jobOfferSubscriptions: []JobOfferSubscriber{},
+		dealmakerService:      dealmakerService,
 	}
 	return controller, nil
 }
@@ -246,30 +251,42 @@ func (controller *JobCreatorController) agreeToDeals() error {
 		return nil
 	}
 
+	dealContainers := map[string]*dto.DealContainer{}
+
 	// map over the deals and agree to them
 	for _, dealContainer := range matchedDeals {
-		controller.log.Debug("agree", dealContainer)
-		txHash, err := controller.web3SDK.Agree(dealContainer.Deal)
-		if err != nil {
-			// TODO: error handling - is it terminal or retryable?
-			controller.log.Error("error calling agree tx for deal", err)
-			continue
-		}
-		controller.log.Debug("agree tx", txHash)
-
-		// we have agreed to the deal so we need to update the tx in the solver
-		_, err = controller.solverClient.UpdateTransactionsJobCreator(dealContainer.ID, dto.DealTransactionsJobCreator{
-			Agree: txHash,
-		})
-		if err != nil {
-			// TODO: error handling - is it terminal or retryable?
-			controller.log.Error("error adding agree tx hash for deal", err)
-			continue
-		}
-		controller.log.Debug("updated deal with agree tx", txHash)
+		controller.log.Debug("dealContainer", dealContainer)
+		dealContainers[dealContainer.ID] = &dealContainer
+		go controller.dealmakerService.DealMatched(dealContainer.ID)
 	}
 
+	controller.dealmakerService.DealsAgreed(func(dealID string) {
+		controller.agreeDeal(dealContainers[dealID])
+	})
+
 	return nil
+}
+
+func (controller *JobCreatorController) agreeDeal(dealContainer *dto.DealContainer) {
+	controller.log.Debug("agree", dealContainer)
+	txHash, err := controller.web3SDK.Agree(dealContainer.Deal)
+	if err != nil {
+		// TODO: error handling - is it terminal or retryable?
+		controller.log.Error("error calling agree tx for deal", err)
+		return
+	}
+	controller.log.Debug("agree tx", txHash)
+
+	// we have agreed to the deal so we need to update the tx in the solver
+	_, err = controller.solverClient.UpdateTransactionsJobCreator(dealContainer.ID, dto.DealTransactionsJobCreator{
+		Agree: txHash,
+	})
+	if err != nil {
+		// TODO: error handling - is it terminal or retryable?
+		controller.log.Error("error adding agree tx hash for deal", err)
+		return
+	}
+	controller.log.Debug("updated deal with agree tx", txHash)
 }
 
 // list the deals that have results posted but we have not yet checked

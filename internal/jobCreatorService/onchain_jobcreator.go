@@ -12,6 +12,7 @@ import (
 	"github.com/CoopHive/hive/pkg/system"
 	"github.com/CoopHive/hive/pkg/web3"
 	jobcreatorweb3 "github.com/CoopHive/hive/pkg/web3/bindings/jobcreator"
+	"github.com/CoopHive/hive/services/dealmaker"
 )
 
 const JOB_PRICE = 2
@@ -27,8 +28,9 @@ type OnChainJobCreator struct {
 func NewOnChainJobCreator(
 	options JobCreatorOptions,
 	web3SDK *web3.Web3SDK,
+	dealmakerService *dealmaker.Service,
 ) (*OnChainJobCreator, error) {
-	controller, err := NewJobCreatorController(options, web3SDK)
+	controller, err := NewJobCreatorController(options, web3SDK, dealmakerService)
 	if err != nil {
 		return nil, err
 	}

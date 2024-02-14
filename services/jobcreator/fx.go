@@ -4,10 +4,12 @@ import (
 	"github.com/spf13/cobra"
 	"go.uber.org/fx"
 
+	"github.com/CoopHive/hive/config"
 	"github.com/CoopHive/hive/internal/genesis"
 	"github.com/CoopHive/hive/internal/jobCreatorService"
 	"github.com/CoopHive/hive/pkg/system"
 	"github.com/CoopHive/hive/pkg/web3"
+	"github.com/CoopHive/hive/services/dealmaker"
 )
 
 var Module = fx.Options(
@@ -20,6 +22,8 @@ var Module = fx.Options(
 type in struct {
 	fx.In
 	*genesis.Service
+
+	DealMakerService *dealmaker.Service `name:"dealmaker"`
 }
 
 type out struct {
@@ -30,7 +34,12 @@ type out struct {
 
 func newServices(i in) (o out) {
 
-	cmd := newJobCreatorCmd()
+	s := service{
+		i.DealMakerService,
+		i.Service,
+	}
+
+	cmd := s.newJobCreatorCmd()
 
 	o = out{
 		JobCreatorCmd: cmd,
@@ -38,7 +47,7 @@ func newServices(i in) (o out) {
 	return
 }
 
-func newJobCreatorCmd() *cobra.Command {
+func (s *service) newJobCreatorCmd() *cobra.Command {
 	options := NewJobCreatorOptions()
 
 	cmd := &cobra.Command{
@@ -52,7 +61,7 @@ func newJobCreatorCmd() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			return runJobCreator(cmd, options)
+			return s.runJobCreator(cmd, options)
 		},
 	}
 
@@ -61,9 +70,15 @@ func newJobCreatorCmd() *cobra.Command {
 	return cmd
 }
 
-func runJobCreator(cmd *cobra.Command, options jobCreatorService.JobCreatorOptions) error {
+func (s *service) runJobCreator(cmd *cobra.Command, options jobCreatorService.JobCreatorOptions) error {
 	commandCtx := system.NewCommandContext(cmd)
 	defer commandCtx.Cleanup()
+
+	if options.Dealer != config.DEFAULT_DEALER {
+		if err := s.dealMakerService.LoadPlugin(options.Dealer); err != nil {
+			s.Log.Errorf("Dealer %s is not supported on this platform", options.Dealer)
+		}
+	}
 
 	web3SDK, err := web3.NewContractSDK(options.Web3)
 	if err != nil {
@@ -71,7 +86,7 @@ func runJobCreator(cmd *cobra.Command, options jobCreatorService.JobCreatorOptio
 	}
 
 	// create the job creator and start it's control loop
-	jobCreatorService, err := jobCreatorService.NewOnChainJobCreator(options, web3SDK)
+	jobCreatorService, err := jobCreatorService.NewOnChainJobCreator(options, web3SDK, s.dealMakerService)
 	if err != nil {
 		return err
 	}

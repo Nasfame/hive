@@ -7,6 +7,7 @@ import (
 	"github.com/CoopHive/hive/pkg/dto"
 	"github.com/CoopHive/hive/pkg/system"
 	"github.com/CoopHive/hive/pkg/web3"
+	"github.com/CoopHive/hive/services/dealmaker"
 )
 
 type RunJobResults struct {
@@ -14,10 +15,12 @@ type RunJobResults struct {
 	Result   dto.Result
 }
 
-func RunJob(
+func RunJob( // TODO: inject into a indivitual service
 	ctx *system.CommandContext,
 	options JobCreatorOptions,
+	dealmakerService *dealmaker.Service,
 	eventSub JobOfferSubscriber,
+
 ) (*RunJobResults, error) {
 	web3SDK, err := web3.NewContractSDK(options.Web3)
 	if err != nil {
@@ -25,7 +28,7 @@ func RunJob(
 	}
 
 	// create the job creator and start it's control loop
-	jobCreatorService, err := NewJobCreator(options, web3SDK)
+	jobCreatorService, err := NewJobCreator(options, web3SDK, dealmakerService)
 	if err != nil {
 		return nil, err
 	}

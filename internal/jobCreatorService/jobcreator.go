@@ -6,6 +6,7 @@ import (
 	"github.com/CoopHive/hive/pkg/dto"
 	"github.com/CoopHive/hive/pkg/system"
 	"github.com/CoopHive/hive/pkg/web3"
+	"github.com/CoopHive/hive/services/dealmaker"
 )
 
 type JobCreatorMediationOptions struct {
@@ -37,6 +38,7 @@ type JobCreatorOptions struct {
 	Mediation JobCreatorMediationOptions
 	Offer     JobCreatorOfferOptions
 	Web3      web3.Web3Options
+	Dealer    string
 }
 
 type JobCreator struct {
@@ -48,15 +50,16 @@ type JobCreator struct {
 func NewJobCreator(
 	options JobCreatorOptions,
 	web3SDK *web3.Web3SDK,
+	dealmakerService *dealmaker.Service,
 ) (*JobCreator, error) {
-	controller, err := NewJobCreatorController(options, web3SDK)
+	controller, err := NewJobCreatorController(options, web3SDK, dealmakerService)
 	if err != nil {
 		return nil, err
 	}
 	jc := &JobCreator{
-		controller: controller,
-		options:    options,
-		web3SDK:    web3SDK,
+		web3SDK,
+		options,
+		controller,
 	}
 	return jc, nil
 }

@@ -16,35 +16,20 @@ import (
 	"github.com/theckman/yacspin"
 
 	"github.com/CoopHive/hive/enums"
+	"github.com/CoopHive/hive/internal/genesis"
 	"github.com/CoopHive/hive/internal/jobCreatorService"
 	"github.com/CoopHive/hive/pkg/dto"
 	"github.com/CoopHive/hive/pkg/system"
-	optionsfactory "github.com/CoopHive/hive/services/jobcreator"
+	"github.com/CoopHive/hive/services/dealmaker"
 	"github.com/CoopHive/hive/services/solver/solver"
 )
 
-func newRunCmd(conf *viper.Viper) *cobra.Command {
-	options := optionsfactory.NewJobCreatorOptions()
-	runCmd := &cobra.Command{
-		Use:     "run",
-		Short:   "Run a job on the CoopHive network.",
-		Long:    "Run a job on the CoopHive network.",
-		Example: "run cowsay:v0.0.1 -i Message=moo",
-		RunE: func(cmd *cobra.Command, args []string) error {
-			options, err := optionsfactory.ProcessJobCreatorOptions(options, args)
-			if err != nil {
-				return err
-			}
-			return runJob(cmd, options, conf)
-		},
-	}
-
-	optionsfactory.AddJobCreatorCliFlags(runCmd, &options)
-
-	return runCmd
+type service struct {
+	dealMakerService *dealmaker.Service
+	*genesis.Service
 }
 
-func runJob(cmd *cobra.Command, options jobCreatorService.JobCreatorOptions, conf *viper.Viper) error {
+func (s *service) runJob(cmd *cobra.Command, options jobCreatorService.JobCreatorOptions, conf *viper.Viper) error {
 	c := color.New(color.FgCyan).Add(color.Bold)
 	header := `
   ___  __    __  ____  _  _  __  _  _  ____ 
@@ -87,7 +72,15 @@ func runJob(cmd *cobra.Command, options jobCreatorService.JobCreatorOptions, con
 
 	commandCtx := system.NewCommandContext(cmd)
 	defer commandCtx.Cleanup()
-	result, err := jobCreatorService.RunJob(commandCtx, options, func(evOffer dto.JobOfferContainer) {
+
+	if options.Dealer != s.Conf.GetString(enums.DEALER) {
+		if err := s.dealMakerService.LoadPlugin(options.Dealer); err != nil {
+			s.Log.Errorf("Dealer %s is not supported on this platform", options.Dealer)
+		} // TODO: should be refactored to the jobCreatorService
+	}
+
+	// TODO: inject this jobCreatorService to a service instead
+	result, err := jobCreatorService.RunJob(commandCtx, options, s.dealMakerService, func(evOffer dto.JobOfferContainer) {
 		if err := spinner.Stop(); err != nil {
 			log.Fatalf("failed to stop spinner: %v", err)
 		}

@@ -2,8 +2,10 @@ package dealmaker
 
 import (
 	"context"
+	"fmt"
 	"path"
 	"plugin"
+	"runtime"
 
 	"github.com/CoopHive/hive/enums"
 	"github.com/CoopHive/hive/exp/dealer"
@@ -68,6 +70,11 @@ func (d *Service) setPlugin(plugin dealer.Dealer) {
 
 func (d *Service) LoadPlugin(pluginName string) error {
 
+	if !d.hasPluginSupport() {
+		d.Log.Error("Plugins are not supported on this platform")
+		return fmt.Errorf("loadplugin: is not supported on this platform")
+	}
+
 	pluginPath := path.Join(d.Conf.GetString(enums.APP_PLUGIN_DIR), pluginName+".so")
 	d.Log.Infof("Loading plugin %s from %s\n", pluginName, pluginPath)
 	p, err := plugin.Open(pluginPath)
@@ -83,4 +90,12 @@ func (d *Service) LoadPlugin(pluginName string) error {
 	d.setPlugin(customDealer)
 
 	return nil
+}
+
+func (d *Service) hasPluginSupport() bool {
+	if runtime.GOOS == "windows" {
+		return false
+	}
+
+	return true
 }
