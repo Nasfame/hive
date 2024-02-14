@@ -13,7 +13,7 @@
     "style": "prettier -w .",
     "start": "hardhat node",
     "build": "hardhat compile",
-    "clean": "hardhat clean",
+    "clean": "hardhat clean && rm -rf deployments",
     "hardhat:local": "hardhat node",
     "test": "CONFIG=./.env.hardhat hardhat test",
     "deploy": "hardhat deploy",
