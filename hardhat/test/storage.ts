@@ -466,7 +466,7 @@ describe("Storage", () => {
             ).to.deep.equal([]);
         });
 
-        it("Should error when the RP and JC are the same", async function () {
+        it("Should not error when the RP and JC are the same", async function () {
             const storage = await loadFixture(setupStorage);
             const members: SharedStructs.DealMembersStruct = {
                 solver: getAddress("solver"),
@@ -481,7 +481,7 @@ describe("Storage", () => {
                 storage
                     .connect(getWallet("admin"))
                     .ensureDeal(dealID, members, timeouts, pricing),
-            ).to.be.revertedWith("RP / JC same");
+            ).to.not.be.revertedWith("RP / JC same"); //FIX #119
         });
 
         it("Should error when the RP is empty", async function () {

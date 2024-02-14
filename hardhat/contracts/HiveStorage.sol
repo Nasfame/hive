@@ -4,6 +4,8 @@ pragma solidity ^0.8.6;
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "./SharedStructs.sol";
 import "./ControllerOwnable.sol";
+import {HiveController} from "./HiveController.sol";
+import {HiveMediationRandom} from "./HiveMediationRandom.sol";
 
 contract HiveStorage is ControllerOwnable, Initializable {
 
@@ -64,8 +66,14 @@ contract HiveStorage is ControllerOwnable, Initializable {
     require(members.resourceProvider != address(0), "RP missing");
     require(members.jobCreator != address(0), "JC missing");
     require(members.solver != address(0), "Solver missing");
-    require(members.mediators.length > 0, "Mediators <= 0");
-    require(members.resourceProvider != members.jobCreator, "RP / JC same");
+    require(members.mediators.length > 0, "Mediators <= 0"); //TODO: make it necessary only if JC!=RP
+
+//    if (members.resourceProvider != members.jobCreator){
+//      //TODO: HiveController, HiveMediationRandom changes required to support 0 mediator cases.
+//      require(members.mediators.length > 0, "Mediators <= 0");
+//    }
+
+//    require(members.resourceProvider != members.jobCreator, "RP / JC same"); #Fix #119
   }
 
   function checkTimeouts(
