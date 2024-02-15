@@ -70,12 +70,14 @@ const deployController: DeployFunction = async function (
 
     console.log("Deployed Contracts:");
 
+    // @ts-ignore
+    const netUrl = hre.network.config.url ?? "http://localhost:8545"
+
     const content = `
 HIVE_CONTROLLER=${controllerContract.address}
 HIVE_MEDIATION_RANDOM=${mediationContract.address}
 HIVE_SOLVER=${getAccount("solver").address}
-
-WEB3_RPC_URL=${hre.network.config.url ?? "http://localhost:8545"} 
+WEB3_RPC_URL=${netUrl} 
 WEB3_CHAIN_ID=${network.config.chainId}
 `.trim();
 

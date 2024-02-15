@@ -42,11 +42,11 @@ const config: HardhatUserConfig = {
         }),
       ],
     },
-    geth: {
-      url: "http://localhost:8545",
-      chainId: 1337,
-      accounts: PRIVATE_KEYS,
-    },
+    /* geth: {
+       url: "http://localhost:8545",
+       chainId: 1337,
+       accounts: PRIVATE_KEYS,
+     },*/
     sepolia: {
       url: `https://sepolia.infura.io/v3/${INFURA_KEY}`,
       chainId: 11155111,
