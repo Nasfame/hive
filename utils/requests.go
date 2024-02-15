@@ -1,11 +1,12 @@
 package utils
 
 import (
-	"github.com/parnurzeal/gorequest"
-	"go.uber.org/multierr"
 	"net/http"
 	"net/url"
 	"time"
+
+	"github.com/parnurzeal/gorequest"
+	"go.uber.org/multierr"
 )
 
 type Method string

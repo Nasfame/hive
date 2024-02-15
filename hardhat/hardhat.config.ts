@@ -49,36 +49,40 @@ const config: HardhatUserConfig = {
      },*/
     sepolia: {
       url: `https://sepolia.infura.io/v3/${INFURA_KEY}`,
+      ws: `wss://sepolia.infura.io/ws/v3/${INFURA_KEY}`,
       chainId: 11155111,
       accounts: PRIVATE_KEYS,
     },
     calibration: {
       chainId: 314159,
       url: "https://api.calibration.node.glif.io/rpc/v1",
+      ws: 'wss://wss.calibration.node.glif.io/apigw/lotus/rpc/v1',
       accounts: PRIVATE_KEYS,
     },
-    fvm: {
+    /*fvm: {
       chainId: 314,
       url: "https://api.node.glif.io",
       accounts: PRIVATE_KEYS,
-    },
+    },*/
     coophive: {
       chainId: 1337,
       url: "http://testnet.co-ophive.network:8545",
+      ws: "ws://testnet.co-ophive.network:8546",
       accounts: PRIVATE_KEYS,
     },
-    chaos: {
+    /*chaos: {
       //skale testnet
       chainId: 1351057110,
       url: "https://staging-v3.skalenodes.com/v1/staging-fast-active-bellatrix",
       accounts: PRIVATE_KEYS,
       // faucet: "https://sfuel.skale.network/staging/chaos",
       // explorer: "https://staging-fast-active-bellatrix.explorer.staging-v3.skalenodes.com",
-    },
+    },*/
     titanAI: {
       //skale testnet
       chainId: 1020352220,
       url: "https://testnet.skalenodes.com/v1/aware-fake-trim-testnet",
+      ws: "wss://testnet.skalenodes.com/v1/ws/aware-fake-trim-testnet",
       accounts: PRIVATE_KEYS,
       // https://testnet.portal.skale.space/chains/titan
       // https://aware-fake-trim-testnet.explorer.testnet.skalenodes.com

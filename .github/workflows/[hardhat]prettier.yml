@@ -6,7 +6,7 @@ on:
       - main
 
     paths:
-  #      - hardhat/**
+      - hardhat/**
 
   pull_request:
     branches:
@@ -30,9 +30,6 @@ permissions:
   actions: write
   contents: write
 
-defaults:
-  run:
-    working-directory: ./hardhat
 
 #env:
 #  TOKEN_GITHUB: ${{github.token}}
@@ -43,6 +40,14 @@ env:
 jobs:
   prettier:
     runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./hardhat
+
+    concurrency:
+      group: git-commit-${{ github.ref }}
+      cancel-in-progress: false
 
     steps:
       - uses: actions/checkout@v4
@@ -117,3 +122,4 @@ jobs:
           else
             echo "Nothing to pretty"
           fi
+

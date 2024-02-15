@@ -2,10 +2,11 @@ package utils
 
 import (
 	"fmt"
-	log "github.com/sirupsen/logrus"
 	"math"
 	"strconv"
 	"time"
+
+	log "github.com/sirupsen/logrus"
 )
 
 // ConvertStringIntoFloat ... to convert string into float.

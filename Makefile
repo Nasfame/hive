@@ -49,7 +49,7 @@ install-win:
 
 
 generate-sol-bindings-for-go:
-	./stack go-bindings-with-go;
+	./stack go-bindings;
 
 
 plugin-autoacceptdealer:

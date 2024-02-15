@@ -4,29 +4,40 @@ import minimist from "minimist";
 import {util} from "prettier";
 import skip = util.skip;
 import {HardhatRuntimeEnvironment} from "hardhat/types";
-
+import * as net from "net";
 
 export async function deployToNetwork(networkName: string) {
     console.log(`\n\n\nDeploying to network: ${networkName}`);
     try {
-        const output = execSync(`npx hardhat deploy --network ${networkName}`, {encoding: 'utf-8'});
+        const output = execSync(`npx hardhat deploy --network ${networkName}`, {
+            encoding: "utf-8",
+        });
         console.log(output);
     } catch (e) {
         console.error(e);
     }
-
 }
 
-export async function deployToAllNetworks(hre: HardhatRuntimeEnvironment, skipNetworks?: Array<string>) {
-    let networkNames = getNetworks(hre, skipNetworks)
+export async function deployToAllNetworks(
+    hre: HardhatRuntimeEnvironment,
+    skipNetworks?: Array<string>,
+    parellel: boolean = false,
+) {
+    let networkNames = getNetworks(hre, skipNetworks);
 
-    console.log("Deploying to networkNames", networkNames)
+    console.log("Deploying to networkNames", networkNames);
 
-    for (const name of networkNames) {
-        await deployToNetwork(name);
+
+    if (parellel) {
+        const networkJobs = Promise.allSettled(networkNames.map((networkName) => deployToNetwork(networkName)))
+        await networkJobs
+    } else {
+        for (const name of networkNames) {
+            await deployToNetwork(name);
+        }
     }
-}
 
+}
 
 /*import hre from "hardhat"
 

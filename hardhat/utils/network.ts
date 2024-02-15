@@ -5,10 +5,17 @@ export const getNetwork = (hre: HardhatRuntimeEnvironment) => {
     return network;
 };
 
-export const getNetworks = (hre: HardhatRuntimeEnvironment, filteredNetworks?: Array<string> = ["localhost"]) => {
-    filteredNetworks = filteredNetworks ?? []
+export const getNetworks = (
+    hre: HardhatRuntimeEnvironment,
+    filteredNetworks?: Array<string> = ["localhost"],
+) => {
+    filteredNetworks = filteredNetworks ?? [];
 
     let networkNames = Object.keys(hre.config.networks);
-    networkNames = networkNames.filter((network: string) => !filteredNetworks.includes(network))
-    return networkNames
-}
+    networkNames = networkNames.filter(
+        (network: string) => !filteredNetworks.includes(network),
+    );
+    return networkNames;
+};
+
+

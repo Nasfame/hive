@@ -6,12 +6,13 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
-	"github.com/CoopHive/hive/config"
 	"io"
 	stdlog "log"
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/CoopHive/hive/config"
 
 	"github.com/CoopHive/hive/pkg/web3"
 	"github.com/hashicorp/go-retryablehttp"

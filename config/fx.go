@@ -106,7 +106,7 @@ func newConfig() (o out) {
 
 	logrus.Debugln("network: ", network)
 
-	if network != defaultNetwork {
+	if true {
 		c, err := loadDApp(network)
 
 		if err != nil {

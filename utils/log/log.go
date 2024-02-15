@@ -1,9 +1,10 @@
 package __log
 
 import (
+	"os"
+
 	_ "github.com/sirupsen/logrus"
 	log "github.com/sirupsen/logrus"
-	"os"
 )
 
 var Log = &log.Logger{

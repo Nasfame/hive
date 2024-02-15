@@ -26,8 +26,9 @@
     "task:balance": "hardhat balance --network calibration --account",
     "task:bal": "hardhat bal --network calibration",
     "task:networks": "hardhat networks",
-    "task:deployAll": "hardhat deployAll --skip chaos,localhost",
-    "scripts:deployAll": "hardhat run scripts/deployAll.ts "
+    "task:deployAll": "hardhat deployAll --skip chaos,localhost ",
+    "task:deployAll:parallel": "hardhat deployAll --parallel --skip chaos,localhost ",
+    "scripts:deployAll": "hardhat run scripts/deployAll.ts"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-chai-matchers": "^2.0.4",
