@@ -32,6 +32,13 @@ func newRootCmd(conf *viper.Viper, subCommands ...*cobra.Command) *cobra.Command
 		cmd.AddCommand(subCmd)
 	}
 
+	// var network string = config.Conf.GetString(enums.NETWORK)
+	//
+	// // TODO: inject Conf
+	// cmd.PersistentFlags().StringVar(&network, "network", config.Conf.GetString(enums.NETWORK), fmt.Sprintf("supported networks:%v", config.NETWORKS))
+	//
+	// config.Conf.BindPFlag(enums.NETWORK, cmd.PersistentFlags().Lookup("network"))
+
 	return cmd
 }
 

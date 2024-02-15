@@ -98,3 +98,5 @@ func tempInitForFx(conf *viper.Viper) {
 	// log.Println("app data dir", APP_DATA_DIR)
 
 }
+
+const JOB_PRICE = 2

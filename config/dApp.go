@@ -80,6 +80,8 @@ func loadDApp(network string) (envMap map[string]string, err error) {
 
 	envMap[enums.HIVE_MEDIATION] = strings.Join(curMediators, ",")
 
+	logrus.Debugln("mediation", envMap[enums.HIVE_MEDIATION])
+
 	return
 
 }

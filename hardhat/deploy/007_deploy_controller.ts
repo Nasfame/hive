@@ -3,6 +3,7 @@ import {DeployFunction} from "hardhat-deploy/types";
 import * as fs from "fs";
 
 import {network} from "hardhat";
+import {getAccount} from "../utils/accounts";
 
 const deployController: DeployFunction = async function (
     hre: HardhatRuntimeEnvironment,
@@ -71,13 +72,20 @@ const deployController: DeployFunction = async function (
 
     const content = `
 HIVE_CONTROLLER=${controllerContract.address}
-HIVE_STORAGE=${storageContract.address}
-HIVE_PAYMENT=${paymentsContract.address}
 HIVE_MEDIATION_RANDOM=${mediationContract.address}
-HIVE_JOBCREATOR=${jobCreatorContract.address}
+HIVE_SOLVER=${getAccount("solver").address}
+
 WEB3_RPC_URL=${hre.network.config.url ?? "http://localhost:8545"} 
 WEB3_CHAIN_ID=${network.config.chainId}
 `.trim();
+
+    // the below can be derived from controller contract
+    /***
+     HIVE_STORAGE=${storageContract.address}
+     HIVE_PAYMENT=${paymentsContract.address}
+     HIVE_JOBCREATOR=${jobCreatorContract.address}
+     */
+
     console.log(content);
 
     writeToFile(content, `../config/dApps/${network.name}.env`);

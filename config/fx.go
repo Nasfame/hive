@@ -35,9 +35,6 @@ type out struct {
 
 func newConfig() (o out) {
 	pf := pflag.NewFlagSet("conf", pflag.ContinueOnError)
-	pf.Parse(os.Args[1:])
-
-	// fmt.Println(os.Args)
 
 	config := viper.New()
 
@@ -83,16 +80,13 @@ func newConfig() (o out) {
 		}
 	}
 
-	for key, meta := range jobCreatorConfig {
-		checkDup(key, "jobCreator")
-
-		config.SetDefault(key, meta.defaultVal)
-
-		// automatic conversion of environment var key to `UPPER_CASE` will happen.
-		config.BindEnv(key)
+	if err := pf.Parse(os.Args[1:]); err != nil {
+		logrus.Debugf("failed to parse args due to %v", err)
 	}
 
-	config.BindPFlags(pf)
+	if err := config.BindPFlags(pf); err != nil {
+		logrus.Debugf("failed to load flags:%v", err)
+	}
 
 	if config.GetBool(enums.DEBUG) {
 		logrus.SetLevel(logrus.DebugLevel)
