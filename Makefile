@@ -59,3 +59,8 @@ plugin-autoacceptdealer:
 
 plugin-websocket:
 	./stack build-plugin-websocket
+
+
+cleanup_github:
+	git tag -l | grep pr | xargs -I {} sh -c 'git tag -d {} & git push origin --delete {} & gh release delete {} --yes'
+	#git tag -l | grep v0.0.0-br | xargs -I {} sh -c 'git tag -d {} & git push origin --delete {} & gh release delete {} --yes'
