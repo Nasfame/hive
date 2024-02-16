@@ -1,9 +1,6 @@
 
 FROM golang:1.21 AS builder
 
-LABEL authors="Hiro <laciferin@gmail.com>"
-LABEL maintainer="Hiro <laciferin@gmail.com>"
-
 ENV GOPATH /go
 ENV GO111MODULE on
 
@@ -38,3 +35,6 @@ RUN ln -s /app/bin/hive /bin/hive
 
 ENTRYPOINT ["/bin/hive"]
 CMD ["run", "cowsay:v0.1.0", "-i", "Message=Hiro"]
+
+LABEL authors="Hiro <laciferin@gmail.com>"
+LABEL maintainer="Hiro <laciferin@gmail.com>"
