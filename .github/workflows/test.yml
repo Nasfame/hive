@@ -41,7 +41,7 @@ jobs:
           go-version-file: go.mod
 
       - name: Install dependencies
-        run: go get .
+        run: go mod download
 
       - name: Set Node.js
         continue-on-error: true
