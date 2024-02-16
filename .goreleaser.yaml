@@ -79,9 +79,9 @@ archives:
 changelog:
   sort: asc
   filters:
-    exclude:
-      - "^docs:"
-      - "^test:"
+#    exclude:
+#      - "^docs:"
+#      - "^test:"
 
 release:
   mode: append
