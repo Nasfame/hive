@@ -64,3 +64,8 @@ plugin-websocket:
 cleanup_github:
 	git tag -l | grep pr | xargs -I {} sh -c 'git tag -d {} & git push origin --delete {} & gh release delete {} --yes'
 	#git tag -l | grep v0.0.0-br | xargs -I {} sh -c 'git tag -d {} & git push origin --delete {} & gh release delete {} --yes'
+
+github:
+	exit 1
+	#manuall triggers
+	gh workflow run .github/workflows/publish-gcr.yml --ref v0.2.6
