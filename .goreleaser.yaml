@@ -22,6 +22,7 @@ builds:
     ldflags:
       - -X "github.com/CoopHive/hive/config.version={{.Version}}"
       - -X "github.com/CoopHive/hive/config.commitSha={{.ShortCommit}}"
+      - -s -w
     env:
       - CGO_ENABLED=0
     goos:
