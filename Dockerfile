@@ -8,13 +8,17 @@ ENV GOPATH /go
 ENV GO111MODULE on
 
 WORKDIR /app
-COPY . .
 RUN mkdir -p ./bin
 
+RUN go install github.com/goreleaser/goreleaser@latest
+
+COPY go.* ./
 RUN go get
 
-RUN go install github.com/goreleaser/goreleaser@latest
+COPY . .
+
 RUN goreleaser build --single-target --clean -o ./bin/hive --snapshot
+
 RUN ./bin/hive version
 
 
