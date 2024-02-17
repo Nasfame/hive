@@ -21,6 +21,8 @@ RUN ./bin/hive version
 
 FROM alpine:latest
 
+ENV PORT=8080
+
 #ENV WEB3_PRIVATE_KEY; try to pass a hardhat private key here
 
 WORKDIR /app
