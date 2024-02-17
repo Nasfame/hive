@@ -9,10 +9,10 @@ RUN mkdir -p ./bin
 
 RUN go install github.com/goreleaser/goreleaser@latest
 
-COPY go.* ./
+COPY . .
+
 RUN go mod download
 
-COPY . .
 
 RUN goreleaser build --single-target --clean -o ./bin/hive --snapshot
 

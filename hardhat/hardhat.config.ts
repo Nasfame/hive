@@ -53,17 +53,6 @@ const config: HardhatUserConfig = {
       chainId: 11155111,
       accounts: PRIVATE_KEYS,
     },
-    calibration: {
-      chainId: 314159,
-      url: "https://api.calibration.node.glif.io/rpc/v1",
-      ws: 'wss://wss.calibration.node.glif.io/apigw/lotus/rpc/v1',
-      accounts: PRIVATE_KEYS,
-    },
-    /*fvm: {
-      chainId: 314,
-      url: "https://api.node.glif.io",
-      accounts: PRIVATE_KEYS,
-    },*/
     coophive: {
       chainId: 1337,
       url: "http://testnet.co-ophive.network:8545",
@@ -87,6 +76,17 @@ const config: HardhatUserConfig = {
       // https://testnet.portal.skale.space/chains/titan
       // https://aware-fake-trim-testnet.explorer.testnet.skalenodes.com
     },
+    calibration: {
+      chainId: 314159,
+      url: "https://api.calibration.node.glif.io/rpc/v1",
+      ws: 'wss://wss.calibration.node.glif.io/apigw/lotus/rpc/v1',
+      accounts: PRIVATE_KEYS,
+    },
+    /*fvm: {
+      chainId: 314,
+      url: "https://api.node.glif.io",
+      accounts: PRIVATE_KEYS,
+    },*/
   },
   etherscan: {
     apiKey: process.env.ETHERSCAN_API_KEY,

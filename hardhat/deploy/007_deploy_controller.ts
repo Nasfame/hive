@@ -23,6 +23,7 @@ const deployController: DeployFunction = async function (
     const mediationContract = await deployments.get("HiveMediationRandom");
     const paymentsContract = await deployments.get("HivePayments");
     const jobCreatorContract = await deployments.get("HiveOnChainJobCreator");
+    const tokenContract = await deployments.get("HiveToken");
 
     await execute(
         "HiveController",
@@ -80,7 +81,10 @@ HIVE_CONTROLLER=${controllerContract.address}
 HIVE_MEDIATION_RANDOM=${mediationContract.address}
 HIVE_SOLVER=${getAccount("solver").address}
 WEB3_RPC_URL=${websocketUrl} 
+WEB3_RPC_HTTP=${netUrl}
 WEB3_CHAIN_ID=${network.config.chainId}
+
+HIVE_TOKEN=${tokenContract.address}
 `.trim();
 
     // the below can be derived from controller contract

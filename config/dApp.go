@@ -17,17 +17,6 @@ var dApps embed.FS
 
 const dAppFolderName = "dApps"
 
-func init() {
-	// fmt.Printf("CoopHive: %s\n", hive.VERSION)
-
-	err := godotenv.Load()
-	if err != nil {
-		// log.Debug().Str("err", err.Error()).Msgf(".env not found")
-		// TODO: Doesn't look good, add custom flag
-	}
-
-}
-
 var NETWORKS = getNetworks()
 
 func getNetworks() (networks []string) {
