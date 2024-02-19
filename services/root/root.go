@@ -6,6 +6,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 
@@ -29,6 +30,7 @@ func newRootCmd(conf *viper.Viper, subCommands ...*cobra.Command) *cobra.Command
 	}
 
 	for _, subCmd := range subCommands {
+		logrus.Debugf("added %v", subCmd.Name())
 		cmd.AddCommand(subCmd)
 	}
 

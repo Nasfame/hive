@@ -42,3 +42,5 @@ const deployPayments: DeployFunction = async function (
 deployPayments.id = "deployPayments";
 
 export default deployPayments;
+
+module.exports.tags = ["all", "HivePayments"];

@@ -2,20 +2,25 @@ package solver
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/spf13/cobra"
 
+	"github.com/CoopHive/hive/config"
+	"github.com/CoopHive/hive/enums"
 	"github.com/CoopHive/hive/pkg/http"
 	"github.com/CoopHive/hive/pkg/options"
 )
 
 func GetDefaultServerOptions() http.ServerOptions {
-	return http.ServerOptions{
-		// TODO: move to appConfig
-		URL:  options.GetDefaultServeOptionString("SERVER_URL", ""),
-		Host: options.GetDefaultServeOptionString("SERVER_HOST", "0.0.0.0"),
-		Port: options.GetDefaultServeOptionInt("SERVER_PORT", 8080), //nolint:gomnd
+	o := http.ServerOptions{
+		URL:  options.GetDefaultServeOptionString("SERVER_URL", config.Conf.GetString(enums.SERVER_URL)),
+		Host: options.GetDefaultServeOptionString("SERVER_HOST", config.Conf.GetString(enums.SERVER_HOST)),
+		Port: options.GetDefaultServeOptionInt("SERVER_PORT", config.Conf.GetInt(enums.SERVER_PORT)),
 	}
+	o.URL = strings.TrimSpace(o.URL)
+	o.Host = strings.TrimSpace(o.Host)
+	return o
 }
 
 func AddServerCliFlags(cmd *cobra.Command, serverOptions *http.ServerOptions) {

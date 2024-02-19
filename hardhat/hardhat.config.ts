@@ -52,12 +52,14 @@ const config: HardhatUserConfig = {
       ws: `wss://sepolia.infura.io/ws/v3/${INFURA_KEY}`,
       chainId: 11155111,
       accounts: PRIVATE_KEYS,
+      saveDeployments: true,
     },
     coophive: {
       chainId: 1337,
       url: "http://testnet.co-ophive.network:8545",
       ws: "ws://testnet.co-ophive.network:8546",
       accounts: PRIVATE_KEYS,
+      saveDeployments: true,
     },
     /*chaos: {
       //skale testnet
@@ -73,6 +75,7 @@ const config: HardhatUserConfig = {
       url: "https://testnet.skalenodes.com/v1/aware-fake-trim-testnet",
       ws: "wss://testnet.skalenodes.com/v1/ws/aware-fake-trim-testnet",
       accounts: PRIVATE_KEYS,
+      saveDeployments: true,
       // https://testnet.portal.skale.space/chains/titan
       // https://aware-fake-trim-testnet.explorer.testnet.skalenodes.com
     },
@@ -81,6 +84,7 @@ const config: HardhatUserConfig = {
       url: "https://api.calibration.node.glif.io/rpc/v1",
       ws: 'wss://wss.calibration.node.glif.io/apigw/lotus/rpc/v1',
       accounts: PRIVATE_KEYS,
+      saveDeployments: true,
     },
     /*fvm: {
       chainId: 314,

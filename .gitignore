@@ -34,3 +34,5 @@ hive
 *.so
 
 data/
+
+notepad.sh

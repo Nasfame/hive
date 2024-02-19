@@ -1,6 +1,9 @@
 package solver
 
 import (
+	"os"
+	"os/signal"
+
 	"github.com/spf13/cobra"
 
 	"github.com/CoopHive/hive/internal/genesis"
@@ -23,7 +26,7 @@ func newSolverCmd(s0 *genesis.Service) *cobra.Command {
 		Use:     "solver",
 		Short:   "Start the CoopHive solver service.",
 		Long:    "Start the CoopHive solver service.",
-		Example: "",
+		Example: "SERVER_URL=0.0.0.0:8080 hive solver",
 		RunE: func(cmd *cobra.Command, _ []string) error {
 			options, err := ProcessSolverOptions(options)
 			if err != nil {
@@ -44,8 +47,18 @@ func (s *service) runSolver(cmd *cobra.Command, options solver.SolverOptions) er
 
 	web3SDK, err := web3.NewContractSDK(options.Web3)
 	if err != nil {
+		s.Log.Errorf("failed to start due to %v", err)
 		return err
 	}
+
+	s.Log.Info("solver address ", web3SDK.GetAddress())
+	solverAddresses, err := web3SDK.GetSolverAddresses()
+
+	if err != nil {
+		s.Log.Errorf("couldn't find solver addresses due to %v", solverAddresses)
+	}
+
+	s.Log.Info("default solver addresses ", solverAddresses)
 
 	solverStore, err := memorystore.NewSolverStoreMemory(s.Conf)
 	if err != nil {
@@ -59,13 +72,20 @@ func (s *service) runSolver(cmd *cobra.Command, options solver.SolverOptions) er
 
 	solverErrors := solverService.Start(commandCtx.Ctx, commandCtx.Cm)
 
+	signal.NotifyContext(commandCtx.Ctx, os.Interrupt)
+
 	for {
+		/*if commandCtx.Ctx.Done() == nil {
+			s.Log.Info("solver service stopped")
+			return nil
+		}*/
+
 		select {
+		case <-commandCtx.Ctx.Done():
+			return nil
 		case err := <-solverErrors:
 			commandCtx.Cleanup()
 			return err
-		case <-commandCtx.Ctx.Done():
-			return nil
 		}
 	}
 }

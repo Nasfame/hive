@@ -75,3 +75,10 @@ const (
 	WEB3_PRIVATE_KEY = "WEB3_PRIVATE_KEY"
 	WEB3_CHAIN_ID    = "WEB3_CHAIN_ID"
 )
+
+/*Solver*/
+const (
+	SERVER_URL  = "server_url"
+	SERVER_HOST = "server_host"
+	SERVER_PORT = "server_port"
+)

@@ -1,6 +1,8 @@
 package solver
 
 import (
+	"github.com/sirupsen/logrus"
+
 	options2 "github.com/CoopHive/hive/pkg/options"
 	"github.com/CoopHive/hive/pkg/system"
 	"github.com/CoopHive/hive/services/solver/solver"
@@ -37,6 +39,7 @@ func CheckSolverOptions(options solver.SolverOptions) error {
 func ProcessSolverOptions(options solver.SolverOptions) (solver.SolverOptions, error) {
 	newWeb3Options, err := options2.ProcessWeb3Options(options.Web3)
 	if err != nil {
+		logrus.Debugf("failed to process web3 options %v", err)
 		return options, err
 	}
 	options.Web3 = newWeb3Options

@@ -28,7 +28,8 @@
     "task:networks": "hardhat networks",
     "task:deployAll": "hardhat deployAll --skip chaos,localhost ",
     "task:deployAll:parallel": "hardhat deployAll --parallel --skip chaos,localhost ",
-    "scripts:deployAll": "hardhat run scripts/deployAll.ts"
+    "scripts:deployAll": "hardhat run scripts/deployAll.ts",
+    "deploy:hiveToken": "npx hardhat deploy --tags hiveToken --network "
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-chai-matchers": "^2.0.4",

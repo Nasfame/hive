@@ -68,6 +68,20 @@ var appConfig = configMap[string]{
 		"private key",
 		"0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80",
 	},
+
+	enums.SERVER_HOST: {
+		"server host",
+		"0.0.0.0",
+	},
+
+	enums.SERVER_PORT: {
+		"server port",
+		"8080",
+	},
+	enums.SERVER_URL: {
+		"public facing url without application protocol like tcp, http",
+		"",
+	},
 }
 
 const defaultNetwork = "builtin" // coophive

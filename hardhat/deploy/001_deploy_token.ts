@@ -14,6 +14,7 @@ const deployToken: DeployFunction = async function (
         from: admin,
         args: ["Hive Token", "HIVE", DEFAULT_TOKEN_SUPPLY],
         log: true,
+        waitConfirmations: hre.network.config.chainId == 1337 ? 1 : 6,
     });
     return true;
 };
@@ -21,3 +22,5 @@ const deployToken: DeployFunction = async function (
 deployToken.id = "deployToken";
 
 export default deployToken;
+
+module.exports.tags = ["all", "hiveToken"];
