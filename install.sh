@@ -17,6 +17,7 @@ detect_os_info() {
 
 install_hive() {
   version=v0.10.0
+  echo "installing hive:$version"
   curl -sSL -o hive https://github.com/CoopHive/hive/releases/download/$version/hive-$OSNAME-$OSARCH
   chmod +x hive
   ./hive version
