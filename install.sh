@@ -15,7 +15,7 @@ getLatestRelease() {
 
     # /latest ignores pre-releases, see https://docs.github.com/en/rest/releases/releases#get-the-latest-release
     local tag_regex='v[0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z0-9]+)*'
-    if [ "$PRE_RELEASE" == "true" ]; then
+    if [ "$PRE_RELEASE" = "true" ]; then
         echo "Installing most recent pre-release version..."
         local hiveReleaseUrl="https://api.github.com/repos/${GITHUB_ORG}/${GITHUB_REPO}/releases?per_page=1"
     else
@@ -25,7 +25,7 @@ getLatestRelease() {
 
     echo "Hive release url $hiveReleaseUrl"
 
-    if [ "$COOPHIVE_HTTP_REQUEST_CLI" == "curl" ]; then
+    if [ "$COOPHIVE_HTTP_REQUEST_CLI" = "curl" ]; then
         echo "using curl"
         latest_release=$(curl -s $hiveReleaseUrl  | grep \"tag_name\" | grep -E -i "\"$tag_regex\"" | awk 'NR==1{print $2}' | sed -n 's/\"\(.*\)\",/\1/p')
     else
