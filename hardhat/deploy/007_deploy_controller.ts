@@ -4,6 +4,7 @@ import * as fs from "fs";
 
 import {network} from "hardhat";
 import {getAccount} from "../utils/accounts";
+import {execSync} from "child_process";
 
 
 //TODO: use bindings
@@ -71,34 +72,8 @@ const deployController: DeployFunction = async function (
         controllerContract.address,
     );
 
-    console.log("Deployed Contracts:");
 
-    // @ts-ignore
-    const netUrl = hre.network.config.url ?? "http://localhost:8545";
-    // @ts-ignore
-    let websocketUrl = hre.network.config.ws ?? netUrl.replace('http', 'ws');
-
-    const content = `
-HIVE_CONTROLLER=${controllerContract.address}
-HIVE_MEDIATION_RANDOM=${mediationContract.address}
-HIVE_SOLVER=${getAccount("solver").address}
-WEB3_RPC_URL=${websocketUrl} 
-WEB3_RPC_HTTP=${netUrl}
-WEB3_CHAIN_ID=${network.config.chainId}
-
-HIVE_TOKEN=${tokenContract.address}
-`.trim();
-
-    // the below can be derived from controller contract
-    /***
-     HIVE_STORAGE=${storageContract.address}
-     HIVE_PAYMENT=${paymentsContract.address}
-     HIVE_JOBCREATOR=${jobCreatorContract.address}
-     */
-
-    console.log(content);
-
-    writeToFile(content, `../config/dApps/${network.name}.env`);
+    execSync(`npx hardhat dapp --network ${hre.network.name}`)
 
     return true;
 };
