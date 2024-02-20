@@ -33,7 +33,7 @@ getLatestRelease() {
         latest_release=$(wget -q --header="Accept: application/json" -O - $hiveReleaseUrl | grep \"tag_name\" | grep -E -i "^$tag_regex$" | awk 'NR==1{print $2}' |  sed -n 's/\"\(.*\)\",/\1/p')
     fi
     echo "latest release is $latest_release"
-    version=${latest_release:1}
+    version=${latest_release}
     echo "$latest_release"
 }
 
@@ -52,7 +52,9 @@ detect_os_info() {
 install_hive() {
   getLatestRelease
   echo "installing hive:$version"
-  curl -sSL -o hive https://github.com/CoopHive/hive/releases/download/$version/hive-$OSNAME-$OSARCH
+  rurl=https://github.com/CoopHive/hive/releases/download/$version/hive-$OSNAME-$OSARCH
+#  echo $rurl
+  curl -sSL -o hive $rurl
   chmod +x hive
   ./hive version
 #  read -p "Do you want to install Hive? (y/n): " choice
