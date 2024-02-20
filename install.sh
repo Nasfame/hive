@@ -60,7 +60,7 @@ install_hive() {
 #  read -p "Do you want to install Hive? (y/n): " choice
 #    case "$choice" in
 #      y|Y )
-#        sudo mv hive /usr/local/bin/hive
+#        sudo cp hive /usr/local/bin/
 #        ;;
 #      n|N )
 #        echo "Hive installation canceled."
@@ -69,7 +69,7 @@ install_hive() {
 #        echo "Invalid choice. Please enter y or n."
 #        ;;
 #    esac
-  sudo mv hive /usr/local/bin/hive
+  sudo cp hive /usr/local/bin/
 
 }
 
