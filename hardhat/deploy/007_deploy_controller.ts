@@ -5,6 +5,7 @@ import * as fs from "fs";
 import {network} from "hardhat";
 import {getAccount} from "../utils/accounts";
 import {execSync} from "child_process";
+import {syncDapps} from "../utils/syncDapps";
 
 
 //TODO: use bindings
@@ -73,7 +74,9 @@ const deployController: DeployFunction = async function (
     );
 
 
-    execSync(`npx hardhat dapp --network ${hre.network.name}`)
+    // execSync(`npx hardhat dapp --network ${hre.network.name}`)
+
+    await syncDapps(hre)
 
     return true;
 };
