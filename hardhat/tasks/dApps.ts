@@ -20,10 +20,15 @@ task("dapp", "Sync Dapp: always pass network its a must")
         // @ts-ignore
         let websocketUrl = hre.network.config.ws ?? netUrl.replace('http', 'ws');
 
+        const solvers = [
+            getAccount("solver").address,
+            getAccount("admin").address,
+        ]
+
         const content = `
 HIVE_CONTROLLER=${controllerContract.address}
 HIVE_MEDIATION_RANDOM=${mediationContract.address}
-HIVE_SOLVER=${getAccount("solver").address}
+HIVE_SOLVER=${solvers.join(",")}
 WEB3_RPC_URL=${websocketUrl} 
 WEB3_RPC_HTTP=${netUrl}
 WEB3_CHAIN_ID=${network.config.chainId}
