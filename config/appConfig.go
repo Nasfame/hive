@@ -54,7 +54,7 @@ var appConfig = configMap[string]{
 		"0x2d83ced7562e406151bd49c749654429907543b4",
 	},
 	enums.NETWORK: {
-		fmt.Sprintf("supported networks:%v", NETWORKS),
+		fmt.Sprintf("supported networks:%v. aurora is deprecated", NETWORKS),
 		defaultNetwork,
 	},
 

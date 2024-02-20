@@ -38,11 +38,15 @@ The commands below will automatically detect your OS and processor architecture 
 
 ### On Command Line
 
-1. Detect your operating system and set it as $OSNAME
-2. Detect your machine's architecture and set it as $OSARCH
-3. Download the latest production build
-4. Check the version
-5. Install `hive`
+[//]: # (1. Detect your operating system and set it as $OSNAME)
+
+[//]: # (2. Detect your machine's architecture and set it as $OSARCH)
+
+[//]: # (3. Download the latest production build)
+
+[//]: # (4. Check the version)
+
+[//]: # (5. Install `hive`)
 
 #### Install only hive
 
@@ -56,28 +60,44 @@ curl -sSf https://raw.githubusercontent.com/CoopHive/hive/main/install.sh | sh -
 curl -sSf https://raw.githubusercontent.com/CoopHive/hive/main/install.sh | sh -s -- all
 ```
 
-<details> 
-<summary>Installation script for Linux and MacOS</summary>
+[//]: # (<details> )
 
-```bash
-OSARCH=$(uname -m | awk '{if ($0 ~ /arm64|aarch64/) print "arm64"; else if ($0 ~ /x86_64|amd64/) print "amd64"; else print "unsupported_arch"}') && export OSARCH
-echo $OSARCH
-OSNAME=$(uname -s | awk '{if ($1 == "Darwin") print "darwin"; else if ($1 == "Linux") print "linux"; else print "unsupported_os"}') && export OSNAME;
-echo $OSNAME
-version=v0.10.0
-curl -sSL -o hive https://github.com/CoopHive/hive/releases/download/$version/hive-$OSNAME-$OSARCH
-chmod +x hive
-./hive version
+[//]: # (<summary>Installation script for Linux and MacOS</summary>)
 
-sudo mv hive /usr/local/bin/hive
-```
+[//]: # ()
 
-</details>
+[//]: # (```bash)
+
+[//]: # (OSARCH=$&#40;uname -m | awk '{if &#40;$0 ~ /arm64|aarch64/&#41; print "arm64"; else if &#40;$0 ~ /x86_64|amd64/&#41; print "amd64"; else print "unsupported_arch"}'&#41; && export OSARCH)
+
+[//]: # (echo $OSARCH)
+
+[//]: # (OSNAME=$&#40;uname -s | awk '{if &#40;$1 == "Darwin"&#41; print "darwin"; else if &#40;$1 == "Linux"&#41; print "linux"; else print "unsupported_os"}'&#41; && export OSNAME;)
+
+[//]: # (echo $OSNAME)
+
+[//]: # (version=v0.10.0)
+
+[//]: # (curl -sSL -o hive https://github.com/CoopHive/hive/releases/download/$version/hive-$OSNAME-$OSARCH)
+
+[//]: # (chmod +x hive)
+
+[//]: # (./hive version)
+
+[//]: # ()
+
+[//]: # (sudo mv hive /usr/local/bin/hive)
+
+[//]: # (```)
+
+[//]: # ()
+
+[//]: # (</details>)
 
 ### Manual [GUI]
 
-1. Go to https://github.com/CoopHive/hive/releases/
-2. Navigate to latest stable semver release i.e release of format vX.Y.Z
+1. Go to https://github.com/CoopHive/hive/releases/latest
+2. Download the binary for your system.
 
 ### With Go 1.21+
 

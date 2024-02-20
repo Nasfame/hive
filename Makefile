@@ -37,7 +37,7 @@ make-bin:
 release-linux:
 	sh scripts/release-linux.sh
 
-.PHONY: release install-unix install-win build release release-linux make-bin install
+.PHONY: release install-unix install-win build release release-linux make-bin install install-all install-hive-latest install-hive
 
 
 install:
@@ -81,3 +81,14 @@ setup-bacalhau:
         --peer none \
         --private-internal-ipfs=false \
         --job-selection-accept-networked
+
+install-all:
+ 	curl -sSf https://raw.githubusercontent.com/CoopHive/hive/main/install.sh | sh -s -- all
+
+
+install-hive-latest:
+ 	curl -sSf https://raw.githubusercontent.com/CoopHive/hive/main/install.sh | sh -s -- hive
+
+
+b:
+	make setup-bacalhau
