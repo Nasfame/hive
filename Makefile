@@ -83,11 +83,11 @@ setup-bacalhau:
         --job-selection-accept-networked
 
 install-all:
- 	curl -sSf https://raw.githubusercontent.com/CoopHive/hive/main/install.sh | sh -s -- all
+	curl -sSf https://raw.githubusercontent.com/CoopHive/hive/main/install.sh | sh -s -- all
 
 
 install-hive-latest:
- 	curl -sSf https://raw.githubusercontent.com/CoopHive/hive/main/install.sh | sh -s -- hive
+	curl -sSf https://raw.githubusercontent.com/CoopHive/hive/main/install.sh | sh -s -- hive
 
 
 b:
