@@ -92,3 +92,6 @@ install-hive-latest:
 
 b:
 	make setup-bacalhau
+
+h:
+	make install-hive-latest
