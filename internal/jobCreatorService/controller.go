@@ -313,11 +313,14 @@ func (controller *JobCreatorController) checkResults() error {
 
 	for _, dealContainer := range completedDeals {
 		result, err := controller.solverClient.GetResult(dealContainer.ID)
+		controller.log.Debug("result", result)
+
 		if err != nil || result.Error != "" {
 			// there is an error with the job
 			// accept anyway
 			// TODO: trigger mediation here
 			controller.acceptResult(dealContainer)
+			controller.log.Error("result errored with %v", err)
 		} else {
 			controller.downloadResult(dealContainer)
 		}

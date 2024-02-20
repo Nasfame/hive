@@ -73,3 +73,11 @@ github:
 	#manuall triggers
 	gh workflow run .github/workflows/publish-gcr.yml --ref v0.2.6
 	git tag -l | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | xargs -I {} sh -c "gh workflow run .github/workflows/publish-gcr.yml --ref {}"
+
+setup-bacalhau:
+	export BACALHAU_SERVE_IPFS_PATH=/tmp/coophive/data/ipfs
+	bacalhau serve \
+        --node-type compute,requester \
+        --peer none \
+        --private-internal-ipfs=false \
+        --job-selection-accept-networked
