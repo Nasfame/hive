@@ -44,6 +44,18 @@ The commands below will automatically detect your OS and processor architecture 
 4. Check the version
 5. Install `hive`
 
+#### Install only hive
+
+```bash
+curl -sSf https://raw.githubusercontent.com/main/install.sh | sh -s -- hive`
+```
+
+#### Install hive and bacalhau
+
+```bash
+curl -sSf https://raw.githubusercontent.com/main/install.sh | sh -s -- all`
+```
+
 <details> 
 <summary>Installation script for Linux and MacOS</summary>
 
@@ -62,12 +74,12 @@ sudo mv hive /usr/local/bin/hive
 
 </details>
 
-### GUI
+### Manual [GUI]
 
 1. Go to https://github.com/CoopHive/hive/releases/
 2. Navigate to latest stable semver release i.e release of format vX.Y.Z
 
-### Go 1.21+
+### With Go 1.21+
 
 `go install github.com/CoopHive/hive@latest`
 
