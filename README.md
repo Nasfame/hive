@@ -47,13 +47,13 @@ The commands below will automatically detect your OS and processor architecture 
 #### Install only hive
 
 ```bash
-curl -sSf https://raw.githubusercontent.com/main/install.sh | sh -s -- hive`
+curl -sSf https://raw.githubusercontent.com/CoopHive/hive/main/install.sh | sh -s -- hive
 ```
 
 #### Install hive and bacalhau
 
 ```bash
-curl -sSf https://raw.githubusercontent.com/main/install.sh | sh -s -- all`
+curl -sSf https://raw.githubusercontent.com/CoopHive/hive/main/install.sh | sh -s -- all
 ```
 
 <details> 

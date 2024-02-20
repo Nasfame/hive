@@ -20,18 +20,20 @@ install_hive() {
   curl -sSL -o hive https://github.com/CoopHive/hive/releases/download/$version/hive-$OSNAME-$OSARCH
   chmod +x hive
   ./hive version
-  read -p "Do you want to install Hive? (y/n): " choice
-    case "$choice" in
-      y|Y )
-        sudo mv hive /usr/local/bin/hive
-        ;;
-      n|N )
-        echo "Hive installation canceled."
-        ;;
-      * )
-        echo "Invalid choice. Please enter y or n."
-        ;;
-    esac
+#  read -p "Do you want to install Hive? (y/n): " choice
+#    case "$choice" in
+#      y|Y )
+#        sudo mv hive /usr/local/bin/hive
+#        ;;
+#      n|N )
+#        echo "Hive installation canceled."
+#        ;;
+#      * )
+#        echo "Invalid choice. Please enter y or n."
+#        ;;
+#    esac
+  sudo mv hive /usr/local/bin/hive
+
 }
 
 install_bacalhau() {
@@ -40,7 +42,7 @@ install_bacalhau() {
   tar xfv bacalhau_$bVersion_$OSNAME-$OSARCH.tar.gz
   mv bacalhau /usr/local/bin
 
-  curl -sL https://get.bacalhau.org/install.sh | bash
+#  curl -sL https://get.bacalhau.org/install.sh | bash
 }
 
 main() {
