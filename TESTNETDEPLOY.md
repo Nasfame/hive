@@ -6,7 +6,7 @@ First, install the required Node.js modules and generate a local `.env` file con
 services. Run the following commands:
 
 ```bash
-(cd hardhat && yarn install)
+(cd hardhat && pnpm install && pnpm gen-env)
 ./stack print-env > .env
 ```
 
@@ -22,7 +22,7 @@ wget https://github.com/bacalhau-project/bacalhau/releases/download/v1.0.3/bacal
 tar xfv bacalhau_v1.0.3_linux_amd64.tar.gz
 mv bacalhau /usr/local/bin
 # configure this to where you want the ipfs data to be stored
-export BACALHAU_SERVE_IPFS_PATH=/tmp/hive/data/ipfs
+export BACALHAU_SERVE_IPFS_PATH=/tmp/coophive/data/ipfs
 # run bacalhau as both compute node and requester node
 ./stack bacalhau-serve
 ```

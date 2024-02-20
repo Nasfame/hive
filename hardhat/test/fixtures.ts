@@ -39,7 +39,7 @@ export async function deployToken(
     return deployContract<HiveToken>(
         testMode ? "HiveTokenTestable" : "HiveToken",
         signer,
-        ["Hive", "LLY", tokenSupply],
+        ["Hive", "HIVE", tokenSupply],
     );
 }
 

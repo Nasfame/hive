@@ -1,6 +1,9 @@
 package mediator
 
 import (
+	"os"
+	"os/signal"
+
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 
@@ -30,6 +33,9 @@ func runMediator(cmd *cobra.Command, options MediatorOptions) error {
 
 	log.Debug().Msgf("Starting mediator service.")
 	mediatorErrors := mediatorService.Start(commandCtx.Ctx, commandCtx.Cm)
+
+	signal.NotifyContext(commandCtx.Ctx, os.Interrupt)
+
 	for {
 		select {
 		case err := <-mediatorErrors:

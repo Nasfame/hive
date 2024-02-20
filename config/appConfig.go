@@ -10,6 +10,8 @@ import (
 
 const DEFAULT_DEALER = "std-autoaccept"
 
+const defaultNetwork = "coophive"
+
 var appConfig = configMap[string]{
 	enums.DEBUG: {
 		desc:       "debug mode",
@@ -82,9 +84,20 @@ var appConfig = configMap[string]{
 		"public facing url without application protocol like tcp, http",
 		"",
 	},
-}
 
-const defaultNetwork = "builtin" // coophive
+	/*RP*/
+
+	enums.BACALHAU_API_HOST: {
+		"bacalhau host",
+		"localhost",
+	},
+
+	enums.PRICING_MODE: {
+		"pricing mode in integer",
+		"",
+		// 	https://github.com/CoopHive/hive/blob/8ce2279f1a77f60f933f53e04569878115749165/pkg/options/options-pricing.go#L14
+	},
+}
 
 func init() {
 	userDir, err := os.UserHomeDir()

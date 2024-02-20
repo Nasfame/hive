@@ -3,11 +3,17 @@ package options
 import (
 	"github.com/spf13/cobra"
 
+	"github.com/CoopHive/hive/config"
+	"github.com/CoopHive/hive/enums"
 	"github.com/CoopHive/hive/pkg/dto"
 )
 
-func GetDefaultPricingMode(mode dto.PricingMode) dto.PricingMode {
-	return dto.PricingMode(GetDefaultServeOptionString("PRICING_MODE", string(mode)))
+func GetDefaultPricingMode(mode dto.PricingMode) (pricingMode dto.PricingMode) {
+	pricingMode = dto.PricingMode(config.Conf.GetString(enums.PRICING_MODE))
+	if pricingMode == "" {
+		return mode
+	}
+	return pricingMode
 }
 
 func GetDefaultPricingOptions() dto.DealPricing {

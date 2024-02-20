@@ -1,6 +1,7 @@
 import {task} from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
-import {getBalance, getPublicAddress} from "../utils/accounts";
+import {getAccount, getBalance, getBalanceInEther, getPublicAddress} from "../utils/accounts";
+import {HiveToken} from "../typechain-types";
 
 task("balance", "Prints an account's balance")
     .addParam("account", "The account's address")
@@ -37,4 +38,107 @@ task("account", "Prints account address from private key")
     .setAction(async ({privateKey}, hre) => {
         const address = getPublicAddress(privateKey, hre);
         console.log("account:", address);
+    });
+
+
+interface fundOut {
+    address: string,
+    balance: string,
+    hive: string,
+    newHive?: string,
+    newBalance?: string,
+}
+
+interface Out {
+    admin: fundOut,
+    faucet?: fundOut,
+    solver?: fundOut,
+}
+task("fund", "Fund RP, faucet account's balance")
+    .addOptionalPositionalParam("eth", "The Eth drip", ".01")
+    .addOptionalPositionalParam("hive", "The Hive Drip", "8000")
+    .setAction(async ({eth, hive}, hre) => {
+        console.log("network", hre.network.name);
+
+        // const balance = await getBalance(, hre);
+
+        // console.log(hre.ethers.formatEther(balance), "ETH");
+
+        const fundingAccount = getAccount("admin");
+        const signer = await hre.ethers.getSigner(fundingAccount.address)
+
+        console.log("Funding account:", fundingAccount.address);
+
+        console.log("Funding account bal:", await getBalanceInEther(fundingAccount.address, hre));
+
+        const rcvAccounts = [
+            getAccount("faucet"),
+            getAccount("mediator"),
+            getAccount("solver"),
+            getAccount("resource_provider"),
+        ]
+
+        const amountInWei = hre.ethers.parseEther(eth);
+
+        const token = await hre.deployments.get("HiveToken");
+
+        console.log("token Address:", token.address)
+
+        const tokenContract: HiveToken = new hre.ethers.Contract(token.address, token.abi, signer)
+
+
+        const amountInHiveWei = hre.ethers.parseUnits(hive, await tokenContract.decimals()); // Assuming 'token' is the HiveToken contract and 'decimals' is the number of decimal places of the token
+
+        const hiveBal = async (address: string) => await tokenContract.balanceOf(address) + "HIVE"
+        const ethBal = async (address: string) => await getBalanceInEther(address, hre)
+
+
+        let out: Out = {
+            admin: {
+                address: fundingAccount.address,
+                balance: await getBalanceInEther(fundingAccount.address, hre),
+                hive: await tokenContract.balanceOf(fundingAccount.address)
+            }
+        }
+
+        for (const acc of rcvAccounts) {
+            // console.log("acc:" + acc.name);
+            // console.log("accAddr:" + acc.address)
+
+            const out_: fundOut = {
+                address: acc.address,
+                balance: await ethBal(acc.address),
+                hive: await hiveBal(acc.address),
+            }
+            out[acc.name] = out_
+
+            const tx = {
+                to: acc.address,
+                value: amountInWei
+            };
+            const transactionResponse = await signer.sendTransaction(tx);
+            const transactionReceipt = await transactionResponse.wait();
+            const {hash: txHash} = transactionReceipt;
+
+            console.log(`Transaction successful: ${txHash}`);
+
+            // Send Hive tokens
+            const transferTx = await tokenContract.transfer(acc.address, amountInHiveWei);
+            const transferReceipt = await transferTx.wait();
+            const {hash: transferTxHash} = transferReceipt;
+
+            console.log(`Hive transfer successful: ${transferTxHash}`);
+
+
+            out_.newHive = await hiveBal(acc.address)
+            out_.newBalance = await ethBal(acc.address)
+        }
+
+        out.admin.newBalance = await getBalanceInEther(fundingAccount.address, hre)
+        out.admin.newHive = await hiveBal(fundingAccount.address)
+
+
+        console.table(out)
+
+
     });

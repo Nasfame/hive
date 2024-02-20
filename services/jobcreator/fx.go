@@ -1,6 +1,9 @@
 package jobcreator
 
 import (
+	"os"
+	"os/signal"
+
 	"github.com/spf13/cobra"
 	"go.uber.org/fx"
 
@@ -92,6 +95,8 @@ func (s *service) runJobCreator(cmd *cobra.Command, options jobCreatorService.Jo
 	}
 
 	jobCreatorErrors := jobCreatorService.Start(commandCtx.Ctx, commandCtx.Cm)
+
+	signal.NotifyContext(commandCtx.Ctx, os.Interrupt)
 
 	for {
 		select {

@@ -5,12 +5,13 @@ import (
 
 	"github.com/spf13/cobra"
 
+	"github.com/CoopHive/hive/config"
 	"github.com/CoopHive/hive/pkg/executor/bacalhau"
 )
 
 func GetDefaultBacalhauOptions() bacalhau.BacalhauExecutorOptions {
 	return bacalhau.BacalhauExecutorOptions{
-		ApiHost: GetDefaultServeOptionString("BACALHAU_API_HOST", "localhost"),
+		ApiHost: config.Conf.GetString("BACALHAU_API_HOST"),
 	}
 }
 

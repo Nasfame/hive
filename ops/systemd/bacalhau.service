@@ -6,7 +6,7 @@ Wants=network-online.target systemd-networkd-wait-online.service
 [Service]
 Environment="LOG_TYPE=json"
 Environment="LOG_LEVEL=debug"
-Environment="HOME=/app/hive"
+Environment="HOME=/app/coophive"
 Environment="BACALHAU_SERVE_IPFS_PATH=/app/data/ipfs"
 Restart=always
 RestartSec=5s

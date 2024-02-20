@@ -37,8 +37,11 @@ make-bin:
 release-linux:
 	sh scripts/release-linux.sh
 
-.PHONY: release install-unix install-win build release release-linux make-bin
+.PHONY: release install-unix install-win build release release-linux make-bin install
 
+
+install:
+	goreleaser build --single-target --clean -o ./bin/${binName} --snapshot
 
 #	ln -s ./bin/hive $$(go env GOBIN)
 install-win:

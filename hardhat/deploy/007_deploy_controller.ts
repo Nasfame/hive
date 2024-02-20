@@ -5,6 +5,8 @@ import * as fs from "fs";
 import {network} from "hardhat";
 import {getAccount} from "../utils/accounts";
 
+
+//TODO: use bindings
 const deployController: DeployFunction = async function (
     hre: HardhatRuntimeEnvironment,
 ) {

@@ -12,8 +12,8 @@ async function main() {
     generate("SOLVER");
     generate("MEDIATOR");
     generate("RESOURCE_PROVIDER");
-    generate("JOB_CREATOR");
-    generate("DIRECTORY");
+    // generate("JOB_CREATOR");
+    // generate("DIRECTORY");
 
     console.log("\n\n");
 

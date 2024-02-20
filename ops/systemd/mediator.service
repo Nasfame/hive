@@ -6,9 +6,9 @@ Wants=network-online.target systemd-networkd-wait-online.service
 [Service]
 Environment="LOG_TYPE=json"
 Environment="LOG_LEVEL=debug"
-Environment="HOME=/app/hive"
-EnvironmentFile=/app/hive/mediator.env
-Environment="SERVICE_SOLVER=0xd4646ef9f7336b06841db3019b617ceadf435316"
+Environment="HOME=/app/coophive"
+EnvironmentFile=/app/coophive/mediator.env
+Environment="SERVICE_SOLVER=0x823531B7c7843D8c3821B19D70cbFb6173b9Cb02"
 Restart=always
 RestartSec=5s
 ExecStart=/usr/bin/hive mediator

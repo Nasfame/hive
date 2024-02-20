@@ -82,3 +82,11 @@ const (
 	SERVER_HOST = "server_host"
 	SERVER_PORT = "server_port"
 )
+
+/*RP*/
+
+const (
+	BACALHAU_API_HOST = "BACALHAU_API_HOST"
+)
+
+const PRICING_MODE = "PRICING_MODE"

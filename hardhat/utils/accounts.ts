@@ -1,9 +1,11 @@
 // IMPORTANT: we cannot import hardhat directly here
 // because it will cause a circular dependency
 import {Account} from "./types";
-import {ethers, Wallet} from "ethers";
+import {BaseContract, Contract, ethers, Wallet} from "ethers";
 import * as process from "process";
 import {HardhatRuntimeEnvironment} from "hardhat/types";
+import {string} from "hardhat/internal/core/params/argumentTypes";
+import {HiveToken} from "../typechain-types";
 
 export const loadEnv = (name: string, defaultValue: string) => {
   return process.env[name] || defaultValue;
@@ -82,14 +84,14 @@ export const ACCOUNTS: Account[] = [
     ),
     metadata: {},
   },
-  {
-    name: "directory",
-    privateKey: loadPrivateKey(
-      "directory",
-      "0x92db14e403b83dfe3df233f83dfa3a0d7096f21ca9b0d6d6b8d88b2b4ec1564e",
-    ),
-    metadata: {},
-  },
+  /*  {
+      name: "directory",
+      privateKey: loadPrivateKey(
+        "directory",
+        "0x92db14e403b83dfe3df233f83dfa3a0d7096f21ca9b0d6d6b8d88b2b4ec1564e",
+      ),
+      metadata: {},
+    },*/
 
   {
     name: "",
@@ -151,6 +153,42 @@ export async function getBalance(
 export function formatEther(balance: bigint) {
   return ethers.formatEther(balance);
 }
+
+export async function getBalanceInEther(account: string, hre: HardhatRuntimeEnvironment) {
+  return formatEther(await getBalance(account, hre)) + "ETH";
+}
+
+export type Crypto = "ETH" | "HIVE";
+
+
+async function getHiveBalance(account: string, hre: HardhatRuntimeEnvironment) {
+
+  const adminAcc = getAccount("admin");
+
+  const signer = await hre.ethers.getSigner(adminAcc.address)
+
+  const token = await hre.deployments.get("HiveToken");
+
+  const tokenContract: HiveToken = new hre.ethers.Contract(token.address, token.abi, signer)
+
+  return tokenContract.balanceOf(account)
+}
+
+export async function getBalanceOf(crypto: Crypto, account: string, hre: HardhatRuntimeEnvironment): Promise<bigint | string> {
+  if (crypto === "ETH") {
+    return await getBalance(account, hre);
+  } else if (crypto === "HIVE") {
+    return await getHiveBalance(account, hre);
+  }
+
+  throw new Error("Unsupported cryptocurrency type");
+}
+
+
+/*export async function getBalanceOfInEther(crypto:Crypto, account: string, hre: HardhatRuntimeEnvironment) {
+  return formatEther(await getBalanceOf(crypto,account, hre)) + "ETH";
+}*/
+
 
 export function getPublicAddress(
     privateKey: string,

@@ -13,7 +13,6 @@ import (
 
 func GetDefaultServicesOptions() dto.ServiceConfig {
 	return dto.ServiceConfig{
-		// TODO: refactor to config
 		Solver:   config.Conf.GetString(enums.HIVE_SOLVER),
 		Mediator: strings.Split(config.Conf.GetString(enums.HIVE_MEDIATION), ","),
 	}

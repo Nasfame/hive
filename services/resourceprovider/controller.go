@@ -407,6 +407,7 @@ func (controller *ResourceProviderController) runJobs() error {
 		func() {
 			controller.runningJobsMutex.Lock()
 			defer controller.runningJobsMutex.Unlock()
+
 			controller.runningJobs[dealContainer.ID] = true
 		}()
 
