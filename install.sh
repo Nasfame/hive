@@ -37,12 +37,14 @@ install_hive() {
 }
 
 install_bacalhau() {
-  bVersion=v1.2.1
-  wget https://github.com/bacalhau-project/bacalhau/releases/download/$bVersion/bacalhau_$bVersion_$OSNAME-$OSARCH.tar.gz
-  tar xfv bacalhau_$bVersion_$OSNAME-$OSARCH.tar.gz
-  mv bacalhau /usr/local/bin
+#  bVersion=v1.2.1
+#  wget https://github.com/bacalhau-project/bacalhau/releases/download/$bVersion/bacalhau_$bVersion_$OSNAME-$OSARCH.tar.gz
+#  tar xfv bacalhau_$bVersion_$OSNAME-$OSARCH.tar.gz
+#  mv bacalhau /usr/local/bin
 
-#  curl -sL https://get.bacalhau.org/install.sh | bash
+  # Install bacalhau using curl
+
+  curl -sL https://get.bacalhau.org/install.sh | bash
 }
 
 main() {
