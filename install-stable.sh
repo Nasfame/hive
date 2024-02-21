@@ -8,11 +8,11 @@ GITHUB_REPO=hive
 PRE_RELEASE=${PRE_RELEASE:=false}
 COOPHIVE_HTTP_REQUEST_CLI=${COOPHIVE_HTTP_REQUEST_CLI:="curl"}
 
-version=${version:="v0.5.4"}
+version=${version:="v0.5.4"} #change arc back to amd64 once updating to latest version
 
 detect_os_info() {
-  OSARCH=$(uname -m | awk '{if ($0 ~ /arm64|aarch64/) print "arm64"; else if ($0 ~ /x86_64|amd64/) print "amd64"; else print "unsupported_arch"}') && export OSARCH
-  OSNAME=$(uname -s | awk '{if ($1 == "Darwin") print "darwin"; else if ($1 == "Linux") print "linux"; else print "unsupported_os"}') && export OSNAME
+  OSARCH=$(uname -m | awk '{if ($0 ~ /arm64|aarch64/) print "arm64"; else if ($0 ~ /x86_64|amd64/) print "x86_64"; else print "unsupported_arch"}') && export OSARCH
+  OSNAME=$(uname -s | awk '{if ($1 == "Darwin") print "Darwin"; else if ($1 == "Linux") print "Linux"; else print "unsupported_os"}') && export OSNAME
 
   if [ "$OSNAME" = "unsupported_os" ] || [ "$OSARCH" = "unsupported_arch" ]; then
     echo "Unsupported OS or architecture"
@@ -22,8 +22,9 @@ detect_os_info() {
 
 install_hive() {
   echo "installing hive:$version"
-  rurl=https://github.com/CoopHive/hive/releases/download/$version/hive-$OSNAME-$OSARCH
-  curl -sSL -o hive $rurl
+  rurl="https://github.com/CoopHive/hive/releases/download/$version/hive-$OSNAME-$OSARCH"
+  echo "Release url is $rurl"
+  curl -sSL -o hive "$rurl"
   chmod +x hive
   ./hive version
   sudo cp hive /usr/local/bin/

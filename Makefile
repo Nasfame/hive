@@ -8,6 +8,10 @@ setup-dev:
 	go install github.com/goreleaser/goreleaser@latest
 	go install golang.org/x/tools/cmd/stringer@latest
 	go install github.com/ethereum/go-ethereum/cmd/abigen@latest
+	cd hardhat
+	pnpm install
+	cd ..
+	go generate
 
 build-ci:
 	go build -v -ldflags="\
@@ -81,8 +85,9 @@ github:
 	git tag -l | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | xargs -I {} sh -c "gh workflow run .github/workflows/publish-gcr.yml --ref {}"
 
 setup-bacalhau:
+	mkdir -p /tmp/coophive/data/ipfs
 	export BACALHAU_SERVE_IPFS_PATH=/tmp/coophive/data/ipfs
-	bacalhau serve \
+	sudo bacalhau serve \
         --node-type compute,requester \
         --peer none \
         --private-internal-ipfs=false \
