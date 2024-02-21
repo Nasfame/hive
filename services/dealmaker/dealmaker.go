@@ -6,6 +6,7 @@ import (
 	"path"
 	"plugin"
 	"runtime"
+	"sync"
 
 	"github.com/CoopHive/hive/enums"
 	"github.com/CoopHive/hive/exp/dealer"
@@ -17,6 +18,8 @@ type Service struct {
 	dealer     dealer.Dealer // can be a plugin
 	ctx        context.Context
 	cancelFunc context.CancelFunc
+
+	m sync.Mutex
 
 	*genesis.Service
 }
@@ -52,9 +55,13 @@ RECV_AGREE_DEALS:
 				d.Log.Debug("Channel closed. Exiting...")
 				break RECV_AGREE_DEALS
 			}
-			f(dealID)
+			func() {
+				d.m.Lock()
+				defer d.m.Unlock()
+				f(dealID)
+				d.Log.Debugf("Deal %s is agreed upon\n", dealID)
+			}()
 
-			d.Log.Debugf("Deal %s is agreed upon\n", dealID)
 		case <-d.ctx.Done():
 
 			d.Log.Printf("Context done. Exiting...")

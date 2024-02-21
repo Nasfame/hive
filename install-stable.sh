@@ -1,4 +1,6 @@
 #!/bin/sh
+# shellcheck shell=dash
+
 
 set -u
 

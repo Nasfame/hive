@@ -4,6 +4,7 @@ import (
 	"context"
 	"os"
 	"os/signal"
+	"sync"
 
 	"github.com/spf13/viper"
 	"go.uber.org/fx"
@@ -65,6 +66,7 @@ func newService(name string, g *genesis.Service) *Service {
 		internal.NewAutoDealer(ctx),
 		ctx,
 		cancelFunc,
+		sync.Mutex{},
 		g,
 	}
 
