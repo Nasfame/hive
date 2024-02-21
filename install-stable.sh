@@ -44,8 +44,7 @@ install_hive() {
 #        echo "Invalid choice. Please enter y or n."
 #        ;;
 #    esac
-#  sudo cp hive /usr/local/bin/
-
+  sudo cp hive /usr/local/bin/
 }
 
 install_bacalhau() {
