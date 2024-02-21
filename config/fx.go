@@ -120,7 +120,6 @@ func newConfig() (o out) {
 		}
 		controller := config.Get(enums.HIVE_CONTROLLER)
 		logrus.Debugln("controller: ", controller)
-
 	}
 
 	o.Conf = config

@@ -14,6 +14,7 @@ func GetDefaultServeOptionString(envName string, defaultValue string) string {
 	return defaultValue
 }
 
+// TODO: migrate all these with conf.Config
 func GetDefaultServeOptionUint64(envName string, defaultValue uint64) uint64 {
 	envValue := os.Getenv(envName)
 	if envValue != "" {

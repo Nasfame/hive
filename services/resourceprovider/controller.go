@@ -279,6 +279,7 @@ func (controller *ResourceProviderController) ensureResourceOffers() error {
 		controller.log.Info("add resource offer", resourceOffer)
 		_, err := controller.solverClient.AddResourceOffer(resourceOffer)
 		if err != nil {
+			controller.log.Error("error adding resource offer", err)
 			return err
 		}
 	}

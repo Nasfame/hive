@@ -8,7 +8,12 @@ import {string} from "hardhat/internal/core/params/argumentTypes";
 import {HiveToken} from "../typechain-types";
 
 export const loadEnv = (name: string, defaultValue: string) => {
-  return process.env[name] || defaultValue;
+  const pKey = process.env[name]
+  if (pKey) {
+    return pKey
+  }
+  console.error(`Environment variable ${name} not found, using default value ${defaultValue}`)
+  return defaultValue;
 };
 
 export const loadPrivateKey = (name: string, defaultValue: string) => {
@@ -19,6 +24,7 @@ export const loadAddress = (name: string, privateKey: string) => {
   let address = loadEnv(`${name.toUpperCase()}_ADDRESS`, "").trim();
 
   if (!address) {
+    ``
     try {
       const wallet = new Wallet(privateKey);
       address = wallet.address;

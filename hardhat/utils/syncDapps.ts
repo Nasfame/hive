@@ -19,7 +19,7 @@ export async function syncDapps(hre: HardhatRuntimeEnvironment) {
 
     const solvers = [
         getAccount("solver").address,
-        getAccount("admin").address,
+        // getAccount("admin").address,
     ]
 
     const content = `

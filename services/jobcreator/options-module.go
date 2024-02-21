@@ -3,21 +3,22 @@ package jobcreator
 import (
 	"github.com/spf13/cobra"
 
+	"github.com/CoopHive/hive/config"
+	"github.com/CoopHive/hive/enums"
 	"github.com/CoopHive/hive/pkg/dto"
 	"github.com/CoopHive/hive/pkg/module"
-	"github.com/CoopHive/hive/pkg/options"
 )
 
 func GetDefaultModuleOptions() dto.ModuleConfig {
 	return dto.ModuleConfig{
 		// the shortcut name
-		Name: options.GetDefaultServeOptionString("MODULE_NAME", ""),
+		Name: config.Conf.GetString(enums.MODULE_NAME),
 		// the repo we can clone from
-		Repo: options.GetDefaultServeOptionString("MODULE_REPO", ""),
+		Repo: config.Conf.GetString(enums.MODULE_REPO),
 		// the hash to checkout the repo
-		Hash: options.GetDefaultServeOptionString("MODULE_HASH", ""),
+		Hash: config.Conf.GetString(enums.MODULE_HASH),
 		// the path to the go template file
-		Path: options.GetDefaultServeOptionString("MODULE_PATH", ""),
+		Path: config.Conf.GetString(enums.MODULE_PATH),
 	}
 }
 

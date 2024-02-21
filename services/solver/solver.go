@@ -1,9 +1,6 @@
 package solver
 
 import (
-	"os"
-	"os/signal"
-
 	"github.com/spf13/cobra"
 
 	"github.com/CoopHive/hive/internal/genesis"
@@ -51,15 +48,6 @@ func (s *service) runSolver(cmd *cobra.Command, options solver.SolverOptions) er
 		return err
 	}
 
-	s.Log.Info("solver address ", web3SDK.GetAddress())
-	solverAddresses, err := web3SDK.GetSolverAddresses()
-
-	if err != nil {
-		s.Log.Errorf("couldn't find solver addresses due to %v", solverAddresses)
-	}
-
-	s.Log.Info("default solver addresses ", solverAddresses)
-
 	solverStore, err := memorystore.NewSolverStoreMemory(s.Conf)
 	if err != nil {
 		return err
@@ -72,7 +60,14 @@ func (s *service) runSolver(cmd *cobra.Command, options solver.SolverOptions) er
 
 	solverErrors := solverService.Start(commandCtx.Ctx, commandCtx.Cm)
 
-	signal.NotifyContext(commandCtx.Ctx, os.Interrupt)
+	s.Log.Info("solver address ", web3SDK.GetAddress())
+	/*	solverAddresses, err := web3SDK.GetSolverAddresses()
+
+		if err != nil {
+			s.Log.Errorf("couldn't find solver addresses due to %v", err)
+		}
+
+		s.Log.Info("first 5 solver addresses ", solverAddresses[:])*/
 
 	for {
 		/*if commandCtx.Ctx.Done() == nil {

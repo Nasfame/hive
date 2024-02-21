@@ -3,6 +3,12 @@ export
 
 binName = hive-$(shell uname -s)-$(shell uname -m)
 
+
+setup-dev:
+	go install github.com/goreleaser/goreleaser@latest
+	go install golang.org/x/tools/cmd/stringer@latest
+	go install github.com/ethereum/go-ethereum/cmd/abigen@latest
+
 build-ci:
 	go build -v -ldflags="\
 		-X 'github.com/CoopHive/hive/config.version=$$(git describe --tags --abbrev=0)' \
@@ -95,3 +101,19 @@ b:
 
 h:
 	make install-hive-latest
+
+cowsay:
+	hive run cowsay:v0.1.0
+
+.PHONY: solver run cowsay h b
+
+solver:
+	echo $$SOLVER_PRIVATE_KEY
+	hive solver --web3-private-key $$SOLVER_PRIVATE_KEY
+
+run:
+	hive run cowsay:v0.1.0
+
+
+rp:
+	hive rp

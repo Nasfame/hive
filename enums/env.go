@@ -34,10 +34,8 @@ const (
 )
 
 const (
-	APP_DIR      = "app_dir"
-	APP_DATA_DIR = "app-data-dir"
-	MODULE_PATH  = "MODULE_PATH"
-
+	APP_DIR        = "app_dir"
+	APP_DATA_DIR   = "app-data-dir"
 	APP_PLUGIN_DIR = "app-plugin-dir"
 )
 
@@ -73,7 +71,17 @@ const (
 const (
 	WEB3_RPC_URL     = "WEB3_RPC_URL"
 	WEB3_PRIVATE_KEY = "WEB3_PRIVATE_KEY"
-	WEB3_CHAIN_ID    = "WEB3_CHAIN_ID"
+
+	WEB3_CHAIN_ID = "WEB3_CHAIN_ID"
+)
+
+const (
+	RP_PRIVATE_KEY       = "RP_PRIVATE_KEY"
+	JC_PRIVATE_KEY       = "JC_PRIVATE_KEY"
+	SOLVER_PRIVATE_KEY   = "SOLVER_PRIVATE_KEY"
+	MEDIATOR_PRIVATE_KEY = "MEDIATOR_PRIVATE_KEY"
+
+	// 	deprecated cuz of options
 )
 
 /*Solver*/
@@ -86,7 +94,24 @@ const (
 /*RP*/
 
 const (
+	OFFER_CPU   = "OFFER_CPU"
+	OFFER_GPU   = "OFFER_GPU"
+	OFFER_RAM   = "OFFER_RAM"
+	OFFER_COUNT = "OFFER_COUNT"
+
+	OFFER_MODULES = "OFFER_MODULES"
+)
+const (
 	BACALHAU_API_HOST = "BACALHAU_API_HOST"
 )
 
 const PRICING_MODE = "PRICING_MODE"
+
+/*JC*/
+
+const (
+	MODULE_NAME = "MODULE_NAME"
+	MODULE_REPO = "MODULE_REPO"
+	MODULE_HASH = "MODULE_HASH"
+	MODULE_PATH = "MODULE_PATH"
+)

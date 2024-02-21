@@ -10,7 +10,7 @@ import (
 
 const DEFAULT_DEALER = "std-autoaccept"
 
-const defaultNetwork = "coophive"
+const defaultNetwork = "sepolia"
 
 var appConfig = configMap[string]{
 	enums.DEBUG: {
@@ -47,7 +47,7 @@ var appConfig = configMap[string]{
 	},
 	enums.HIVE_SOLVER: {
 		"Hive Solver  Address",
-		"0xd4646ef9f7336b06841db3019b617ceadf435316",
+		"0xB4A1671063fe482a95C2519b78E3974EFAd87854",
 	},
 	enums.HIVE_MEDIATION: {
 		"Hive Mediation Addresss : can be set of addresses separated by ','",
@@ -70,7 +70,22 @@ var appConfig = configMap[string]{
 		"private key",
 		"0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80",
 	},
-
+	enums.RP_PRIVATE_KEY: {
+		"private key",
+		"",
+	},
+	enums.JC_PRIVATE_KEY: {
+		"private key",
+		"",
+	},
+	enums.MEDIATOR_PRIVATE_KEY: {
+		"private key",
+		"",
+	},
+	enums.SOLVER_PRIVATE_KEY: {
+		"private key",
+		"",
+	},
 	enums.SERVER_HOST: {
 		"server host",
 		"0.0.0.0",
@@ -96,6 +111,45 @@ var appConfig = configMap[string]{
 		"pricing mode in integer",
 		"",
 		// 	https://github.com/CoopHive/hive/blob/8ce2279f1a77f60f933f53e04569878115749165/pkg/options/options-pricing.go#L14
+	},
+
+	enums.OFFER_CPU: {
+		`How many milli-cpus to offer the network (OFFER_CPU).`,
+		"1000",
+	},
+
+	enums.OFFER_GPU: {
+		`How many milli-gpus to offer the network (OFFER_GPU).`,
+		"0",
+	},
+
+	enums.OFFER_RAM: {
+		`How many megabytes of RAM to offer the network (OFFER_RAM).`,
+		"1024",
+	},
+
+	enums.OFFER_COUNT: {
+		`How many machines will we offer using the cpu, ram and gpu settings (OFFER_COUNT).`,
+		"1",
+	},
+
+	enums.OFFER_MODULES: {
+		`The modules you are willing to run (OFFER_MODULES). Provide in , separated string`,
+		"",
+	},
+
+	/*JC*/
+	enums.MODULE_NAME: {
+		"module name",
+		"",
+	},
+	enums.MODULE_REPO: {
+		"module repo",
+		"",
+	},
+	enums.MODULE_HASH: {
+		"module path",
+		"",
 	},
 }
 

@@ -49,8 +49,7 @@ func (s *service) runJob(cmd *cobra.Command, options jobCreatorService.JobCreato
 
 	spinner, err := createSpinner("CoopHive submitting job", "🌟")
 	if err != nil {
-		fmt.Printf("failed to make spinner from config struct: %v\n", err)
-		os.Exit(1)
+		s.Log.Fatalf("failed to make spinner from config struct: %v\n", err)
 	}
 
 	// start the spinner animation

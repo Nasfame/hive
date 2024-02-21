@@ -56,8 +56,10 @@ func NewContracts(
 	paymentsAddress := options.PaymentsAddress
 	log.Debug().Msgf("paymentsAddress: %s", paymentsAddress)
 	if paymentsAddress == "" {
+		log.Debug().Msgf("payment address not found")
 		loadedPaymentsAddress, err := controller.GetPaymentsAddress(callOpts)
 		if err != nil {
+			log.Error().Err(err)
 			return nil, err
 		}
 		paymentsAddress = loadedPaymentsAddress.String()
@@ -176,6 +178,7 @@ func NewContractSDK(options Web3Options) (*Web3SDK, error) {
 	log.Debug().Msgf("NewContractSDK: %+v", options)
 	client, err := ethclient.Dial(options.RpcURL)
 	if err != nil {
+		log.Error().Msgf("error for client: %s", err.Error())
 		return nil, err
 	}
 	privateKey, err := ParsePrivateKey(options.PrivateKey)

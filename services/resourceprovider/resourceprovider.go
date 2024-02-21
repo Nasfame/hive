@@ -1,9 +1,6 @@
 package resourceprovider
 
 import (
-	"os"
-	"os/signal"
-
 	"github.com/spf13/cobra"
 
 	"github.com/CoopHive/hive/config"
@@ -40,8 +37,6 @@ func (s *service) runResourceProvider(cmd *cobra.Command, options ResourceProvid
 	}
 
 	resourecProviderErrors := resourceProviderService.Start(commandCtx.Ctx, commandCtx.Cm)
-
-	signal.NotifyContext(commandCtx.Ctx, os.Interrupt)
 
 	for {
 		select {

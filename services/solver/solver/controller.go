@@ -304,12 +304,14 @@ func (controller *SolverController) addJobOffer(jobOffer dto.JobOffer) (*dto.Job
 
 	ret, err := controller.store.AddJobOffer(dto.GetJobOfferContainer(jobOffer))
 	if err != nil {
+		controller.log.Error("error adding job offer", err)
 		return nil, err
 	}
 	controller.writeEvent(SolverEvent{
 		EventType: JobOfferAdded,
 		JobOffer:  ret,
 	})
+	controller.log.Info("added job offer", jobOffer)
 	return ret, nil
 }
 

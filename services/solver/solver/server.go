@@ -80,7 +80,7 @@ func (solverServer *solverServer) ListenAndServe(ctx context.Context, cm *system
 	websocketEventChannel := make(chan []byte)
 
 	log.Debug().Msgf("begin solverServer.controller.subscribeEvents")
-	solverServer.controller.subscribeEvents(func(ev SolverEvent) {
+	go solverServer.controller.subscribeEvents(func(ev SolverEvent) {
 		evBytes, err := json.Marshal(ev)
 		if err != nil {
 			log.Error().Msgf("Error marshalling event: %s", err.Error())
@@ -88,12 +88,16 @@ func (solverServer *solverServer) ListenAndServe(ctx context.Context, cm *system
 		websocketEventChannel <- evBytes
 	})
 
+	log.Info().Msgf("start websocket server")
+
 	http.StartWebSocketServer(
 		subrouter,
 		config.WEBSOCKET_SUB_PATH,
 		websocketEventChannel,
 		ctx,
 	)
+
+	log.Info().Msgf("started websocket server")
 
 	srv := &corehttp.Server{
 		Addr:              fmt.Sprintf("%s:%d", solverServer.options.Host, solverServer.options.Port),
@@ -109,21 +113,25 @@ func (solverServer *solverServer) ListenAndServe(ctx context.Context, cm *system
 
 	// Run ListenAndServe in a goroutine because it blocks
 	go func() {
+		log.Info().Msgf("Starting solver server on %s:%d", solverServer.options.Host, solverServer.options.Port)
 		serverErrors <- srv.ListenAndServe()
 	}()
 
 	select {
-	case err := <-serverErrors:
-		return err
 	case <-ctx.Done():
 		// Create a context with a timeout for the server to close
-		shutdownCtx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+		log.Debug().Msgf("closing server gracefully after 3 seconds")
+		shutdownCtx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 		defer cancel()
 
 		// Attempt to gracefully shut down the server
 		if err := srv.Shutdown(shutdownCtx); err != nil {
 			return fmt.Errorf("failed to stop server: %w", err)
 		}
+
+	case err := <-serverErrors:
+		log.Error().Msgf("Error running solver server: %s", err.Error())
+		return err
 	}
 
 	return nil

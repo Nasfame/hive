@@ -115,6 +115,9 @@ jobs:
           cache: true
           go-version-file: go.mod
 
+      - name: Setup
+        run: make setup-dev
+
       - name: Go Generate
         run: go generate ./...
 

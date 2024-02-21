@@ -77,6 +77,7 @@ task("fund", "Fund RP, faucet account's balance")
             getAccount("mediator"),
             getAccount("solver"),
             getAccount("resource_provider"),
+            getAccount(""),
         ]
 
         const amountInWei = hre.ethers.parseEther(eth);

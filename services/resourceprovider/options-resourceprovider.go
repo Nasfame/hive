@@ -2,6 +2,7 @@ package resourceprovider
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/spf13/cobra"
 
@@ -27,16 +28,16 @@ func GetDefaultResourceProviderOfferOptions() ResourceProviderOfferOptions {
 	return ResourceProviderOfferOptions{
 		// by default let's offer 1 CPU, 0 GPU and 1GB RAM
 		OfferSpec: dto.MachineSpec{
-			CPU: options2.GetDefaultServeOptionInt("OFFER_CPU", 1000), //nolint:gomnd
-			GPU: options2.GetDefaultServeOptionInt("OFFER_GPU", 0),    //nolint:gomnd
-			RAM: options2.GetDefaultServeOptionInt("OFFER_RAM", 1024), //nolint:gomnd
+			CPU: config.Conf.GetInt(enums.OFFER_CPU),
+			GPU: config.Conf.GetInt(enums.OFFER_GPU),
+			RAM: config.Conf.GetInt(enums.OFFER_RAM),
 		},
-		OfferCount: options2.GetDefaultServeOptionInt("OFFER_COUNT", 1), //nolint:gomnd
+		OfferCount: config.Conf.GetInt(enums.OFFER_COUNT),
 		// this can be populated by a config file
 		Specs: []dto.MachineSpec{},
 		// if an RP wants to only run certain modules they list them here
 		// XXX SECURITY: enforce that they are specified with specific git hashes!
-		Modules: options2.GetDefaultServeOptionStringArray("OFFER_MODULES", []string{}),
+		Modules: strings.Split(config.Conf.GetString(enums.OFFER_MODULES), ","),
 		// this is the default pricing mode for an RP
 		Mode: options2.GetDefaultPricingMode(dto.FixedPrice),
 		// this is the default pricing for a module unless it has a specific price

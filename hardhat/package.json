@@ -19,7 +19,7 @@
     "deploy": "hardhat deploy",
     "deploy:calibration": "hardhat deploy --network calibration",
     "deploy:coophive": "hardhat deploy --network coophive",
-    "deploy:sepolia": "hardhat deploy --network sepolia",
+    "deploy:sepolia": "rm -rf deployments/sepolia && hardhat deploy --network sepolia && hardhat fund --network sepolia",
     "deploy:chaos": "hardhat deploy --network chaos",
     "deploy:titanAI": "hardhat deploy --network titanAI",
     "task:accounts": "hardhat accounts",
@@ -30,9 +30,9 @@
     "task:deployAll:parallel": "hardhat deployAll --parallel --skip chaos,localhost ",
     "scripts:deployAll": "hardhat run scripts/deployAll.ts",
     "deploy:hiveToken": "npx hardhat deploy --tags hiveToken --network ",
-    "task:fund": "npx hardhat fund --network coophive",
-    "task:drip": "npx hardhat drip --network coophive 0xBdFE562D75EE604D1Dc2bd510f001B8A01209ab9",
-    "task:dapp": "npx hardhat dapp --network coophive"
+    "task:fund": "npx hardhat fund --network ",
+    "task:drip": "npx hardhat drip --network ",
+    "task:dapp": "npx hardhat dapp --network "
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-chai-matchers": "^2.0.4",

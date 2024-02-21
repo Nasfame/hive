@@ -9,14 +9,13 @@ import (
 	"github.com/CoopHive/hive/config"
 	"github.com/CoopHive/hive/enums"
 	"github.com/CoopHive/hive/pkg/http"
-	"github.com/CoopHive/hive/pkg/options"
 )
 
 func GetDefaultServerOptions() http.ServerOptions {
 	o := http.ServerOptions{
-		URL:  options.GetDefaultServeOptionString("SERVER_URL", config.Conf.GetString(enums.SERVER_URL)),
-		Host: options.GetDefaultServeOptionString("SERVER_HOST", config.Conf.GetString(enums.SERVER_HOST)),
-		Port: options.GetDefaultServeOptionInt("SERVER_PORT", config.Conf.GetInt(enums.SERVER_PORT)),
+		URL:  config.Conf.GetString(enums.SERVER_URL),
+		Host: config.Conf.GetString(enums.SERVER_HOST),
+		Port: config.Conf.GetInt(enums.SERVER_PORT),
 	}
 	o.URL = strings.TrimSpace(o.URL)
 	o.Host = strings.TrimSpace(o.Host)
