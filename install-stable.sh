@@ -36,6 +36,13 @@ install_bacalhau() {
 main() {
   detect_os_info
 
+
+  if [ "$#" -eq 0 ]; then
+    echo "Usage: $0 [all|bacalhau|hive]"
+    exit 1
+  fi
+
+
   if [ "$1" = "all" ]; then
     install_hive
     install_bacalhau
