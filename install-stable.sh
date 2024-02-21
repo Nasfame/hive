@@ -12,6 +12,19 @@ COOPHIVE_HTTP_REQUEST_CLI=${COOPHIVE_HTTP_REQUEST_CLI:="curl"}
 version=${version:="v0.5.4"}
 
 
+detect_os_info() {
+  OSARCH=$(uname -m | awk '{if ($0 ~ /arm64|aarch64/) print "arm64"; else if ($0 ~ /x86_64|amd64/) print "amd64"; else print "unsupported_arch"}') && export OSARCH
+  OSNAME=$(uname -s | awk '{if ($1 == "Darwin") print "darwin"; else if ($1 == "Linux") print "linux"; else print "unsupported_os"}') && export OSNAME;
+
+  if  [ "$OSNAME" = "unsupported_os" ] || [ "$OSARCH" = "unsupported_arch" ]; then
+    echo "Unsupported OS or architecture"
+    echo "Checkout if our latest releases support $OSARCH_$OSNAME: https://github.com/CoopHive/hive/releases/latest"
+    exit 1
+  fi
+
+}
+
+
 install_hive() {
   echo "installing hive:$version"
   rurl=https://github.com/CoopHive/hive/releases/download/$version/hive-$OSNAME-$OSARCH
@@ -31,7 +44,7 @@ install_hive() {
 #        echo "Invalid choice. Please enter y or n."
 #        ;;
 #    esac
-  sudo cp hive /usr/local/bin/
+#  sudo cp hive /usr/local/bin/
 
 }
 
