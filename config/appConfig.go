@@ -10,7 +10,9 @@ import (
 
 const DEFAULT_DEALER = "std-autoaccept"
 
-const defaultNetwork = "sepolia"
+const defaultNetwork = deprecatedNetwork
+
+const deprecatedNetwork = "aurora"
 
 var appConfig = configMap[string]{
 	enums.DEBUG: {
@@ -68,7 +70,12 @@ var appConfig = configMap[string]{
 	},
 	enums.WEB3_PRIVATE_KEY: {
 		"private key",
-		"0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80",
+		"",
+		// "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80",
+	},
+	enums.HIVE_PRIVATE_KEY: {
+		"hive private key: exclusive overrides web3 private key",
+		"",
 	},
 	enums.RP_PRIVATE_KEY: {
 		"private key",

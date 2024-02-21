@@ -262,6 +262,7 @@ func (controller *JobCreatorController) agreeToDeals() error {
 	}
 
 	controller.dealmakerService.DealsAgreed(func(dealID string) {
+		controller.log.Debug("deal agreed ", dealID)
 		controller.agreeDeal(dealContainers[dealID])
 	})
 
@@ -269,7 +270,7 @@ func (controller *JobCreatorController) agreeToDeals() error {
 }
 
 func (controller *JobCreatorController) agreeDeal(dealContainer *dto.DealContainer) {
-	controller.log.Debug("agree", dealContainer)
+	controller.log.Debug("[controller] agree", dealContainer)
 	txHash, err := controller.web3SDK.Agree(dealContainer.Deal)
 	if err != nil {
 		// TODO: error handling - is it terminal or retryable?
@@ -333,7 +334,7 @@ func (controller *JobCreatorController) checkResults() error {
 func (controller *JobCreatorController) downloadResult(dealContainer dto.DealContainer) error {
 	err := controller.solverClient.DownloadResultFiles(dealContainer.ID, solver2.GetDownloadsFilePath(dealContainer.ID))
 	if err != nil {
-		return fmt.Errorf("error downloading results for deal: %s", err.Error())
+		return fmt.Errorf("error downloading results for deal: %w", err)
 	}
 
 	controller.log.Debug("Downloaded results for job", solver2.GetDownloadsFilePath(dealContainer.ID))
@@ -370,7 +371,7 @@ func (controller *JobCreatorController) acceptResult(deal dto.DealContainer) err
 	controller.log.Debug("Accepting results for job", deal.ID)
 	txHash, err := controller.web3SDK.AcceptResult(deal.ID)
 	if err != nil {
-		return fmt.Errorf("error calling accept result tx for deal: %s", err.Error())
+		return fmt.Errorf("error calling accept result tx for deal: %w", err)
 	}
 	controller.log.Debug("accept result tx", txHash)
 

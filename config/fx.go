@@ -51,10 +51,11 @@ func newConfig() (o out) {
 	// }
 
 	cmdFlags := map[string]bool{
-		enums.APP_DIR:         true,
-		enums.NETWORK:         true,
-		enums.HIVE_CONTROLLER: true,
-		enums.DEALER:          true,
+		enums.APP_DIR:          true,
+		enums.NETWORK:          true,
+		enums.HIVE_CONTROLLER:  true,
+		enums.DEALER:           true,
+		enums.WEB3_PRIVATE_KEY: true,
 		// enums.APP_DATA_DIR:   true,
 		// enums.APP_PLUGIN_DIR: true,
 	}
@@ -120,6 +121,12 @@ func newConfig() (o out) {
 		}
 		controller := config.Get(enums.HIVE_CONTROLLER)
 		logrus.Debugln("controller: ", controller)
+	}
+	pKey := config.GetString(enums.HIVE_PRIVATE_KEY)
+	if pKey != "" {
+		logrus.Debugln("pKey overriden with ", enums.HIVE_PRIVATE_KEY)
+		config.Set(enums.WEB3_PRIVATE_KEY, pKey)
+		// log.Fatal(config.GetString(enums.WEB3_PRIVATE_KEY))
 	}
 
 	o.Conf = config

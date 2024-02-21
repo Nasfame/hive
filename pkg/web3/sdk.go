@@ -69,6 +69,7 @@ func NewContracts(
 	}
 	payments, err := payments.NewPayments(common.HexToAddress(paymentsAddress), client)
 	if err != nil {
+		log.Error().Msgf("payments contract connection failed with %v", err)
 		return nil, err
 	}
 
@@ -182,6 +183,9 @@ func NewContractSDK(options Web3Options) (*Web3SDK, error) {
 		return nil, err
 	}
 	privateKey, err := ParsePrivateKey(options.PrivateKey)
+
+	log.Debug().Msgf("signer: %s", GetAddress(privateKey))
+
 	if err != nil {
 		return nil, err
 	}
@@ -195,10 +199,13 @@ func NewContractSDK(options Web3Options) (*Web3SDK, error) {
 
 	transactOpts, err := bind.NewKeyedTransactorWithChainID(privateKey, big.NewInt(int64(options.ChainID)))
 	if err != nil {
+		log.Error().Msgf("error for transactOpts: %s", err.Error())
 		return nil, err
 	}
+
 	contracts, err := NewContracts(options, client, callOpts)
 	if err != nil {
+		log.Error().Msgf("error for contracts: %s", err.Error())
 		return nil, err
 	}
 	return &Web3SDK{

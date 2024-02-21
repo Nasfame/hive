@@ -52,19 +52,19 @@ RECV_AGREE_DEALS:
 		case dealID, ok := <-d.dealer.DealsAgreed():
 
 			if !ok {
-				d.Log.Debug("Channel closed. Exiting...")
+				d.Log.Debug("[dealer] Channel closed. Exiting...")
 				break RECV_AGREE_DEALS
 			}
 			func() {
 				d.m.Lock()
 				defer d.m.Unlock()
 				f(dealID)
-				d.Log.Debugf("Deal %s is agreed upon\n", dealID)
+				d.Log.Debugf("[dealer] Deal %s hopefully agreed upon\n", dealID)
 			}()
 
 		case <-d.ctx.Done():
 
-			d.Log.Printf("Context done. Exiting...")
+			d.Log.Printf("[dealer] Context done. Exiting...")
 			return
 		}
 	}

@@ -3,13 +3,14 @@ package bacalhau
 import (
 	"encoding/json"
 	"fmt"
-	"os"
 	"os/exec"
 	"path/filepath"
 	"strings"
 
 	"github.com/rs/zerolog/log"
 
+	"github.com/CoopHive/hive/config"
+	"github.com/CoopHive/hive/enums"
 	bacalhau2 "github.com/CoopHive/hive/pkg/bacalhau"
 	"github.com/CoopHive/hive/pkg/dto"
 	executorlib "github.com/CoopHive/hive/pkg/executor"
@@ -30,7 +31,7 @@ type BacalhauExecutor struct {
 func NewBacalhauExecutor(options BacalhauExecutorOptions) (*BacalhauExecutor, error) {
 	bacalhauEnv := []string{
 		fmt.Sprintf("BACALHAU_API_HOST=%s", options.ApiHost),
-		fmt.Sprintf("HOME=%s", os.Getenv("HOME")),
+		fmt.Sprintf("HOME=%s", config.Conf.GetString(enums.APP_DIR)),
 	}
 	log.Debug().Msgf("bacalhauEnv: %s", bacalhauEnv)
 	return &BacalhauExecutor{
@@ -43,7 +44,7 @@ func (executor *BacalhauExecutor) RunJob(
 	deal dto.DealContainer,
 	module dto.Module,
 ) (*executorlib.ExecutorResults, error) {
-	id, err := executor.getJobID(deal, module)
+	id, err := executor.getJobID(deal, module) // runs the job and returns the job ID
 	if err != nil {
 		return nil, err
 	}

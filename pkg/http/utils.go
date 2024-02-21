@@ -14,9 +14,10 @@ import (
 
 	"github.com/CoopHive/hive/config"
 
-	"github.com/CoopHive/hive/pkg/web3"
 	"github.com/hashicorp/go-retryablehttp"
 	"github.com/rs/zerolog/log"
+
+	"github.com/CoopHive/hive/pkg/web3"
 )
 
 type HTTPError struct {
@@ -315,6 +316,7 @@ func PostRequest[RequestType any, ResultType any](
 	var result ResultType
 	dataBytes, err := json.Marshal(data)
 	if err != nil {
+		log.Debug().Err(err).Msg("json marshal")
 		return result, fmt.Errorf("THIS IS A JSON ERROR: %s", err.Error())
 	}
 	return PostRequestBuffer[ResultType](
@@ -353,6 +355,7 @@ func PostRequestBuffer[ResultType any](
 	// parse body as json into result
 	err = json.Unmarshal(body, &result)
 	if err != nil {
+		log.Err(err).Msg("json unmarshal")
 		return result, err
 	}
 

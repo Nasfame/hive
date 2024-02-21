@@ -4,7 +4,7 @@ import (
 	"context"
 	"os"
 
-	log "github.com/sirupsen/logrus"
+	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"go.uber.org/fx"
@@ -36,7 +36,7 @@ type in struct {
 type out struct {
 	fx.Out
 
-	RootCmd *cobra.Command `name:"root""`
+	RootCmd *cobra.Command `name:"root"`
 }
 
 func newServices(i in) (o out) {
@@ -64,7 +64,7 @@ func executeCobraCommand(i inExec) {
 
 	go func() {
 		if err := cmd.Execute(); err != nil {
-			log.Errorf("Error executing command: %s", err.Error())
+			log.Debug().Err(err).Caller(1).Msg("error running command")
 			Fatal(cmd, err.Error(), 1)
 		}
 

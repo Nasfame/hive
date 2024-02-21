@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/rs/zerolog/log"
+
 	"github.com/CoopHive/hive/pkg/dto"
 	"github.com/CoopHive/hive/pkg/system"
 	"github.com/CoopHive/hive/pkg/web3"
@@ -41,6 +43,7 @@ func RunJob( // TODO: inject into a indivitual service
 	// this will also validate the module we are asking for
 	offer, err := jobCreatorService.GetJobOfferFromOptions(options.Offer)
 	if err != nil {
+		log.Debug().Err(err).Msg("error creating job offer")
 		return nil, err
 	}
 
@@ -49,6 +52,7 @@ func RunJob( // TODO: inject into a indivitual service
 
 	jobOfferContainer, err := jobCreatorService.AddJobOffer(offer)
 	if err != nil {
+		log.Debug().Err(err).Msg("error adding job offer")
 		return nil, err
 	}
 
