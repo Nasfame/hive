@@ -58,6 +58,7 @@ func newConfig() (o out) {
 		enums.WEB3_PRIVATE_KEY: true,
 		// enums.APP_DATA_DIR:   true,
 		// enums.APP_PLUGIN_DIR: true,
+		enums.BACALHAU_BIN: true,
 	}
 
 	for key, meta := range buildConfig {

@@ -15,6 +15,7 @@ import (
 
 	"github.com/theckman/yacspin"
 
+	"github.com/CoopHive/hive/config"
 	"github.com/CoopHive/hive/enums"
 	"github.com/CoopHive/hive/internal/genesis"
 	"github.com/CoopHive/hive/internal/jobCreatorService"
@@ -75,8 +76,10 @@ func (s *service) runJob(cmd *cobra.Command, options jobCreatorService.JobCreato
 	defer commandCtx.Cleanup()
 
 	if options.Dealer != s.Conf.GetString(enums.DEALER) {
-		if err := s.dealMakerService.LoadPlugin(options.Dealer); err != nil {
-			s.Log.Errorf("Dealer %s is not supported on this platform", options.Dealer)
+		if options.Dealer != config.DEFAULT_DEALER {
+			if err := s.dealMakerService.LoadPlugin(options.Dealer); err != nil {
+				s.Log.Errorf("failed to load dealer %s", options.Dealer)
+			}
 		} // TODO: should be refactored to the jobCreatorService
 	}
 

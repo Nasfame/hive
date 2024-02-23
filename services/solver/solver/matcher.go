@@ -1,6 +1,7 @@
 package solver
 
 import (
+	"fmt"
 	"sort"
 	"strings"
 
@@ -54,8 +55,23 @@ func doOffersMatch(
 		return false
 	}
 
+	var rpModules []string
+	for _, module := range resourceOffer.Modules {
+		if strings.TrimSpace(module) != "" {
+			rpModules = append(rpModules, module)
+		}
+	}
+
+	if len(rpModules) != len(resourceOffer.Modules) {
+		log.Debug().Msgf("found empty modules in resource offer:%+v", resourceOffer.Modules)
+	}
+
+	log.Debug().Msgf("setting resource offer module afer removing any empty modules")
+	resourceOffer.Modules = rpModules
+
 	// if the resource provider has specified modules then check them
 	if len(resourceOffer.Modules) > 0 {
+
 		moduleID, err := dto.GetModuleID(jobOffer.Module)
 		if err != nil {
 			log.Error().
@@ -73,6 +89,7 @@ func doOffersMatch(
 		}
 
 		if !hasModule {
+			log.Error().Msgf("resource offer does not contain module : %+v", resourceOffer)
 			log.Trace().
 				Str("resource offer", resourceOffer.ID).
 				Str("job offer", jobOffer.ID).
@@ -119,6 +136,16 @@ func doOffersMatch(
 		return false
 	}
 
+	if resourceOffer.ResourceProvider == jobOffer.JobCreator { // FIXME: remove later
+		log.Trace().
+			Str("resource offer", resourceOffer.ID).
+			Str("job offer", jobOffer.ID).
+			Msgf("JC==RP")
+		return false
+	}
+
+	log.Debug().Msgf("matched resource offer %s with job offer %s", resourceOffer.ID, jobOffer.ID)
+
 	return true
 }
 
@@ -131,14 +158,28 @@ func getMatchingDeals(
 		NotMatched: true,
 	})
 	if err != nil {
+		log.Debug().Err(err).Msgf("error getting resource offers")
 		return nil, err
+	}
+
+	if len(resourceOffers) == 0 {
+		err := fmt.Errorf("no resource offers found")
+		log.Debug().Err(err).Msgf("no resource offers found") // FIXME: is this an error
+		// return nil, nil
 	}
 
 	jobOffers, err := db.GetJobOffers(store.GetJobOffersQuery{
 		NotMatched: true,
 	})
 	if err != nil {
+		log.Debug().Err(err).Msgf("error getting job offers")
 		return nil, err
+	}
+
+	if len(jobOffers) == 0 {
+		err := fmt.Errorf("no job offers found")
+		log.Debug().Err(err).Msgf("no resource offers") // FIXME: should this be an error or its normal flow?
+		// return nil, nil
 	}
 
 	// loop over job offers
@@ -149,11 +190,13 @@ func getMatchingDeals(
 		for _, resourceOffer := range resourceOffers {
 			decision, err := db.GetMatchDecision(resourceOffer.ID, jobOffer.ID)
 			if err != nil {
+				log.Debug().Err(err).Msgf("error getting match decision")
 				return nil, err
 			}
 
 			// if this exists it means we've already tried to match the two elements and should not try again
 			if decision != nil {
+				log.Debug().Msgf("nil decision: already tried to match before")
 				continue
 			}
 
@@ -162,6 +205,7 @@ func getMatchingDeals(
 			} else {
 				_, err := db.AddMatchDecision(resourceOffer.ID, jobOffer.ID, "", false)
 				if err != nil {
+					log.Debug().Err(err).Msgf("error adding match decision")
 					return nil, err
 				}
 			}
@@ -176,6 +220,7 @@ func getMatchingDeals(
 			cheapestResourceOffer := matchingResourceOffers[0]
 			deal, err := dto.GetDeal(jobOffer.JobOffer, cheapestResourceOffer)
 			if err != nil {
+				log.Debug().Err(err).Msgf("error getting deal")
 				return nil, err
 			}
 
@@ -189,6 +234,7 @@ func getMatchingDeals(
 
 				_, err := db.AddMatchDecision(matchingResourceOffer.ID, jobOffer.ID, addDealID, true)
 				if err != nil {
+					log.Debug().Err(err).Msgf("error adding match decision")
 					return nil, err
 				}
 			}

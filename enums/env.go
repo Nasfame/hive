@@ -116,3 +116,9 @@ const (
 	MODULE_HASH = "MODULE_HASH"
 	MODULE_PATH = "MODULE_PATH"
 )
+
+/*Executor: Bacalhau*/
+
+const (
+	BACALHAU_BIN = "bacalhau_bin"
+)

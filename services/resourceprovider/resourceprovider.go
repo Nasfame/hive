@@ -17,7 +17,7 @@ func (s *service) runResourceProvider(cmd *cobra.Command, options ResourceProvid
 
 	if options.Dealer != config.DEFAULT_DEALER {
 		if err := s.dealMakerService.LoadPlugin(options.Dealer); err != nil {
-			s.Log.Errorf("Dealer %s is not supported on this platform", options.Dealer)
+			s.Log.Errorf("failed to load dealer %s", options.Dealer)
 		}
 	}
 

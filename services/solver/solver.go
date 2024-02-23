@@ -76,11 +76,11 @@ func (s *service) runSolver(cmd *cobra.Command, options solver.SolverOptions) er
 		}*/
 
 		select {
-		case <-commandCtx.Ctx.Done():
-			return nil
 		case err := <-solverErrors:
 			commandCtx.Cleanup()
 			return err
+		case <-commandCtx.Ctx.Done():
+			return nil
 		}
 	}
 }

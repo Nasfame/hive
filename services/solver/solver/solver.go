@@ -53,6 +53,7 @@ func (solver *Solver) Start(ctx context.Context, cm *system.CleanupManager) chan
 	go func() {
 		err := solver.server.ListenAndServe(ctx, cm)
 		if err != nil {
+			log.Fatal().Err(err).Msgf("failed to start the server")
 			errorChan <- err
 		}
 	}()

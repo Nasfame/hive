@@ -52,7 +52,8 @@ func SetupLogging() {
 	logLevel := zerolog.InfoLevel
 
 	if debug {
-		logLevel = zerolog.DebugLevel
+		// logLevel = zerolog.DebugLevel
+		logLevel = zerolog.TraceLevel
 	}
 
 	// parsedLogLevel, err := zerolog.ParseLevel(logLevelString)
@@ -81,7 +82,7 @@ func Info(service Service, title string, data interface{}) {
 }
 
 func Debug(service Service, title string, data interface{}) {
-	logWithCaller(4, zerolog.DebugLevel, service, title, data) // FIXME: calc skipframecount
+	logWithCaller(3, zerolog.DebugLevel, service, title, data) // FIXME: calc skipframecount
 }
 
 func Trace(service Service, title string, data interface{}) {

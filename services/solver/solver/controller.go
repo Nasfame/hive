@@ -110,8 +110,10 @@ func (controller *SolverController) Start(ctx context.Context, cm *system.Cleanu
 	log.Debug().Msgf("controller.loop.Start")
 	err = controller.loop.Start(true)
 	if err != nil {
-		errorChan <- err
-		return errorChan
+		log.Debug().Err(err).Msg("controller.loop.Start failed")
+		go func() {
+			errorChan <- err
+		}()
 	}
 
 	return errorChan
@@ -269,13 +271,20 @@ func (controller *SolverController) solve() error {
 	// find out which deals we can make from matching the offers
 	deals, err := getMatchingDeals(controller.store)
 	if err != nil {
+		controller.log.Debug("matchingDeals errored with", err)
 		return err
+	}
+
+	if len(deals) == 0 {
+		controller.log.Debug("no deals to make", "")
+		return nil
 	}
 
 	// loop over each of the deals add add them to the store and emit events
 	for _, deal := range deals {
 		_, err := controller.addDeal(deal)
 		if err != nil {
+			controller.log.Debug("addDeal errored -", err)
 			return err
 		}
 	}

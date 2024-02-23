@@ -86,16 +86,16 @@ RECV_AGREE_DEALS:
 			d.Log.Printf("[dealer] Context done. Exiting...")
 			return
 		}
-		d.Log.Debugf("total deals agreed so far: %d ; deals: %v+\n", len(doneDeals), reflect.ValueOf(doneDeals).MapKeys())
+		d.Log.Debugf("total deals agreed so far: %d ; deals: %+v\n", len(doneDeals), reflect.ValueOf(doneDeals).MapKeys())
 
 	}
 }
 
-func (d *Service) Restart() {
-	d.cancelFunc()
-	d.ctx, d.cancelFunc = context.WithCancel(context.Background())
-	d.m = sync.Mutex{}
-}
+// func (d *Service) Restart() {
+// 	d.cancelFunc()
+// 	d.ctx, d.cancelFunc = context.WithCancel(context.Background())
+// 	d.m = sync.Mutex{}
+// }
 
 func (d *Service) setPlugin(plugin dealer.Dealer) {
 	d.Log.Info("Setting plugin")

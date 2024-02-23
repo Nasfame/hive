@@ -104,7 +104,8 @@ func tempInitForFx(conf *viper.Viper) {
 		X_COOPHIVE_SIGNATURE_HEADER = oldSignatureHeader
 	}
 	if conf.GetBool(enums.DEBUG) {
-		zerolog.SetGlobalLevel(zerolog.DebugLevel)
+		// zerolog.SetGlobalLevel(zerolog.DebugLevel)
+		zerolog.SetGlobalLevel(zerolog.TraceLevel)
 		log.Debug().Msgf("debug mode enabled")
 	}
 

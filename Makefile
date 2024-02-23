@@ -87,11 +87,18 @@ github:
 setup-bacalhau:
 	mkdir -p /tmp/coophive/data/ipfs
 	export BACALHAU_SERVE_IPFS_PATH=/tmp/coophive/data/ipfs
-	sudo bacalhau serve \
+	bacalhau serve \
         --node-type compute,requester \
         --peer none \
         --private-internal-ipfs=false \
         --job-selection-accept-networked
+
+	#bacalhau serve --node-type requester --private-internal-ipfs --peer none
+
+test-b:
+	 echo "make sure you have pasted the env vars otherwise it points to the public bacalhau cluster"
+	# sudo docker run alpine echo hello
+	bacalhau docker run alpine echo hi;
 
 install-all:
 	curl -sSf https://raw.githubusercontent.com/CoopHive/hive/main/install.sh | sh -s -- all
@@ -122,3 +129,4 @@ run:
 
 rp:
 	hive rp
+

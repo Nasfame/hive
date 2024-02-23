@@ -198,14 +198,26 @@ task("drip", "Drip RP, faucet account's balance")
             to: acc.address,
             value: amountInWei
         };
+
+        if (hre.network.name == "titanAI") {
+            // const gasLimit = await signer.estimateGas(tx);
+            tx["gasLimit"] = 100000 //+gasLimit //1.5 times or 250K
+        }
         const transactionResponse = await signer.sendTransaction(tx);
         const transactionReceipt = await transactionResponse.wait();
         const {hash: txHash} = transactionReceipt;
 
         console.log(`Transaction successful: ${txHash}`);
 
+
+        const additonalParams = {}
+
+        if (hre.network.name == "titanAI") {
+            additonalParams["gasLimit"] = 100000 //+gasLimit //1.5 times or 250K
+        }
+
         // Send Hive tokens
-        const transferTx = await tokenContract.transfer(acc.address, amountInHiveWei);
+        const transferTx = await tokenContract.transfer(acc.address, amountInHiveWei, additonalParams);
         const transferReceipt = await transferTx.wait();
         const {hash: transferTxHash} = transferReceipt;
 

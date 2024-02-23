@@ -183,7 +183,7 @@ func CheckJobOffer(jobOffer JobOffer) (err error) {
 func CheckResult(result Result) error {
 	if result.DataID == "" && result.Error == "" {
 		err := fmt.Errorf("result must have a data id")
-		log.Debug().Err(err).Msgf("result is empty: %v+", result)
+		log.Debug().Err(err).Msgf("result is empty: %+v", result)
 		return err
 	}
 	return nil

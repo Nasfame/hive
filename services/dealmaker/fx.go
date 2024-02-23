@@ -42,7 +42,8 @@ func newServices(i in) (o out) {
 	s := newService(dealerName, i.Service)
 
 	useDefaultPlugin := dealerName == config.DEFAULT_DEALER
-
+	// I could have loaded the plugin indivitually in services but if every service will have a dealMakerService:
+	// its easier to load here
 	if !useDefaultPlugin {
 		err := s.LoadPlugin(dealerName)
 		if err != nil {

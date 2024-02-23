@@ -158,6 +158,13 @@ var appConfig = configMap[string]{
 		"module path",
 		"",
 	},
+
+	/*Bacalhau*/
+
+	enums.BACALHAU_BIN: {
+		"bacalhau binary path: if its installed then its just bacalhau",
+		"bacalhau",
+	},
 }
 
 func init() {

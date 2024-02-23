@@ -31,6 +31,9 @@ WEB3_RPC_HTTP=${netUrl}
 WEB3_CHAIN_ID=${network.config.chainId}
 
 HIVE_TOKEN=${tokenContract.address}
+
+DEPLOYED_ON="${new Date()}"
+DEPLOYED_AT="${new Date().toLocaleString()}"
 `.trim();
 
     // the below can be derived from controller contract

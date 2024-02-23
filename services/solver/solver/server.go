@@ -127,6 +127,7 @@ func (solverServer *solverServer) ListenAndServe(ctx context.Context, cm *system
 
 		// Attempt to gracefully shut down the server
 		if err := srv.Shutdown(shutdownCtx); err != nil {
+			log.Debug().Err(err).Msgf("failed to shutdown server")
 			return fmt.Errorf("failed to stop server: %w", err)
 		}
 
@@ -136,4 +137,5 @@ func (solverServer *solverServer) ListenAndServe(ctx context.Context, cm *system
 	}
 
 	return nil
+
 }

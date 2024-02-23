@@ -97,8 +97,9 @@ func (executor *BacalhauExecutor) getJobID(
 		return "", fmt.Errorf("error writing job JSON %s -> %s", deal.ID, err.Error())
 	}
 
+	// TODO:  try to use official bacalhau pkg
 	runCmd := exec.Command(
-		"bacalhau",
+		config.Conf.GetString(enums.BACALHAU_BIN),
 		"create",
 		"--id-only",
 		"--wait",

@@ -39,7 +39,8 @@ func New(i in) (o out) {
 	}
 
 	if conf.GetBool(enums.DEBUG) {
-		logger.SetLevel(logrus.DebugLevel)
+		// logger.SetLevel(logrus.DebugLevel)
+		logger.SetLevel(logrus.TraceLevel)
 	}
 
 	o = out{
