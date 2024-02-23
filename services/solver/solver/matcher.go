@@ -136,13 +136,13 @@ func doOffersMatch(
 		return false
 	}
 
-	if resourceOffer.ResourceProvider == jobOffer.JobCreator { // FIXME: remove later
-		log.Trace().
-			Str("resource offer", resourceOffer.ID).
-			Str("job offer", jobOffer.ID).
-			Msgf("JC==RP")
-		return false
-	}
+	// if resourceOffer.ResourceProvider == jobOffer.JobCreator {
+	// 	log.Trace().
+	// 		Str("resource offer", resourceOffer.ID).
+	// 		Str("job offer", jobOffer.ID).
+	// 		Msgf("JC==RP")
+	// 	return false
+	// }
 
 	log.Debug().Msgf("matched resource offer %s with job offer %s", resourceOffer.ID, jobOffer.ID)
 
