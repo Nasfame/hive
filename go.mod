@@ -136,3 +136,28 @@ require (
 	moul.io/http2curl v1.0.0 // indirect
 	rsc.io/tmplfunc v0.0.3 // indirect
 )
+retract (
+	//retracted due to infinite jc poll see: https://github.com/CoopHive/hive/issues/141
+    v0.10.6
+    v0.0.0-pr142
+    v0.10.5
+    v0.10.4
+    v0.10.3
+    v0.0.0-pr137
+    v0.10.2
+    v0.0.0-pr136
+    v0.10.1-alpha
+    v0.11.0-alpha
+    v0.10.1
+    v0.10.0
+    v0.9.1
+    v0.0.0-pr133
+    v0.9.0
+    v0.0.0-pr129
+    v0.0.0-br-feat-support-faucet
+    v0.8.4
+    v0.8.3
+    v0.8.2
+    v0.8.1
+    v0.8.0
+)
