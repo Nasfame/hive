@@ -29,8 +29,8 @@
     "task:deployAll": "hardhat deployAll --skip chaos,localhost ",
     "task:deployAll:parallel": "hardhat deployAll --parallel --skip haos,localhost ",
     "scripts:deployAll": "hardhat run scripts/deployAll.ts",
-    "deploy:hiveToken": "npx hardhat deploy --tags hiveToken --network ",
-    "task:fund": "npx hardhat fund --network ",
+    "deploy:hiveToken": "hardhat deploy --tags hiveToken --network ",
+    "fund": "hardhat fund --network ",
     "drip": "hardhat drip --network ",
     "dapp": "hardhat dapp --network "
   },
