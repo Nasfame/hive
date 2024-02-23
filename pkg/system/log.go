@@ -8,6 +8,9 @@ import (
 	"github.com/davecgh/go-spew/spew"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
+
+	"github.com/CoopHive/hive/config"
+	"github.com/CoopHive/hive/enums"
 )
 
 type ServiceLogger struct {
@@ -38,24 +41,30 @@ func (s *ServiceLogger) Trace(title string, data interface{}) {
 
 func SetupLogging() {
 	output := zerolog.ConsoleWriter{Out: os.Stdout, TimeFormat: time.RFC3339}
-	logLevelString := os.Getenv("LOG_LEVEL")
-	if logLevelString == "" {
-		logLevelString = "info"
-	}
+	debug := config.Conf.GetBool(enums.DEBUG) // TODO: use loglevel like before
+	// if logLevelString == "" {
+	// 	logLevelString = "info"
+	// }
+	// logLevel := zerolog.InfoLevel
+	// if logLevelString == "none" {
+	// 	logLevel = zerolog.NoLevel
+	// }
 	logLevel := zerolog.InfoLevel
-	if logLevelString == "none" {
-		logLevel = zerolog.NoLevel
+
+	if debug {
+		logLevel = zerolog.DebugLevel
 	}
-	parsedLogLevel, err := zerolog.ParseLevel(logLevelString)
-	if err == nil {
-		logLevel = parsedLogLevel
-	}
+
+	// parsedLogLevel, err := zerolog.ParseLevel(logLevelString)
+	// if err == nil {
+	// 	logLevel = parsedLogLevel
+	// }
 	zerolog.CallerSkipFrameCount = 3 // Skip 3 frames (this function, log.Output, log.Logger)
 	log.Logger = log.Output(output).With().Caller().Logger().Level(logLevel)
 }
 
 func logWithCaller(skipFrameCount int, level zerolog.Level, service Service, title string, data interface{}) {
-	zerolog.CallerSkipFrameCount = skipFrameCount
+	zerolog.CallerSkipFrameCount = skipFrameCount       // race:
 	defer func() { zerolog.CallerSkipFrameCount = 3 }() // Reset to the default value
 
 	e := log.WithLevel(level).
@@ -72,7 +81,7 @@ func Info(service Service, title string, data interface{}) {
 }
 
 func Debug(service Service, title string, data interface{}) {
-	logWithCaller(5, zerolog.DebugLevel, service, title, data)
+	logWithCaller(4, zerolog.DebugLevel, service, title, data) // FIXME: calc skipframecount
 }
 
 func Trace(service Service, title string, data interface{}) {

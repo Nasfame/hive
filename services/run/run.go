@@ -47,7 +47,9 @@ func (s *service) runJob(cmd *cobra.Command, options jobCreatorService.JobCreato
 	}
 	c.Print(header)
 
-	spinner, err := createSpinner("CoopHive submitting job", "🌟")
+	appName := s.Conf.GetString(enums.APP_NAME)
+
+	spinner, err := createSpinner(appName+" submitting job", "🌟")
 	if err != nil {
 		s.Log.Fatalf("failed to make spinner from config struct: %v\n", err)
 	}
@@ -94,14 +96,18 @@ func (s *service) runJob(cmd *cobra.Command, options jobCreatorService.JobCreato
 			desc = "Deal agreed. Running job..."
 			emoji = "💌"
 		case "ResultsSubmitted":
+			//
 			desc = "Results submitted. Awaiting verification..."
 			emoji = "🤔"
+
 		case "ResultsAccepted":
 			desc = "Results accepted. Downloading result..."
 			emoji = "✅"
+		// 	jc call
 		case "ResultsRejected":
 			desc = "Results rejected! Getting refund..."
 			emoji = "🙀"
+		//
 		default:
 			desc = st
 			emoji = "🌟"
@@ -126,7 +132,8 @@ func (s *service) runJob(cmd *cobra.Command, options jobCreatorService.JobCreato
 		return err
 	}
 	spinner.Stop()
-	fmt.Printf("\n🍂 CoopHive job completed, try 👇\n    open %s\n    cat %s/stdout\n    cat %s/stderr\n    https://ipfs.io/ipfs/%s\n",
+	fmt.Printf("\n🍂 %s job completed, try 👇\n    open %s\n    cat %s/stdout\n    cat %s/stderr\n    https://ipfs.io/ipfs/%s\n",
+		appName,
 		solver.GetDownloadsFilePath(result.JobOffer.DealID),
 		solver.GetDownloadsFilePath(result.JobOffer.DealID),
 		solver.GetDownloadsFilePath(result.JobOffer.DealID),

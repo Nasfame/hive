@@ -116,12 +116,19 @@ func newConfig() (o out) {
 
 		for key, val := range c {
 			key = strings.ToLower(key)
-			logrus.Debugln("setting network config: ", key, val)
+			curVal := config.GetString(key)
+
+			if curVal != "" && appConfig[key] != nil && appConfig[key].defaultVal != curVal {
+				logrus.Info("key already set: ", key)
+				continue
+			}
+			logrus.Debugf("%v:%v\n", key, val)
 			config.Set(key, val)
 		}
 		controller := config.Get(enums.HIVE_CONTROLLER)
 		logrus.Debugln("controller: ", controller)
 	}
+
 	pKey := config.GetString(enums.HIVE_PRIVATE_KEY)
 	if pKey != "" {
 		logrus.Debugln("pKey overriden with ", enums.HIVE_PRIVATE_KEY)

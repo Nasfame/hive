@@ -80,14 +80,13 @@ const config: HardhatUserConfig = {
       // https://testnet.portal.skale.space/chains/titan
       // https://aware-fake-trim-testnet.explorer.testnet.skalenodes.com
     },
-    /*
         calibration: {
           chainId: 314159,
           url: "https://api.calibration.node.glif.io/rpc/v1",
           ws: 'wss://wss.calibration.node.glif.io/apigw/lotus/rpc/v1',
           accounts: PRIVATE_KEYS,
           saveDeployments: true,
-        },*/
+        },
     /*fvm: {
       chainId: 314,
       url: "https://api.node.glif.io",

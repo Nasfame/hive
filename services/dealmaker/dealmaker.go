@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"path"
 	"plugin"
+	"reflect"
 	"runtime"
 	"sync"
 
@@ -20,6 +21,8 @@ type Service struct {
 	cancelFunc context.CancelFunc
 
 	m sync.Mutex
+
+	once bool
 
 	*genesis.Service
 }
@@ -38,12 +41,22 @@ func (d *Service) DealMatched(dealID string) {
 	d.dealer.DealMatched(dealID)
 }
 
+// DealsAgreed should only be called exactly once
 func (d *Service) DealsAgreed(f func(dealID string)) {
+
+	if d.once {
+		panic("dealsAgreed should only be called once")
+		return
+	}
+
 	defer func() {
+		d.once = true
 		if r := recover(); r != nil {
 			d.Log.Fatalf("Critical error occurred: %v", r)
 		}
 	}()
+
+	doneDeals := map[string]bool{}
 
 RECV_AGREE_DEALS:
 	for {
@@ -55,10 +68,16 @@ RECV_AGREE_DEALS:
 				d.Log.Debug("[dealer] Channel closed. Exiting...")
 				break RECV_AGREE_DEALS
 			}
+
+			if doneDeals[dealID] {
+				continue
+			}
+
 			func() {
 				d.m.Lock()
 				defer d.m.Unlock()
 				f(dealID)
+				doneDeals[dealID] = true
 				d.Log.Debugf("[dealer] Deal %s hopefully agreed upon\n", dealID)
 			}()
 
@@ -67,7 +86,15 @@ RECV_AGREE_DEALS:
 			d.Log.Printf("[dealer] Context done. Exiting...")
 			return
 		}
+		d.Log.Debugf("total deals agreed so far: %d ; deals: %v+\n", len(doneDeals), reflect.ValueOf(doneDeals).MapKeys())
+
 	}
+}
+
+func (d *Service) Restart() {
+	d.cancelFunc()
+	d.ctx, d.cancelFunc = context.WithCancel(context.Background())
+	d.m = sync.Mutex{}
 }
 
 func (d *Service) setPlugin(plugin dealer.Dealer) {

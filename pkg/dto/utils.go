@@ -6,6 +6,7 @@ import (
 	"math/big"
 
 	"github.com/ethereum/go-ethereum/common"
+	"github.com/rs/zerolog/log"
 
 	"github.com/CoopHive/hive/pkg/web3/bindings/controller"
 
@@ -64,17 +65,25 @@ func GetMutualServices(a []string, b []string) []string {
 func GetDeal(
 	jobOffer JobOffer,
 	resourceOffer ResourceOffer,
-) (Deal, error) {
+) (dealData Deal, err error) {
+	defer func() {
+		if err != nil {
+			log.Debug().Err(err).Msg("invalid deal")
+		}
+	}()
+
 	mutualMediators := GetMutualServices(resourceOffer.Services.Mediator, jobOffer.Services.Mediator)
 	if len(mutualMediators) <= 0 {
-		return Deal{}, fmt.Errorf("no mutual mediators")
+		err = fmt.Errorf("no mutual mediators")
+		return Deal{}, err
 	}
 
 	if jobOffer.Services.Solver != resourceOffer.Services.Solver {
-		return Deal{}, fmt.Errorf("no mutual solver")
+		err = fmt.Errorf("no mutual solver")
+		return Deal{}, err
 	}
 
-	dealData := Deal{
+	dealData = Deal{
 		Members: DealMembers{
 			Solver:           jobOffer.Services.Solver,
 			JobCreator:       jobOffer.JobCreator,
@@ -155,13 +164,17 @@ func CheckResourceOffer(resourceOffer ResourceOffer) error {
 	return nil
 }
 
-func CheckJobOffer(jobOffer JobOffer) error {
+func CheckJobOffer(jobOffer JobOffer) (err error) {
 	if jobOffer.Services.Solver == "" {
-		return fmt.Errorf("job offer must name it's solver")
+		err = fmt.Errorf("job offer must name it's solver")
 	}
 
 	if len(jobOffer.Services.Mediator) <= 0 {
-		return fmt.Errorf("job offer must have at least one trusted mediator")
+		err = fmt.Errorf("job offer must have at least one trusted mediator")
+	}
+
+	if err != nil {
+		log.Debug().Err(err).Msgf("invalid job offer")
 	}
 
 	return nil
@@ -169,7 +182,9 @@ func CheckJobOffer(jobOffer JobOffer) error {
 
 func CheckResult(result Result) error {
 	if result.DataID == "" && result.Error == "" {
-		return fmt.Errorf("result must have a data id")
+		err := fmt.Errorf("result must have a data id")
+		log.Debug().Err(err).Msgf("result is empty: %v+", result)
+		return err
 	}
 	return nil
 }

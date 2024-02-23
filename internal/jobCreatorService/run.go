@@ -43,7 +43,7 @@ func RunJob( // TODO: inject into a indivitual service
 	// this will also validate the module we are asking for
 	offer, err := jobCreatorService.GetJobOfferFromOptions(options.Offer)
 	if err != nil {
-		log.Debug().Err(err).Msg("error creating job offer")
+		log.Error().Err(err).Msg("error creating job offer")
 		return nil, err
 	}
 
@@ -52,7 +52,7 @@ func RunJob( // TODO: inject into a indivitual service
 
 	jobOfferContainer, err := jobCreatorService.AddJobOffer(offer)
 	if err != nil {
-		log.Debug().Err(err).Msg("error adding job offer")
+		log.Error().Err(err).Msg("error adding job offer")
 		return nil, err
 	}
 

@@ -43,7 +43,7 @@ func loadDApp(network string) (envMap map[string]string, err error) {
 	envMap, err = godotenv.UnmarshalBytes(dApp)
 
 	if err != nil {
-		logrus.Debugf("Error loading .env file: %v\n", err)
+		logrus.Errorf("Error loading %v.env file: due to %v \n", network, err)
 		return
 	}
 
@@ -53,7 +53,7 @@ func loadDApp(network string) (envMap map[string]string, err error) {
 		return strings.HasPrefix(key, strings.ToUpper(enums.HIVE_MEDIATION))
 	}
 
-	curMediators := []string{}
+	var curMediators []string
 
 	for key, value := range envMap {
 

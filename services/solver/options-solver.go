@@ -3,6 +3,7 @@ package solver
 import (
 	"github.com/sirupsen/logrus"
 
+	"github.com/CoopHive/hive/enums"
 	options2 "github.com/CoopHive/hive/pkg/options"
 	"github.com/CoopHive/hive/pkg/system"
 	"github.com/CoopHive/hive/services/solver/solver"
@@ -13,7 +14,7 @@ import (
 func NewSolverOptions() solver.SolverOptions {
 	options := solver.SolverOptions{
 		Server: GetDefaultServerOptions(),
-		Web3:   options2.GetDefaultWeb3Options(),
+		Web3:   options2.GetDefaultWeb3Options(enums.SOLVER),
 	}
 	options.Web3.Service = system.SolverService
 	return options

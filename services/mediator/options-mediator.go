@@ -3,6 +3,7 @@ package mediator
 import (
 	"fmt"
 
+	"github.com/CoopHive/hive/enums"
 	options2 "github.com/CoopHive/hive/pkg/options"
 	"github.com/CoopHive/hive/pkg/system"
 
@@ -12,7 +13,7 @@ import (
 func NewMediatorOptions() MediatorOptions {
 	options := MediatorOptions{
 		Bacalhau: options2.GetDefaultBacalhauOptions(),
-		Web3:     options2.GetDefaultWeb3Options(),
+		Web3:     options2.GetDefaultWeb3Options(enums.MEDIATOR),
 		Services: options2.GetDefaultServicesOptions(),
 	}
 	options.Web3.Service = system.MediatorService

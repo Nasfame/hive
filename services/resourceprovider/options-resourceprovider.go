@@ -17,7 +17,7 @@ func NewResourceProviderOptions() ResourceProviderOptions {
 	options := ResourceProviderOptions{
 		Bacalhau: options2.GetDefaultBacalhauOptions(),
 		Offers:   GetDefaultResourceProviderOfferOptions(),
-		Web3:     options2.GetDefaultWeb3Options(),
+		Web3:     options2.GetDefaultWeb3Options(enums.RP),
 		Dealer:   config.Conf.GetString(enums.DEALER),
 	}
 	options.Web3.Service = system.ResourceProviderService

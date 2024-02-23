@@ -45,15 +45,15 @@ var appConfig = configMap[string]{
 
 	enums.HIVE_CONTROLLER: { // TODO: network dependent
 		"Web3 Controller Address",
-		"0xCCAaFD2AdD790788436f10e2C84585C46388b9aF",
+		"",
 	},
 	enums.HIVE_SOLVER: {
 		"Hive Solver  Address",
-		"0xB4A1671063fe482a95C2519b78E3974EFAd87854",
+		"",
 	},
 	enums.HIVE_MEDIATION: {
 		"Hive Mediation Addresss : can be set of addresses separated by ','",
-		"0x2d83ced7562e406151bd49c749654429907543b4",
+		"",
 	},
 	enums.NETWORK: {
 		fmt.Sprintf("supported networks:%v. aurora is deprecated", NETWORKS),
@@ -62,7 +62,7 @@ var appConfig = configMap[string]{
 
 	enums.WEB3_RPC_URL: {
 		"rpc url",
-		"ws://testnet.co-ophive.network:8546",
+		"",
 	},
 	enums.WEB3_CHAIN_ID: {
 		"chain id of the network",
@@ -78,19 +78,19 @@ var appConfig = configMap[string]{
 		"",
 	},
 	enums.RP_PRIVATE_KEY: {
-		"private key",
+		"private key for rp (overrides)",
 		"",
 	},
 	enums.JC_PRIVATE_KEY: {
-		"private key",
+		"private key for jc",
 		"",
 	},
 	enums.MEDIATOR_PRIVATE_KEY: {
-		"private key",
+		"private key for mediator",
 		"",
 	},
 	enums.SOLVER_PRIVATE_KEY: {
-		"private key",
+		"private key for solver",
 		"",
 	},
 	enums.SERVER_HOST: {

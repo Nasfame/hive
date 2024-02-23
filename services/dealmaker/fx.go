@@ -67,6 +67,7 @@ func newService(name string, g *genesis.Service) *Service {
 		ctx,
 		cancelFunc,
 		sync.Mutex{},
+		false,
 		g,
 	}
 

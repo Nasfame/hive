@@ -11,12 +11,14 @@ import (
 	"github.com/CoopHive/hive/pkg/web3"
 )
 
-func GetDefaultWeb3Options() web3.Web3Options {
+func GetDefaultWeb3Options(s enums.ServiceType) web3.Web3Options {
+	privateKeyEnum := s.GetPrivateKeyEnum()
+
 	return web3.Web3Options{
 		// TODO: refactor this to use the new config package
 		// core settings
 		RpcURL:     config.Conf.GetString(enums.WEB3_RPC_URL),
-		PrivateKey: config.Conf.GetString(enums.WEB3_PRIVATE_KEY),
+		PrivateKey: config.Conf.GetString(privateKeyEnum),
 		ChainID:    config.Conf.GetInt(enums.WEB3_CHAIN_ID), //nolint:gomnd
 
 		// contract addresses

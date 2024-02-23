@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/CoopHive/hive/config"
+	"github.com/CoopHive/hive/enums"
 	"github.com/CoopHive/hive/internal/jobCreatorService"
 	"github.com/CoopHive/hive/pkg/dto"
 	options2 "github.com/CoopHive/hive/pkg/options"
@@ -16,7 +17,7 @@ func NewJobCreatorOptions() jobCreatorService.JobCreatorOptions {
 	options := jobCreatorService.JobCreatorOptions{
 		GetDefaultJobCreatorMediationOptions(),
 		GetDefaultJobCreatorOfferOptions(),
-		options2.GetDefaultWeb3Options(),
+		options2.GetDefaultWeb3Options(enums.JC),
 		config.DEFAULT_DEALER,
 	}
 	options.Web3.Service = system.JobCreatorService

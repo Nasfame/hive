@@ -3,6 +3,7 @@ package jobCreatorService
 import (
 	"context"
 	"fmt"
+	"sync"
 	"time"
 
 	"github.com/CoopHive/hive/pkg/dto"
@@ -27,6 +28,10 @@ type JobCreatorController struct {
 	jobOfferSubscriptions []JobOfferSubscriber
 
 	dealmakerService *dealmaker.Service
+
+	dealContainers map[string]*dto.DealContainer
+
+	once sync.Once
 }
 
 // the background "even if we have not heard of an event" loop
@@ -55,13 +60,14 @@ func NewJobCreatorController(
 	}
 
 	controller := &JobCreatorController{
-		solverClient: solverClient,
-		// options:               options,
+		solverClient:          solverClient,
+		options:               options,
 		web3SDK:               web3SDK,
 		web3Events:            web3.NewEventChannels(),
 		log:                   system.NewServiceLogger(system.JobCreatorService),
 		jobOfferSubscriptions: []JobOfferSubscriber{},
 		dealmakerService:      dealmakerService,
+		dealContainers:        map[string]*dto.DealContainer{},
 	}
 	return controller, nil
 }
@@ -207,7 +213,7 @@ func (controller *JobCreatorController) Start(ctx context.Context, cm *system.Cl
 
 func (controller *JobCreatorController) solve() error {
 	controller.log.Debug("solving", "")
-	err := controller.agreeToDeals()
+	err := controller.agreeToMatchedDeals()
 	if err != nil {
 		return err
 	}
@@ -231,7 +237,8 @@ func (controller *JobCreatorController) solve() error {
 */
 
 // list the deals we have been assigned to that we have not yet posted and agree tx to the contract for
-func (controller *JobCreatorController) agreeToDeals() error {
+func (controller *JobCreatorController) agreeToMatchedDeals() error {
+
 	// load the deals that are in DealNegotiating
 	// and do not have a TransactionsResourceProvider.Agree tx
 	matchedDeals, err := controller.solverClient.GetDealsWithFilter(
@@ -252,7 +259,7 @@ func (controller *JobCreatorController) agreeToDeals() error {
 		return nil
 	}
 
-	dealContainers := map[string]*dto.DealContainer{}
+	dealContainers := controller.dealContainers
 
 	// map over the deals and agree to them
 	for _, dealContainer := range matchedDeals {
@@ -260,10 +267,11 @@ func (controller *JobCreatorController) agreeToDeals() error {
 		dealContainers[dealContainer.ID] = &dealContainer
 		go controller.dealmakerService.DealMatched(dealContainer.ID)
 	}
-
-	controller.dealmakerService.DealsAgreed(func(dealID string) {
-		controller.log.Debug("deal agreed ", dealID)
-		controller.agreeDeal(dealContainers[dealID])
+	go controller.once.Do(func() {
+		controller.dealmakerService.DealsAgreed(func(dealID string) {
+			controller.log.Debug("deal agreed ", dealID)
+			controller.agreeDeal(controller.dealContainers[dealID])
+		})
 	})
 
 	return nil
@@ -321,10 +329,11 @@ func (controller *JobCreatorController) checkResults() error {
 			// there is an error with the job
 			// accept anyway
 			// TODO: trigger mediation here
-			controller.acceptResult(dealContainer)
+			// controller.checkResult(dealContainer) //TODO:
+			err = controller.acceptResult(dealContainer)
 			controller.log.Error("result errored with %v", err)
 		} else {
-			controller.downloadResult(dealContainer)
+			err = controller.downloadResult(dealContainer)
 		}
 	}
 
@@ -334,6 +343,7 @@ func (controller *JobCreatorController) checkResults() error {
 func (controller *JobCreatorController) downloadResult(dealContainer dto.DealContainer) error {
 	err := controller.solverClient.DownloadResultFiles(dealContainer.ID, solver2.GetDownloadsFilePath(dealContainer.ID))
 	if err != nil {
+		// TODO: jc didn't accept or deny results
 		return fmt.Errorf("error downloading results for deal: %w", err)
 	}
 
