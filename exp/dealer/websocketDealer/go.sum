@@ -1,4 +1,8 @@
-github.com/CoopHive/hive v0.6.6 h1:wYDh+2TyennYq2PCV9GY4mGr0GnnSy0/26G+aXr17TE=
-github.com/CoopHive/hive v0.6.6/go.mod h1:ZV4/4tJYmtPUs4j+0+S+k/XP/WAYGaj2beTmKIUVdEc=
+github.com/CoopHive/hive v0.10.7-gamma h1:1fA+kQm0QFxM1MvXPqM2Gm84DeL6E5YVSUudXB97fwY=
+github.com/CoopHive/hive v0.10.7-gamma/go.mod h1:h2iL2Ldaj7wOIIoxDS+jEttqPI3hW+B+K2ZSp/7vKCc=
+github.com/CoopHive/hive v0.11.0-alpha h1:6rLweMl4+NpmA9U+uBMAwRYTNlyUbpIWvSExOHqDjaU=
+github.com/CoopHive/hive v0.11.0-alpha/go.mod h1:ZruuUr5oLmQ22SRpeQT5CYrD2NBV5WC6qJZwclUK75M=
 github.com/gorilla/websocket v1.5.1 h1:gmztn0JnHVt9JZquRuzLw3g4wouNVzKL15iLr/zn/QY=
-golang.org/x/net v0.19.0 h1:zTwKpTd2XuCqf8huc7Fo2iSy+4RHPd10s4KzeTnVr1c=
+github.com/gorilla/websocket v1.5.1/go.mod h1:x3kM2JMyaluk02fnUJpQuwD2dCS5NDG2ZHL0uE0tcaY=
+golang.org/x/net v0.21.0 h1:AQyQV4dYCvJ7vGmJyKki9+PBdyvhkSd8EIx/qb0AYv4=
+golang.org/x/net v0.21.0/go.mod h1:bIjVDfnllIU7BJ2DNgfnXvpSvtn8VRwhlsaeUTyUS44=
