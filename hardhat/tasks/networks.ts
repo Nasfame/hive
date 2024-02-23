@@ -26,7 +26,7 @@ interface deployArgs {
     parallel?: boolean
 }
 
-task("deployAll", "Deploy to network")
+task("deployAll", "Deploy to all enabled network")
     .addOptionalParam("skip", "The networks to skip put in, separated string")
     .addOptionalParam(
         "skipNetworks",

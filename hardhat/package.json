@@ -27,7 +27,7 @@
     "task:bal": "hardhat bal --network calibration",
     "task:networks": "hardhat networks",
     "task:deployAll": "hardhat deployAll --skip chaos,localhost ",
-    "task:deployAll:parallel": "hardhat deployAll --parallel --skip chaos,localhost ",
+    "task:deployAll:parallel": "hardhat deployAll --parallel --skip haos,localhost ",
     "scripts:deployAll": "hardhat run scripts/deployAll.ts",
     "deploy:hiveToken": "npx hardhat deploy --tags hiveToken --network ",
     "task:fund": "npx hardhat fund --network ",
