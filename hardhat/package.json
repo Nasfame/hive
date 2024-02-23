@@ -31,8 +31,8 @@
     "scripts:deployAll": "hardhat run scripts/deployAll.ts",
     "deploy:hiveToken": "npx hardhat deploy --tags hiveToken --network ",
     "task:fund": "npx hardhat fund --network ",
-    "task:drip": "npx hardhat drip --network ",
-    "task:dapp": "npx hardhat dapp --network "
+    "drip": "hardhat drip --network ",
+    "dapp": "hardhat dapp --network "
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-chai-matchers": "^2.0.4",
