@@ -33,6 +33,8 @@ type ResourceProviderController struct {
 	runningJobs      map[string]bool
 
 	dealmakerService *dealmaker.Service
+	dealContainers   map[string]*dto.DealContainer
+	once             sync.Once
 }
 
 // the background "even if we have not heard of an event" loop
@@ -70,6 +72,7 @@ func NewResourceProviderController(
 		executor:         executor,
 		runningJobs:      map[string]bool{},
 		dealmakerService: dealmakerService,
+		dealContainers:   map[string]*dto.DealContainer{},
 	}
 	return controller, nil
 }
@@ -195,7 +198,7 @@ func (controller *ResourceProviderController) solve() error {
 
 	// if there are deals that have been matched and we have not agreed
 	// then we should agree to them
-	err = controller.agreeToDeals()
+	err = controller.agreeToMatchedDeals()
 	if err != nil {
 		return err
 	}
@@ -301,7 +304,7 @@ func (controller *ResourceProviderController) ensureResourceOffers() error {
 */
 
 // list the deals we have been assigned to that we have not yet posted and agree tx to the contract for
-func (controller *ResourceProviderController) agreeToDeals() error {
+func (controller *ResourceProviderController) agreeToMatchedDeals() error {
 	// load all deals that are in DealAgreed state and are for us
 	matchedDeals, err := controller.solverClient.GetDealsWithFilter(
 		store.GetDealsQuery{
@@ -316,11 +319,12 @@ func (controller *ResourceProviderController) agreeToDeals() error {
 	if err != nil {
 		return err
 	}
-	if len(matchedDeals) <= 0 {
+	if len(matchedDeals) == 0 {
+		controller.log.Debug("matchedDeals", "found no deals")
 		return nil
 	}
 
-	dealContainers := map[string]*dto.DealContainer{}
+	dealContainers := controller.dealContainers
 
 	// map over the deals and agree to them
 	for _, dealContainer := range matchedDeals {
@@ -329,8 +333,11 @@ func (controller *ResourceProviderController) agreeToDeals() error {
 		go controller.dealmakerService.DealMatched(dealContainer.ID)
 	}
 
-	controller.dealmakerService.DealsAgreed(func(dealID string) {
-		controller.agreeDeal(dealContainers[dealID])
+	go controller.once.Do(func() {
+		controller.dealmakerService.DealsAgreed(func(dealID string) {
+			controller.log.Debug("deal agreed ", dealID)
+			controller.agreeDeal(controller.dealContainers[dealID])
+		})
 	})
 
 	return err

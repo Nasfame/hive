@@ -254,8 +254,8 @@ func (controller *JobCreatorController) agreeToMatchedDeals() error {
 	if err != nil {
 		return err
 	}
-	if len(matchedDeals) <= 0 {
-		controller.log.Debug("found no matched deals", matchedDeals)
+	if len(matchedDeals) == 0 {
+		controller.log.Debug("matchedDeals", "found no deals")
 		return nil
 	}
 
@@ -274,7 +274,7 @@ func (controller *JobCreatorController) agreeToMatchedDeals() error {
 		})
 	})
 
-	return nil
+	return err
 }
 
 func (controller *JobCreatorController) agreeDeal(dealContainer *dto.DealContainer) {
