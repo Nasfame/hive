@@ -15,6 +15,7 @@ hardhat/.prettierignore.ci
 ./.env.*
 
 .env.prod
+.env.*
 
 /config/dApps/hardhat.env
 

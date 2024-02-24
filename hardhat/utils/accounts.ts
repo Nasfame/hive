@@ -6,13 +6,25 @@ import * as process from "process";
 import {HardhatRuntimeEnvironment} from "hardhat/types";
 import {HiveToken} from "../typechain-types";
 
+
+let useDefaultValue = true
+
+export function setDefauultValue(flag: boolean) {
+    useDefaultValue = flag
+    console.log("set default value to ", flag)
+}
 export const loadEnv = (name: string, defaultValue: string) => {
     const pKey = process.env[name]
     if (pKey) {
         return pKey
     }
     console.error(`Environment variable ${name} not found, using default value ${defaultValue}`)
-    return defaultValue;
+    console.log("hardhat value be careful!!")
+    if (useDefaultValue) {
+        return defaultValue
+    }
+
+    return "";
 };
 
 export const loadPrivateKey = (name: string, defaultValue: string) => {

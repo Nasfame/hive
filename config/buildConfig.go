@@ -79,16 +79,6 @@ var MODULE_PATH string  // temporary init for shortcuts pkg, use Conf injected
 var STD_MODULE_FORMAT string
 var Conf *viper.Viper
 
-func init() {
-	StdRepoUri := buildConfig[enums.STD_REPO_URI].defaultVal
-	StdModulePrefix := buildConfig[enums.STD_MODULE_PREFIX].defaultVal
-	CoophiveStdModule := StdRepoUri + StdModulePrefix + "-%s"
-
-	stdModuleFormat := buildConfig[enums.STD_MODULE_FORMAT]
-	stdModuleFormat.defaultVal = CoophiveStdModule
-
-}
-
 func tempInitForFx(conf *viper.Viper) {
 
 	Conf = conf // set global var

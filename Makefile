@@ -103,7 +103,7 @@ github:
 setup-bacalhau:
 	mkdir -p /tmp/coophive/data/ipfs
 	export BACALHAU_SERVE_IPFS_PATH=/tmp/coophive/data/ipfs
-	./bacalhau serve \
+	bacalhau serve \
         --node-type compute,requester \
         --peer none \
         --private-internal-ipfs=false \

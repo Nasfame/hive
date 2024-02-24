@@ -2,8 +2,6 @@ package config
 
 import (
 	"fmt"
-	"os"
-	"path"
 
 	"github.com/CoopHive/hive/enums"
 )
@@ -165,13 +163,4 @@ var appConfig = configMap[string]{
 		"bacalhau binary path: if its installed then its just bacalhau",
 		"bacalhau",
 	},
-}
-
-func init() {
-	userDir, err := os.UserHomeDir()
-	if err != nil {
-		panic(err)
-	}
-
-	appConfig[enums.APP_DIR].defaultVal = path.Join(userDir, "coophive")
 }

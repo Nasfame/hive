@@ -125,7 +125,7 @@ func (executor *BacalhauExecutor) copyJobResults(dealID string, jobID string) (s
 	}
 
 	copyResultsCmd := exec.Command(
-		"bacalhau",
+		config.Conf.GetString(enums.BACALHAU_BIN),
 		"get",
 		jobID,
 		"--output-dir", resultsDir,
@@ -142,7 +142,7 @@ func (executor *BacalhauExecutor) copyJobResults(dealID string, jobID string) (s
 
 func (executor *BacalhauExecutor) getJobState(dealID string, jobID string) (*bacalhau2.JobWithInfo, error) {
 	describeCmd := exec.Command(
-		"bacalhau",
+		config.Conf.GetString(enums.BACALHAU_BIN),
 		"describe",
 		"--json",
 		jobID,
