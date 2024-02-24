@@ -137,7 +137,8 @@ hive run cowsay:v0.1.1 -i Message="CoopHive"
 Stable diffusion:
 
 ```
-hive run sdxl:v0.2.8 -i PromptEnv="PROMPT= a hive of bees"```
+hive run sdxl:v0.2.8 -i PromptEnv="PROMPT= a hive of bees"
+```
 
 ```stdout
  ___  __    __  ____  _  _  __  _  _  ____
