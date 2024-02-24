@@ -119,7 +119,13 @@ func newConfig() (o out) {
 			key = strings.ToLower(key)
 			curVal := config.GetString(key)
 
-			if curVal != "" && appConfig[key] != nil && appConfig[key].defaultVal != curVal {
+			defaultVal := ""
+
+			if appConfig[key] != nil {
+				defaultVal = appConfig[key].defaultVal
+			}
+
+			if curVal != "" && defaultVal != curVal {
 				logrus.Info("key already set: ", key)
 				continue
 			}

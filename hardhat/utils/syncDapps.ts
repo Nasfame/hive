@@ -22,9 +22,14 @@ export async function syncDapps(hre: HardhatRuntimeEnvironment) {
         // getAccount("admin").address,
     ]
 
+    const defaultMediators = [
+        getAccount("mediator").address,
+    ]
+
+    // MEDIATION_CONTRACT=is already in hive_controller
     const content = `
 HIVE_CONTROLLER=${controllerContract.address}
-HIVE_MEDIATION_RANDOM=${mediationContract.address}
+HIVE_MEDIATION=${defaultMediators.join(",")}
 HIVE_SOLVER=${solvers.join(",")}
 WEB3_RPC_URL=${websocketUrl} 
 WEB3_RPC_HTTP=${netUrl}
@@ -32,8 +37,12 @@ WEB3_CHAIN_ID=${network.config.chainId}
 
 HIVE_TOKEN=${tokenContract.address}
 
+
+#MEDIATION_CONTRACT=${mediationContract.address} 
+
 DEPLOYED_ON="${new Date()}"
 DEPLOYED_AT="${new Date().toLocaleString()}"
+
 `.trim();
 
     // the below can be derived from controller contract

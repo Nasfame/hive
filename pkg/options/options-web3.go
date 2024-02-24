@@ -27,7 +27,7 @@ func GetDefaultWeb3Options(s enums.ServiceType) web3.Web3Options {
 		StorageAddress:    config.Conf.GetString(enums.HIVE_STORAGE),
 		UsersAddress:      config.Conf.GetString(enums.HIVE_USERS),
 		TokenAddress:      config.Conf.GetString(enums.HIVE_TOKEN),
-		MediationAddress:  config.Conf.GetString(enums.HIVE_MEDIATION),
+		MediationAddress:  config.Conf.GetString(enums.HIVE_MEDIATORS),
 		JobCreatorAddress: config.Conf.GetString(enums.HIVE_JOBCREATOR),
 
 		// misc

@@ -19,7 +19,6 @@ GET {{v1}}/job_offers
 Accept: application/json
 
 
-#
 #### Get Deals for job creators
 #GET {{v1}}/deals/?job_creator={{jc}}
 #Accept: application/json
@@ -28,4 +27,9 @@ Accept: application/json
 ### Get Deals of state result state submitted
 
 GET {{v1}}/deals?job_creator={{jc}}&state=ResultsSubmitted
+Accept: application/json
+
+### Get Deals of state result state submitted
+
+GET {{v1}}/deals?resource_provider={{rp}}&state=ResultsSubmitted
 Accept: application/json

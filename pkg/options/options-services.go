@@ -14,7 +14,7 @@ import (
 func GetDefaultServicesOptions() dto.ServiceConfig {
 	return dto.ServiceConfig{
 		Solver:   config.Conf.GetString(enums.HIVE_SOLVER),
-		Mediator: strings.Split(config.Conf.GetString(enums.HIVE_MEDIATION), ","),
+		Mediator: strings.Split(config.Conf.GetString(enums.HIVE_MEDIATORS), ","),
 	}
 }
 

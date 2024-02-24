@@ -51,7 +51,7 @@ var appConfig = configMap[string]{
 		"Hive Solver  Address",
 		"",
 	},
-	enums.HIVE_MEDIATION: {
+	enums.HIVE_MEDIATORS: {
 		"Hive Mediation Addresss : can be set of addresses separated by ','",
 		"",
 	},

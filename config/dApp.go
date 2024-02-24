@@ -50,7 +50,7 @@ func loadDApp(network string) (envMap map[string]string, err error) {
 	logrus.Debugln("envMap", envMap)
 
 	isMediator := func(key string) bool {
-		return strings.HasPrefix(key, strings.ToUpper(enums.HIVE_MEDIATION))
+		return strings.HasPrefix(key, strings.ToUpper(enums.HIVE_MEDIATORS))
 	}
 
 	var curMediators []string
@@ -60,6 +60,7 @@ func loadDApp(network string) (envMap map[string]string, err error) {
 		if isMediator(key) {
 			logrus.Debugln("found mediator:", key, value)
 			curMediators = append(curMediators, value)
+			delete(envMap, key)
 		}
 	}
 
@@ -67,9 +68,9 @@ func loadDApp(network string) (envMap map[string]string, err error) {
 		logrus.Fatalln("no mediators found")
 	}
 
-	envMap[enums.HIVE_MEDIATION] = strings.Join(curMediators, ",")
+	envMap[enums.HIVE_MEDIATORS] = strings.Join(curMediators, ",")
 
-	logrus.Debugln("mediation", envMap[enums.HIVE_MEDIATION])
+	logrus.Debugln("mediation", envMap[enums.HIVE_MEDIATORS])
 
 	return
 
