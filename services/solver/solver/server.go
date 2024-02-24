@@ -90,7 +90,7 @@ func (solverServer *solverServer) ListenAndServe(ctx context.Context, cm *system
 
 	log.Info().Msgf("start websocket server")
 
-	// websocket server to send deals matched
+	// websocket server to send events
 	http.StartWebSocketServer(
 		subrouter,
 		config.WEBSOCKET_SUB_PATH,

@@ -1,6 +1,8 @@
 package config
 
 import (
+	"path"
+
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/viper"
@@ -44,7 +46,7 @@ var buildConfig = configMap[string]{
 
 	enums.APP_LOG_FILE_FORMAT: {
 		"app log file format",
-		"/var/tmp/coophive_%s.jsonl",
+		"/coophive_%s.jsonl", // injects appdir into the format
 	},
 
 	enums.STD_REPO_URI: {
@@ -88,7 +90,7 @@ func init() {
 
 func tempInitForFx(conf *viper.Viper) {
 
-	Conf = conf
+	Conf = conf // set global var
 
 	// log.Println("version", conf.GetString(enums.VERSION))
 
@@ -108,6 +110,13 @@ func tempInitForFx(conf *viper.Viper) {
 		zerolog.SetGlobalLevel(zerolog.TraceLevel)
 		log.Debug().Msgf("debug mode enabled")
 	}
+
+	logFormat := conf.GetString(enums.APP_LOG_FILE_FORMAT)
+	appDir := conf.GetString(enums.APP_DATA_DIR)
+	logFile := path.Join(appDir, logFormat)
+
+	log.Debug().Msgf("setting log file: %s", logFile)
+	conf.Set(enums.APP_LOG_FILE_FORMAT, logFile)
 
 	// log.Fatal().Msg(conf.GetString(enums.WEB3_PRIVATE_KEY))
 

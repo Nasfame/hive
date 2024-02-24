@@ -82,7 +82,7 @@ func Info(service Service, title string, data interface{}) {
 }
 
 func Debug(service Service, title string, data interface{}) {
-	logWithCaller(3, zerolog.DebugLevel, service, title, data) // FIXME: calc skipframecount
+	logWithCaller(5, zerolog.DebugLevel, service, title, data) // FIXME: calc skipframecount
 }
 
 func Trace(service Service, title string, data interface{}) {

@@ -1,5 +1,31 @@
+
 ## Home
-GET http://0.0.0.0:8080
+GET {{u}}
+Accept: application/json
+
+#@v1={{u}}/api/v1
+#@jc=0x7E921e387Fbc82c79deC78788e77b1f5E4625654
+
+### Get Deals
+GET {{v1}}/deals
+Accept: application/json
+
+### Get RP offers
+GET {{v1}}/resource_offers
+Accept: application/json
+
+### Get JP offers
+GET {{v1}}/job_offers
 Accept: application/json
 
 
+#
+#### Get Deals for job creators
+#GET {{v1}}/deals/?job_creator={{jc}}
+#Accept: application/json
+
+
+### Get Deals of state result state submitted
+
+GET {{v1}}/deals?job_creator={{jc}}&state=ResultsSubmitted
+Accept: application/json
