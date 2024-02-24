@@ -70,16 +70,16 @@ const config: HardhatUserConfig = {
       // faucet: "https://sfuel.skale.network/staging/chaos",
       // explorer: "https://staging-fast-active-bellatrix.explorer.staging-v3.skalenodes.com",
     },*/
-    titanAI: {
-      //skale testnet
-      chainId: 1020352220,
-      url: "https://testnet.skalenodes.com/v1/aware-fake-trim-testnet",
-      ws: "wss://testnet.skalenodes.com/v1/ws/aware-fake-trim-testnet",
-      accounts: PRIVATE_KEYS,
-      saveDeployments: true,
-      // https://testnet.portal.skale.space/chains/titan
-      // https://aware-fake-trim-testnet.explorer.testnet.skalenodes.com
-    },
+    /*    titanAI: {
+          //skale testnet
+          chainId: 1020352220,
+          url: "https://testnet.skalenodes.com/v1/aware-fake-trim-testnet",
+          ws: "wss://testnet.skalenodes.com/v1/ws/aware-fake-trim-testnet",
+          accounts: PRIVATE_KEYS,
+          saveDeployments: true,
+          // https://testnet.portal.skale.space/chains/titan
+          // https://aware-fake-trim-testnet.explorer.testnet.skalenodes.com
+        },*/
         calibration: {
           chainId: 314159,
           url: "https://api.calibration.node.glif.io/rpc/v1",

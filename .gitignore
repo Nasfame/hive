@@ -4,7 +4,7 @@ hardhat/cache
 hardhat/deployments/hardhat
 hardhat/deployments/localhost
 hardhat/deployments/geth
-hardhat/deployments/*
+#hardhat/deployments/*
 hardhat/typechain-types
 
 hardhat/.prettierignore.ci

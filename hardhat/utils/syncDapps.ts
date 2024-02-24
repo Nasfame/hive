@@ -29,7 +29,7 @@ export async function syncDapps(hre: HardhatRuntimeEnvironment) {
     // MEDIATION_CONTRACT=is already in hive_controller
     const content = `
 HIVE_CONTROLLER=${controllerContract.address}
-HIVE_MEDIATION=${defaultMediators.join(",")}
+HIVE_MEDIATORS=${defaultMediators.join(",")}
 HIVE_SOLVER=${solvers.join(",")}
 WEB3_RPC_URL=${websocketUrl} 
 WEB3_RPC_HTTP=${netUrl}

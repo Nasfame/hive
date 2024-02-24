@@ -121,10 +121,7 @@ contract HiveController is IHiveController, Ownable, Initializable {
     );
     bool isResourceProvider = tx.origin == deal.members.resourceProvider;
     bool isJobCreator = tx.origin == deal.members.jobCreator;
-//    require(isResourceProvider || isJobCreator, "Only RP / JC");
-
-    checkOnlyRpJc(deal);
-
+    require(isResourceProvider || isJobCreator, "Only RP / JC");
 
     if(isResourceProvider) {
       storageContract.agreeResourceProvider(dealId);
@@ -415,7 +412,7 @@ contract HiveController is IHiveController, Ownable, Initializable {
   ) public override {
     SharedStructs.Deal memory deal = storageContract.getDeal(dealId);
     SharedStructs.Agreement memory agreement = storageContract.getAgreement(dealId);
-    checkOnlyRpJc(deal);
+    require(deal.members.resourceProvider == tx.origin || deal.members.jobCreator == tx.origin, "Only RP or JC");
     require(agreement.state == SharedStructs.AgreementState.ResultsChecked, "Not correct state");
     require(block.timestamp > agreement.resultsSubmittedAt + deal.timeouts.judgeResults.timeout, "Not timed out");
     uint256 resultsCollateral = storageContract.getResultsCollateral(dealId);
@@ -428,10 +425,5 @@ contract HiveController is IHiveController, Ownable, Initializable {
       resultsCollateral,
       deal.pricing.mediationFee
     );
-  }
-
-
-  function checkOnlyRpJc(SharedStructs.Deal memory deal) internal view {
-    require(deal.members.resourceProvider == tx.origin || deal.members.jobCreator == tx.origin, "Only RP / JC");
   }
 }

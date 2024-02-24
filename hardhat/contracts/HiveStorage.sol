@@ -4,8 +4,6 @@ pragma solidity ^0.8.6;
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "./SharedStructs.sol";
 import "./ControllerOwnable.sol";
-import {HiveController} from "./HiveController.sol";
-import {HiveMediationRandom} from "./HiveMediationRandom.sol";
 
 contract HiveStorage is ControllerOwnable, Initializable {
 

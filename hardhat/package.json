@@ -16,7 +16,7 @@
     "clean": "hardhat clean && rm -rf deployments",
     "hardhat:local": "hardhat node",
     "test": "CONFIG=./.env.hardhat hardhat test",
-    "deploy": "hardhat deploy",
+    "deploy": "hardhat deploy --network ",
     "deploy:calibration": "hardhat deploy --network calibration",
     "deploy:coophive": "hardhat deploy --network coophive",
     "deploy:sepolia": "rm -rf deployments/sepolia && hardhat deploy --network sepolia && hardhat fund --network sepolia",
@@ -32,7 +32,9 @@
     "deploy:hiveToken": "hardhat deploy --tags hiveToken --network ",
     "fund": "hardhat fund --network ",
     "drip": "hardhat drip --network ",
-    "dapp": "hardhat dapp --network "
+    "dapp": "hardhat dapp --network ",
+    "coophive": "cp -r deployments/coophive deployments1/coophive && rm -rf deployments/coophive && npm run deploy coophive",
+    "calibration": "cp -r deployments/calibration deployments1/calibration && rm -rf deployments/calibration && npm run deploy calibration"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-chai-matchers": "^2.0.4",
