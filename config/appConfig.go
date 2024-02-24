@@ -8,7 +8,7 @@ import (
 
 const DEFAULT_DEALER = "std-autoaccept"
 
-const defaultNetwork = deprecatedNetwork
+const defaultNetwork = "sepolia"
 
 const deprecatedNetwork = "aurora"
 

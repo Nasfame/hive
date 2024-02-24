@@ -1,0 +1,104 @@
+version: "3.8"
+
+services:
+  jobcreator:
+    env_file:
+      - .env
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: [ "jobcreator" ]
+    restart: always
+    healthcheck:
+      test: [ "CMD", "./bin/hive", "jobcreator", "--help" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    volumes:
+      - ./data:/app/coophive
+
+  mediator:
+    env_file:
+      - .env
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: [ "mediator" ]
+    restart: always
+    healthcheck:
+      test: [ "CMD", "./bin/hive", "mediator", "--help" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    volumes:
+      - ./data:/app/coophive
+
+  resource-provider:
+    env_file:
+      - .env
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: [ "resource-provider" ]
+    restart: always
+    healthcheck:
+      test: [ "CMD", "./bin/hive", "resource-provider", "--help" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    volumes:
+      - ./data:/app/coophive
+
+  run:
+    env_file:
+      - .env
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: [ "run" ]
+    restart: always
+    healthcheck:
+      test: [ "CMD", "./bin/hive", "run", "--help" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    volumes:
+      - ./data:/app/coophive
+
+  solver:
+    env_file:
+      - .env
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: [ "solver" ]
+    restart: always
+    healthcheck:
+      test: [ "CMD", "./bin/hive", "solver", "--help" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    volumes:
+      - ./data:/app/coophive
+
+  version:
+    env_file:
+      - .env
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: [ "version" ]
+    restart: always
+    healthcheck:
+      test: [ "CMD", "./bin/hive", "version" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    volumes:
+      - ./data:/app/coophive

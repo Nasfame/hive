@@ -60,10 +60,10 @@ sync:
 	make snapshot
 
 	scp dist/cli_linux_amd64_v1/bin hive:/usr/local/bin/hive
-	scp dist/cli_linux_amd64_v1/bin hive1:/usr/local/bin/hive
+	#scp dist/cli_linux_amd64_v1/bin hive1:/usr/local/bin/hive
 
 	scp .env.prod hive:.env
-	scp .env.prod hive1:.env
+	#scp .env.prod hive1:.env
 
 sync-env:
 	scp .env.prod hive:.env
@@ -91,7 +91,7 @@ plugin-websocket:
 
 
 cleanup_github:
-	git tag -l | grep pr | xargs -I {} sh -c 'git tag -d {} & git push origin --delete {} & gh release delete {} --yes'
+	git tag -l | grep -- "-pr[0-9]" | xargs -I {} sh -c 'git tag -d {} & git push origin --delete {} & gh release delete {} --yes'
 	#git tag -l | grep v0.0.0-br | xargs -I {} sh -c 'git tag -d {} & git push origin --delete {} & gh release delete {} --yes'
 
 github:
