@@ -66,7 +66,7 @@ var appConfig = configMap[string]{
 	},
 	enums.WEB3_CHAIN_ID: {
 		"chain id of the network",
-		"1337",
+		"",
 	},
 	enums.WEB3_PRIVATE_KEY: {
 		"private key",

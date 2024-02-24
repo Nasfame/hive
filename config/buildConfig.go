@@ -1,6 +1,7 @@
 package config
 
 import (
+	"os"
 	"path"
 
 	"github.com/rs/zerolog"
@@ -112,8 +113,14 @@ func tempInitForFx(conf *viper.Viper) {
 	}
 
 	logFormat := conf.GetString(enums.APP_LOG_FILE_FORMAT)
-	appDir := conf.GetString(enums.APP_DATA_DIR)
+	appDir := conf.GetString(enums.APP_DIR)
+
 	logFile := path.Join(appDir, logFormat)
+	logDir := path.Dir(logFile)
+
+	if err := os.MkdirAll(logDir, 640); err != nil {
+		log.Fatal().Err(err).Msgf("failed to create log dir: %s", logDir)
+	}
 
 	log.Debug().Msgf("setting log file: %s", logFile)
 	conf.Set(enums.APP_LOG_FILE_FORMAT, logFile)

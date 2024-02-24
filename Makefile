@@ -53,6 +53,22 @@ release-linux:
 install:
 	goreleaser build --single-target --clean -o ./bin/${binName} --snapshot
 
+snapshot:
+	goreleaser build --clean --snapshot
+
+sync:
+	make snapshot
+
+	scp dist/cli_linux_amd64_v1/bin hive:/usr/local/bin/hive
+	scp dist/cli_linux_amd64_v1/bin hive1:/usr/local/bin/hive
+
+	scp .env.prod hive:.env
+	scp .env.prod hive1:.env
+
+sync-env:
+	scp .env.prod hive:.env
+	scp .env.prod hive1:.env
+
 #	ln -s ./bin/hive $$(go env GOBIN)
 install-win:
 	make release
@@ -87,7 +103,7 @@ github:
 setup-bacalhau:
 	mkdir -p /tmp/coophive/data/ipfs
 	export BACALHAU_SERVE_IPFS_PATH=/tmp/coophive/data/ipfs
-	bacalhau serve \
+	./bacalhau serve \
         --node-type compute,requester \
         --peer none \
         --private-internal-ipfs=false \
