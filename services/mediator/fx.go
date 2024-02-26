@@ -4,6 +4,8 @@ import (
 	"github.com/spf13/cobra"
 	"go.uber.org/fx"
 
+	"github.com/CoopHive/hive/config"
+	"github.com/CoopHive/hive/enums"
 	"github.com/CoopHive/hive/internal/genesis"
 )
 
@@ -37,6 +39,8 @@ func newServices(i in) (o out) {
 func newMediatorCmd() *cobra.Command {
 	options := NewMediatorOptions()
 
+	serviceType := enums.MEDIATOR
+
 	mediatorCmd := &cobra.Command{
 		Use:     "mediator",
 		Aliases: []string{"mediate"},
@@ -44,6 +48,9 @@ func newMediatorCmd() *cobra.Command {
 		Long:    "Start the CoopHive mediator service.",
 		Example: "",
 		RunE: func(cmd *cobra.Command, _ []string) error {
+			serviceType.ProcessSyncServiceDirectory(config.Conf.GetString(enums.APP_DIR), func(appDir string) {
+				config.SetAppDir(config.Conf, appDir)
+			})
 			options, err := ProcessMediatorOptions(options)
 			if err != nil {
 				return err

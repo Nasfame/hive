@@ -5,6 +5,8 @@ import (
 	"github.com/spf13/viper"
 	"go.uber.org/fx"
 
+	"github.com/CoopHive/hive/config"
+	"github.com/CoopHive/hive/enums"
 	"github.com/CoopHive/hive/internal/genesis"
 	"github.com/CoopHive/hive/services/dealmaker"
 
@@ -48,12 +50,18 @@ func newServices(i in) (o out) {
 
 func (s *service) newRunCmd(conf *viper.Viper) *cobra.Command {
 	options := optionsfactory.NewJobCreatorOptions()
+	serviceType := enums.JC // TODO: should we have run?
+
 	runCmd := &cobra.Command{
 		Use:     "run",
 		Short:   "Run a job on the CoopHive network.",
 		Long:    "Run a job on the CoopHive network.",
 		Example: "run cowsay:v0.0.1 -i Message=CoopHive",
 		RunE: func(cmd *cobra.Command, args []string) error {
+			serviceType.ProcessSyncServiceDirectory(s.Conf.GetString(enums.APP_DIR), func(appDir string) {
+				config.SetAppDir(s.Conf, appDir)
+			})
+
 			options, err := optionsfactory.ProcessJobCreatorOptions(options, args)
 			if err != nil {
 				return err

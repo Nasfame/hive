@@ -4,6 +4,8 @@ import (
 	"github.com/spf13/cobra"
 	"go.uber.org/fx"
 
+	"github.com/CoopHive/hive/config"
+	"github.com/CoopHive/hive/enums"
 	"github.com/CoopHive/hive/internal/genesis"
 	"github.com/CoopHive/hive/services/dealmaker"
 )
@@ -44,6 +46,7 @@ func newServices(i in) (o out) {
 
 func (s *service) newResourceProviderCmd() *cobra.Command {
 	options := NewResourceProviderOptions()
+	serviceType := enums.RP
 
 	resourceProviderCmd := &cobra.Command{
 		Use:     "resourceprovider",
@@ -52,6 +55,9 @@ func (s *service) newResourceProviderCmd() *cobra.Command {
 		Long:    "Start the CoopHive resource provider service.",
 		Example: "",
 		RunE: func(cmd *cobra.Command, _ []string) error {
+			serviceType.ProcessSyncServiceDirectory(s.Conf.GetString(enums.APP_DIR), func(appDir string) {
+				config.SetAppDir(s.Conf, appDir)
+			})
 			options, err := ProcessResourceProviderOptions(options)
 			if err != nil {
 				return err

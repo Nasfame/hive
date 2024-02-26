@@ -5,6 +5,7 @@ import (
 	"go.uber.org/fx"
 
 	"github.com/CoopHive/hive/config"
+	"github.com/CoopHive/hive/enums"
 	"github.com/CoopHive/hive/internal/genesis"
 	"github.com/CoopHive/hive/internal/jobCreatorService"
 	"github.com/CoopHive/hive/pkg/system"
@@ -49,6 +50,7 @@ func newServices(i in) (o out) {
 
 func (s *service) newJobCreatorCmd() *cobra.Command {
 	options := NewJobCreatorOptions()
+	serviceType := enums.JC
 
 	cmd := &cobra.Command{
 		Use:     "jobcreator",
@@ -57,6 +59,17 @@ func (s *service) newJobCreatorCmd() *cobra.Command {
 		Long:    "Start the CoopHive job creator service.",
 		Example: "",
 		RunE: func(cmd *cobra.Command, args []string) error {
+			// serviceType.ProcessSyncServiceDirectory(s.Conf.GetString(enums.APP_DIR))
+			// appDir, err := serviceType.ProcessSyncServiceDirectory(s.Conf.GetString(enums.APP_DIR))
+			// if err != nil {
+			// 	s.Log.Errorf("failed to process directory for service %s", serviceType)
+			// 	return err
+			// }
+
+			serviceType.ProcessSyncServiceDirectory(s.Conf.GetString(enums.APP_DIR), func(appDir string) {
+				config.SetAppDir(s.Conf, appDir)
+			})
+
 			options, err := ProcessOnChainJobCreatorOptions(options, args)
 			if err != nil {
 				return err

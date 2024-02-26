@@ -3,6 +3,8 @@ package config
 import (
 	"os"
 	"path"
+	"slices"
+	"strings"
 
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
@@ -20,7 +22,6 @@ var commitSha string
 // // go:embed buildDate.txt
 // var buildDate string
 // TODO:
-
 var buildConfig = configMap[string]{
 	// app specific
 	enums.APP_NAME: {
@@ -69,6 +70,30 @@ var buildConfig = configMap[string]{
 		"module path",
 		"/module.coophive",
 	},
+	enums.BACALHAU_RESULTS_DIR: {
+		"bacalhau results dir", // relative to app dir
+		"bacalhau-results",
+	},
+	enums.BACALHAU_SPECS_DIR: {
+		"bacalhau specs dir", // relative to app dir
+		"bacalhau-specs",
+	},
+	enums.BACALHAU_JOBS_DIR: {
+		"bacalhau jobs dir", // relative to app dir
+		"bacalhau-specs",
+	},
+	enums.REPO_DIR: {
+		"repos dir", // relative to app dir
+		"repos",
+	},
+	enums.DOWNlOADS_DIR: {
+		"downloads dir",
+		"downloaded-files", // relative to app dir
+	},
+	enums.JOB_PRICE: {
+		"job price", // is now hardcoded, but TODO:
+		"2",
+	},
 }
 
 // TODO: add network related contract configs but keep it open to recevie from env
@@ -82,12 +107,10 @@ var Conf *viper.Viper
 func tempInitForFx(conf *viper.Viper) {
 
 	Conf = conf // set global var
-
 	// log.Println("version", conf.GetString(enums.VERSION))
 
 	MODULE_PATH = conf.GetString(enums.MODULE_PATH)
 	APP_DATA_DIR = conf.GetString(enums.APP_DATA_DIR)
-
 	STD_MODULE_FORMAT = conf.GetString(enums.STD_MODULE_FORMAT)
 
 	// log.Println("app data dir", APP_DATA_DIR)
@@ -102,8 +125,44 @@ func tempInitForFx(conf *viper.Viper) {
 		log.Debug().Msgf("debug mode enabled")
 	}
 
-	logFormat := conf.GetString(enums.APP_LOG_FILE_FORMAT)
 	appDir := conf.GetString(enums.APP_DIR)
+
+	conf.Set(enums.APP_PLUGIN_DIR, path.Join(appDir, "plugins"))
+
+	// SetAppDir(conf, appDir) deprecated as services are directly taking the r
+
+	// log.Fatal().Msg(conf.GetString(enums.WEB3_PRIVATE_KEY))
+
+}
+
+func SetAppDir(conf *viper.Viper, appDir string) {
+
+	conf.Set(enums.APP_DIR, appDir)
+
+	setPathConfig := func(pathKey string) {
+		dirPath := conf.GetString(pathKey)
+		newPath := path.Join(appDir, dirPath) // TODO: deprecate AppDatadir (appdir) is enough
+		conf.Set(pathKey, newPath)
+		err := os.MkdirAll(newPath, 0755)
+		if err != nil {
+			log.Debug().Err(err).Msgf("failed to create dir: %s", newPath)
+			return
+		}
+
+		log.Debug().Msgf("created dir: %s", newPath)
+
+	}
+
+	// conf.Set(enums.BACALHAU_RESULTS_DIR, path.Join(appDir, conf.GetString(enums.BACALHAU_RESULTS_DIR)))
+	// os.MkdirAll(conf.GetString(enums.BACALHAU_RESULTS_DIR), 0755)
+
+	setPathConfig(enums.BACALHAU_RESULTS_DIR)
+	setPathConfig(enums.BACALHAU_SPECS_DIR)
+	setPathConfig(enums.BACALHAU_JOBS_DIR)
+	setPathConfig(enums.REPO_DIR)
+	setPathConfig(enums.DOWNlOADS_DIR)
+
+	logFormat := conf.GetString(enums.APP_LOG_FILE_FORMAT)
 
 	logFile := path.Join(appDir, logFormat)
 	logDir := path.Dir(logFile)
@@ -115,8 +174,12 @@ func tempInitForFx(conf *viper.Viper) {
 	log.Debug().Msgf("setting log file: %s", logFile)
 	conf.Set(enums.APP_LOG_FILE_FORMAT, logFile)
 
-	// log.Fatal().Msg(conf.GetString(enums.WEB3_PRIVATE_KEY))
+	bacalhauEnv := conf.GetString(enums.BACALHAU_ENV)
+
+	bacalhauEnvs := strings.Split(bacalhauEnv, "\n")
+
+	bacalhauEnvs = slices.Compact(bacalhauEnvs)
+
+	conf.Set(enums.BACALHAU_ENV, bacalhauEnvs)
 
 }
-
-const JOB_PRICE = 2

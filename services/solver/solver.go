@@ -3,6 +3,8 @@ package solver
 import (
 	"github.com/spf13/cobra"
 
+	"github.com/CoopHive/hive/config"
+	"github.com/CoopHive/hive/enums"
 	"github.com/CoopHive/hive/internal/genesis"
 	"github.com/CoopHive/hive/pkg/system"
 	"github.com/CoopHive/hive/pkg/web3"
@@ -11,13 +13,19 @@ import (
 )
 
 type service struct {
+	serviceType enums.ServiceType
+
 	*genesis.Service
 }
 
 func newSolverCmd(s0 *genesis.Service) *cobra.Command {
 	options := NewSolverOptions()
 
-	s := &service{s0}
+	serviceType := enums.SOLVER
+
+	s := &service{
+		serviceType,
+		s0}
 
 	solverCmd := &cobra.Command{
 		Use:     "solver",
@@ -25,6 +33,9 @@ func newSolverCmd(s0 *genesis.Service) *cobra.Command {
 		Long:    "Start the CoopHive solver service.",
 		Example: "SERVER_URL=0.0.0.0:8080 hive solver",
 		RunE: func(cmd *cobra.Command, _ []string) error {
+			serviceType.ProcessSyncServiceDirectory(s.Conf.GetString(enums.APP_DIR), func(appDir string) {
+				config.SetAppDir(s.Conf, appDir)
+			})
 			options, err := ProcessSolverOptions(options)
 			if err != nil {
 				return err

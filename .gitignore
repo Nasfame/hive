@@ -29,7 +29,7 @@ ops/testnet/.terraform/providers
 .run/
 bin/
 vendor/
-./data/
+.appData/
 .DS_Store
 
 dist/
@@ -38,7 +38,9 @@ hive
 
 *.so
 
-data/
+.appData/
 
 notepad.sh
 /.env.prod2
+
+.appData

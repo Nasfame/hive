@@ -6,12 +6,13 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/CoopHive/hive/config"
+	"github.com/CoopHive/hive/enums"
 	"github.com/CoopHive/hive/pkg/executor/bacalhau"
 )
 
 func GetDefaultBacalhauOptions() bacalhau.BacalhauExecutorOptions {
 	return bacalhau.BacalhauExecutorOptions{
-		ApiHost: config.Conf.GetString("BACALHAU_API_HOST"),
+		ApiHost: config.Conf.GetString(enums.BACALHAU_API_HOST),
 	}
 }
 

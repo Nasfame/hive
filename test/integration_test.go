@@ -17,6 +17,7 @@ import (
 	"github.com/CoopHive/hive/pkg/executor/noop"
 	"github.com/CoopHive/hive/pkg/system"
 	"github.com/CoopHive/hive/pkg/web3"
+	"github.com/CoopHive/hive/services/dealmaker"
 	"github.com/CoopHive/hive/services/jobcreator"
 	"github.com/CoopHive/hive/services/mediator"
 	"github.com/CoopHive/hive/services/resourceprovider"
@@ -168,7 +169,9 @@ func testStackWithOptions(
 		return nil, err
 	}
 
-	result, err := jobCreatorService.RunJob(commandCtx, jobCreatorOptions, func(evOffer dto.JobOfferContainer) {
+	dealerService := &dealmaker.Service{}
+
+	result, err := jobCreatorService.RunJob(commandCtx, jobCreatorOptions, dealerService, func(evOffer dto.JobOfferContainer) {
 
 	})
 	if err != nil {

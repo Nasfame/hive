@@ -35,7 +35,7 @@ func init() {
 		configFile = ".env"
 	}
 
-	logrus.Infof("Loading config from %s", configFile)
+	logrus.Debugf("Loading config from %s", configFile)
 
 	if err := godotenv.Load(configFile); err != nil {
 		logrus.Debugf(".env loading error %v", err)

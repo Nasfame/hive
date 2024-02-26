@@ -1,6 +1,8 @@
 package system
 
-import "fmt"
+import (
+	"fmt"
+)
 
 type Service string
 

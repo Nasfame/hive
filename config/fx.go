@@ -3,7 +3,6 @@ package config
 import (
 	"log"
 	"os"
-	"path"
 	"strings"
 
 	"github.com/sirupsen/logrus"
@@ -96,11 +95,11 @@ func newConfig() (o out) {
 	}
 
 	appDir := config.GetString(enums.APP_DIR)
-
 	logrus.Debugln("appDir: ", appDir)
 
-	config.Set(enums.APP_PLUGIN_DIR, path.Join(appDir, "plugins"))
-	config.Set(enums.APP_DATA_DIR, path.Join(appDir, "data"))
+	appDataDir := config.GetString(enums.APP_DATA_DIR)
+	appDataDir = strings.Replace(appDataDir, AppDirSymbol, appDir, 1)
+	config.Set(enums.APP_DATA_DIR, appDataDir)
 
 	/*Network related config*/
 

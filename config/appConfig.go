@@ -8,9 +8,11 @@ import (
 
 const DEFAULT_DEALER = "std-autoaccept"
 
-const defaultNetwork = "sepolia"
+const defaultNetwork = "aurora"
 
 const deprecatedNetwork = "aurora"
+
+const AppDirSymbol = "$APP_DIR"
 
 var appConfig = configMap[string]{
 	enums.DEBUG: {
@@ -31,10 +33,10 @@ var appConfig = configMap[string]{
 		"$HOME/coophive",
 	},
 	// derived
-	// enums.APP_DATA_DIR: {
-	// 	"App Data Location: typically used for storing github repos and results",
-	// 	"$APP_DIR/data",
-	// },
+	enums.APP_DATA_DIR: { // no longer derived
+		"App Data Location: typically used for storing github repos and results",
+		AppDirSymbol + "/data",
+	},
 	//
 	// enums.APP_PLUGIN_DIR: {
 	// 	"Plugin Path: typically used for storing plugins",
@@ -105,12 +107,27 @@ var appConfig = configMap[string]{
 		"",
 	},
 
-	/*RP*/
+	/*Bacalhau*/
+
+	enums.BACALHAU_BIN: {
+		"bacalhau binary path: if its installed then its just bacalhau",
+		"bacalhau",
+	},
 
 	enums.BACALHAU_API_HOST: {
-		"bacalhau host",
-		"localhost",
+		"bacalhau host (localhost)",
+		"bootstrap.production.bacalhau.org",
 	},
+	enums.BACALHAU_HOME: {
+		"bacalhau home",
+		"",
+	},
+	enums.BACALHAU_ENV: {
+		"bacalhau env", // bacalhau env
+		"",
+	},
+
+	/*RP*/
 
 	enums.PRICING_MODE: {
 		"pricing mode in integer",
@@ -155,12 +172,5 @@ var appConfig = configMap[string]{
 	enums.MODULE_HASH: {
 		"module path",
 		"",
-	},
-
-	/*Bacalhau*/
-
-	enums.BACALHAU_BIN: {
-		"bacalhau binary path: if its installed then its just bacalhau",
-		"bacalhau",
 	},
 }

@@ -15,12 +15,12 @@ import (
 	"github.com/go-git/go-git/v5/plumbing"
 	"github.com/rs/zerolog/log"
 
+	"github.com/CoopHive/hive/config"
+	"github.com/CoopHive/hive/enums"
 	"github.com/CoopHive/hive/pkg/dto"
 	"github.com/CoopHive/hive/pkg/module/shortcuts"
-	"github.com/CoopHive/hive/pkg/system"
+	"github.com/CoopHive/hive/utils"
 )
-
-const REPO_DIR = "repos"
 
 func getRepoLocalPath(repoURL string) (string, error) {
 	parsedURL, err := url.Parse(repoURL)
@@ -33,7 +33,7 @@ func getRepoLocalPath(repoURL string) (string, error) {
 		return "", fmt.Errorf("invalid git URL")
 	}
 
-	return filepath.Join(REPO_DIR, pathParts[0], pathParts[1]), nil
+	return filepath.Join(config.Conf.GetString(enums.REPO_DIR), pathParts[0], pathParts[1]), nil
 }
 
 func CheckModuleOptions(options dto.ModuleConfig) error {
@@ -77,7 +77,7 @@ func CloneModule(module dto.ModuleConfig) (repo *git.Repository, err error) {
 	if err != nil {
 		return nil, err
 	}
-	repoDir, err := system.EnsureDataDir(repoPath)
+	repoDir, err := utils.EnsureDir(repoPath)
 	if err != nil {
 		return nil, err
 	}

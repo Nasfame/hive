@@ -9,6 +9,7 @@ import (
 	"github.com/davecgh/go-spew/spew"
 
 	"github.com/CoopHive/hive/config"
+	"github.com/CoopHive/hive/enums"
 	"github.com/CoopHive/hive/pkg/dto"
 	"github.com/CoopHive/hive/pkg/system"
 	"github.com/CoopHive/hive/pkg/web3"
@@ -46,8 +47,10 @@ func NewOnChainJobCreator(
 func (jobCreator *OnChainJobCreator) Start(ctx context.Context, cm *system.CleanupManager) chan error {
 	errorChan := jobCreator.controller.Start(ctx, cm)
 
+	jobPrice := config.Conf.GetFloat64(enums.JOB_PRICE)
+
 	// TODO: work out how to do dynamic pricing
-	tx, err := jobCreator.web3SDK.Contracts.JobCreator.SetRequiredDeposit(jobCreator.web3SDK.TransactOpts, web3.EtherToWei(config.JOB_PRICE))
+	tx, err := jobCreator.web3SDK.Contracts.JobCreator.SetRequiredDeposit(jobCreator.web3SDK.TransactOpts, web3.EtherToWei(jobPrice))
 	if err != nil {
 		errorChan <- err
 		return errorChan
@@ -98,7 +101,7 @@ func (jobCreator *OnChainJobCreator) Start(ctx context.Context, cm *system.Clean
 	jobCreator.web3Events.JobCreator.SubscribeJobAdded(func(ev jobcreatorweb3.JobcreatorJobAdded) {
 
 		// first we need to move the tokens into our account
-		tx, err := jobCreator.web3SDK.Contracts.Token.TransferFrom(jobCreator.web3SDK.TransactOpts, ev.Payee, jobCreator.web3SDK.GetAddress(), web3.EtherToWei(config.JOB_PRICE))
+		tx, err := jobCreator.web3SDK.Contracts.Token.TransferFrom(jobCreator.web3SDK.TransactOpts, ev.Payee, jobCreator.web3SDK.GetAddress(), web3.EtherToWei(jobPrice))
 		if err != nil {
 			fmt.Printf("error creating job offer: %s\n", err.Error())
 			return

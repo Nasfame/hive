@@ -6,11 +6,11 @@ import (
 
 	"github.com/rs/zerolog/log"
 
+	"github.com/CoopHive/hive/config"
+	"github.com/CoopHive/hive/enums"
 	"github.com/CoopHive/hive/pkg/system"
+	"github.com/CoopHive/hive/utils"
 )
-
-const FILES_DIR = "job-files"
-const DOWNLOADS_DIR = "downloaded-files"
 
 func LogSolverEvent(badge string, ev SolverEvent) {
 	switch ev.EventType {
@@ -54,17 +54,21 @@ func ServiceLogSolverEvent(service system.Service, ev SolverEvent) {
 }
 
 func GetDealsFilePath(id string) string {
-	return system.GetDataDir(filepath.Join(FILES_DIR, id))
+	p := filepath.Join(config.Conf.GetString(enums.BACALHAU_JOBS_DIR), id)
+	utils.EnsureDir(p)
+	return p
 }
 
 func EnsureDealsFilePath(id string) (string, error) {
-	return system.EnsureDataDir(filepath.Join(FILES_DIR, id))
+	return utils.EnsureDir(filepath.Join(config.Conf.GetString(enums.BACALHAU_JOBS_DIR), id))
 }
 
 func GetDownloadsFilePath(id string) string {
-	return system.GetDataDir(filepath.Join(DOWNLOADS_DIR, id))
+	downloadDir := config.Conf.GetString(enums.DOWNlOADS_DIR)
+	return filepath.Join(downloadDir, id)
 }
 
 func EnsureDownloadsFilePath(id string) (string, error) {
-	return system.EnsureDataDir(filepath.Join(DOWNLOADS_DIR, id))
+	downloadDir := config.Conf.GetString(enums.DOWNlOADS_DIR)
+	return utils.EnsureDir(filepath.Join(downloadDir, id))
 }

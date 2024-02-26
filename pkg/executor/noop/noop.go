@@ -7,6 +7,7 @@ import (
 	"github.com/CoopHive/hive/pkg/dto"
 	"github.com/CoopHive/hive/pkg/executor"
 	"github.com/CoopHive/hive/pkg/system"
+	"github.com/CoopHive/hive/utils"
 )
 
 const RESULTS_DIR = "noop-results"
@@ -47,7 +48,7 @@ func (e *NoopExecutor) RunJob(
 	deal dto.DealContainer,
 	module dto.Module,
 ) (*executor.ExecutorResults, error) {
-	resultsDir, err := system.EnsureDataDir(filepath.Join(RESULTS_DIR, deal.ID))
+	resultsDir, err := utils.EnsureDir(filepath.Join(RESULTS_DIR, deal.ID))
 	if err != nil {
 		return nil, fmt.Errorf("error creating a local folder of results %s -> %s", deal.ID, err.Error())
 	}

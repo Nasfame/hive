@@ -76,4 +76,9 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels}}
           github-token: ${{github.token}}
+          #          cache-from: type=gha
+          #          cache-to: type=gha,mode=max
+
           # platforms: linux/arm64,linux/amd64 TODO:
+
+#For cache u can use last option for gha cache: https://docs.docker.com/build/ci/github-actions/cache/

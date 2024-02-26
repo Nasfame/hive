@@ -24,6 +24,8 @@ type Service struct {
 
 	once bool
 
+	dealsMatched map[string]bool // deals matched so far
+
 	*genesis.Service
 }
 
@@ -38,7 +40,11 @@ func (d *Service) DealMatched(dealID string) {
 			panic("plugin paniced")
 		}
 	}()
+	if ok, _ := d.dealsMatched[dealID]; ok {
+		return
+	}
 	d.dealer.DealMatched(dealID)
+	d.dealsMatched[dealID] = true
 }
 
 // DealsAgreed should only be called exactly once
