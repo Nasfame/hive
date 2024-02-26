@@ -115,8 +115,8 @@ var appConfig = configMap[string]{
 	},
 
 	enums.BACALHAU_API_HOST: {
-		"bacalhau host (localhost)",
-		"bootstrap.production.bacalhau.org",
+		"bacalhau host",
+		"localhost",
 	},
 	enums.BACALHAU_HOME: {
 		"bacalhau home",
