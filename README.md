@@ -33,7 +33,7 @@ Welcome to the prerelease series of CoopHive v0.
 
 [//]: # (```)
 
-### Quick start
+### Quick start on Sepolia Testnet
 
 - [ ] Add to [Metamask](https://chainlist.org/chain/11155111)
 - [ ] Claim ETH drips from [Faucet](https://www.alchemy.com/faucets/ethereum-sepolia)
