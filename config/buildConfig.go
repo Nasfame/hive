@@ -143,7 +143,7 @@ func SetAppDir(conf *viper.Viper, appDir string) {
 		dirPath := conf.GetString(pathKey)
 		newPath := path.Join(appDir, dirPath) // TODO: deprecate AppDatadir (appdir) is enough
 		conf.Set(pathKey, newPath)
-		err := os.MkdirAll(newPath, 0755)
+		err := os.MkdirAll(newPath, os.ModeDir)
 		if err != nil {
 			log.Debug().Err(err).Msgf("failed to create dir: %s", newPath)
 			return
@@ -167,7 +167,7 @@ func SetAppDir(conf *viper.Viper, appDir string) {
 	logFile := path.Join(appDir, logFormat)
 	logDir := path.Dir(logFile)
 
-	if err := os.MkdirAll(logDir, 640); err != nil {
+	if err := os.MkdirAll(logDir, os.ModeDir); err != nil {
 		log.Fatal().Err(err).Msgf("failed to create log dir: %s", logDir)
 	}
 

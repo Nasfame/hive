@@ -62,7 +62,7 @@ sync:
 	scp dist/cli_linux_amd64_v1/bin hive:/usr/local/bin/hive
 	#scp dist/cli_linux_amd64_v1/bin hive1:/usr/local/bin/hive
 
-	scp .env.prod hive:.env
+	#scp .env.prod hive:.env
 	#scp .env.prod hive1:.env
 
 sync-env:
