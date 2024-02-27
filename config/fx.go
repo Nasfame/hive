@@ -97,9 +97,9 @@ func newConfig() (o out) {
 	appDir := config.GetString(enums.APP_DIR)
 	logrus.Debugln("appDir: ", appDir)
 
-	appDataDir := config.GetString(enums.APP_DATA_DIR)
-	appDataDir = strings.Replace(appDataDir, AppDirSymbol, appDir, 1)
-	config.Set(enums.APP_DATA_DIR, appDataDir)
+	// appDataDir := config.GetString(enums.APP_DATA_DIR)
+	// appDataDir = strings.Replace(appDataDir, AppDirSymbol, appDir, 1)
+	// config.Set(enums.APP_DATA_DIR, appDataDir)
 
 	/*Network related config*/
 

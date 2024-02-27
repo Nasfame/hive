@@ -59,7 +59,9 @@ snapshot:
 sync:
 	make snapshot
 
-	scp dist/cli_linux_amd64_v1/bin hive:/usr/local/bin/hive
+	#scp dist/cli_linux_amd64_v1/bin hive:/usr/local/bin/hive #permission issue
+	scp dist/cli_linux_amd64_v1/bin hive:./hive/hive
+
 	#scp dist/cli_linux_amd64_v1/bin hive1:/usr/local/bin/hive
 
 	#scp .env.prod hive:.env

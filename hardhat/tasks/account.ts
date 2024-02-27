@@ -3,6 +3,9 @@ import "@nomicfoundation/hardhat-toolbox";
 import {getAccount, getBalance, getBalanceInEther, getPublicAddress} from "../utils/accounts";
 import {HiveToken} from "../typechain-types";
 import {Account} from "../utils/types";
+import {HardhatRuntimeEnvironment} from "hardhat/types";
+import {HardhatEthersError} from "@nomicfoundation/hardhat-ethers/internal/errors";
+import {HardhatEthersSigner} from "@nomicfoundation/hardhat-ethers/signers";
 
 task("balance", "Prints an account's balance")
     .addParam("account", "The account's address")
@@ -115,23 +118,48 @@ task("fund", "Fund RP, faucet account's balance")
             }
             out[acc.name] = out_
 
-            const tx = {
-                to: acc.address,
-                value: amountInWei
-            };
-            const transactionResponse = await signer.sendTransaction(tx);
-            const transactionReceipt = await transactionResponse.wait();
-            const {hash: txHash} = transactionReceipt;
+            const transferEther = async () => {
+                const tx = {
+                    to: acc.address,
+                    value: amountInWei
+                };
 
-            console.log(`Transaction successful: ${txHash}`);
+                if (hre.network.name == "titanAI") {
+                    // const gasLimit = await signer.estimateGas(tx);
+                    tx["gasLimit"] = 100000 //+gasLimit //1.5 times or 250K
+                }
+                const transactionResponse = await signer.sendTransaction(tx);
+                const transactionReceipt = await transactionResponse.wait();
+                const {hash: txHash} = transactionReceipt;
 
-            // Send Hive tokens
-            const transferTx = await tokenContract.transfer(acc.address, amountInHiveWei);
-            const transferReceipt = await transferTx.wait();
-            const {hash: transferTxHash} = transferReceipt;
+                console.log(`Transaction successful: ${txHash}`);
+            }
 
-            console.log(`Hive transfer successful: ${transferTxHash}`);
+            const transferHive = async () => {
+                const additionalParams = {}
 
+                if (hre.network.name == "titanAI") {
+                    additionalParams["gasLimit"] = 100000 //+gasLimit //1.5 times or 250K
+                }
+
+                // Send Hive tokens
+                const transferTx = await tokenContract.transfer(acc.address, amountInHiveWei, additionalParams);
+                const transferReceipt = await transferTx.wait();
+                const {hash: transferTxHash} = transferReceipt;
+
+                console.log(`Hive transfer successful: ${transferTxHash}`);
+            }
+
+
+            const results = await Promise.allSettled([transferEther(), transferHive()])
+            results.forEach((result, index) => {
+                const transferType = index === 0 ? 'Ether' : 'Hive';
+                if (result.status === 'fulfilled') {
+                    console.log(`${transferType} successful and returned ${result.value}`)
+                } else {
+                    console.error(`${transferType} transfer encountered an error:`, result.reason);
+                }
+            })
 
             out_.newHive = await hiveBal(acc.address)
             out_.newBalance = await ethBal(acc.address)
@@ -195,35 +223,15 @@ task("drip", "Drip RP, faucet account's balance")
         }
         out[acc.name] = out_
 
-        const tx = {
-            to: acc.address,
-            value: amountInWei
-        };
-
-        if (hre.network.name == "titanAI") {
-            // const gasLimit = await signer.estimateGas(tx);
-            tx["gasLimit"] = 100000 //+gasLimit //1.5 times or 250K
-        }
-        const transactionResponse = await signer.sendTransaction(tx);
-        const transactionReceipt = await transactionResponse.wait();
-        const {hash: txHash} = transactionReceipt;
-
-        console.log(`Transaction successful: ${txHash}`);
-
-
-        const additonalParams = {}
-
-        if (hre.network.name == "titanAI") {
-            additonalParams["gasLimit"] = 100000 //+gasLimit //1.5 times or 250K
-        }
-
-        // Send Hive tokens
-        const transferTx = await tokenContract.transfer(acc.address, amountInHiveWei, additonalParams);
-        const transferReceipt = await transferTx.wait();
-        const {hash: transferTxHash} = transferReceipt;
-
-        console.log(`Hive transfer successful: ${transferTxHash}`);
-
+        const results = await Promise.allSettled([transferEther(acc, amountInWei, hre, signer), transferHive(acc, amountInWei, hre, signer, tokenContract, amountInHiveWei)])
+        results.forEach((result, index) => {
+            const transferType = index === 0 ? 'Ether' : 'Hive';
+            if (result.status === 'fulfilled') {
+                console.log(`${transferType} successful and returned ${result.value}`)
+            } else {
+                console.error(`${transferType} transfer encountered an error:`, result.reason);
+            }
+        })
 
         out_.newHive = await hiveBal(acc.address)
         out_.newBalance = await ethBal(acc.address)
@@ -235,3 +243,35 @@ task("drip", "Drip RP, faucet account's balance")
 
 
     });
+
+const transferEther = async (acc: Account, amountInWei: bigint, hre: HardhatRuntimeEnvironment, signer: HardhatEthersSigner) => {
+    const tx = {
+        to: acc.address,
+        value: amountInWei
+    };
+
+    if (hre.network.name == "titanAI") {
+        // const gasLimit = await signer.estimateGas(tx);
+        tx["gasLimit"] = 100000 //+gasLimit //1.5 times or 250K
+    }
+    const transactionResponse = await signer.sendTransaction(tx);
+    const transactionReceipt = await transactionResponse.wait();
+    const {hash: txHash} = transactionReceipt;
+
+    console.log(`Transaction successful: ${txHash}`);
+}
+
+const transferHive = async (acc: Account, amountInWei: bigint, hre: HardhatRuntimeEnvironment, signer: HardhatEthersSigner, tokenContract: HiveToken, amountInHiveWei: bigint) => {
+    const additionalParams = {}
+
+    if (hre.network.name == "titanAI") {
+        additionalParams["gasLimit"] = 100000 //+gasLimit //1.5 times or 250K
+    }
+
+    // Send Hive tokens
+    const transferTx = await tokenContract.transfer(acc.address, amountInHiveWei, additionalParams);
+    const transferReceipt = await transferTx.wait();
+    const {hash: transferTxHash} = transferReceipt;
+
+    console.log(`Hive transfer successful: ${transferTxHash}`);
+}

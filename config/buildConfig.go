@@ -1,6 +1,7 @@
 package config
 
 import (
+	"errors"
 	"os"
 	"path"
 	"slices"
@@ -8,9 +9,11 @@ import (
 
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
+	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 
 	"github.com/CoopHive/hive/enums"
+	"github.com/CoopHive/hive/utils"
 )
 
 var version string
@@ -137,17 +140,25 @@ func tempInitForFx(conf *viper.Viper) {
 
 func SetAppDir(conf *viper.Viper, appDir string) {
 
+	appDir, err := utils.EnsureDir(appDir)
+	if err != nil {
+		logrus.Fatalf("failed to create app dir: %s due to %v\n", appDir, err)
+	}
 	conf.Set(enums.APP_DIR, appDir)
 
 	setPathConfig := func(pathKey string) {
 		dirPath := conf.GetString(pathKey)
-		newPath := path.Join(appDir, dirPath) // TODO: deprecate AppDatadir (appdir) is enough
-		conf.Set(pathKey, newPath)
-		err := os.MkdirAll(newPath, os.ModeDir)
-		if err != nil {
-			log.Debug().Err(err).Msgf("failed to create dir: %s", newPath)
+		newPath := path.Join(appDir, dirPath)
+
+		// err := os.MkdirAll(newPath, 0755)
+		newPath, err := utils.EnsureDir(newPath)
+		if !errors.Is(err, os.ErrExist) && err != nil {
+			log.Fatal().Err(err).Msgf("failed to create dir: %s", newPath)
 			return
 		}
+
+		conf.Set(pathKey, newPath)
+		log.Debug().Msgf("set %s=%s", pathKey, newPath)
 
 		log.Debug().Msgf("created dir: %s", newPath)
 
@@ -162,17 +173,7 @@ func SetAppDir(conf *viper.Viper, appDir string) {
 	setPathConfig(enums.REPO_DIR)
 	setPathConfig(enums.DOWNlOADS_DIR)
 
-	logFormat := conf.GetString(enums.APP_LOG_FILE_FORMAT)
-
-	logFile := path.Join(appDir, logFormat)
-	logDir := path.Dir(logFile)
-
-	if err := os.MkdirAll(logDir, os.ModeDir); err != nil {
-		log.Fatal().Err(err).Msgf("failed to create log dir: %s", logDir)
-	}
-
-	log.Debug().Msgf("setting log file: %s", logFile)
-	conf.Set(enums.APP_LOG_FILE_FORMAT, logFile)
+	setPathConfig(enums.APP_LOG_FILE_FORMAT)
 
 	bacalhauEnv := conf.GetString(enums.BACALHAU_ENV)
 

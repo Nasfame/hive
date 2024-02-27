@@ -34,7 +34,9 @@ const (
 )
 
 const (
-	APP_DIR        = "app_dir"
+	APP_DIR = "app_dir"
+
+	// Deprecated: and replaced by app_dir
 	APP_DATA_DIR   = "app-data-dir"
 	APP_PLUGIN_DIR = "app-plugin-dir"
 )
