@@ -35,19 +35,3 @@ jobs:
       - name: Build Docker
         run: docker build .
 
-  test-docker:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Write environment
-        run: |
-          echo $envfile > .env.tmp
-          sed 's/ /\n/g' .env.tmp > .env
-          source .env
-          cp .env .env.test
-
-      - name: Build Docker
-        run: docker build -t app .
-#TODO: docker create Dockerfile.test
