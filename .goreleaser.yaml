@@ -12,7 +12,7 @@ git:
   prerelease_suffix: "-"
 
 builds:
-  - id: "cli"
+  - id: "hive"
     binary: "bin/"
     main: "main.go"
 
