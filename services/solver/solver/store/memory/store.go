@@ -2,14 +2,17 @@ package store
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"sync"
 
+	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 
 	"github.com/CoopHive/hive/enums"
 	"github.com/CoopHive/hive/pkg/dto"
 	"github.com/CoopHive/hive/services/solver/solver/store"
+	"github.com/CoopHive/hive/utils"
 
 	"github.com/CoopHive/hive/pkg/jsonl"
 )
@@ -33,8 +36,12 @@ func NewSolverStoreMemory(conf *viper.Viper) (*SolverStoreMemory, error) {
 
 	kinds := []string{"job_offers", "resource_offers", "deals", "decisions", "results"}
 	for k := range kinds {
+		if _, err := utils.EnsureDir(conf.GetString(enums.APP_LOG_FILE_FORMAT)); err != nil {
+			log.Fatalf("failed to create log dir due to %v", err)
+		}
 		logfile, err := os.OpenFile(fmt.Sprintf(conf.GetString(enums.APP_LOG_FILE_FORMAT), kinds[k]), os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0644)
 		if err != nil {
+			logrus.Debugf("failed to create logfile due to %v", err)
 			return nil, err
 		}
 		logWriters[kinds[k]] = jsonl.NewWriter(logfile)

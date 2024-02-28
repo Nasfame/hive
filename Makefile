@@ -49,6 +49,8 @@ release-linux:
 
 .PHONY: release install-unix install-win build release release-linux make-bin install install-all install-hive-latest install-hive
 
+deps:
+	go mod tidy && go work sync
 
 install:
 	goreleaser build --single-target --clean -o ./bin/${binName} --snapshot

@@ -3,11 +3,12 @@ package web3
 import (
 	"context"
 
-	"github.com/CoopHive/hive/pkg/system"
-	"github.com/CoopHive/hive/pkg/web3/bindings/storage"
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/event"
 	"github.com/rs/zerolog/log"
+
+	"github.com/CoopHive/hive/pkg/system"
+	"github.com/CoopHive/hive/pkg/web3/bindings/storage"
 )
 
 type StorageEventChannels struct {
@@ -46,6 +47,7 @@ func (s *StorageEventChannels) Start(
 
 	dealStateChangeSub, err = connectDealStateChangeSub()
 	if err != nil {
+		log.Fatal().Err(err).Msgf("subscribe to dealStateChanges failed")
 		return err
 	}
 

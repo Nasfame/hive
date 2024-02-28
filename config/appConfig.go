@@ -2,6 +2,10 @@ package config
 
 import (
 	"fmt"
+	"log"
+	"os"
+	"path"
+	"strings"
 
 	"github.com/CoopHive/hive/enums"
 )
@@ -13,6 +17,25 @@ const defaultNetwork = "aurora"
 const deprecatedNetwork = "aurora"
 
 const AppDirSymbol = "$APP_DIR"
+
+var processAppDir = func() string {
+
+	appDir := buildConfig[enums.APP_NAME].defaultVal
+
+	if strings.TrimSpace(appDir) == "" {
+		log.Fatal("invalid app dir")
+	}
+
+	appDir = strings.ToLower(appDir) // capital dirs are treated differently in unix systems
+
+	homeDir, err := os.UserHomeDir()
+
+	if err != nil {
+		log.Fatal("failed to find user home dir with error ", err)
+	}
+
+	return path.Join(homeDir, appDir)
+}
 
 var appConfig = configMap[string]{
 	enums.DEBUG: {
@@ -30,7 +53,7 @@ var appConfig = configMap[string]{
 
 	enums.APP_DIR: {
 		"App Location Directory",
-		"$HOME/coophive",
+		processAppDir(),
 	},
 	// derived
 	enums.APP_DATA_DIR: { // no longer derived

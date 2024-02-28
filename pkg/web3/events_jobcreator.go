@@ -3,11 +3,12 @@ package web3
 import (
 	"context"
 
-	"github.com/CoopHive/hive/pkg/system"
-	"github.com/CoopHive/hive/pkg/web3/bindings/jobcreator"
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/event"
 	"github.com/rs/zerolog/log"
+
+	"github.com/CoopHive/hive/pkg/system"
+	"github.com/CoopHive/hive/pkg/web3/bindings/jobcreator"
 )
 
 type JobCreatorEventChannels struct {
@@ -46,9 +47,9 @@ func (s *JobCreatorEventChannels) Start(
 
 	jobAddedSub, err = connectJobAddedSub()
 	if err != nil {
+		log.Fatal().Err(err).Msgf("subscribe to job request failed")
 		return err
 	}
-
 	go func() {
 		<-ctx.Done()
 		jobAddedSub.Unsubscribe()

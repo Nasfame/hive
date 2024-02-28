@@ -3,11 +3,12 @@ package web3
 import (
 	"context"
 
-	"github.com/CoopHive/hive/pkg/system"
-	"github.com/CoopHive/hive/pkg/web3/bindings/payments"
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/event"
 	"github.com/rs/zerolog/log"
+
+	"github.com/CoopHive/hive/pkg/system"
+	"github.com/CoopHive/hive/pkg/web3/bindings/payments"
 )
 
 type PaymentEventChannels struct {
@@ -46,6 +47,7 @@ func (p *PaymentEventChannels) Start(
 
 	paymentSub, err = connectPaymentSub()
 	if err != nil {
+		log.Fatal().Err(err).Msgf("subscribe to payment requests failed")
 		return err
 	}
 

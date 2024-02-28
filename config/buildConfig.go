@@ -1,8 +1,6 @@
 package config
 
 import (
-	"errors"
-	"os"
 	"path"
 	"slices"
 	"strings"
@@ -150,12 +148,11 @@ func SetAppDir(conf *viper.Viper, appDir string) {
 		dirPath := conf.GetString(pathKey)
 		newPath := path.Join(appDir, dirPath)
 
-		// err := os.MkdirAll(newPath, 0755)
-		newPath, err := utils.EnsureDir(newPath)
-		if !errors.Is(err, os.ErrExist) && err != nil {
-			log.Fatal().Err(err).Msgf("failed to create dir: %s", newPath)
-			return
-		}
+		// newPath, err := utils.EnsureDir(newPath) //no need to set th
+		// if !errors.Is(err, os.ErrExist) && err != nil {
+		// 	log.Fatal().Err(err).Msgf("failed to create dir: %s", newPath)
+		// 	return
+		// }
 
 		conf.Set(pathKey, newPath)
 		log.Debug().Msgf("set %s=%s", pathKey, newPath)

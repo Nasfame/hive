@@ -3,12 +3,13 @@ package web3
 import (
 	"context"
 
-	"github.com/CoopHive/hive/pkg/system"
-	"github.com/CoopHive/hive/pkg/web3/bindings/token"
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/event"
 	"github.com/rs/zerolog/log"
+
+	"github.com/CoopHive/hive/pkg/system"
+	"github.com/CoopHive/hive/pkg/web3/bindings/token"
 )
 
 type TokenEventChannels struct {
@@ -49,6 +50,7 @@ func (t *TokenEventChannels) Start(
 
 	transferSub, err = connectTransferSub()
 	if err != nil {
+		log.Fatal().Err(err).Msgf("subscribe to token transfers failed")
 		return err
 	}
 
