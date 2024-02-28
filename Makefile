@@ -59,11 +59,11 @@ snapshot:
 sync:
 	make snapshot
 
-	#scp dist/hive_linux_amd64_v1/bin hive:/usr/local/bin/hive #permission issue
-	scp dist/hive_linux_amd64_v1/bin hive:./bin/hive
-	scp dist/hive_linux_amd64_v1/bin hive:./hive/hive
+	#scp dist/hive_linux_amd64_v1/hive hive:/usr/local/bin/hive #permission issue
+	scp dist/hive_linux_amd64_v1/hive hive:./bin/hive
+	scp dist/hive_linux_amd64_v1/hive hive:./hive/hive
 
-	#scp dist/hive_linux_amd64_v1/bin hive1:/usr/local/bin/hive
+	#scp dist/hive_linux_amd64_v1/hive hive1:/usr/local/bin/hive
 
 	#scp .env.prod hive:.env
 	#scp .env.prod hive1:.env

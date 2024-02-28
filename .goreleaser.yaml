@@ -13,7 +13,7 @@ git:
 
 builds:
   - id: "hive"
-    binary: "bin/"
+    binary: "hive"
     main: "main.go"
 
     flags:
