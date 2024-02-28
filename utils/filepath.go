@@ -14,7 +14,7 @@ func EnsureDir(dir string) (string, error) {
 
 	err := os.MkdirAll(dir, 0755)
 	if !errors.Is(err, os.ErrExist) && err != nil {
-		log.Error().Err(err).Msgf("failed to create dir: %s\n", dir)
+		log.Error().Err(err).Msgf("failed to create dir: %s", dir)
 		return dir, err
 	}
 

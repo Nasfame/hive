@@ -23,7 +23,7 @@ Welcome to the prerelease series of CoopHive v0.
 
 [//]: # (Network name: CoopHive v0 Testnet)
 
-[//]: # (New RPC URL: http://testnet.co-ophive.network:8545)
+[//]: # (New RPC URL: http://aurora.co-ophive.network:8545)
 
 [//]: # (Chain ID: 1337)
 

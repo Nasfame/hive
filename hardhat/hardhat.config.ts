@@ -57,8 +57,8 @@ const config: HardhatUserConfig = {
     },
     coophive: {
       chainId: 1337,
-      url: "http://testnet.co-ophive.network:8545",
-      ws: "ws://testnet.co-ophive.network:8546",
+      url: "http://aurora.co-ophive.network:8545",
+      ws: "ws://aurora.co-ophive.network:8546",
       accounts: PRIVATE_KEYS,
       saveDeployments: true,
     },

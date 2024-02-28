@@ -52,7 +52,7 @@ func (s *service) runJob(cmd *cobra.Command, options jobCreatorService.JobCreato
 
 	spinner, err := createSpinner(appName+" submitting job", "🌟")
 	if err != nil {
-		s.Log.Fatalf("failed to make spinner from config struct: %v\n", err)
+		s.Log.Fatalf("failed to make spinner from config struct: %v", err)
 	}
 
 	// start the spinner animation
@@ -117,7 +117,7 @@ func (s *service) runJob(cmd *cobra.Command, options jobCreatorService.JobCreato
 		}
 		spinner, err = createSpinner(desc, emoji)
 		if err != nil {
-			log.Fatalf("failed to make spinner from config struct: %v\n", err)
+			log.Fatalf("failed to make spinner from config struct: %v", err)
 		}
 
 		// start the spinner animation

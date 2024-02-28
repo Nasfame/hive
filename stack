@@ -67,7 +67,7 @@ function faucet() {
     -e WEB3_PROVIDER=http://geth:8545 \
     -e PRIVATE_KEY=$privateKey \
     -e TOKEN_ADDRESS=$WEB3_TOKEN_ADDRESS \
-    faucet \
+    ghcr.io/coophive/faucet:latest \
       --faucet.amount=100 \
       --faucet.tokenamount=100 \
       --faucet.minutes=1
