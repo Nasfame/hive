@@ -116,10 +116,6 @@ func tempInitForFx(conf *viper.Viper) {
 
 	// log.Println("app data dir", APP_DATA_DIR)
 
-	if conf.GetString(enums.NETWORK) == deprecatedNetwork {
-		X_COOPHIVE_USER_HEADER = oldUserHeader
-		X_COOPHIVE_SIGNATURE_HEADER = oldSignatureHeader
-	}
 	if conf.GetBool(enums.DEBUG) {
 		// zerolog.SetGlobalLevel(zerolog.DebugLevel)
 		zerolog.SetGlobalLevel(zerolog.TraceLevel)

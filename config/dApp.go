@@ -10,6 +10,7 @@ import (
 	"github.com/sirupsen/logrus"
 
 	"github.com/CoopHive/hive/enums"
+	"github.com/CoopHive/hive/utils"
 )
 
 //go:embed dApps/*.env
@@ -71,6 +72,18 @@ func loadDApp(network string) (envMap map[string]string, err error) {
 	envMap[enums.HIVE_MEDIATORS] = strings.Join(curMediators, ",")
 
 	logrus.Debugln("mediation", envMap[enums.HIVE_MEDIATORS])
+
+	switch network {
+
+	case enums.AURORA:
+		X_COOPHIVE_USER_HEADER = utils.Base64DecodeFast("WC1MaWx5cGFkLVVzZXI=")
+		X_COOPHIVE_SIGNATURE_HEADER = utils.Base64DecodeFast("WC1MaWx5cGFkLVNpZ25hdHVyZQ==")
+
+	case enums.HALCYON:
+		X_COOPHIVE_USER_HEADER = "X-CoopHive-User"
+		X_COOPHIVE_SIGNATURE_HEADER = "X-CoopHive-Signature"
+
+	}
 
 	return
 

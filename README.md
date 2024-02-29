@@ -3,29 +3,66 @@
 CoopHive is a two-sided marketplace for computational resources. It enables users to run computational workloads in a permissionless protocol, where anyone can get paid to connect
 their compute nodes to the network and run jobs.
 
+
 # Getting started
 
-Welcome to the prerelease series of CoopHive Aurora.
+Welcome to the prerelease series of CoopHive.
 
-## CoopHive Aurora Testnet
+## CoopHive Networks
 
-The testnet has a base currency of ETH and you will also get HIVE to pay for jobs (and nodes to stake).
+CoopHive operates on a decentralized infrastructure across multiple EVM-compatible networks.
 
-Metamask:
+### Add to Metamask
 
-```
+<details>
 
+<summary>Aurora Testnet</summary>
+
+<pre>
 Network name: Aurora Testnet
 
-New RPC URL: http://aurora.co-ophive.network:8545
+RPC URL: http://aurora.co-ophive.network:8545
 
 Chain ID: 1337
 
 Currency symbol: ETH
 
-Block explorer URL: (leave blank)
+Block Explorer URL: (leave blank)
+</pre>
 
-```
+</details>
+
+<details>
+
+<summary>Halcyon Testnet</summary>
+
+<pre>
+Network name: Halcyon Testnet
+
+RPC URL: http://halcyon.co-ophive.network:8545
+
+Chain ID: 1337
+
+Currency symbol: ETH
+
+Block Explorer URL: (leave blank)
+</pre>
+
+</details>
+
+> The testnet has a base currency of ETH and you will also get HIVE to pay for jobs (and nodes to stake).
+
+### Faucets
+
+To obtain funds, please visit the below faucets:
+
+1. Aurora Faucet: [Click Here](http://faucet.co-ophive.network:8080)
+2. Halcyon Faucet: [Click Here](http://halcyon-faucet.co-ophive.network:8085)
+
+[//]: # (3. Sepolia Faucet: [Click Here]&#40;http://faucet.co-ophive.network:8081&#41;)
+
+> The faucet will give you both ETH (to pay for gas) and HIVE (to stake and pay for jobs).
+
 
 [//]: # (### Quick start on Sepolia Testnet)
 
@@ -37,13 +74,7 @@ Block explorer URL: (leave blank)
 
 [//]: # (- [ ] Claim HIVE drips from [Coophive Faucet]&#40;http://faucet.co-ophive.network:8081&#41;)
 
-### HIVE Token
-
-To obtain funds, go to [Faucet](http://faucet.co-ophive.network:8080)
-
-The faucet will give you both ETH (to pay for gas) and HIVE (to stake and pay for jobs).
-
-## Install CLI
+## Install Hive Client
 
 Download the latest release of CoopHive for your platform. Both the amd64/x86_64 and arm64 variants of macOS and Linux
 are supported. (If you are on Apple Silicon, you'll want arm64).
@@ -70,7 +101,7 @@ The commands below will automatically detect your OS and processor architecture 
 curl -sSf https://raw.githubusercontent.com/CoopHive/hive/main/install.sh | sh -s -- hive
 ```
 
-#### Install hive and bacalhau
+#### For Resource providers and mediators: Install hive + bacalhau
 
 ```bash
 curl -sSf https://raw.githubusercontent.com/CoopHive/hive/main/install.sh | sh -s -- all
@@ -147,6 +178,9 @@ hive run cowsay:v0.1.1 -i Message="CoopHive"
                 ||----w |
                 ||     ||
 ```
+
+> You can now switch from the default network using `--network <network>`  
+> For eg: `hive run cowsay:v0.1.1 -i Message="CoopHive" --network halcyon`
 
 ### SDXL
 
@@ -251,3 +285,14 @@ strings with placeholders.
 </details>
 
 [Example Code](https://go.dev/play/p/oBgc2Cetug3)
+
+[CoopHive]: https://coophive.network
+
+[Aurora RPC]: http://aurora.co-ophive.network:8545
+
+[Aurora Faucet]: http://faucet.co-ophive.network:8080
+
+[Halcyon RPC]: http://halcyon.co-ophive.network:8545
+
+[Halcyon Faucet]: http://halcyon-faucet.co-ophive.network:8085
+

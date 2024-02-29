@@ -44,3 +44,5 @@ notepad.sh
 /.env.prod2
 
 .appData
+
+hardhat/.deps/
