@@ -41,12 +41,14 @@ var buildConfig = configMap[string]{
 		desc:       "commit sha",
 		defaultVal: commitSha,
 	},
-
 	enums.RELEASE_URL: {
 		desc:       "release url",
 		defaultVal: "https://github.com/CoopHive/hive/releases",
 	},
-
+	enums.GITHUB_REPO: {
+		"github repo",
+		"https://github.com/CoopHive/hive",
+	},
 	enums.APP_LOG_FILE_FORMAT: {
 		"app log file format",
 		"/coophive_%s.jsonl", // injects appdir into the format
@@ -176,4 +178,8 @@ func SetAppDir(conf *viper.Viper, appDir string) {
 
 	conf.Set(enums.BACALHAU_ENV, bacalhauEnvs)
 
+}
+
+func GetGithubRepo() string {
+	return buildConfig[enums.GITHUB_REPO].defaultVal
 }

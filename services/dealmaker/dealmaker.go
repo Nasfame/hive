@@ -37,7 +37,7 @@ func (d *Service) DealMatched(dealID string) {
 	defer func() {
 		if r := recover(); r != nil {
 			d.Log.Errorf("Deal %s is matched but error occurred: %v", dealID, r)
-			panic("plugin paniced")
+			panic("dealer panic")
 		}
 	}()
 	if ok, _ := d.dealsMatched[dealID]; ok {
@@ -58,7 +58,7 @@ func (d *Service) DealsAgreed(f func(dealID string)) {
 	defer func() {
 		d.once = true
 		if r := recover(); r != nil {
-			d.Log.Fatalf("Critical error occurred: %v", r)
+			d.Log.Fatalf("dealer paniced : %v", r)
 		}
 	}()
 
@@ -82,9 +82,16 @@ RECV_AGREE_DEALS:
 			func() {
 				d.m.Lock()
 				defer d.m.Unlock()
+
+				defer func() {
+					if r := recover(); r != nil {
+						d.Log.Fatalf("f paniced : %v", r)
+					}
+				}()
+
 				f(dealID)
 				doneDeals[dealID] = true
-				d.Log.Debugf("[dealer] Deal %s hopefully agreed upon\n", dealID)
+				d.Log.Debugf("[dealer] Deal %s hopefully agreed upon", dealID)
 			}()
 
 		case <-d.ctx.Done():
@@ -92,7 +99,7 @@ RECV_AGREE_DEALS:
 			d.Log.Printf("[dealer] Context done. Exiting...")
 			return
 		}
-		d.Log.Debugf("total deals agreed so far: %d ; deals: %+v\n", len(doneDeals), reflect.ValueOf(doneDeals).MapKeys())
+		d.Log.Debugf("total deals agreed so far: %d ; deals: %+v", len(doneDeals), reflect.ValueOf(doneDeals).MapKeys())
 
 	}
 }
@@ -116,7 +123,7 @@ func (d *Service) LoadPlugin(pluginName string) error {
 	}
 
 	pluginPath := path.Join(d.Conf.GetString(enums.APP_PLUGIN_DIR), pluginName+".so")
-	d.Log.Infof("Loading plugin %s from %s\n", pluginName, pluginPath)
+	d.Log.Infof("Loading plugin %s from %s", pluginName, pluginPath)
 	p, err := plugin.Open(pluginPath)
 	if err != nil {
 		return err

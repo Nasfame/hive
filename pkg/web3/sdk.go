@@ -3,6 +3,7 @@ package web3
 import (
 	"context"
 	"crypto/ecdsa"
+	"fmt"
 	"math/big"
 	"strconv"
 	"strings"
@@ -14,6 +15,9 @@ import (
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/rs/zerolog/log"
 
+	"github.com/CoopHive/hive/config"
+	"github.com/CoopHive/hive/enums"
+	"github.com/CoopHive/hive/pkg/system"
 	"github.com/CoopHive/hive/pkg/web3/bindings/controller"
 	"github.com/CoopHive/hive/pkg/web3/bindings/jobcreator"
 	"github.com/CoopHive/hive/pkg/web3/bindings/mediation"
@@ -21,6 +25,7 @@ import (
 	"github.com/CoopHive/hive/pkg/web3/bindings/storage"
 	"github.com/CoopHive/hive/pkg/web3/bindings/token"
 	"github.com/CoopHive/hive/pkg/web3/bindings/users"
+	"github.com/CoopHive/hive/utils"
 )
 
 // these are the go-binding wrappers for the various deployed contracts
@@ -229,10 +234,36 @@ func (sdk *Web3SDK) getBlockNumber() (uint64, error) {
 	return strconv.ParseUint(blockNumberHex, 16, 64)
 }
 
-func (sdk *Web3SDK) WaitTx(ctx context.Context, tx *types.Transaction) (*types.Receipt, error) {
+func (sdk *Web3SDK) WaitTx(ctx context.Context, tx *types.Transaction, errCreateTx error) (r *types.Receipt, err error) {
+	defer func() {
+		sdk.checkInsufficientBalance(err)
+	}()
+
+	if errCreateTx != nil {
+		system.Error(sdk.Options.Service, "error submitting creatingTx", err)
+		// creating transaction also fails if insufficient funds
+		return nil, errCreateTx // errors.CombineErrors(fmt.Errorf("failed to create tx"), errCreateTx)
+	}
+
+	if tx == nil {
+		log.Error().Err(err).Msgf("%v", sdk.Options.Service)
+		// panic("invalid tx")
+		return nil, fmt.Errorf("invalid tx")
+	}
+
+	system.Debug(sdk.Options.Service, "submitted tx", tx.Hash().String())
+	system.DumpObjectDebug(tx)
+
 	return bind.WaitMined(ctx, sdk.Client, tx)
 }
 
 func (sdk *Web3SDK) GetAddress() common.Address {
 	return crypto.PubkeyToAddress(GetPublicKey(sdk.PrivateKey))
+}
+
+func (sdk *Web3SDK) checkInsufficientBalance(err error) {
+	// if err != nil {
+	// 	log.Error().Caller(2).Err(err).Msgf("CheckInsufficientBalance")
+	// }
+	utils.CheckInSufficientFunds(err, config.Conf.GetString(enums.GITHUB_REPO))
 }

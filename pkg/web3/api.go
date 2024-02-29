@@ -48,14 +48,7 @@ func (sdk *Web3SDK) UpdateUser(
 		url,
 		roles,
 	)
-	if err != nil {
-		system.Error(sdk.Options.Service, "error submitting Users.UpdateUser", err)
-		return err
-	} else {
-		system.Info(sdk.Options.Service, "submitted users.UpdateUser", tx.Hash().String())
-		system.DumpObjectDebug(tx)
-	}
-	_, err = sdk.WaitTx(context.Background(), tx)
+	_, err = sdk.WaitTx(context.Background(), tx, err)
 	if err != nil {
 		system.Error(sdk.Options.Service, "errror on tx", err)
 		return err
@@ -70,14 +63,7 @@ func (sdk *Web3SDK) AddUserToList(
 		sdk.TransactOpts,
 		serviceType,
 	)
-	if err != nil {
-		system.Error(sdk.Options.Service, "error submitting Users.AddUserToList", err)
-		return err
-	} else {
-		system.Info(sdk.Options.Service, "submitted users.AddUserToList", tx.Hash().String())
-		system.DumpObjectDebug(tx)
-	}
-	_, err = sdk.WaitTx(context.Background(), tx)
+	_, err = sdk.WaitTx(context.Background(), tx, err)
 	if err != nil {
 		return err
 	}
@@ -116,14 +102,8 @@ func (sdk *Web3SDK) Agree(
 		dto.ConvertDealTimeouts(deal.Timeouts),
 		dto.ConvertDealPricing(deal.Pricing),
 	)
-	if err != nil {
-		system.Error(sdk.Options.Service, "error submitting controller.Agree() tx", err)
-		return "", err
-	} else {
-		system.Debug(sdk.Options.Service, "submitted controller.Agree() tx", tx.Hash().String())
-		system.DumpObjectDebug(tx)
-	}
-	_, err = sdk.WaitTx(context.Background(), tx)
+
+	_, err = sdk.WaitTx(context.Background(), tx, err)
 	if err != nil {
 		return "", err
 	}
@@ -143,14 +123,7 @@ func (sdk *Web3SDK) AddResult(
 		dataId,
 		big.NewInt(int64(instructionCount)),
 	)
-	if err != nil {
-		system.Error(sdk.Options.Service, "error submitting controller.AddResult", err)
-		return "", err
-	} else {
-		system.Debug(sdk.Options.Service, "submitted controller.AddResult", tx.Hash().String())
-		system.DumpObjectDebug(tx)
-	}
-	_, err = sdk.WaitTx(context.Background(), tx)
+	_, err = sdk.WaitTx(context.Background(), tx, err)
 	if err != nil {
 		return "", err
 	}
@@ -171,7 +144,7 @@ func (sdk *Web3SDK) AcceptResult(
 		system.Debug(sdk.Options.Service, "submitted controller.AcceptResult", tx.Hash().String())
 		system.DumpObjectDebug(tx)
 	}
-	_, err = sdk.WaitTx(context.Background(), tx)
+	_, err = sdk.WaitTx(context.Background(), tx, err)
 	if err != nil {
 		return "", err
 	}
@@ -185,14 +158,7 @@ func (sdk *Web3SDK) CheckResult(
 		sdk.TransactOpts,
 		dealId,
 	)
-	if err != nil {
-		system.Error(sdk.Options.Service, "error submitting controller.CheckResult", err)
-		return "", err
-	} else {
-		system.Debug(sdk.Options.Service, "submitted controller.CheckResult", tx.Hash().String())
-		system.DumpObjectDebug(tx)
-	}
-	_, err = sdk.WaitTx(context.Background(), tx)
+	_, err = sdk.WaitTx(context.Background(), tx, err)
 	if err != nil {
 		return "", err
 	}
@@ -206,14 +172,7 @@ func (sdk *Web3SDK) MediationAcceptResult(
 		sdk.TransactOpts,
 		dealId,
 	)
-	if err != nil {
-		system.Error(sdk.Options.Service, "error submitting controller.MediationAcceptResult", err)
-		return "", err
-	} else {
-		system.Debug(sdk.Options.Service, "submitted controller.MediationAcceptResult", tx.Hash().String())
-		system.DumpObjectDebug(tx)
-	}
-	_, err = sdk.WaitTx(context.Background(), tx)
+	_, err = sdk.WaitTx(context.Background(), tx, err)
 	if err != nil {
 		return "", err
 	}
@@ -227,14 +186,7 @@ func (sdk *Web3SDK) MediationRejectResult(
 		sdk.TransactOpts,
 		dealId,
 	)
-	if err != nil {
-		system.Error(sdk.Options.Service, "error submitting controller.MediationRejectResult", err)
-		return "", err
-	} else {
-		system.Debug(sdk.Options.Service, "submitted controller.MediationRejectResult", tx.Hash().String())
-		system.DumpObjectDebug(tx)
-	}
-	_, err = sdk.WaitTx(context.Background(), tx)
+	_, err = sdk.WaitTx(context.Background(), tx, err)
 	if err != nil {
 		return "", err
 	}

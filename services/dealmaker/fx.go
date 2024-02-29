@@ -47,7 +47,7 @@ func newServices(i in) (o out) {
 	if !useDefaultPlugin {
 		err := s.LoadPlugin(dealerName)
 		if err != nil {
-			s.Log.Errorf("Failed to load plugin %s: %v\n", dealerName, err)
+			s.Log.Errorf("Failed to load plugin %s: %v", dealerName, err)
 		}
 	}
 

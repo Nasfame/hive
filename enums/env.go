@@ -22,6 +22,8 @@ const (
 	COMMIT_SHA = "COMMIT_SHA"
 
 	RELEASE_URL = "RELEASE_URL"
+
+	GITHUB_REPO = "GITHUB_REPO"
 )
 
 const (

@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/davecgh/go-spew/spew"
+	"github.com/rs/zerolog/log"
 
 	"github.com/CoopHive/hive/config"
 	"github.com/CoopHive/hive/enums"
@@ -51,13 +52,10 @@ func (jobCreator *OnChainJobCreator) Start(ctx context.Context, cm *system.Clean
 
 	// TODO: work out how to do dynamic pricing
 	tx, err := jobCreator.web3SDK.Contracts.JobCreator.SetRequiredDeposit(jobCreator.web3SDK.TransactOpts, web3.EtherToWei(jobPrice))
-	if err != nil {
-		errorChan <- err
-		return errorChan
-	}
 
-	_, err = jobCreator.web3SDK.WaitTx(ctx, tx)
+	_, err = jobCreator.web3SDK.WaitTx(ctx, tx, err)
 	if err != nil {
+		log.Debug().Err(err).Msgf("jobCreator Start")
 		errorChan <- err
 		return errorChan
 	}
@@ -88,12 +86,10 @@ func (jobCreator *OnChainJobCreator) Start(ctx context.Context, cm *system.Clean
 		spew.Dump(int64(onChainID))
 
 		tx, err := jobCreator.web3SDK.Contracts.JobCreator.SubmitResults(jobCreator.web3SDK.TransactOpts, big.NewInt(int64(onChainID)), evOffer.DealID, result.DataID)
-		if err != nil {
-			return
-		}
 
-		_, err = jobCreator.web3SDK.WaitTx(ctx, tx)
+		_, err = jobCreator.web3SDK.WaitTx(ctx, tx, err)
 		if err != nil {
+			log.Debug().Err(err).Msgf("jc Start")
 			return
 		}
 	})
@@ -102,14 +98,10 @@ func (jobCreator *OnChainJobCreator) Start(ctx context.Context, cm *system.Clean
 
 		// first we need to move the tokens into our account
 		tx, err := jobCreator.web3SDK.Contracts.Token.TransferFrom(jobCreator.web3SDK.TransactOpts, ev.Payee, jobCreator.web3SDK.GetAddress(), web3.EtherToWei(jobPrice))
-		if err != nil {
-			fmt.Printf("error creating job offer: %s\n", err.Error())
-			return
-		}
 
-		_, err = jobCreator.web3SDK.WaitTx(ctx, tx)
+		_, err = jobCreator.web3SDK.WaitTx(ctx, tx, err)
 		if err != nil {
-			fmt.Printf("error creating job offer: %s\n", err.Error())
+			log.Debug().Err(err).Msg("error creating job offer")
 			return
 		}
 
