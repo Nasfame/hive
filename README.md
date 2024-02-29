@@ -5,9 +5,9 @@ their compute nodes to the network and run jobs.
 
 # Getting started
 
-Welcome to the prerelease series of CoopHive v0.
+Welcome to the prerelease series of CoopHive Aurora.
 
-## CoopHive v0 Testnet
+## CoopHive Aurora Testnet
 
 The testnet has a base currency of ETH and you will also get HIVE to pay for jobs (and nodes to stake).
 
@@ -192,7 +192,7 @@ Try `rm -rf /tmp/coophive/data/repos`. Uninstall hive path, and reinstall from t
 ## Run a node, earn HIVE
 
 ```
-hive resourceprovider
+hive rp
 ```
 
 Deploy seamlessly on linux by utilizing [these systemd configuration files](https://github.com/CoopHive/hive/tree/main/ops).
