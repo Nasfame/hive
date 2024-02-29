@@ -334,9 +334,9 @@ func (controller *ResourceProviderController) agreeToMatchedDeals() error {
 	}
 
 	go controller.once.Do(func() {
-		controller.dealmakerService.DealsAgreed(func(dealID string) {
+		controller.dealmakerService.DealsAgreed(func(dealID string) error {
 			controller.log.Debug("deal agreed ", dealID)
-			controller.agreeDeal(controller.dealContainers[dealID])
+			return controller.agreeDeal(controller.dealContainers[dealID])
 		})
 	})
 
@@ -344,7 +344,7 @@ func (controller *ResourceProviderController) agreeToMatchedDeals() error {
 
 }
 
-func (controller *ResourceProviderController) agreeDeal(dealContainer *dto.DealContainer) {
+func (controller *ResourceProviderController) agreeDeal(dealContainer *dto.DealContainer) error {
 	controller.log.Info("agree", dealContainer)
 
 	txHash, err := controller.web3SDK.Agree(dealContainer.Deal)
@@ -353,7 +353,7 @@ func (controller *ResourceProviderController) agreeDeal(dealContainer *dto.DealC
 		// some will be retryable - otherwise will be fatal
 		// we need a way to exit a job loop as a baseline
 		controller.log.Error("error calling agree tx for deal", err)
-		return
+		return err
 	}
 	controller.log.Info("agree tx", txHash)
 
@@ -366,9 +366,10 @@ func (controller *ResourceProviderController) agreeDeal(dealContainer *dto.DealC
 		// some will be retryable - otherwise will be fatal
 		// we need a way to exit a job loop as a baseline
 		controller.log.Error("error adding agree tx hash for deal", err)
-		return
+		return err
 	}
 	controller.log.Info("updated deal with agree tx", txHash)
+	return nil
 }
 
 /*

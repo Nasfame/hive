@@ -268,22 +268,22 @@ func (controller *JobCreatorController) agreeToMatchedDeals() error {
 		go controller.dealmakerService.DealMatched(dealContainer.ID)
 	}
 	go controller.once.Do(func() {
-		controller.dealmakerService.DealsAgreed(func(dealID string) {
+		controller.dealmakerService.DealsAgreed(func(dealID string) error {
 			controller.log.Debug("deal agreed ", dealID)
-			controller.agreeDeal(controller.dealContainers[dealID])
+			return controller.agreeDeal(controller.dealContainers[dealID])
 		})
 	})
 
 	return err
 }
 
-func (controller *JobCreatorController) agreeDeal(dealContainer *dto.DealContainer) {
+func (controller *JobCreatorController) agreeDeal(dealContainer *dto.DealContainer) error {
 	controller.log.Debug("[controller] agree", dealContainer)
 	txHash, err := controller.web3SDK.Agree(dealContainer.Deal)
 	if err != nil {
 		// TODO: error handling - is it terminal or retryable?
 		controller.log.Error("error calling agree tx for deal", err)
-		return
+		return err
 	}
 	controller.log.Debug("agree tx", txHash)
 
@@ -294,9 +294,10 @@ func (controller *JobCreatorController) agreeDeal(dealContainer *dto.DealContain
 	if err != nil {
 		// TODO: error handling - is it terminal or retryable?
 		controller.log.Error("error adding agree tx hash for deal", err)
-		return
+		return err
 	}
 	controller.log.Debug("updated deal with agree tx", txHash)
+	return nil
 }
 
 // list the deals that have results posted but we have not yet checked

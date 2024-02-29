@@ -44,11 +44,11 @@ func (d *Service) DealMatched(dealID string) {
 		return
 	}
 	d.dealer.DealMatched(dealID)
-	d.dealsMatched[dealID] = true
+	d.dealsMatched[dealID] = true // TODO: is it the same dealID for different rps and same jc
 }
 
 // DealsAgreed should only be called exactly once
-func (d *Service) DealsAgreed(f func(dealID string)) {
+func (d *Service) DealsAgreed(f func(dealID string) error) {
 
 	if d.once {
 		panic("dealsAgreed should only be called once")
@@ -89,9 +89,13 @@ RECV_AGREE_DEALS:
 					}
 				}()
 
-				f(dealID)
-				doneDeals[dealID] = true
-				d.Log.Debugf("[dealer] Deal %s hopefully agreed upon", dealID)
+				if err := f(dealID); err == nil {
+					doneDeals[dealID] = true
+					d.dealsMatched[dealID] = true
+					d.Log.Debugf("[dealer] Deal %s agreed tx", dealID)
+				} else {
+					d.Log.Errorf("[dealer] agreedDeal-%s agree failed due to %v", dealID, err)
+				}
 			}()
 
 		case <-d.ctx.Done():
