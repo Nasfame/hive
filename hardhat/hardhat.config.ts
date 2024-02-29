@@ -62,6 +62,14 @@ const config: HardhatUserConfig = {
       accounts: PRIVATE_KEYS,
       saveDeployments: true,
     },
+    halcyon: { //coophive testnet
+      chainId: 1337,
+      url: "http://halcyon.co-ophive.network:8545",
+      ws: "ws://halcyon.co-ophive.network:8546",
+      faucet: "http://halcyon-faucet.co-ophive.network:8085",
+      accounts: PRIVATE_KEYS,
+      saveDeployments: true,
+    },
     /*chaos: {
       //skale testnet
       chainId: 1351057110,
