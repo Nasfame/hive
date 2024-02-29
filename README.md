@@ -7,41 +7,39 @@ their compute nodes to the network and run jobs.
 
 Welcome to the prerelease series of CoopHive v0.
 
-[//]: # (## CoopHive v0 Testnet)
+## CoopHive v0 Testnet
+
+The testnet has a base currency of ETH and you will also get HIVE to pay for jobs (and nodes to stake).
+
+Metamask:
+
+```
+
+Network name: Aurora Testnet
+
+New RPC URL: http://aurora.co-ophive.network:8545
+
+Chain ID: 1337
+
+Currency symbol: ETH
+
+Block explorer URL: (leave blank)
+
+```
+
+[//]: # (### Quick start on Sepolia Testnet)
 
 [//]: # ()
 
-[//]: # (The testnet has a base currency of ETH and you will also get HIVE to pay for jobs &#40;and nodes to stake&#41;.)
+[//]: # (- [ ] Add to [Metamask]&#40;https://chainlist.org/chain/11155111&#41;)
 
-[//]: # ()
+[//]: # (- [ ] Claim ETH drips from [Faucet]&#40;https://www.alchemy.com/faucets/ethereum-sepolia&#41;)
 
-[//]: # (Metamask:)
-
-[//]: # ()
-
-[//]: # (```)
-
-[//]: # (Network name: CoopHive v0 Testnet)
-
-[//]: # (New RPC URL: http://aurora.co-ophive.network:8545)
-
-[//]: # (Chain ID: 1337)
-
-[//]: # (Currency symbol: ETH)
-
-[//]: # (Block explorer URL: &#40;leave blank&#41;)
-
-[//]: # (```)
-
-### Quick start on Sepolia Testnet
-
-- [ ] Add to [Metamask](https://chainlist.org/chain/11155111)
-- [ ] Claim ETH drips from [Faucet](https://www.alchemy.com/faucets/ethereum-sepolia)
-- [ ] Claim HIVE drips from [Coophive Faucet](http://faucet.co-ophive.network:8080)
+[//]: # (- [ ] Claim HIVE drips from [Coophive Faucet]&#40;http://faucet.co-ophive.network:8081&#41;)
 
 ### HIVE Token
 
-To obtain funds, go to [http://faucet.co-ophive.network:8080](http://faucet.co-ophive.network:8080)
+To obtain funds, go to [Faucet](http://faucet.co-ophive.network:8080)
 
 The faucet will give you both ETH (to pay for gas) and HIVE (to stake and pay for jobs).
 
