@@ -116,9 +116,9 @@ func getMediator(
 
 func getJobCreatorOptions(options testOptions) (jobCreatorService.JobCreatorOptions, error) {
 	jobCreatorOptions := jobcreator.NewJobCreatorOptions()
-	jobCreatorOptions.Web3.PrivateKey = os.Getenv("JOB_CREATOR_PRIVATE_KEY")
+	jobCreatorOptions.Web3.PrivateKey = os.Getenv("JC_PRIVATE_KEY")
 	if jobCreatorOptions.Web3.PrivateKey == "" {
-		return jobCreatorOptions, fmt.Errorf("JOB_CREATOR_PRIVATE_KEY is not defined")
+		return jobCreatorOptions, fmt.Errorf("JC_PRIVATE_KEY is not defined")
 	}
 	ret, err := jobcreator.ProcessJobCreatorOptions(jobCreatorOptions, []string{
 		// this should point to the shortcut

@@ -57,6 +57,7 @@ func (sdk *Web3SDK) UpdateUser(
 	}
 	_, err = sdk.WaitTx(context.Background(), tx)
 	if err != nil {
+		system.Error(sdk.Options.Service, "errror on tx", err)
 		return err
 	}
 	return nil
