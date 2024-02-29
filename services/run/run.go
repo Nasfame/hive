@@ -135,6 +135,11 @@ func (s *service) runJob(cmd *cobra.Command, options jobCreatorService.JobCreato
 		return err
 	}
 	spinner.Stop()
+
+	if result.Result.DataID == "" {
+		log.Fatalf("received invalid dataID for the deal:%s", result.JobOffer.DealID)
+	}
+
 	fmt.Printf("\n🍂 %s job completed, try 👇\n    open %s\n    cat %s/stdout\n    cat %s/stderr\n    https://ipfs.io/ipfs/%s\n",
 		appName,
 		solver.GetDownloadsFilePath(result.JobOffer.DealID),
