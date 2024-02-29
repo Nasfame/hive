@@ -137,7 +137,7 @@ func (s *service) runJob(cmd *cobra.Command, options jobCreatorService.JobCreato
 	spinner.Stop()
 
 	if result.Result.DataID == "" {
-		log.Fatalf("Failed to download results for the job:%s", result.JobOffer.ID)
+		panic(fmt.Sprintf("Failed to download results for the job:%s", result.JobOffer.ID))
 	}
 
 	fmt.Printf("\n🍂 %s job completed, try 👇\n    open %s\n    cat %s/stdout\n    cat %s/stderr\n    https://ipfs.io/ipfs/%s\n",
