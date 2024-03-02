@@ -68,6 +68,17 @@ services:
     volumes:
       - ./data:/app/coophive
 
+  aurora:
+    extends:
+      file: ./docker-compose.faucet.yml
+      service: aurora
+
+  sepolia:
+    extends:
+      file: ./docker-compose.faucet.yml
+      service: sepolia
+
+
 #  version:
 #    image: ghcr.io/coophive/hive:latest
 #    command: [ "version" ]

@@ -263,7 +263,7 @@ func (controller *JobCreatorController) agreeToMatchedDeals() error {
 
 	// map over the deals and agree to them
 	for _, dealContainer := range matchedDeals {
-		controller.log.Debug("dealContainer", dealContainer)
+		// controller.log.Debug("dealContainer", dealContainer)
 		dealContainers[dealContainer.ID] = &dealContainer
 		go controller.dealmakerService.DealMatched(dealContainer.ID)
 	}

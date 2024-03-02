@@ -158,11 +158,11 @@ func (executor *BacalhauExecutor) copyJobResults(dealID string, jobID string) (s
 	log.Debug().Msgf("cmd: %+v", copyResultsCmd)
 
 	output, err := copyResultsCmd.CombinedOutput()
-	log.Debug().Err(err).Msgf("outpupt:%s", output)
+	log.Debug().Err(err).Msgf("output:%s", output)
 
 	if err != nil {
-		log.Error().Err(err).Msgf("error copying results %s -> %s", dealID, err.Error())
-		return "", fmt.Errorf("error copying results %s -> %s", dealID, err.Error())
+		log.Error().Err(err).Msgf("error copying results %s -> %s", dealID, err)
+		return "", fmt.Errorf("error copying results %s -> %s", dealID, err)
 	}
 
 	return resultsDir, nil

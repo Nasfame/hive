@@ -328,7 +328,7 @@ func (controller *ResourceProviderController) agreeToMatchedDeals() error {
 
 	// map over the deals and agree to them
 	for _, dealContainer := range matchedDeals {
-		controller.log.Debug("dealContainer", dealContainer)
+		// controller.log.Debug("dealContainer", dealContainer)
 		dealContainers[dealContainer.ID] = &dealContainer
 		go controller.dealmakerService.DealMatched(dealContainer.ID)
 	}
@@ -440,6 +440,7 @@ func (controller *ResourceProviderController) runJob(deal dto.DealContainer) {
 		controller.log.Info("loading module", "")
 		module, err := module.LoadModule(deal.Deal.JobOffer.Module, deal.Deal.JobOffer.Inputs)
 		if err != nil {
+			controller.log.Error("error loading module", err)
 			return fmt.Errorf("error loading module: %s", err.Error())
 		}
 		controller.log.Info("module loaded", module)
@@ -456,6 +457,7 @@ func (controller *ResourceProviderController) runJob(deal dto.DealContainer) {
 
 		_, err = controller.solverClient.UploadResultFiles(deal.ID, executorResult.ResultsDir)
 		if err != nil {
+			controller.log.Error("error uploading results", err)
 			return fmt.Errorf("error uploading results: %s", err.Error())
 		}
 

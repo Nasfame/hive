@@ -131,12 +131,13 @@ func (s *service) runJob(cmd *cobra.Command, options jobCreatorService.JobCreato
 
 	})
 	if err != nil {
-		fmt.Printf("Error: %s", err)
+		log.Printf("Error: %s\n", err)
 		return err
 	}
 	spinner.Stop()
 
 	if result.Result.DataID == "" {
+		log.Printf("result:%+v", result)
 		panic(fmt.Sprintf("Failed to download results for the job:%s", result.JobOffer.ID))
 	}
 

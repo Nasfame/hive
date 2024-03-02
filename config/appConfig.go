@@ -26,7 +26,7 @@ var processAppDir = func() string {
 		log.Fatal("invalid app dir")
 	}
 
-	appDir = strings.ToLower(appDir) // capital dirs are treated differently in unix systems
+	appDir = "." + strings.ToLower(appDir) // capital dirs are treated differently in unix systems
 
 	homeDir, err := os.UserHomeDir()
 

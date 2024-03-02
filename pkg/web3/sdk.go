@@ -252,7 +252,7 @@ func (sdk *Web3SDK) WaitTx(ctx context.Context, tx *types.Transaction, errCreate
 	}
 
 	system.Debug(sdk.Options.Service, "submitted tx", tx.Hash().String())
-	system.DumpObjectDebug(tx)
+	// system.DumpObjectDebug(tx)
 
 	return bind.WaitMined(ctx, sdk.Client, tx)
 }
