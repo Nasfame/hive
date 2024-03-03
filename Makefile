@@ -155,3 +155,8 @@ rp:
 
 sdxl-subt:
 	go run . run sdxl:v0.3.0-alpha.1 -i Prompt="hiro saves the hive" -i Seed=20;
+
+deploy-sepolia:
+	docker-compose up sepolia -d --wait
+	export CONFIG_FILE=.env.sepolia
+	hive solver

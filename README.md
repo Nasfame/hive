@@ -50,6 +50,16 @@ Block Explorer URL: (leave blank)
 
 </details>
 
+<details>
+<summary>Sepolia Testnet</summary>
+
+- [x] Visit https://chainlist.org/chain/11155111
+- [x] Add to Metamask
+
+</details>
+
+
+
 > The testnet has a base currency of ETH and you will also get HIVE to pay for jobs (and nodes to stake).
 
 ### Faucets
@@ -58,6 +68,9 @@ To obtain funds, please visit the below faucets:
 
 1. Aurora Faucet: [Click Here](http://faucet.co-ophive.network:8080)
 2. Halcyon Faucet: [Click Here](http://halcyon-faucet.co-ophive.network:8085)
+3. Sepolia Faucet:
+   - [Hive Faucet](http://faucet.co-ophive.network:8081)
+   - [Eth Faucet](https://sepoliafaucet.com)
 
 [//]: # (3. Sepolia Faucet: [Click Here]&#40;http://faucet.co-ophive.network:8081&#41;)
 

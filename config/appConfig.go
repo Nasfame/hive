@@ -123,7 +123,7 @@ var appConfig = configMap[string]{
 
 	enums.SERVER_PORT: {
 		"server port",
-		"8080",
+		"9080",
 	},
 	enums.SERVER_URL: {
 		"public facing url without application protocol like tcp, http",

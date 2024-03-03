@@ -14,11 +14,16 @@ import (
 func GetDefaultWeb3Options(s enums.ServiceType) web3.Web3Options {
 	privateKeyEnum := s.GetPrivateKeyEnum()
 
+	pKey := config.Conf.GetString(privateKeyEnum)
+	// if strings.TrimSpace(pKey) == "" {
+	// 	pKey = config.Conf.GetString(enums.WEB3_PRIVATE_KEY) //Set in ProcessWeb3Options
+	// }
+
 	return web3.Web3Options{
 		// TODO: refactor this to use the new config package
 		// core settings
 		RpcURL:     config.Conf.GetString(enums.WEB3_RPC_URL),
-		PrivateKey: config.Conf.GetString(privateKeyEnum),
+		PrivateKey: pKey,
 		ChainID:    config.Conf.GetInt(enums.WEB3_CHAIN_ID), //nolint:gomnd
 
 		// contract addresses
