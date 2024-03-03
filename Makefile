@@ -112,7 +112,9 @@ setup-bacalhau:
         --node-type compute,requester \
         --peer none \
         --private-internal-ipfs=false \
-        --job-selection-accept-networked
+        --job-selection-accept-networked \
+       	--web-ui \
+       	--web-ui-port 1080
 
 	#bacalhau serve --node-type requester --private-internal-ipfs --peer none
 
