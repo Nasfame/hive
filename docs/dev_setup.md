@@ -1,4 +1,4 @@
-# Setup hive  on your machine  [For devs]
+# Setup CoopHive for development on your machine
 
 ## Setup repo
 
