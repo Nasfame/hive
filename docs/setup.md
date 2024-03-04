@@ -68,9 +68,14 @@ pnpm account $SOLVER_PRIVATE_KEY
 
 `hive solver`
 
+Solver runs on $SERVER_PORT. Solver stores $SERVER_URL in the blockchain for `RP` & `JC` to communicate with it
+over `http`
+
 ### Setup Resource Provider
 
 `hive rp`
+
+RP posts resource offers to `HIVE SOLVER`
 
 ### Run a coophive module on the rp
 
