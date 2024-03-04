@@ -75,11 +75,18 @@ over `http`
 
 `hive rp`
 
-RP posts resource offers to `HIVE SOLVER`
+RP posts resource offers to `HIVE SOLVER` over the solver url published by solver.
 
 ### Run a coophive module on the rp
 
-`hive run cowsay:v0.1`
+`hive run cowsay:v0.1 -i Message="Hiro is found of hives"`
+
+`run` command leverages `jobcreator` under the hood. **JC** posts the **job offer** to solver over solver url.
+`solver` matches the job offer with the suitable resource offers and creates many deals. The deals are queried by **RP**
+and
+**JC** where they can accept or reject the deals. Upon acceptance of a deal on both ends, the **RP** runs the job and
+submits the results to **solver**. **Solver** then verifies the job results. **JC** queries the verifies the results and
+downloads the results from the **Solver**.
 
 ##  
 
