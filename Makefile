@@ -5,11 +5,10 @@ setup-dev:
 	go install github.com/goreleaser/goreleaser@latest
 	go install golang.org/x/tools/cmd/stringer@latest
 	go install github.com/ethereum/go-ethereum/cmd/abigen@latest
-	cd hardhat
-	pnpm install
-	pnpm gen-env
+	cd hardhat && pnpm install && pnpm gen-env
 	cd ..
 	go generate
+	go build
 
 include .env
 export
