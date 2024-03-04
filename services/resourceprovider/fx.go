@@ -49,8 +49,8 @@ func (s *service) newResourceProviderCmd() *cobra.Command {
 	serviceType := enums.RP
 
 	resourceProviderCmd := &cobra.Command{
-		Use:     "resourceprovider",
-		Aliases: []string{"resource-provider", "rp"},
+		Use:     "rp",
+		Aliases: []string{"resource-provider", "resourceprovider"},
 		Short:   "Start the CoopHive resource provider service.",
 		Long:    "Start the CoopHive resource provider service.",
 		Example: "",

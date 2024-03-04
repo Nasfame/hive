@@ -53,11 +53,11 @@ func (s *service) newJobCreatorCmd() *cobra.Command {
 	serviceType := enums.JC
 
 	cmd := &cobra.Command{
-		Use:     "jobcreator",
-		Aliases: []string{"jc", "job-creator"},
+		Use:     "jc",
+		Aliases: []string{"jobcreator", "job-creator"},
 		Short:   "Start the CoopHive job creator service.",
 		Long:    "Start the CoopHive job creator service.",
-		Example: "",
+		Example: "hive jc",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			// serviceType.ProcessSyncServiceDirectory(s.Conf.GetString(enums.APP_DIR))
 			// appDir, err := serviceType.ProcessSyncServiceDirectory(s.Conf.GetString(enums.APP_DIR))
