@@ -28,12 +28,43 @@ pnpm gen-env
 ### For `HIVE_SOLVER`
 
 ```shell
+source .env
 cd hardhat
-pnpm account $PRIVATE_KEY
+pnpm account $SOLVER_PRIVATE_KEY
 ```
 
-> paste the address you
+1. Copy the account address
+2. Paste it to HIVE_SOLVER in the `.env` file
 
+### Setup Metamask
+
+1. **Install MetaMask**: If you haven't already, install the MetaMask extension for your web browser or the MetaMask
+   mobile app from the respective app store.
+
+2. **Open MetaMask**: Launch the MetaMask extension or app on your device.
+
+3. **Access Settings**: Look for the settings menu in MetaMask. This is usually represented by a gear or three dots
+   icon.
+
+4. **Select "Import Account"**: In the settings menu, find the option to import an account. Click on it to proceed.
+
+5. **Enter Private Key**: You'll be prompted to enter the private key associated with the account you want to import.
+   Make sure you have the correct private key.
+
+6. **Complete Import**: Follow the prompts to complete the import process. You may need to confirm your action with a
+   password or additional verification.
+
+7. **Verify and Access Imported Account**: Once the import process is complete, you should see the imported account in
+   your MetaMask wallet along with any existing accounts you have.
+
+8. **Ensure Security**: After importing your account, it's important to ensure the security of your MetaMask wallet.
+   Make sure to keep your private key secure and never share it with anyone.
+
+> Import wallets for all the private keys
+
+##  
+
+###  
 
 [//]: # ()
 
