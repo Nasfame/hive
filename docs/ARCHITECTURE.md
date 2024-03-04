@@ -35,19 +35,19 @@
 
 The following diagram shows the high level architecture of the system:
 
-![Layers](docs/images/layers.png)
+![Layers](images/layers.png)
 
 ### smart contracts
 
 The following diagram shows the various smart contracts that are part of the system:
 
-![Smart Contracts](docs/images/smart-contracts.png)
+![Smart Contracts](images/smart-contracts.png)
 
 ### services
 
 The following diagram shows the various services that are part of the system:
 
-![Services](docs/images/services.png)
+![Services](images/services.png)
 
 ### job workflow
 
@@ -57,31 +57,31 @@ The following diagram shows the workflow of a job:
 
 First, the deal is matched by the solver and agreed to by both sides:
 
-![1.Deal Agreement](docs/images/1.deal-agreement.png)
+![1.Deal Agreement](images/1.deal-agreement.png)
 
 #### 2.Post Results
 
 Then, the resource provider posts the results of the job:
 
-![2.Post Results](docs/images/2.post-results.png)
+![2.Post Results](images/2.post-results.png)
 
 #### 3.Accept Results
 
 In the case that the job creator is happy, they will acept the results:
 
-![3.Accept Results](docs/images/3.accept-results.png)
+![3.Accept Results](images/3.accept-results.png)
 
 #### 4.Check Results (correct)
 
 In the case that the job creator is not happy but the resource provider was honest:
 
-![4.Check Results (correct)](docs/images/4.check-results-correct.png)
+![4.Check Results (correct)](images/4.check-results-correct.png)
 
 #### 5.Check Results (incorrect)
 
 In the case that the job creator is not happy but the resource provider was not honest:
 
-![5.Check Results (incorrect)](docs/images/5.check-results-incorrect.png)
+![5.Check Results (incorrect)](images/5.check-results-incorrect.png)
 
 ## local development
 
@@ -227,7 +227,7 @@ Otherwise, if you don't have a GPU:
 
 The coophive repo also comes with a saas layer that can be used as a web2 layer to the underlying web3 stack.
 
-![Saas](docs/images/saas.png)
+![Saas](images/saas.png)
 
 The api will run using a `WEB3_PRIVATE_KEY` and essentially act as a job creator on behalf of registered users.
 
