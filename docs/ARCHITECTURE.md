@@ -176,12 +176,6 @@ Run the following commands in separate terminal windows:
 ./stack solver
 ```
 
-**NOTE** if you want to run the SAAS layer then we need to run the solver on the docker bridge as follows:
-
-```bash
-./stack solver --server-url http://172.17.0.1:8080
-```
-
 #### mediator
 
 Wait for the solver to start when `🟡 SOL solver registered` is logged, and then, in another terminal window, run:
@@ -314,8 +308,8 @@ Running the coophive in a production environment will require:
 * a compiled binary of the coophive
     * this can be compiled locally or in CI
     * it must live on the VM at the `/usr/bin/coophive` path
-* docker running on the vm that will serve the faucet and saas platform
-    * the faucet and saas will require a public http(s) endpoint
+* docker running on the vm that will serve the faucet
+  * the faucet will require a public http(s) endpoint~
     * it is recommended that you use a reverse proxy to terminate TLS and forward to these services
 
 We will use hardhat to deploy our contracts and then a combination of systemd and docker-compose to manage our services.
