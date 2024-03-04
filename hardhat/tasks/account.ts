@@ -44,6 +44,13 @@ task("account", "Prints account address from private key")
         console.log("account:", address);
     });
 
+task("pKey", "Prints account address from private key")
+    .addPositionalParam("privateKey", "The private key")
+    .setAction(async ({privateKey}, hre) => {
+        const address = getPublicAddress(privateKey, hre);
+        console.log("account:", address);
+    });
+
 
 interface fundOut {
     address: string,
