@@ -10,7 +10,6 @@
     * [initial setup](#initial-setup)
     * [run web3 stack](#run-web3-stack)
     * [run services](#run-services)
-    * [run saas](#run-saas)
     * [run faucet](#run-faucet)
     * [run jobs](#run-jobs)
     * [stop stack](#stop-stack)
@@ -25,7 +24,6 @@
         * [note addresses](#note-addresses)
     * [generate service .env files](#generate-service-env-files)
     * [systemd files](#systemd-files)
-    * [running the saas layer](#running-the-saas-layer)
 * [troubleshooting](#troubleshooting)
     * [receive buffer size error](#receive-buffer-size-error)
 
