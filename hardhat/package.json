@@ -15,6 +15,7 @@
     "build": "hardhat compile",
     "clean": "hardhat clean && rm -rf deployments",
     "hardhat:local": "hardhat node",
+    "pkey": "hardhat pkey ",
     "test": "CONFIG=./.env.hardhat hardhat test",
     "deploy": "hardhat deploy --network ",
     "deploy:calibration": "hardhat deploy --network calibration",
