@@ -192,7 +192,7 @@ Wait for the solver to start when `🟡 SOL solver registered` is logged, and th
 ./stack mediator
 ```
 
-#### jobcreator
+#### Jobcreator
 
 In another terminal window run:
 
@@ -224,29 +224,6 @@ Otherwise, if you don't have a GPU:
 ```bash
 ./stack resource-provider
 ```
-
-### run saas
-
-The coophive repo also comes with a saas layer that can be used as a web2 layer to the underlying web3 stack.
-
-![Saas](images/saas.png)
-
-The api will run using a `WEB3_PRIVATE_KEY` and essentially act as a job creator on behalf of registered users.
-
-This means you can open up your decentralized compute network to a wider audience who might not have access to metamask
-or other web3 tools.
-
-Once the core network is up and running as described above, you can run the saas layer as follows:
-
-**NOTE** it's important that you started the solver using the `./stack solver --server-url http://172.17.0.1:8080`
-command as described above.
-
-```bash
-docker-compose build
-docker-compose up -d
-```
-
-Now you should be able to access the saas layer using http://localhost
 
 ### run faucet
 
@@ -569,19 +546,6 @@ Make sure you start the solver first.
 
 You can now set up multiple resource providers (RPs), e.g. with GPUs. Make sure you mint each one a separate key, e.g.
 with metamask and the faucet. RPs will need `bacalhau` and `resource-provider{,-gpu}`.
-
-### running the saas layer
-
-To run the saas layer in production it's important to use another machine than the solver so the saas api can speak to
-the solver using it's public http(s) endpoint.
-
-To run the various services there are a few options:
-
-* use the `docker-compose.yaml` file but change some values
-* run the various services using another tool like k8s (they are all docker based services)
-* run the various services using systemd
-
-We have left this choice to the reader as it depends on the environment you are deploying to.
 
 ## troubleshooting
 
