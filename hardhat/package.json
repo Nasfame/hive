@@ -6,7 +6,7 @@
   "description": "CoopHive: Decentralized Generic Marketplace protocol",
   "author": "Hiro <laciferin@gmail.com>",
   "scripts": {
-    "setup": "npm install -g solc  && remixd -i slither",
+    "setup": "remixd -i slither",
     "gen-env": "ts-node scripts/generate-addresses.ts > .env.gen",
     "postinstall": "npm run setup",
     "dev": "remixd",
