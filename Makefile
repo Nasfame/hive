@@ -1,6 +1,3 @@
-include .env
-export
-
 binName = hive-$(shell uname -s)-$(shell uname -m)
 
 
@@ -13,6 +10,9 @@ setup-dev:
 	pnpm gen-env
 	cd ..
 	go generate
+
+include .env
+export
 
 build-ci:
 	go build -v -ldflags="\
