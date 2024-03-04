@@ -53,7 +53,7 @@ func (s *service) newResourceProviderCmd() *cobra.Command {
 		Aliases: []string{"resource-provider", "resourceprovider"},
 		Short:   "Start the CoopHive resource provider service.",
 		Long:    "Start the CoopHive resource provider service.",
-		Example: "",
+		Example: "hive rp --offer-cpu 3000 --offer-gpu 1 --offer-ram 1024 --offer-count 1 (rp is offering 1 offer of {3000mCPUs, 1024MB RAM,1 GPU }",
 		RunE: func(cmd *cobra.Command, _ []string) error {
 			serviceType.ProcessSyncServiceDirectory(s.Conf.GetString(enums.APP_DIR), func(appDir string) {
 				config.SetAppDir(s.Conf, appDir)
