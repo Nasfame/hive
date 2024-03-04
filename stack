@@ -428,4 +428,8 @@ function build-plugin-websocket(){
   go build -buildmode=plugin -o "${EXT_DIR}" ./exp/dealer/websocketDealer/main.go
 }
 
+function install() {
+    make
+}
+
 eval "$@"

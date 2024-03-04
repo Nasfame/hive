@@ -101,7 +101,7 @@ You will need the following tools:
       for GPU-enabled resource-providers (these will be preinstalled in certain environments, e.g. Lambda Labs)
 * node.js (v18)
     * see [nodesource distributions](https://github.com/nodesource/distributions?tab=readme-ov-file#using-ubuntu-2)
-    * also install yarn globally: `sudo npm install -g yarn`
+  * also install yarn globally: `sudo npm install -g pnpm`
 
 ### initial setup
 
@@ -117,6 +117,8 @@ chmod +x bacalhau
 sudo mv bacalhau /usr/bin
 ```
 
+[//]: # (TODO: upgrade bacalhau)
+
 #### clone faucet repo
 
 The [faucet](https://github.com/CoopHive/faucet.coophive.network) allows us to mint tokens for testing purposes.
@@ -125,7 +127,7 @@ We first need to clone the repo:
 
 ```bash
 # run this command at the same level as the coophive repo
-git clone https://github.com/CoopHive/eth-faucet
+git clone https://github.com/CoopHive/faucet.coophive.network
 ```
 
 #### install stack
