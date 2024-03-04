@@ -88,13 +88,3 @@ and
 submits the results to **solver**. **Solver** then verifies the job results. **JC** queries the verifies the results and
 downloads the results from the **Solver**.
 
-##  
-
-###  
-
-[//]: # ()
-
-[//]: # (> You can use private keys generated at `hardhat/.env.gen` in your .env file)
-
-[//]: # (> Ensure you have got funds from your faucet for all addresses)
-
