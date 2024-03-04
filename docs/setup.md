@@ -60,7 +60,7 @@ pnpm account $SOLVER_PRIVATE_KEY
 8. **Ensure Security**: After importing your account, it's important to ensure the security of your MetaMask wallet.
    Make sure to keep your private key secure and never share it with anyone.
 
-> Import wallets for all the private keys
+> Import the private keys to Metamask
 
 ##  
 
@@ -72,9 +72,3 @@ pnpm account $SOLVER_PRIVATE_KEY
 
 [//]: # (> Ensure you have got funds from your faucet for all addresses)
 
-> To get address from
-
-```bash
-
-
-```
