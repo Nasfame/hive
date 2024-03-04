@@ -60,7 +60,21 @@ pnpm account $SOLVER_PRIVATE_KEY
 8. **Ensure Security**: After importing your account, it's important to ensure the security of your MetaMask wallet.
    Make sure to keep your private key secure and never share it with anyone.
 
-> Import the private keys to Metamask
+> Do the same for all the private keys
+
+## Setup CoopHive Services
+
+### Setup Solver
+
+`hive solver`
+
+### Setup Resource Provider
+
+`hive rp`
+
+### Run a coophive module on the rp
+
+`hive run cowsay:v0.1`
 
 ##  
 
