@@ -430,6 +430,12 @@ function build-plugin-websocket(){
 
 function install() {
     make
+
+    go mod download
+    (cd hardhat && yarn install)
+    (cd frontend && yarn install)
+    (cd hardhat && npx hardhat compile)
+    print-env > .env
 }
 
 eval "$@"
