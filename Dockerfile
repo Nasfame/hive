@@ -21,6 +21,10 @@ RUN ./bin/hive version
 
 FROM alpine:latest
 
+ENV FAUCET_PORT=8080
+
+EXPOSE $FAUCET_PORT
+
 #ENV WEB3_PRIVATE_KEY; try to pass a hardhat private key here
 
 WORKDIR /app

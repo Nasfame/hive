@@ -28,7 +28,9 @@ func (p *PaymentEventChannels) Start(
 	ctx context.Context,
 	cm *system.CleanupManager,
 ) (err error) {
-	defer eventErrorHandler(err)
+	defer func() {
+		eventErrorHandler(err)
+	}()
 
 	blockNumber, err := sdk.getBlockNumber()
 	if err != nil {
@@ -49,7 +51,7 @@ func (p *PaymentEventChannels) Start(
 
 	paymentSub, err = connectPaymentSub()
 	if err != nil {
-		log.Fatal().Err(err).Msgf("subscribe to payment requests failed")
+		log.Error().Err(err).Msgf("subscribe to payment requests failed")
 		return err
 	}
 

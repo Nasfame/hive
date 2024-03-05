@@ -76,6 +76,8 @@ sync:
 
 	#scp .env.prod hive:.env
 	#scp .env.prod hive1:.env
+sync-solver:
+	make sync host=solver
 
 sync-env:
 	scp .env.prod hive:.env

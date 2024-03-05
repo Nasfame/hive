@@ -28,7 +28,9 @@ func (m *MediationEventChannels) Start(
 	ctx context.Context,
 	cm *system.CleanupManager,
 ) (err error) {
-	defer eventErrorHandler(err)
+	defer func() {
+		eventErrorHandler(err)
+	}()
 
 	blockNumber, err := sdk.getBlockNumber()
 	if err != nil {
@@ -49,7 +51,7 @@ func (m *MediationEventChannels) Start(
 
 	mediationRequestedSub, err = connectMediationRequestedSub()
 	if err != nil {
-		log.Fatal().Err(err).Msgf("subscribe to mediation requests failed")
+		log.Error().Err(err).Msgf("subscribe to mediation requests failed")
 		return err
 	}
 

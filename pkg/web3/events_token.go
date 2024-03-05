@@ -29,7 +29,9 @@ func (t *TokenEventChannels) Start(
 	ctx context.Context,
 	cm *system.CleanupManager,
 ) (err error) {
-	defer eventErrorHandler(err)
+	defer func() {
+		eventErrorHandler(err)
+	}()
 
 	blockNumber, err := sdk.getBlockNumber()
 	if err != nil {
@@ -52,7 +54,7 @@ func (t *TokenEventChannels) Start(
 
 	transferSub, err = connectTransferSub()
 	if err != nil {
-		log.Fatal().Err(err).Msgf("subscribe to token transfers failed")
+		log.Error().Err(err).Msgf("subscribe to token transfers failed")
 		return err
 	}
 
