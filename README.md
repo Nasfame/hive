@@ -58,6 +58,15 @@ Block Explorer URL: (leave blank)
 
 </details>
 
+<details>
+<summary>FVM Calibration Testnet</summary>
+
+- [x] Visit https://chainlist.org/chain/314159
+- [x] Add to Metamask
+
+</details>
+
+
 
 
 > The testnet has a base currency of ETH and you will also get HIVE to pay for jobs (and nodes to stake).
@@ -71,6 +80,7 @@ To obtain funds, please visit the below faucets:
 3. Sepolia Faucet:
    - [Hive Faucet](http://faucet.co-ophive.network:8081)
    - [Eth Faucet](https://sepoliafaucet.com)
+4. Calibration Faucet: [Click Here](http://faucet.co-ophive.network:8082)
 
 [//]: # (3. Sepolia Faucet: [Click Here]&#40;http://faucet.co-ophive.network:8081&#41;)
 
@@ -193,7 +203,10 @@ hive run cowsay:v0.1.1 -i Message="CoopHive"
 ```
 
 > You can now switch from the default network using `--network <network>`  
-> For eg: `hive run cowsay:v0.1.1 -i Message="CoopHive" --network halcyon`
+> `hive run cowsay:v0.1.1 -i Message="CoopHive" --network halcyon`
+> `hive run cowsay:v0.1.1 -i Message="CoopHive" --network calibration`
+> `hive run cowsay:v0.1.1 -i Message="CoopHive" --network aurora`
+> `hive run cowsay:v0.1.1 -i Message="CoopHive" --network sepolia`
 
 ### SDXL
 
