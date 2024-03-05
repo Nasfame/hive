@@ -34,7 +34,9 @@
     "drip": "hardhat drip --network ",
     "dapp": "hardhat dapp --network ",
     "coophive": "cp -r deployments/coophive deployments1/coophive && rm -rf deployments/coophive && npm run deploy coophive",
-    "calibration": "cp -r deployments/calibration deployments1/calibration && rm -rf deployments/calibration && npm run deploy calibration"
+    "calibration": "cp -r deployments/calibration deployments1/calibration && rm -rf deployments/calibration && npm run deploy calibration",
+    "bal": "hardhat bal --network ",
+    "balance": "npm run bal"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-chai-matchers": "^2.0.4",

@@ -2,6 +2,7 @@ package utils_test
 
 import (
 	"errors"
+	"fmt"
 	"testing"
 
 	"github.com/ethereum/go-ethereum/core"
@@ -15,6 +16,7 @@ func TestCheckInSufficientFunds(t *testing.T) {
 	tests := []struct {
 		name        string
 		err         error
+		errString   string
 		faucetUrl   string
 		expectPanic bool
 	}{
@@ -58,6 +60,11 @@ func TestCheckInSufficientFunds(t *testing.T) {
 			faucetUrl:   faucetUrl,
 			expectPanic: true,
 		},
+		{
+			name:        "Test for calibration insufficient funds",
+			err:         fmt.Errorf("actor not found"),
+			expectPanic: true,
+		},
 	}
 
 	for _, tt := range tests {
@@ -69,7 +76,7 @@ func TestCheckInSufficientFunds(t *testing.T) {
 				}
 			}()
 
-			utils.CheckInSufficientFunds(tt.err, tt.faucetUrl)
+			utils.PanicOnInsufficientFunds(tt.err, tt.faucetUrl)
 		})
 	}
 }

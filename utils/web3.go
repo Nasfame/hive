@@ -2,18 +2,23 @@ package utils
 
 import (
 	"errors"
-	"fmt"
 	"strings"
 
 	"github.com/ethereum/go-ethereum/core"
 	"github.com/rs/zerolog/log"
 )
 
-// CheckInSufficientFunds panics if its insufficient funds error
-func CheckInSufficientFunds(err error, faucetUrl string) {
+const msgInsufficientFunds = "PanicOnInsufficientFunds"
+
+// PanicOnInsufficientFunds panics if its insufficient funds error
+func PanicOnInsufficientFunds(err error, faucetUrl string) {
 
 	if err == nil {
 		return
+	}
+
+	if strings.Contains(err.Error(), "actor not found") {
+		panic(msgInsufficientFunds + "calibration")
 	}
 
 	if errors.Is(err, core.ErrInsufficientFundsForTransfer) {
@@ -22,11 +27,11 @@ func CheckInSufficientFunds(err error, faucetUrl string) {
 		if faucetUrl != "" {
 			log.Info().Msgf("checkout our faucets over here:%v", faucetUrl)
 		}
-		panic(fmt.Sprintf("CheckInSufficientFunds"))
+		panic(msgInsufficientFunds)
 	}
 
 	if strings.Contains(err.Error(), "insufficient funds") {
-		log.Debug().Err(err).Caller(3).Msgf("CheckInSufficientFunds-I")
+		log.Debug().Err(err).Caller(3).Msgf(msgInsufficientFunds + "1")
 		panic(err)
 	}
 }

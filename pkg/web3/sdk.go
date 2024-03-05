@@ -265,5 +265,5 @@ func (sdk *Web3SDK) checkInsufficientBalance(err error) {
 	// if err != nil {
 	// 	log.Error().Caller(2).Err(err).Msgf("CheckInsufficientBalance")
 	// }
-	utils.CheckInSufficientFunds(err, config.Conf.GetString(enums.GITHUB_REPO))
+	utils.PanicOnInsufficientFunds(err, config.Conf.GetString(enums.GITHUB_REPO))
 }
