@@ -6,6 +6,9 @@ import {Account} from "../utils/types";
 import {HardhatRuntimeEnvironment} from "hardhat/types";
 import {HardhatEthersError} from "@nomicfoundation/hardhat-ethers/internal/errors";
 import {HardhatEthersSigner} from "@nomicfoundation/hardhat-ethers/signers";
+import {Contract} from "ethers";
+import {access} from "../typechain-types/@openzeppelin/contracts";
+import hre from "hardhat";
 
 task("balance", "Prints an account's balance")
     .addParam("account", "The account's address")
@@ -178,7 +181,7 @@ task("fund", "Fund RP, faucet account's balance")
 task("drip", "Drip RP, faucet account's balance")
     .addPositionalParam('address', "The address to drip to")
     .addOptionalPositionalParam("eth", "The amount to drip", "0.01")
-    .addOptionalPositionalParam("hive", "The amount to drip", "100")
+    .addOptionalPositionalParam("hive", "The amount to drip", "0")
     .setAction(async ({address, eth, hive}, hre) => {
         console.log("network", hre.network.name);
 
@@ -190,16 +193,16 @@ task("drip", "Drip RP, faucet account's balance")
         console.log("Funding account bal:", await getBalanceInEther(fundingAccount.address, hre));
 
 
+        let hiveBal = async (address: string): Promise<string> => {
+            if (hive == 0) {
+                return "0HIVE" //new Promise<string>(() => "0HIVE")
+            }
+            return await balanceOfHive(hre, signer, address) + "HIVE"
+        }
+
         const amountInWei = hre.ethers.parseEther(eth);
 
-        const token = await hre.deployments.get("HiveToken");
 
-        console.log("token Address:", token.address)
-
-        const tokenContract: HiveToken = new hre.ethers.Contract(token.address, token.abi, signer)
-
-        const amountInHiveWei = hre.ethers.parseUnits(hive, await tokenContract.decimals()); // Assuming 'token' is the HiveToken contract and 'decimals' is the number of decimal places of the token
-        const hiveBal = async (address: string) => await tokenContract.balanceOf(address) + "HIVE"
         const ethBal = async (address: string) => await getBalanceInEther(address, hre)
 
 
@@ -207,7 +210,7 @@ task("drip", "Drip RP, faucet account's balance")
             admin: {
                 address: fundingAccount.address,
                 balance: await getBalanceInEther(fundingAccount.address, hre),
-                hive: await tokenContract.balanceOf(fundingAccount.address)
+                hive: await hiveBal(fundingAccount.address),
             }
         }
         const acc: Account = {
@@ -223,7 +226,16 @@ task("drip", "Drip RP, faucet account's balance")
         }
         out[acc.name] = out_
 
-        const results = await Promise.allSettled([transferEther(acc, amountInWei, hre, signer), transferHive(acc, amountInWei, hre, signer, tokenContract, amountInHiveWei)])
+        const results = await Promise.allSettled([
+            transferEther(acc, amountInWei, hre, signer),
+            transferHive(acc, hre, signer, hive),
+            /*(async (acc: Account) => {
+                if (!hive) {
+                    return
+                }
+                return transferHive(acc, hre, signer, hive)
+            })(acc),*/
+        ])
         results.forEach((result, index) => {
             const transferType = index === 0 ? 'Ether' : 'Hive';
             if (result.status === 'fulfilled') {
@@ -261,7 +273,18 @@ const transferEther = async (acc: Account, amountInWei: bigint, hre: HardhatRunt
     console.log(`Transaction successful: ${txHash}`);
 }
 
-const transferHive = async (acc: Account, amountInWei: bigint, hre: HardhatRuntimeEnvironment, signer: HardhatEthersSigner, tokenContract: HiveToken, amountInHiveWei: bigint) => {
+const transferHive = async (acc: Account, hre: HardhatRuntimeEnvironment, signer: HardhatEthersSigner, hiveTokenAmount: string) => {
+    const token = await hre.deployments.get("HiveToken");
+
+    console.log("token Address:", token.address)
+
+
+    // @ts-ignore
+    const tokenContract: HiveToken = new hre.ethers.Contract(token.address, token.abi, signer)
+
+
+    const amountInHiveWei = hre.ethers.parseUnits(hiveTokenAmount, await tokenContract.decimals());
+
     const additionalParams = {}
 
     if (hre.network.name == "titanAI") {
@@ -274,4 +297,17 @@ const transferHive = async (acc: Account, amountInWei: bigint, hre: HardhatRunti
     const {hash: transferTxHash} = transferReceipt;
 
     console.log(`Hive transfer successful: ${transferTxHash}`);
+}
+
+const balanceOfHive = async (hre: HardhatRuntimeEnvironment, signer: HardhatEthersSigner, address: string) => {
+    const token = await hre.deployments.get("HiveToken");
+
+    console.log("token Address:", token.address)
+
+    // @ts-ignore
+    const tokenContract: HiveToken = new hre.ethers.Contract(token.address, token.abi, signer)
+
+    const tokenBal = await tokenContract.balanceOf(address)
+
+    return tokenBal
 }

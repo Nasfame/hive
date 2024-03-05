@@ -27,7 +27,9 @@ func (s *StorageEventChannels) Start(
 	sdk *Web3SDK,
 	ctx context.Context,
 	cm *system.CleanupManager,
-) error {
+) (err error) {
+	defer eventErrorHandler(err)
+
 	blockNumber, err := sdk.getBlockNumber()
 	if err != nil {
 		return err

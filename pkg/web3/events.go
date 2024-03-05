@@ -4,7 +4,6 @@ import (
 	"context"
 
 	"github.com/CoopHive/hive/pkg/system"
-	"github.com/rs/zerolog/log"
 )
 
 type EventChannels struct {
@@ -47,11 +46,18 @@ func (eventChannels *EventChannels) Start(
 	for _, collection := range eventChannels.collections {
 		c := collection
 		go func() {
-			err := c.Start(sdk, ctx, cm)
-			if err != nil {
+			c.Start(sdk, ctx, cm) // TODO:
+			/*	if err != nil {
 				log.Error().Msgf("error starting listeners: %s", err.Error())
-			}
+				panic("panic starting listeners")
+			}*/
 		}()
 	}
 	return nil
+}
+
+func eventErrorHandler(err error) {
+	if err != nil {
+		panic(err)
+	}
 }

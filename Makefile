@@ -58,12 +58,19 @@ install:
 snapshot:
 	goreleaser build --clean --snapshot
 
-sync:
-	make snapshot
+host ?= hive
 
+sync:
+	#host=${host:-"hive"}
+	echo "host is ${host}"
+	make snapshot
 	#scp dist/hive_linux_amd64_v1/hive hive:/usr/local/bin/hive #permission issue
-	scp dist/hive_linux_amd64_v1/hive hive:./bin/hive
-	scp dist/hive_linux_amd64_v1/hive hive:./hive/hive
+	#scp dist/hive_linux_amd64_v1/hive hive:./bin/hive
+	scp dist/hive_linux_amd64_v1/hive ${host}:./hive
+	ssh ${host} 'cd hive && sudo chmod +x hive && sudo cp hive /usr/local/bin/'
+
+	scp *.yml ${host}:.
+	scp .env.* ${host}:.
 
 	#scp dist/hive_linux_amd64_v1/hive hive1:/usr/local/bin/hive
 

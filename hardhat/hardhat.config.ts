@@ -62,6 +62,13 @@ const config: HardhatUserConfig = {
       accounts: PRIVATE_KEYS,
       saveDeployments: true,
     },
+    aurora: {
+      chainId: 1337,
+      url: "http://aurora.co-ophive.network:8545",
+      ws: "ws://aurora.co-ophive.network:8546",
+      accounts: PRIVATE_KEYS,
+      saveDeployments: true,
+    },
     halcyon: { //coophive testnet
       chainId: 1337,
       url: "http://halcyon.co-ophive.network:8545",
