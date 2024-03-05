@@ -4,11 +4,13 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 
 	"github.com/CoopHive/hive/config"
 	"github.com/CoopHive/hive/enums"
 	"github.com/CoopHive/hive/pkg/http"
+	"github.com/CoopHive/hive/utils"
 )
 
 func GetDefaultServerOptions() http.ServerOptions {
@@ -39,6 +41,21 @@ func AddServerCliFlags(cmd *cobra.Command, serverOptions *http.ServerOptions) {
 }
 
 func CheckServerOptions(options http.ServerOptions) error {
+	if options.Host == "" {
+		return fmt.Errorf("SERVER_HOST is required")
+	}
+
+	u := options.URL
+
+	if u == "" || strings.Contains(u, "curl") {
+		ip := utils.GetPublicIP()
+		if ip != "" {
+			u = fmt.Sprintf("http://%s:%d", ip, options.Port)
+			log.Info().Msgf("setting %s to public ip:%s", enums.SERVER_URL, u)
+			options.URL = u
+		}
+	}
+
 	if options.URL == "" {
 		return fmt.Errorf("SERVER_URL is required")
 	}
