@@ -87,8 +87,24 @@ var appConfig = configMap[string]{
 		"rpc url",
 		"",
 	},
+	enums.HIVE_RPC_URL: {
+		"hive rpc url (overrides web3_rpc_url)",
+		"",
+	},
+	enums.HIVE_RPC_WS: {
+		"hive rpc ws url (overrides web3_rpc_url)",
+		"",
+	},
+	enums.HIVE_RPC_HTTP: {
+		"hive rpc http url (overrides web3_rpc_url)",
+		"",
+	},
 	enums.WEB3_CHAIN_ID: {
 		"chain id of the network",
+		"",
+	},
+	enums.HIVE_CHAIN_ID: {
+		"chain id of the network (overrides hive chainId)",
 		"",
 	},
 	enums.WEB3_PRIVATE_KEY: {

@@ -3,6 +3,7 @@ package config
 import (
 	"log"
 	"os"
+	"slices"
 	"strings"
 
 	"github.com/sirupsen/logrus"
@@ -12,6 +13,7 @@ import (
 	"go.uber.org/fx/fxevent"
 
 	"github.com/CoopHive/hive/enums"
+	"github.com/CoopHive/hive/utils"
 )
 
 var Module = fx.Options(
@@ -135,11 +137,57 @@ func newConfig() (o out) {
 		logrus.Debugln("controller: ", controller)
 	}
 
-	pKey := config.GetString(enums.HIVE_PRIVATE_KEY)
-	if pKey != "" {
-		logrus.Debugln("pKey overriden with ", enums.HIVE_PRIVATE_KEY)
-		config.Set(enums.WEB3_PRIVATE_KEY, pKey)
-		// log.Fatal(config.GetString(enums.WEB3_PRIVATE_KEY))
+	// override configurations with HIVE custom
+
+	overRideMap := map[string]string{
+		enums.HIVE_CHAIN_ID:    enums.WEB3_CHAIN_ID,
+		enums.HIVE_RPC_URL:     enums.WEB3_RPC_URL,
+		enums.HIVE_PRIVATE_KEY: enums.WEB3_PRIVATE_KEY,
+		enums.HIVE_RPC_HTTP:    enums.WEB3_RPC_URL, // ordered: we don't use rpc http
+		enums.HIVE_RPC_WS:      enums.WEB3_RPC_URL, // ordered
+	}
+
+	overrideKeysOrder := []string{
+		enums.HIVE_CHAIN_ID,
+		enums.HIVE_RPC_HTTP,
+		enums.HIVE_RPC_URL,
+		enums.HIVE_PRIVATE_KEY,
+		enums.HIVE_RPC_WS,
+	}
+	overrideKeysOrder = slices.Compact(overrideKeysOrder) // remove dups
+
+	if len(overRideMap) != len(overRideMap) {
+		// not good enough: as there can be different entries in both or dup entries
+		panic("entried not found not defined for some keys")
+	}
+	// check entries matches in both
+	for _, key := range overrideKeysOrder {
+		if _, ok := overRideMap[key]; !ok {
+			panic("entry not found for key: " + key)
+		}
+	}
+
+	// the below doesn't work as maps.Keys doesn't perseve order
+	// if !slices.Equal(overrideKeysOrder, maps.Keys(overRideMap)) {
+	// 	logrus.Errorf("%+v!=%+v", overRideMap, overrideKeysOrder)
+	// 	panic("entries not matching for overrideKeys and order")
+	// }
+
+	for _, k := range overrideKeysOrder {
+		v := overRideMap[k]
+		overRiddingSetting := config.GetString(k)
+		if overRiddingSetting != "" {
+
+			smallK := strings.ToLower(k)
+
+			// check websocket urls
+			if strings.HasSuffix(smallK, "ws") {
+				utils.PanicOnHTTPUrl(overRiddingSetting)
+			}
+
+			config.Set(v, overRiddingSetting)
+			logrus.Debugf("overriding %s with %s", v, k)
+		}
 	}
 
 	o.Conf = config

@@ -73,11 +73,18 @@ const (
 )
 
 const (
-	WEB3_RPC_URL     = "WEB3_RPC_URL"
+	WEB3_RPC_URL = "WEB3_RPC_URL"
+	HIVE_RPC_URL = "HIVE_RPC_URL" // TODO: add to web3 options, discuss with luke whether to backward support
+
+	HIVE_RPC_WS   = "HIVE_RPC_WS"
+	HIVE_RPC_HTTP = "HIVE_RPC_HTTP"
+
 	WEB3_PRIVATE_KEY = "web3_private_key"
 
 	HIVE_PRIVATE_KEY = "HIVE_PRIVATE_KEY"
 	WEB3_CHAIN_ID    = "WEB3_CHAIN_ID"
+
+	HIVE_CHAIN_ID = "HIVE_CHAIN_ID"
 )
 
 const (

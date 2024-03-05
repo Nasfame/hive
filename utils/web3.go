@@ -2,6 +2,8 @@ package utils
 
 import (
 	"errors"
+	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/ethereum/go-ethereum/core"
@@ -34,4 +36,19 @@ func PanicOnInsufficientFunds(err error, faucetUrl string) {
 		log.Debug().Err(err).Caller(3).Msgf(msgInsufficientFunds + "1")
 		panic(err)
 	}
+}
+
+func PanicOnHTTPUrl(urlString string) {
+	u, err := url.Parse(urlString)
+
+	if err != nil {
+		panic("failed to parse url " + err.Error())
+	}
+	if u.Scheme == "ws" || u.Scheme == "wss" {
+		log.Debug().Msgf("URL is a WebSocket URL %s", urlString)
+		return
+	}
+	err = fmt.Errorf("url scheme - %s is not websocket", urlString)
+	panic(err)
+
 }

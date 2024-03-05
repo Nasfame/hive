@@ -31,9 +31,15 @@ export async function syncDapps(hre: HardhatRuntimeEnvironment) {
 HIVE_CONTROLLER=${controllerContract.address}
 HIVE_MEDIATORS=${defaultMediators.join(",")}
 HIVE_SOLVER=${solvers.join(",")}
+
 WEB3_RPC_URL=${websocketUrl} 
 WEB3_RPC_HTTP=${netUrl}
 WEB3_CHAIN_ID=${network.config.chainId}
+
+HIVE_RPC_URL=${websocketUrl} 
+HIVE_RPC_WS=${websocketUrl} 
+HIVE_RPC_HTTP=${netUrl}
+HIVE_CHAIN_ID=${network.config.chainId}
 
 HIVE_TOKEN=${tokenContract.address}
 

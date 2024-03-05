@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/CoopHive/hive/pkg/system"
+	"github.com/CoopHive/hive/utils"
 )
 
 type EventChannels struct {
@@ -43,6 +44,8 @@ func (eventChannels *EventChannels) Start(
 	ctx context.Context,
 	cm *system.CleanupManager,
 ) error {
+	utils.PanicOnHTTPUrl(sdk.Options.RpcURL)
+
 	for _, collection := range eventChannels.collections {
 		c := collection
 		go func() {
