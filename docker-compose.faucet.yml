@@ -2,7 +2,7 @@ version: '3.8'
 services:
   aurora:
     environment:
-      FAUCET_PORT: "8080"
+      FAUCET_PORT: 8080
       NETWORK: "aurora"
     env_file:
       - .env.aurora
@@ -19,7 +19,7 @@ services:
 
   sepolia:
     environment:
-      FAUCET_PORT: "8080"
+      FAUCET_PORT: 8080
       NETWORK: "sepolia"
     env_file:
       - .env.sepolia
@@ -36,7 +36,7 @@ services:
 
   calibration:
     environment:
-      FAUCET_PORT: "8080"
+      FAUCET_PORT: 8080
       NETWORK: "calibration"
     env_file:
       - .env.calibration
