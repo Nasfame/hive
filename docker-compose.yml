@@ -30,8 +30,8 @@ services:
   #      - ./data:/app/coophive
 
   rp:
-    env_file:
-      - ~/.bacalhau/bacalhau.run
+    #    env_file:
+    #      - ~/.bacalhau/bacalhau.run
     image: ghcr.io/coophive/hive:latest
     command: [ "rp" ]
     restart: always
