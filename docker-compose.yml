@@ -121,6 +121,11 @@ services:
       file: ./docker-compose.faucet.yml
       service: sepolia
 
+  calibration:
+    extends:
+      file: ./docker-compose.faucet.yml
+      service: calibration
+
 
 #  version:
 #    image: ghcr.io/coophive/hive:latest
