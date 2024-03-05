@@ -203,10 +203,11 @@ hive run cowsay:v0.1.1 -i Message="CoopHive"
 ```
 
 > You can now switch from the default network using `--network <network>`  
-> `hive run cowsay:v0.1.1 -i Message="CoopHive" --network halcyon`
-> `hive run cowsay:v0.1.1 -i Message="CoopHive" --network calibration`
-> `hive run cowsay:v0.1.1 -i Message="CoopHive" --network aurora`
-> `hive run cowsay:v0.1.1 -i Message="CoopHive" --network sepolia`
+
+- `hive run cowsay:v0.1.1 -i Message="CoopHive" --network halcyon`
+- `hive run cowsay:v0.1.1 -i Message="CoopHive" --network calibration`
+- `hive run cowsay:v0.1.1 -i Message="CoopHive" --network aurora`
+- `hive run cowsay:v0.1.1 -i Message="CoopHive" --network sepolia`
 
 ### SDXL
 
