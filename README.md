@@ -188,7 +188,7 @@ Alternatively, arrange for the key to be in your environment in a more secure wa
 Hello World, now with cows.
 
 ```
-hive run cowsay:v0.1.1 -i Message="CoopHive"
+hive run cowsay:v0.1.2 -i Message="CoopHive"
 ```
 
 ```stdout
@@ -204,10 +204,10 @@ hive run cowsay:v0.1.1 -i Message="CoopHive"
 
 > You can now switch from the default network using `--network <network>`  
 
-- `hive run cowsay:v0.1.1 -i Message="CoopHive" --network halcyon`
-- `hive run cowsay:v0.1.1 -i Message="CoopHive" --network calibration`
-- `hive run cowsay:v0.1.1 -i Message="CoopHive" --network aurora`
-- `hive run cowsay:v0.1.1 -i Message="CoopHive" --network sepolia`
+- `hive run cowsay:v0.1.2 -i Message="CoopHive" --network halcyon`
+- `hive run cowsay:v0.1.2 -i Message="CoopHive" --network calibration`
+- `hive run cowsay:v0.1.2 -i Message="CoopHive" --network aurora`
+- `hive run cowsay:v0.1.2 -i Message="CoopHive" --network sepolia`
 
 ### SDXL
 
