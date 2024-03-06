@@ -166,7 +166,6 @@ require (
 )
 
 retract (
-
 	v0.16.2
 	v0.11.0-alpha
 	v0.10.7-beta
