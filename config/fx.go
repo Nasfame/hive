@@ -3,6 +3,7 @@ package config
 import (
 	"log"
 	"os"
+	"regexp"
 	"slices"
 	"strings"
 
@@ -83,7 +84,7 @@ func newConfig() (o out) {
 		}
 	}
 
-	osArgs := []string{}
+	var osArgs []string
 
 	// bugfix: for `hive run cowsay:v0.1.2 -i Message="Hiro" --network sepolia` but defaulting to aurora
 	// due to collusion with short hand vars
@@ -109,18 +110,26 @@ func newConfig() (o out) {
 		logrus.SetReportCaller(true)
 	}
 
-	appDir := config.GetString(enums.APP_DIR)
-	logrus.Debugln("appDir: ", appDir)
-
-	// appDataDir := config.GetString(enums.APP_DATA_DIR)
-	// appDataDir = strings.Replace(appDataDir, AppDirSymbol, appDir, 1)
-	// config.Set(enums.APP_DATA_DIR, appDataDir)
-
 	/*Network related config*/
 
 	network := config.GetString(enums.NETWORK)
 
 	logrus.Debugln("network: ", network)
+
+	appDir := config.GetString(enums.APP_DIR)
+
+	regex := regexp.MustCompile("[^a-zA-Z0-9_]")
+	sanitizedNetworkString := regex.ReplaceAllString(network, "") // TODO: move to a function and test the function
+	logrus.Debugln("sanitizedNetworkString for dir: ", sanitizedNetworkString)
+
+	appDir = strings.Replace(appDir, networkSymbol, sanitizedNetworkString, 1)
+
+	logrus.Debugln("appDir: ", appDir)
+	config.Set(enums.APP_DIR, appDir)
+
+	// appDataDir := config.GetString(enums.APP_DATA_DIR)
+	// appDataDir = strings.Replace(appDataDir, AppDirSymbol, appDir, 1)
+	// config.Set(enums.APP_DATA_DIR, appDataDir)
 
 	if true {
 		c, err := loadDApp(network)

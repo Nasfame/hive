@@ -159,6 +159,13 @@ func SetAppDir(conf *viper.Viper, appDir string) {
 
 	}
 
+	/*network := conf.GetString(enums.NETWORK) //nevermind APP_DIR/$NETWORK takes care of it
+
+	logFormat := conf.GetString(enums.APP_LOG_FILE_FORMAT)
+	logFormat = strings.Replace(logFormat, "$NETWORK", network, 1)
+	logrus.Debugln("logFormat for solver:", logFormat)
+	conf.Set(enums.APP_LOG_FILE_FORMAT, logFormat)*/
+
 	// conf.Set(enums.BACALHAU_RESULTS_DIR, path.Join(appDir, conf.GetString(enums.BACALHAU_RESULTS_DIR)))
 	// os.MkdirAll(conf.GetString(enums.BACALHAU_RESULTS_DIR), 0755)
 

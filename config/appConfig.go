@@ -18,6 +18,8 @@ const deprecatedNetwork = "aurora"
 
 const AppDirSymbol = "$APP_DIR"
 
+const networkSymbol = "$NETWORK"
+
 var processAppDir = func() string {
 
 	appDir := buildConfig[enums.APP_NAME].defaultVal
@@ -34,7 +36,7 @@ var processAppDir = func() string {
 		log.Fatal("failed to find user home dir with error ", err)
 	}
 
-	return path.Join(homeDir, appDir)
+	return path.Join(homeDir, appDir, networkSymbol)
 }
 
 var appConfig = configMap[string]{
