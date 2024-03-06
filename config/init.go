@@ -2,7 +2,6 @@ package config
 
 import (
 	"os"
-	"path"
 
 	"github.com/joho/godotenv"
 	"github.com/sirupsen/logrus"
@@ -10,14 +9,16 @@ import (
 	"github.com/CoopHive/hive/enums"
 )
 
-func init() {
-	userDir, err := os.UserHomeDir()
-	if err != nil {
-		panic(err)
-	}
+/*
+	func init() {
+		userDir, err := os.UserHomeDir()
+		if err != nil {
+			panic(err)
+		}
 
-	appConfig[enums.APP_DIR].defaultVal = path.Join(userDir, "coophive")
-}
+		appConfig[enums.APP_DIR].defaultVal = path.Join(userDir, "coophive")
+	}
+*/
 func init() {
 	StdRepoUri := buildConfig[enums.STD_REPO_URI].defaultVal
 	StdModulePrefix := buildConfig[enums.STD_MODULE_PREFIX].defaultVal
