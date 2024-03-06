@@ -202,41 +202,35 @@ hive run cowsay:v0.1.2 -i Message="CoopHive"
                 ||     ||
 ```
 
-> You can now switch from the default network using `--network <network>`  
+> You can now switch from the default network using `--network <network>` or by setting the env var `export NETWORK=`
 
 - `hive run cowsay:v0.1.2 -i Message="CoopHive" --network halcyon`
 - `hive run cowsay:v0.1.2 -i Message="CoopHive" --network calibration`
 - `hive run cowsay:v0.1.2 -i Message="CoopHive" --network aurora`
 - `hive run cowsay:v0.1.2 -i Message="CoopHive" --network sepolia`
+- `export NETWORK=sepolia && hive run cowsay:v0.1.2 -i Message="CoopHive" --network sepolia`
 
 ### SDXL
 
 Stable diffusion:
 
 ```
-hive run sdxl:v0.2.8 -i PromptEnv="PROMPT= a hive of bees"
+hive run sdxl:v1.0.0-alpha.2 -i Prompt="a hive of bees"
 ```
 
 ```stdout
- ___  __    __  ____  _  _  __  _  _  ____
+  ___  __    __  ____  _  _  __  _  _  ____ 
  / __)/  \  /  \(  _ \/ )( \(  )/ )( \(  __)
-( (__(  O )(  O )) __/) __ ( )( \ \/ / ) _)
- \___)\__/  \__/(__)  \_)(_/(__) \__/ (____) 0.4.0
+( (__(  O )(  O )) __/) __ ( )( \ \/ / ) _) 
+ \___)\__/  \__/(__)  \_)(_/(__) \__/ (____) 0.16.2-SNAPSHOT-00d6b53
 
   Decentralized Compute Network  https://coophive.network
 
 
-∙∙● CoopHive submitting job 2024-02-07T05:11:18+05:30
-∙●∙ CoopHive submitting jobEnumerating objects: 11, done.
-Counting objects: 100% (11/11), done.
-Compressing objects: 100% (10/10), done.
-Total 11 (delta 1), reused 11 (delta 1), pack-reused 0
 🌟  CoopHive submitting job
 🤝  Job submitted. Negotiating deal...
 💌  Deal agreed. Running job...
-🤔  Results submitted. Awaiting verification...
-✅  Results accepted. Downloading result...
-🤔  Results submitted. Awaiting verification...
+🤔  Results submitted. Awaiting verification... 
 ✅  Results accepted. Downloading result...
 
 🍂 CoopHive job completed, try 👇
@@ -244,19 +238,29 @@ Total 11 (delta 1), reused 11 (delta 1), pack-reused 0
     cat /tmp/coophive/data/downloaded-files/QmYoVjFGY1h6m22c7X8trw27H44wzHat1TUdfVJAPfLzmc/stdout
     cat /tmp/coophive/data/downloaded-files/QmYoVjFGY1h6m22c7X8trw27H44wzHat1TUdfVJAPfLzmc/stderr
     https://ipfs.io/ipfs/Qme2sRKs3kgbz6F4pFkeLT4tx6km13ZiBevvCvpki9T6Sj
-
 ```
 
-Not working?
-Try `rm -rf /tmp/coophive/data/repos`. Uninstall hive path, and reinstall from the start.
+> Not working?
+>> Try `rm -rf /tmp/coophive/data/repos`. Uninstall hive path, and reinstall from the start.
 
-## Run a node, earn HIVE
+> Didn't like the image? Try a different seed
+>> hive run sdxl:v1.0.0-alpha.2 -i Prompt="a hive of bees" -i Seed=40
 
-```
-hive rp
-```
+[//]: # (## Run a node, earn HIVE)
 
-Deploy seamlessly on linux by utilizing [these systemd configuration files](https://github.com/CoopHive/hive/tree/main/ops).
+[//]: # ()
+
+[//]: # ()
+
+[//]: # (```)
+
+[//]: # (hive rp)
+
+[//]: # (```)
+
+[//]: # ()
+
+[//]: # (Deploy seamlessly on linux by utilizing [these systemd configuration files]&#40;https://github.com/CoopHive/hive/tree/main/ops&#41;.)
 
 ## Available modules
 

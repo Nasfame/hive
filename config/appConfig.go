@@ -12,7 +12,7 @@ import (
 
 const DEFAULT_DEALER = "std-autoaccept"
 
-const defaultNetwork = "aurora"
+const defaultNetwork = enums.HALCYON
 
 const deprecatedNetwork = "aurora"
 

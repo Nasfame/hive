@@ -88,7 +88,10 @@ func newConfig() (o out) {
 	// bugfix: for `hive run cowsay:v0.1.2 -i Message="Hiro" --network sepolia` but defaulting to aurora
 	// due to collusion with short hand vars
 	for _, arg := range os.Args[1:] {
-		if strings.HasPrefix(arg, "--") {
+		// if strings.HasPrefix(arg, "--") {
+		// 	osArgs = append(osArgs, arg)
+		// }
+		if !strings.HasPrefix(arg, "-") || strings.HasPrefix(arg, "--") {
 			osArgs = append(osArgs, arg)
 		}
 	}
@@ -119,9 +122,6 @@ func newConfig() (o out) {
 
 	logrus.Debugln("network: ", network)
 
-	if network == enums.AURORA {
-		panic("aurora")
-	}
 	if true {
 		c, err := loadDApp(network)
 
@@ -140,7 +140,7 @@ func newConfig() (o out) {
 			}
 
 			if curVal != "" && defaultVal != curVal {
-				logrus.Info("key already set: ", key)
+				logrus.Debugf("key already set: %s", key)
 				continue
 			}
 			logrus.Debugf("%v:%v\n", key, val)

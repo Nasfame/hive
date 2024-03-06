@@ -4,6 +4,7 @@ import (
 	"os"
 
 	"github.com/joho/godotenv"
+	"github.com/rs/zerolog"
 	"github.com/sirupsen/logrus"
 
 	"github.com/CoopHive/hive/enums"
@@ -19,6 +20,16 @@ import (
 		appConfig[enums.APP_DIR].defaultVal = path.Join(userDir, "coophive")
 	}
 */
+
+func init() {
+	if os.Getenv("DEBUG") == "true" {
+		logrus.SetLevel(logrus.DebugLevel)
+		zerolog.SetGlobalLevel(zerolog.DebugLevel)
+	} else {
+		logrus.SetLevel(logrus.InfoLevel)
+		zerolog.SetGlobalLevel(zerolog.InfoLevel)
+	}
+}
 func init() {
 	StdRepoUri := buildConfig[enums.STD_REPO_URI].defaultVal
 	StdModulePrefix := buildConfig[enums.STD_MODULE_PREFIX].defaultVal
