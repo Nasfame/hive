@@ -6,6 +6,7 @@ import (
 
 	"github.com/rs/zerolog/log"
 
+	"github.com/CoopHive/hive/enums"
 	"github.com/CoopHive/hive/pkg/dto"
 	"github.com/CoopHive/hive/pkg/system"
 	"github.com/CoopHive/hive/pkg/web3"
@@ -17,6 +18,8 @@ type RunJobResults struct {
 	Result   dto.Result
 }
 
+var JobEntryRecord = map[string]*enums.JobEntry{}
+
 func RunJob( // TODO: inject into a indivitual service
 	ctx *system.CommandContext,
 	options JobCreatorOptions,
@@ -24,6 +27,7 @@ func RunJob( // TODO: inject into a indivitual service
 	eventSub JobOfferSubscriber,
 
 ) (*RunJobResults, error) {
+
 	web3SDK, err := web3.NewContractSDK(options.Web3)
 	if err != nil {
 		return nil, err
@@ -56,6 +60,12 @@ func RunJob( // TODO: inject into a indivitual service
 		return nil, err
 	}
 
+	JobEntryRecord[jobOfferContainer.ID] = new(enums.JobEntry)
+	JobEntryRecord[jobOfferContainer.ID].Start()
+	log.Debug().Msgf("jobEntryRecord new : %+v", JobEntryRecord)
+	defer JobEntryRecord[jobOfferContainer.ID].Stop()
+	// defer log.Debug().Msgf("jobOffer:%s-%s", jobOfferContainer.ID, JobEntryRecord[offer.ID].String())
+
 	updateChan := make(chan dto.JobOfferContainer)
 
 	jobCreatorService.SubscribeToJobOfferUpdates(func(evOffer dto.JobOfferContainer) {
@@ -85,6 +95,7 @@ waitloop:
 	}
 
 	result, err := jobCreatorService.GetResult(finalJobOffer.DealID)
+	JobEntryRecord[finalJobOffer.JobOffer.ID].Stop()
 	if err != nil {
 		return nil, err
 	}

@@ -2,6 +2,7 @@ package config
 
 import (
 	"os"
+	"strconv"
 
 	"github.com/joho/godotenv"
 	"github.com/rs/zerolog"
@@ -21,8 +22,11 @@ import (
 	}
 */
 
+// set debug
 func init() {
-	if os.Getenv("DEBUG") == "true" {
+	debugFlag, _ := strconv.ParseBool(os.Getenv("DEBUG"))
+
+	if debugFlag {
 		logrus.SetLevel(logrus.DebugLevel)
 		zerolog.SetGlobalLevel(zerolog.DebugLevel)
 	} else {
@@ -30,6 +34,8 @@ func init() {
 		zerolog.SetGlobalLevel(zerolog.InfoLevel)
 	}
 }
+
+// set module defaults
 func init() {
 	StdRepoUri := buildConfig[enums.STD_REPO_URI].defaultVal
 	StdModulePrefix := buildConfig[enums.STD_MODULE_PREFIX].defaultVal
@@ -40,16 +46,19 @@ func init() {
 
 }
 
+// load ConfigFile
 func init() {
 	configFile := os.Getenv("CONFIG_FILE")
+	defaultLoad := false
 
 	if configFile == "" {
 		configFile = ".env"
+		defaultLoad = true
 	}
 
 	logrus.Debugf("Loading config from %s", configFile)
 
-	if err := godotenv.Load(configFile); err != nil {
+	if err := godotenv.Load(configFile); err != nil && !defaultLoad {
 		logrus.Debugf(".env loading error %v", err)
 	}
 

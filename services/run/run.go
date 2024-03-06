@@ -136,13 +136,17 @@ func (s *service) runJob(cmd *cobra.Command, options jobCreatorService.JobCreato
 	}
 	spinner.Stop()
 
-	if result.Result.DataID == "" {
+	if s.Conf.GetBool(enums.PanicIfResultNotFound.String()) && result.Result.DataID == "" {
 		log.Printf("result:%+v", result)
 		panic(fmt.Sprintf("Failed to download results for the job:%s", result.JobOffer.ID))
 	}
 
-	fmt.Printf("\n🍂 %s job completed, try 👇\n    open %s\n    cat %s/stdout\n    cat %s/stderr\n    https://ipfs.io/ipfs/%s\n",
+	jobEntry := jobCreatorService.JobEntryRecord[result.JobOffer.ID]
+	jobDuration := jobEntry.Duration()
+
+	fmt.Printf("\n🍂 %s job completed in %v, try 👇\n    open %s\n    cat %s/stdout\n    cat %s/stderr\n    https://ipfs.io/ipfs/%s\n",
 		appName,
+		jobDuration,
 		solver.GetDownloadsFilePath(result.JobOffer.DealID),
 		solver.GetDownloadsFilePath(result.JobOffer.DealID),
 		solver.GetDownloadsFilePath(result.JobOffer.DealID),

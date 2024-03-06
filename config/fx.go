@@ -1,6 +1,7 @@
 package config
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"regexp"
@@ -74,14 +75,38 @@ func newConfig() (o out) {
 		config.SetDefault(key, meta.defaultVal)
 
 		// automatic conversion of environment var key to `UPPER_CASE` will happen.
-		config.BindEnv(key)
-
+		if err := config.BindEnv(key); err != nil {
+			panic(err)
+		}
 		if cmdFlags[key] {
 			// key := strings.Replace("_", "-", key, -1)
 			// read command-line arguments
 			pf.String(key, meta.defaultVal, meta.desc)
 			pflag.String(key, meta.defaultVal, meta.desc) // to show in usage
 		}
+	}
+
+	for keyArg, meta := range featureFlags {
+		key := keyArg.String()
+		checkDup(key, "featureFlag")
+		config.SetDefault(key, fmt.Sprint(meta.defaultVal))
+
+		defer func() {
+			logrus.Debugf("setting feature flag default %s to %v", key, config.Get(key))
+		}()
+
+		/*if err := config.BindEnv(key); err != nil {
+			// FIXME: not working bindenv; report
+			panic(err)
+		}*/
+		envValue := os.Getenv(key)
+		if envValue != "" {
+			// TODO: check why that is not working
+			config.Set(key, envValue)
+		}
+
+		// pf.String(key, fmt.Sprint(meta.defaultVal), meta.desc)
+		// pflag.String(key, fmt.Sprint(meta.defaultVal), meta.desc)
 	}
 
 	var osArgs []string
@@ -92,9 +117,12 @@ func newConfig() (o out) {
 		// if strings.HasPrefix(arg, "--") {
 		// 	osArgs = append(osArgs, arg)
 		// }
-		if !strings.HasPrefix(arg, "-") || strings.HasPrefix(arg, "--") {
-			osArgs = append(osArgs, arg)
+		if strings.HasPrefix(arg, "-") && !strings.HasPrefix(arg, "--") {
+			defer logrus.Debugf("ignoring arg:%v", arg)
+			continue
 		}
+
+		osArgs = append(osArgs, arg)
 	}
 
 	if err := pf.Parse(osArgs); err != nil {
