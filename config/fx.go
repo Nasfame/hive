@@ -83,7 +83,17 @@ func newConfig() (o out) {
 		}
 	}
 
-	if err := pf.Parse(os.Args[1:]); err != nil {
+	osArgs := []string{}
+
+	// bugfix: for `hive run cowsay:v0.1.2 -i Message="Hiro" --network sepolia` but defaulting to aurora
+	// due to collusion with short hand vars
+	for _, arg := range os.Args[1:] {
+		if strings.HasPrefix(arg, "--") {
+			osArgs = append(osArgs, arg)
+		}
+	}
+
+	if err := pf.Parse(osArgs); err != nil {
 		logrus.Debugf("failed to parse args due to %v", err)
 	}
 
@@ -109,6 +119,9 @@ func newConfig() (o out) {
 
 	logrus.Debugln("network: ", network)
 
+	if network == enums.AURORA {
+		panic("aurora")
+	}
 	if true {
 		c, err := loadDApp(network)
 
