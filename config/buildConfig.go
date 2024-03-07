@@ -107,7 +107,7 @@ var MODULE_PATH string  // temporary init for shortcuts pkg, use Conf injected
 var STD_MODULE_FORMAT string
 var Conf *viper.Viper
 
-func tempInitForFx(conf *viper.Viper) {
+func initDerivedConfigVariables(conf *viper.Viper) {
 
 	Conf = conf // set global var
 	// log.Println("version", conf.GetString(enums.VERSION))

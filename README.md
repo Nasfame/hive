@@ -16,19 +16,28 @@ CoopHive operates on a decentralized infrastructure across multiple EVM-compatib
 
 <details>
 
-<summary>Aurora Testnet</summary>
+
+<summary>Aurora Testnet <i>(Deprecated)</i></summary>
+
 
 <pre>
+
 Network name: Aurora Testnet
+
 
 RPC URL: http://aurora.co-ophive.network:8545
 
+
 Chain ID: 1337
+
 
 Currency symbol: ETH
 
+
 Block Explorer URL: (leave blank)
+
 </pre>
+
 
 </details>
 
@@ -75,7 +84,7 @@ Block Explorer URL: (leave blank)
 
 To obtain funds, please visit the below faucets:
 
-1. Aurora Faucet: [Click Here](http://faucet.co-ophive.network:8080)
+1. Aurora Faucet <i>(Deprecated)</i>: [Click Here](http://faucet.co-ophive.network:8080)
 2. Halcyon Faucet: [Click Here](http://halcyon-faucet.co-ophive.network:8085)
 3. Sepolia Faucet:
    - [Hive Faucet](http://faucet.co-ophive.network:8081)
@@ -215,7 +224,7 @@ hive run cowsay:v0.1.2 -i Message="CoopHive"
 Stable diffusion:
 
 ```
-hive run sdxl:v0.2.8 -i PromptEnv="PROMPT= a hive of bees"
+hive run sdxl:v0.2.11 -i PromptEnv="PROMPT= a hive of bees"
 ```
 
 <!--
@@ -252,7 +261,7 @@ hive run sdxl:v1.0.0-alpha.2 -i Prompt="a hive of bees"
 
 <!--
 > Didn't like the image? Try a different seed
->> hive run sdxl:v0.2.8 -i PromptEnv="PROMPT= a hive of bees"
+>> hive run sdxl:v0.2.11 -i PromptEnv="PROMPT= a hive of bees" -i SeedEnv="RANDOM_SEED=16"
 -->
 
 [//]: # (## Run a node, earn HIVE)

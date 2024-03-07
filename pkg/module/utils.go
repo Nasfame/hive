@@ -195,7 +195,7 @@ func subst(format string, jsonEncodedInputs ...string) string {
 		var s string
 
 		if err := json.Unmarshal([]byte(input), &s); err != nil {
-			log.Debug().AnErr("subst: json unmarshall", err).Msgf("input:%s", input)
+			log.Debug().AnErr("subst: json unmarshal", err).Msgf("input:%s", input)
 			panic("subst: invalid input")
 		}
 
@@ -209,7 +209,16 @@ func subst(format string, jsonEncodedInputs ...string) string {
 // - prepare the module - now we have the text of the template
 // - inject the given values using template syntax
 // - JSON parse and check we don't have errors
-func LoadModule(module dto.ModuleConfig, inputs map[string]string) (*dto.Module, error) {
+func LoadModule(module dto.ModuleConfig, inputs map[string]string) (moduleData *dto.Module, err error) {
+	defer func() {
+		a := recover()
+		if a != nil {
+			err = fmt.Errorf("loadModule panics: %v", a)
+			log.Error().Err(err).Msgf("panic handler")
+			log.Debug().Err(err).Msg("recovered panic in loadModule")
+		}
+	}()
+
 	moduleText, err := PrepareModule(module)
 	if err != nil {
 		return nil, err
@@ -253,7 +262,6 @@ func LoadModule(module dto.ModuleConfig, inputs map[string]string) (*dto.Module,
 		)
 	}
 
-	var moduleData dto.Module
 	bs := template.Bytes()
 	if err := json.Unmarshal(bs, &moduleData); err != nil {
 		log.Debug().Err(err).Msgf("failed to unmarshall module")
@@ -264,5 +272,5 @@ func LoadModule(module dto.ModuleConfig, inputs map[string]string) (*dto.Module,
 		)
 	}
 
-	return &moduleData, nil
+	return
 }

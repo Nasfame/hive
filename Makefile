@@ -69,7 +69,9 @@ sync:
 	#scp dist/hive_linux_amd64_v1/hive hive:./bin/hive
 
 	scp dist/hive_linux_amd64_v1/hive ${host}:${hiveDir}
-	ssh ${host} 'cd ${hiveDir} && sudo chmod +x hive && sudo cp hive /usr/local/bin/'
+#	ssh ${host} 'cd ${hiveDir} && sudo chmod +x hive && sudo cp hive /usr/local/bin/'
+	ssh ${host} 'cd ${hiveDir} && sudo chmod +x hive && sudo rsync --force /tmp/hive /usr/local/bin/'
+
 
 	scp *.yml ${host}:.
 	scp .env.* ${host}:.
@@ -149,7 +151,7 @@ h:
 	make install-hive-latest
 
 cowsay:
-	hive run cowsay:v0.1.0
+	hive run cowsay:v0.1.2
 
 .PHONY: solver run cowsay h b
 
@@ -158,7 +160,7 @@ solver:
 	hive solver --web3-private-key $$SOLVER_PRIVATE_KEY
 
 run:
-	hive run cowsay:v0.1.0
+	hive run cowsay:v0.1.2
 
 
 rp:

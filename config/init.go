@@ -1,12 +1,14 @@
 package config
 
 import (
+	"fmt"
 	"os"
 	"strconv"
 
 	"github.com/joho/godotenv"
 	"github.com/rs/zerolog"
 	"github.com/sirupsen/logrus"
+	"github.com/spf13/viper"
 
 	"github.com/CoopHive/hive/enums"
 )
@@ -61,5 +63,54 @@ func init() {
 	if err := godotenv.Load(configFile); err != nil && !defaultLoad {
 		logrus.Debugf(".env loading error %v", err)
 	}
+
+}
+
+// temp init basics for tests
+
+func init() {
+	config := viper.New() // overriden by fx
+
+	checkDup := func(key string, block string) {
+		if config.IsSet(key) {
+			err := fmt.Errorf("duplicate key found in config[%s]: %s", block, key)
+			panic(err)
+		}
+	}
+
+	for key, meta := range buildConfig {
+		checkDup(key, "build")
+
+		config.Set(key, meta.defaultVal)
+	}
+
+	for key, meta := range appConfig {
+		checkDup(key, "app")
+
+		config.SetDefault(key, meta.defaultVal)
+
+		// automatic conversion of environment var key to `UPPER_CASE` will happen.
+		if err := config.BindEnv(key); err != nil {
+			panic(err)
+		}
+	}
+
+	for keyArg, meta := range featureFlags {
+		key := keyArg.String()
+
+		checkDup(key, "featureFlag")
+
+		config.SetDefault(key, fmt.Sprint(meta.defaultVal))
+
+		envValue := os.Getenv(key)
+		if envValue != "" {
+			// TODO: check why that is not working
+			config.Set(key, envValue)
+		}
+	}
+
+	Conf = config // overriden by fx TODO: perhaps migrate this
+
+	initDerivedConfigVariables(config)
 
 }

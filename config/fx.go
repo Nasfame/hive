@@ -1,7 +1,6 @@
 package config
 
 import (
-	"fmt"
 	"log"
 	"os"
 	"regexp"
@@ -22,7 +21,7 @@ var Module = fx.Options(
 	fx.Provide(
 		newConfig,
 	),
-	fx.Invoke(tempInitForFx),
+	fx.Invoke(initDerivedConfigVariables),
 	fx.WithLogger(func(conf *viper.Viper) (l fxevent.Logger) {
 		if conf.GetBool(enums.DEBUG) {
 			return &fxevent.ConsoleLogger{W: os.Stderr}
@@ -39,13 +38,7 @@ type out struct {
 func newConfig() (o out) {
 	pf := pflag.NewFlagSet("conf", pflag.ContinueOnError)
 
-	config := viper.New()
-
-	checkDup := func(key string, block string) {
-		if config.IsSet(key) {
-			log.Fatalf("duplicate key found in config[%s]: %s", block, key)
-		}
-	}
+	config := Conf
 
 	// formatEnvVar := func(key string) string {
 	// 	k := strings.Replace("-", "_", key, -1)
@@ -64,49 +57,13 @@ func newConfig() (o out) {
 		enums.BACALHAU_BIN: true,
 	}
 
-	for key, meta := range buildConfig {
-		checkDup(key, "build")
-		config.Set(key, meta.defaultVal)
-	}
-
 	for key, meta := range appConfig {
-		checkDup(key, "app")
-
-		config.SetDefault(key, meta.defaultVal)
-
-		// automatic conversion of environment var key to `UPPER_CASE` will happen.
-		if err := config.BindEnv(key); err != nil {
-			panic(err)
-		}
 		if cmdFlags[key] {
 			// key := strings.Replace("_", "-", key, -1)
 			// read command-line arguments
 			pf.String(key, meta.defaultVal, meta.desc)
 			pflag.String(key, meta.defaultVal, meta.desc) // to show in usage
 		}
-	}
-
-	for keyArg, meta := range featureFlags {
-		key := keyArg.String()
-		checkDup(key, "featureFlag")
-		config.SetDefault(key, fmt.Sprint(meta.defaultVal))
-
-		defer func() {
-			logrus.Debugf("setting feature flag default %s to %v", key, config.Get(key))
-		}()
-
-		/*if err := config.BindEnv(key); err != nil {
-			// FIXME: not working bindenv; report
-			panic(err)
-		}*/
-		envValue := os.Getenv(key)
-		if envValue != "" {
-			// TODO: check why that is not working
-			config.Set(key, envValue)
-		}
-
-		// pf.String(key, fmt.Sprint(meta.defaultVal), meta.desc)
-		// pflag.String(key, fmt.Sprint(meta.defaultVal), meta.desc)
 	}
 
 	var osArgs []string

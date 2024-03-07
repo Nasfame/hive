@@ -12,7 +12,7 @@ import (
 
 const DEFAULT_DEALER = "std-autoaccept"
 
-const defaultNetwork = enums.HALCYON
+const defaultNetwork = enums.SEPOLIA
 
 const deprecatedNetwork = "aurora"
 
@@ -81,7 +81,7 @@ var appConfig = configMap[string]{
 		"",
 	},
 	enums.NETWORK: {
-		fmt.Sprintf("supported networks:%v. aurora is deprecated", NETWORKS),
+		fmt.Sprintf("supported networks:%v. %v is deprecated", NETWORKS, deprecatedNetwork),
 		defaultNetwork,
 	},
 
