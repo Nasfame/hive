@@ -215,8 +215,15 @@ hive run cowsay:v0.1.2 -i Message="CoopHive"
 Stable diffusion:
 
 ```
+hive run sdxl:v0.2.8 -i PromptEnv="PROMPT= a hive of bees"
+```
+
+<!--
+
+```
 hive run sdxl:v1.0.0-alpha.2 -i Prompt="a hive of bees"
 ```
+-->
 
 ```stdout
   ___  __    __  ____  _  _  __  _  _  ____ 
@@ -243,8 +250,10 @@ hive run sdxl:v1.0.0-alpha.2 -i Prompt="a hive of bees"
 > Not working?
 >> Try `rm -rf /tmp/coophive/data/repos`. Uninstall hive path, and reinstall from the start.
 
+<!--
 > Didn't like the image? Try a different seed
->> hive run sdxl:v1.0.0-alpha.2 -i Prompt="a hive of bees" -i Seed=40
+>> hive run sdxl:v0.2.8 -i PromptEnv="PROMPT= a hive of bees"
+-->
 
 [//]: # (## Run a node, earn HIVE)
 
