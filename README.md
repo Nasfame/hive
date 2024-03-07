@@ -208,7 +208,7 @@ hive run cowsay:v0.1.2 -i Message="CoopHive"
 - `hive run cowsay:v0.1.2 -i Message="CoopHive" --network calibration`
 - `hive run cowsay:v0.1.2 -i Message="CoopHive" --network aurora`
 - `hive run cowsay:v0.1.2 -i Message="CoopHive" --network sepolia`
-- `export NETWORK=sepolia && hive run cowsay:v0.1.2 -i Message="CoopHive" --network sepolia`
+- `export NETWORK=sepolia && hive run cowsay:v0.1.2 -i Message="CoopHive"
 
 ### SDXL
 
