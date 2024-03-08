@@ -70,7 +70,7 @@ sync:
 
 	scp dist/hive_linux_amd64_v1/hive ${host}:${hiveDir}
 #	ssh ${host} 'cd ${hiveDir} && sudo chmod +x hive && sudo cp hive /usr/local/bin/'
-	ssh ${host} 'cd ${hiveDir} && sudo chmod +x hive && sudo rsync --force /tmp/hive /usr/local/bin/'
+	ssh ${host} 'cd ${hiveDir} && sudo chmod +x hive && sudo rsync --force ./hive /usr/local/bin/'
 
 
 	scp *.yml ${host}:.

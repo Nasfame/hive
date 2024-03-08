@@ -192,77 +192,147 @@ export WEB3_PRIVATE_KEY=<your private key>
 
 Alternatively, arrange for the key to be in your environment in a more secure way that doesn't get written to your shell history.
 
-### Cows
+## Checkout our standard modules
 
-Hello World, now with cows.
+<details>
+<summary>Update: You can now switch from the default network</summary>
 
-```
-hive run cowsay:v0.1.2 -i Message="CoopHive"
-```
-
-```stdout
- __________
-< CoopHive >
- ----------
-        \   ^__^
-         \  (oo)\_______
-            (__)\       )\/\
-                ||----w |
-                ||     ||
-```
-
-> You can now switch from the default network using `--network <network>` or by setting the env var `export NETWORK=`
+> using `--network <network>` or by setting the env var `export NETWORK=`
 
 - `hive run cowsay:v0.1.2 -i Message="CoopHive" --network halcyon`
 - `hive run cowsay:v0.1.2 -i Message="CoopHive" --network calibration`
 - `hive run cowsay:v0.1.2 -i Message="CoopHive" --network aurora`
 - `hive run cowsay:v0.1.2 -i Message="CoopHive" --network sepolia`
-- `export NETWORK=sepolia && hive run cowsay:v0.1.2 -i Message="CoopHive"
+- `export NETWORK=sepolia && hive run cowsay:v0.1.2 -i Message="CoopHive"`
 
-### SDXL
+</details>
 
-Stable diffusion:
+### Cowsay Module
 
+Hello CoopHive, now with cows.
+
+```shell
+hive run cowsay:v0.1.2 -i Message="Hiro is building Coophive"
 ```
-hive run sdxl:v0.2.11 -i PromptEnv="PROMPT= a hive of bees"
-```
 
-<!--
+[//]: # (FIXME: the video uses the input var Prompt not Message. Upload fresh video)
+https://github.com/CoopHive/hive/assets/24226219/d1768527-57d8-47cc-8643-4bb57d190769
 
-```
-hive run sdxl:v1.0.0-alpha.2 -i Prompt="a hive of bees"
-```
--->
 
-```stdout
-  ___  __    __  ____  _  _  __  _  _  ____ 
+<details>
+
+<summary> Preview Run </summary>
+
+<pre>
+hive run cowsay:v0.1.2 -i Message="Hiro is building CoopHive" --network sepolia
+
+  ___  __    __  ____  _  _  __  _  _  ____
  / __)/  \  /  \(  _ \/ )( \(  )/ )( \(  __)
-( (__(  O )(  O )) __/) __ ( )( \ \/ / ) _) 
- \___)\__/  \__/(__)  \_)(_/(__) \__/ (____) 0.16.2-SNAPSHOT-00d6b53
+( (__(  O )(  O )) __/) __ ( )( \ \/ / ) _)
+ \___)\__/  \__/(__)  \_)(_/(__) \__/ (____) 0.17.1
 
   Decentralized Compute Network  https://coophive.network
 
 
+●∙∙ CoopHive submitting job2024-03-08T07:21:28+05:30 INF ../../Volumes/N/CoopHive/hive/pkg/module/utils.go:148 > updating cached git repo=/Users/hiro/.coophive/sepolia/jc/repos/CoopHive/coophive-module-cowsay
 🌟  CoopHive submitting job
+∙∙∙ Job submitted. Negotiating deal...Deal QmSirREjZ9icDawWiR8EMQn8UaVMFySrocgfdGstCrjiGR is matched
+∙●∙ Job submitted. Negotiating deal...2024/03/08 07:21:29 Deal QmSirREjZ9icDawWiR8EMQn8UaVMFySrocgfdGstCrjiGR is agreed
 🤝  Job submitted. Negotiating deal...
 💌  Deal agreed. Running job...
-🤔  Results submitted. Awaiting verification... 
+∙∙∙ Job submitted. Negotiating deal...Deal QmQZgZDo6YJFrBZNUfQhdK2zYdFB47KJgcPDnEBqH3poNg is matched
+∙●∙ Job submitted. Negotiating deal...2024/03/08 07:21:53 Deal QmQZgZDo6YJFrBZNUfQhdK2zYdFB47KJgcPDnEBqH3poNg is agreed
+🤝  Job submitted. Negotiating deal...
+💌  Deal agreed. Running job...
+🤔  Results submitted. Awaiting verification...
 ✅  Results accepted. Downloading result...
 
-🍂 CoopHive job completed, try 👇
-    open /tmp/coophive/data/downloaded-files/QmYoVjFGY1h6m22c7X8trw27H44wzHat1TUdfVJAPfLzmc
-    cat /tmp/coophive/data/downloaded-files/QmYoVjFGY1h6m22c7X8trw27H44wzHat1TUdfVJAPfLzmc/stdout
-    cat /tmp/coophive/data/downloaded-files/QmYoVjFGY1h6m22c7X8trw27H44wzHat1TUdfVJAPfLzmc/stderr
-    https://ipfs.io/ipfs/Qme2sRKs3kgbz6F4pFkeLT4tx6km13ZiBevvCvpki9T6Sj
+🍂 CoopHive job completed in 58.219397459s, try 👇
+    open /Users/hiro/.coophive/sepolia/jc/downloaded-files/QmSirREjZ9icDawWiR8EMQn8UaVMFySrocgfdGstCrjiGR
+    cat /Users/hiro/.coophive/sepolia/jc/downloaded-files/QmSirREjZ9icDawWiR8EMQn8UaVMFySrocgfdGstCrjiGR/stdout
+    cat /Users/hiro/.coophive/sepolia/jc/downloaded-files/QmSirREjZ9icDawWiR8EMQn8UaVMFySrocgfdGstCrjiGR/stderr
+    https://ipfs.io/ipfs/QmRnfzKiR2hmm5UeSx2Cn2CRFEB1gTDBXavf4oiJC1Aeoo
+</pre>
+
+
+<pre>
+cat /Users/hiro/.coophive/sepolia/jc/downloaded-files/QmSirREjZ9icDawWiR8EMQn8UaVMFySrocgfdGstCrjiGR/stdout 
+ ___________________________
+< Hiro is building CoopHive >
+ ---------------------------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+</pre>
+
+</details>
+
+<details> 
+<summary>Cowsay on Halcyon</summary>
+
+https://github.com/CoopHive/hive/assets/24226219/4edb669c-7eb7-4dee-9adf-1651ddb73b3b
+
+</details>
+
+### SDXL v0.9.0
+
+Stable diffusion:
+
+```
+hive run sdxl:v0.3.0 -i Prompt="hiro saves the hive"
 ```
 
-> Not working?
->> Try `rm -rf /tmp/coophive/data/repos`. Uninstall hive path, and reinstall from the start.
 
-<!--
+https://github.com/CoopHive/hive/assets/24226219/b0a00864-5afb-49ee-9bb6-a44a8936194e
+
+
+<details>
+
+<summary> Preview Run </summary>
+<pre>
+hive run sdxl:v0.3.0 -i Prompt="hiro saves the hive"
+
+  ___  __    __  ____  _  _  __  _  _  ____
+ / __)/  \  /  \(  _ \/ )( \(  )/ )( \(  __)
+( (__(  O )(  O )) __/) __ ( )( \ \/ / ) _)
+ \___)\__/  \__/(__)  \_)(_/(__) \__/ (____) 0.17.1
+
+  Decentralized Compute Network  https://coophive.network
+
+
+∙●∙ CoopHive submitting job2024-03-08T07:22:41+05:30 INF ../../Volumes/N/CoopHive/hive/pkg/module/utils.go:148 > updating cached git repo=/Users/hiro/.coophive/sepolia/jc/repos/CoopHive/coophive-module-sdxl
+🌟  CoopHive submitting job
+∙∙∙ Job submitted. Negotiating deal...Deal QmbBhg8NqYyqYp6QnUhd1yZgYhRoKYt1bZLxKtUjkLNEbM is matched
+●∙∙ Job submitted. Negotiating deal...2024/03/08 07:22:43 Deal QmbBhg8NqYyqYp6QnUhd1yZgYhRoKYt1bZLxKtUjkLNEbM is agreed
+🤝  Job submitted. Negotiating deal...
+💌  Deal agreed. Running job...
+🤔  Results submitted. Awaiting verification...
+✅  Results accepted. Downloading result...
+🤔  Results submitted. Awaiting verification...
+✅  Results accepted. Downloading result...
+
+🍂 CoopHive job completed in 2m43.038262916s, try 👇
+    open /Users/hiro/.coophive/sepolia/jc/downloaded-files/QmbBhg8NqYyqYp6QnUhd1yZgYhRoKYt1bZLxKtUjkLNEbM
+    cat /Users/hiro/.coophive/sepolia/jc/downloaded-files/QmbBhg8NqYyqYp6QnUhd1yZgYhRoKYt1bZLxKtUjkLNEbM/stdout
+    cat /Users/hiro/.coophive/sepolia/jc/downloaded-files/QmbBhg8NqYyqYp6QnUhd1yZgYhRoKYt1bZLxKtUjkLNEbM/stderr
+    https://ipfs.io/ipfs/Qmf8jBCQHz6io6VK8GnQZVzk7hUHG6NWXjqQs4AeEervEv
+
+</pre>
+
+<pre>
+cat /Users/hiro/.coophive/sepolia/jc/downloaded-files/QmbBhg8NqYyqYp6QnUhd1yZgYhRoKYt1bZLxKtUjkLNEbM/stdout
+Random seed set as 12
+Got 1 images
+</pre>
+
+![SDXL:v0.3.0](https://github.com/CoopHive/hive/assets/24226219/92c3c52f-9b3a-49c2-8aa1-7d28d87d9709)
+
 > Didn't like the image? Try a different seed
->> hive run sdxl:v0.2.11 -i PromptEnv="PROMPT= a hive of bees" -i SeedEnv="RANDOM_SEED=16"
--->
+>> hive run sdxl:v0.3.0 -i Prompt="hiro saves the hive" -i Seed=16
+
+</details>
 
 [//]: # (## Run a node, earn HIVE)
 
