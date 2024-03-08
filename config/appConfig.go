@@ -167,6 +167,10 @@ var appConfig = configMap[string]{
 		"bacalhau env", // bacalhau env
 		"",
 	},
+	enums.BACALHAU_SERVE_IPFS_PATH: {
+		"bacalhau get uses ipfs to load the output cid",
+		"/tmp/ipfs",
+	},
 
 	/*RP*/
 

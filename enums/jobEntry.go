@@ -31,6 +31,7 @@ func (e *JobEntry) Start() {
 func (e *JobEntry) Stop() {
 	if !e.endTime.IsZero() {
 		log.Debugf("endTime set already")
+		log.Debugf(e.String())
 		return
 	}
 	e.endTime = time.Now()

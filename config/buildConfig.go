@@ -172,6 +172,7 @@ func SetAppDir(conf *viper.Viper, appDir string) {
 	setPathConfig(enums.BACALHAU_RESULTS_DIR)
 	setPathConfig(enums.BACALHAU_SPECS_DIR)
 	setPathConfig(enums.BACALHAU_JOBS_DIR)
+
 	setPathConfig(enums.REPO_DIR)
 	setPathConfig(enums.DOWNlOADS_DIR)
 

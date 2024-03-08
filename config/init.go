@@ -11,6 +11,7 @@ import (
 	"github.com/spf13/viper"
 
 	"github.com/CoopHive/hive/enums"
+	"github.com/CoopHive/hive/utils"
 )
 
 /*
@@ -112,5 +113,7 @@ func init() {
 	Conf = config // overriden by fx TODO: perhaps migrate this
 
 	initDerivedConfigVariables(config)
+
+	utils.EnsureDir(config.GetString(enums.BACALHAU_SERVE_IPFS_PATH))
 
 }
