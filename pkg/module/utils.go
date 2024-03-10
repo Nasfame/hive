@@ -187,25 +187,6 @@ func PrepareModule(module dto.ModuleConfig) (string, error) {
 	return string(fileContents), nil
 }
 
-func subst(format string, jsonEncodedInputs ...string) string {
-
-	jsonDecodedInputs := make([]any, 0, len(jsonEncodedInputs))
-
-	for _, input := range jsonEncodedInputs {
-		var s string
-
-		if err := json.Unmarshal([]byte(input), &s); err != nil {
-			log.Debug().AnErr("subst: json unmarshal", err).Msgf("input:%s", input)
-			panic("subst: invalid input")
-		}
-
-		jsonDecodedInputs = append(jsonDecodedInputs, s)
-	}
-	log.Printf("jsonDecodedInputs:%v", jsonDecodedInputs)
-
-	return fmt.Sprintf(format, jsonDecodedInputs...)
-}
-
 // - prepare the module - now we have the text of the template
 // - inject the given values using template syntax
 // - JSON parse and check we don't have errors
@@ -228,8 +209,10 @@ func LoadModule(module dto.ModuleConfig, inputs map[string]string) (moduleData *
 	templateName := fmt.Sprintf("%s-%s-%s", module.Repo, module.Path, module.Hash)
 	tmpl := template.New(templateName)
 	tmpl.Funcs(template.FuncMap{
-		"subst": subst,
-		"subt":  subst,
+		"subst": subt,
+		"subt":  subt,
+		"or":    or,
+		"get":   get,
 	})
 
 	tmpl, err = tmpl.Parse(moduleText)
@@ -239,7 +222,7 @@ func LoadModule(module dto.ModuleConfig, inputs map[string]string) (moduleData *
 		return nil, err
 	}
 
-	newInputs := make(map[string]string)
+	newInputs := make(map[string]JSONEncodedInput)
 	// For now, for each input, json encode it so that it's safe to put into the template
 	for k, v := range inputs {
 		bs, err := json.Marshal(v)
@@ -247,12 +230,12 @@ func LoadModule(module dto.ModuleConfig, inputs map[string]string) (moduleData *
 			log.Debug().Err(err).Msgf("failed to parse inputs")
 			return nil, fmt.Errorf("unable to marshal string %q", v)
 		}
-		newInputs[k] = string(bs)
+		newInputs[k] = JSONEncodedInput(bs)
 	}
 
 	var template bytes.Buffer
 	if err := tmpl.Execute(&template, newInputs); err != nil {
-		log.Debug().Err(err).Msgf("failed to executue template")
+		log.Debug().Err(err).Msgf("failed to execute template")
 
 		return nil, fmt.Errorf(
 			"error executing template: %s (tmpl=%s, inputs=%+v)",

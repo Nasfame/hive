@@ -1,7 +1,6 @@
 package module
 
 import (
-	"encoding/json"
 	"fmt"
 	"testing"
 
@@ -32,29 +31,6 @@ func TestLoadModule(t *testing.T) {
 	assert.Equal(t, "Hello, world!", module.Job.Spec.Docker.Entrypoint[1])
 }
 
-// TestSubst: [subst] can correctly substitute json encoded values into the template string.
-func TestSubst(t *testing.T) {
-	format := "Hello, %s!"
-	inputs := []string{"hiro"}
-	expectedOutput := "Hello, hiro!"
-
-	jsonEncodedInputs := make([]string, 0, len(inputs))
-
-	for _, input := range inputs {
-		inputJ, err := json.Marshal(input)
-		if err != nil {
-			t.Fatalf("json marshall failed %v", err)
-		}
-		jsonEncodedInputs = append(jsonEncodedInputs, string(inputJ))
-	}
-	t.Logf("jsonEncodedInputs -%v %d", jsonEncodedInputs, len(jsonEncodedInputs))
-
-	actualOutput := subst(format, jsonEncodedInputs...)
-
-	if actualOutput != expectedOutput {
-		t.Errorf("Expected output: %s, but got: %s", expectedOutput, actualOutput)
-	}
-}
 func TestInvalidModuleDueToUndefinedTmpFunc(t *testing.T) {
 	msg := "This module will not run!"
 	module, err := LoadModule(dto.ModuleConfig{
