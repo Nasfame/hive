@@ -75,7 +75,7 @@ func or(inputA, inputB any) string {
 
 func decodeJsonInput(jsonEncodedInput any) (s string, err error) {
 	if jsonEncodedInput == nil {
-		return "", nil
+		return "", fmt.Errorf("input is nil")
 	}
 	switch v := jsonEncodedInput.(type) {
 	case JSONEncodedInput:
