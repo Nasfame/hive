@@ -52,7 +52,7 @@ func (s *service) runJob(cmd *cobra.Command, options jobCreatorService.JobCreato
 
 	spinner, err := createSpinner(appName+" submitting job", "🌟")
 	if err != nil {
-		s.Log.Fatalf("failed to make spinner from config struct: %v", err)
+		s.Log.Fatalf("failed to make spinner: %+v", err)
 	}
 
 	// start the spinner animation
@@ -86,7 +86,7 @@ func (s *service) runJob(cmd *cobra.Command, options jobCreatorService.JobCreato
 	// TODO: inject this jobCreatorService to a service instead
 	result, err := jobCreatorService.RunJob(commandCtx, options, s.dealMakerService, func(evOffer dto.JobOfferContainer) {
 		if err := spinner.Stop(); err != nil {
-			log.Fatalf("failed to stop spinner: %v", err)
+			s.Log.Errorf("failed to stop spinner: %v", err)
 		}
 		st := dto.GetAgreementStateString(evOffer.State)
 		var desc string
@@ -117,13 +117,14 @@ func (s *service) runJob(cmd *cobra.Command, options jobCreatorService.JobCreato
 		}
 		spinner, err = createSpinner(desc, emoji)
 		if err != nil {
-			log.Fatalf("failed to make spinner from config struct: %v", err)
+			s.Log.Errorf("failed to make spinner from config struct: %v", err)
+		} else {
+			if err := spinner.Start(); err != nil {
+				s.Log.Errorf("failed to start spinner: %s", err)
+			}
 		}
 
 		// start the spinner animation
-		if err := spinner.Start(); err != nil {
-			log.Fatalf("failed to start spinner: %s", err)
-		}
 
 		// UPDATE FUNCTION
 		// fmt.Printf("evOffer: %s --------------------------------------\n")
@@ -131,8 +132,8 @@ func (s *service) runJob(cmd *cobra.Command, options jobCreatorService.JobCreato
 
 	})
 	if err != nil {
-		log.Printf("Error: %s\n", err)
-		return err
+		s.Log.Errorf("Error: %s\n", err)
+
 	}
 	spinner.Stop()
 
