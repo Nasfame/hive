@@ -168,7 +168,7 @@ func SetAppDir(conf *viper.Viper, appDir string) {
 
 	// conf.Set(enums.BACALHAU_RESULTS_DIR, path.Join(appDir, conf.GetString(enums.BACALHAU_RESULTS_DIR)))
 	// os.MkdirAll(conf.GetString(enums.BACALHAU_RESULTS_DIR), 0755)
-
+	setPathConfig(enums.BACALHAU_REPO)
 	setPathConfig(enums.BACALHAU_RESULTS_DIR)
 	setPathConfig(enums.BACALHAU_SPECS_DIR)
 	setPathConfig(enums.BACALHAU_JOBS_DIR)

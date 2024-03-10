@@ -115,8 +115,13 @@ const (
 )
 const (
 	BACALHAU_API_HOST = "BACALHAU_API_HOST"
-	BACALHAU_HOME     = "BACALHAU_HOME"
-	BACALHAU_ENV      = "BACALHAU_ENV"
+
+	// BACALHAU_REPO: set this when u r setting up multiple bacalhau clusters
+	// in the same machine. For just a single machine just set the bacalhau repo.
+	BACALHAU_REPO = "BACALHAU_REPO"
+	BACALHAU_ENV  = "BACALHAU_ENV"
+
+	// BACALHAU_ENVIRONMENT = "BACALHAU_ENVIRONMENT"
 
 	// need to ensure this path is created
 	BACALHAU_SERVE_IPFS_PATH = "BACALHAU_SERVE_IPFS_PATH"

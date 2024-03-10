@@ -35,6 +35,7 @@ func NewBacalhauExecutor(options BacalhauExecutorOptions) (*BacalhauExecutor, er
 	bacalhauEnv := []string{
 		fmt.Sprintf("BACALHAU_API_HOST=%s", options.ApiHost),
 		fmt.Sprintf("HOME=%s", config.Conf.GetString(enums.APP_DIR)),
+		fmt.Sprintf("BACALHAU_REPO=%s", config.Conf.GetString(enums.BACALHAU_REPO)),
 	}
 
 	bacalhauEnv = append(bacalhauEnv, additionalBacalhauEnv...)

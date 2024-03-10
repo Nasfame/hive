@@ -159,9 +159,9 @@ var appConfig = configMap[string]{
 		"bacalhau host",
 		"localhost",
 	},
-	enums.BACALHAU_HOME: {
+	enums.BACALHAU_REPO: {
 		"bacalhau home",
-		"",
+		".bacalhau",
 	},
 	enums.BACALHAU_ENV: {
 		"bacalhau env", // bacalhau env
@@ -171,7 +171,10 @@ var appConfig = configMap[string]{
 		"bacalhau get uses ipfs to load the output cid",
 		"/tmp/ipfs",
 	},
-
+	/*	enums.BACALHAU_ENVIRONMENT: {
+		"bacalhau environment",
+		"production",
+	},*/
 	/*RP*/
 
 	enums.PRICING_MODE: {
