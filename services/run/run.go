@@ -135,7 +135,14 @@ func (s *service) runJob(cmd *cobra.Command, options jobCreatorService.JobCreato
 		s.Log.Errorf("Error: %s\n", err)
 
 	}
-	spinner.Stop()
+	if spinner != nil {
+		spinner.Stop()
+	}
+
+	if result == nil {
+		err := fmt.Errorf("result not found")
+		panic(err)
+	}
 
 	if s.Conf.GetBool(enums.PanicIfResultNotFound.String()) && result.Result.DataID == "" {
 		log.Printf("result:%+v", result)
