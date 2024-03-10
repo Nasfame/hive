@@ -402,8 +402,20 @@ strings with placeholders.
     `
     ```
 </details>
+[Sample Module for Ref](https://github.com/CoopHive/coophive-module-marker/blob/243e86c/module.coophive#L17)
+[Prototype Your Module over here](https://go.dev/play/p/oBgc2Cetug3)
 
-[Example Code](https://go.dev/play/p/oBgc2Cetug3)
+2. `subst`: same as `subt`. Checkout https://github.com/CoopHive/coophive-module-sdxl/blob/v0.3.0/module.coophive#L24
+
+3. `or`: takes 2 positional arguments : inputA, inputB. It returns the inputA if its a non-empty string else inputB. It
+   can be used to ensure default vars without nested conditional
+   logics: https://github.com/CoopHive/coophive-module-marker/blob/243e86c/module.coophive#L47. You can prototype your
+   template strings using this scratch file: https://go.dev/play/p/_FvTYbtKim1
+
+4. `get`: alias of `or`
+
+> If you are golang dev, you can better insights on implementation of the template functions by checking
+> out: <a href=./pkg/module/templateFuncs_test.go> Template Func Test</a>
 
 [CoopHive]: https://coophive.network
 
