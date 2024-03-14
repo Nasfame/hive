@@ -52,3 +52,6 @@ logs/
 job-*/
 
 notepad.txt
+
+*.exe
+hive.exe
