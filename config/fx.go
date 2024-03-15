@@ -1,7 +1,6 @@
 package config
 
 import (
-	"log"
 	"os"
 	"regexp"
 	"slices"
@@ -115,34 +114,6 @@ func newConfig() (o out) {
 	// appDataDir := config.GetString(enums.APP_DATA_DIR)
 	// appDataDir = strings.Replace(appDataDir, AppDirSymbol, appDir, 1)
 	// config.Set(enums.APP_DATA_DIR, appDataDir)
-
-	if true {
-		c, err := loadDApp(network)
-
-		if err != nil {
-			log.Fatal("failed to load the network related dApps")
-		}
-
-		for key, val := range c {
-			key = strings.ToLower(key)
-			curVal := config.GetString(key)
-
-			defaultVal := ""
-
-			if appConfig[key] != nil {
-				defaultVal = appConfig[key].defaultVal
-			}
-
-			if curVal != "" && defaultVal != curVal {
-				logrus.Debugf("key already set: %s", key)
-				continue
-			}
-			logrus.Debugf("%v:%v\n", key, val)
-			config.Set(key, val)
-		}
-		controller := config.Get(enums.HIVE_CONTROLLER)
-		logrus.Debugln("controller: ", controller)
-	}
 
 	// override configurations with HIVE custom
 

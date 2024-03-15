@@ -2,6 +2,7 @@ package in_test
 
 import (
 	"fmt"
+	"github.com/CoopHive/hive/enums"
 	"os"
 	"testing"
 	"time"
@@ -31,8 +32,18 @@ type testOptions struct {
 	executor         noop.NoopExecutorOptions
 }
 
+func getWeb3Options() (w *web3.Web3Options) {
+	conf := config.Conf
+	w = &web3.Web3Options{
+		RpcURL: conf.GetString(enums.HIVE_RPC_WS),
+	}
+
+	return
+}
 func getSolver(t *testing.T, options testOptions) (*solver2.Solver, error) {
 	solverOptions := solver.NewSolverOptions()
+
+	//solverOptions.Web3 = *getWeb3Options()
 	solverOptions.Web3.PrivateKey = os.Getenv("SOLVER_PRIVATE_KEY")
 	solverOptions.Server.Port = 8080
 	solverOptions.Server.URL = "http://localhost:8080"

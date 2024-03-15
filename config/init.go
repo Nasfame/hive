@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"strconv"
+	"strings"
 
 	"github.com/joho/godotenv"
 	"github.com/rs/zerolog"
@@ -119,5 +120,32 @@ func init() {
 	initDerivedConfigVariables(config)
 
 	utils.EnsureDir(config.GetString(enums.BACALHAU_SERVE_IPFS_PATH))
+
+	network := config.GetString(enums.NETWORK)
+	c, err := loadDApp(network)
+
+	if err != nil {
+		panic("failed to load the network related dApps")
+	}
+
+	for key, val := range c {
+		key = strings.ToLower(key)
+		curVal := config.GetString(key)
+
+		defaultVal := ""
+
+		if appConfig[key] != nil {
+			defaultVal = appConfig[key].defaultVal
+		}
+
+		if curVal != "" && defaultVal != curVal {
+			logrus.Debugf("key already set: %s", key)
+			continue
+		}
+		logrus.Debugf("%v:%v\n", key, val)
+		config.Set(key, val)
+	}
+	controller := config.Get(enums.HIVE_CONTROLLER)
+	logrus.Debugln("controller: ", controller)
 
 }
