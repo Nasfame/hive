@@ -95,7 +95,7 @@ Finally we start the various systemd services:
 ```bash
 sudo systemctl start bacalhau
 sudo systemctl start solver
-sudo systemctl start mediator
+#sudo systemctl start mediator
 sudo systemctl start resource-provider
 sudo systemctl start job-creator
 ```
