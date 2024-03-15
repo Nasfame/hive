@@ -1,4 +1,5 @@
-default: go build 
+default:
+    go build
 
 release:
 	go build -v -ldflags="\
