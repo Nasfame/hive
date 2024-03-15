@@ -1,7 +1,7 @@
 include .env
 export
 
-binName = hive-$(shell uname -s)-$(shell uname -m)
+binName ?= hive-$(shell uname -s)-$(shell uname -m)
 
 
 setup-dev:
