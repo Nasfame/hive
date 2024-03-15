@@ -168,6 +168,10 @@ rp:
 	hive rp
 
 
+test:
+	cd test
+	go test -v -count 1 .
+
 
 sdxl-subt:
 	go run . run sdxl:v0.3.0-alpha.1 -i Prompt="hiro saves the hive" -i Seed=20;
