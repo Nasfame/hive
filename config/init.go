@@ -62,7 +62,7 @@ func init() {
 	logrus.Debugf("Loading config from %s", configFile)
 
 	if err := godotenv.Load(configFile); err != nil && !defaultLoad {
-		logrus.Debugf(".env loading error %v", err)
+		logrus.Errorf(".env loading error %v", err)
 	}
 
 }
@@ -111,6 +111,9 @@ func init() {
 	}
 
 	Conf = config // overriden by fx TODO: perhaps migrate this
+	appDir := config.GetString(enums.APP_DIR)
+
+	panic(appDir)
 
 	initDerivedConfigVariables(config)
 
