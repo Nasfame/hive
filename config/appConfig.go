@@ -25,7 +25,7 @@ var processAppDir = func() string {
 	appDir := buildConfig[enums.APP_NAME].defaultVal
 
 	if strings.TrimSpace(appDir) == "" {
-		log.Fatal("invalid app dir")
+		panic("invalid app dir")
 	}
 
 	appDir = "." + strings.ToLower(appDir) // capital dirs are treated differently in unix systems
