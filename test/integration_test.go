@@ -61,7 +61,7 @@ func getResourceProvider(
 	options testOptions,
 ) (*resourceprovider.ResourceProvider, error) {
 	resourceProviderOptions := resourceprovider.NewResourceProviderOptions()
-	resourceProviderOptions.Web3.PrivateKey = os.Getenv("RESOURCE_PROVIDER_PRIVATE_KEY")
+	resourceProviderOptions.Web3.PrivateKey = os.Getenv("RP_PRIVATE_KEY")
 	if resourceProviderOptions.Web3.PrivateKey == "" {
 		return nil, fmt.Errorf("RESOURCE_PROVIDER_PRIVATE_KEY is not defined")
 	}
