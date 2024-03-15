@@ -82,10 +82,8 @@ sudo mv hive /usr/bin/hive
 Then we install bacalhau:
 
 ```bash
-cd /tmp
-wget https://github.com/bacalhau-project/bacalhau/releases/download/v1.0.3/bacalhau_v1.0.3_linux_amd64.tar.gz
-tar xfv bacalhau_v1.0.3_linux_amd64.tar.gz
-sudo mv bacalhau /usr/bin/bacalhau
+curl -sL https://get.bacalhau.org/install.sh | sudo bash
+
 sudo mkdir -p /app/data/ipfs
 sudo chown -R $USER /app/data
 ```
