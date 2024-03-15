@@ -57,3 +57,6 @@ notepad.txt
 hive.exe
 
 repos/
+
+test/noop-results/*
+test/downloaded-files/*
