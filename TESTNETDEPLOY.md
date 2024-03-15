@@ -143,13 +143,13 @@ Otherwise, if you don't have a GPU:
 Run Cowsay:
 
 ```bash
-./stack run cowsay:v0.0.1 -i Message="moo"
+./stack run cowsay:v0.1.2 -i Message="Hiro welcomes you to his Hive"
 ```
 
 Run SDXL:
 
 ```bash
-./stack run sdxl:v0.2.11 -i PromptEnv="PROMPT=hiro saves the hive" -i SeedEnv="RANDOM_SEED=10
+./stack run sdxl:v0.3.0 -i Prompt="hiro saves the hive" -i Seed=16
 ```
 
 ### 4 - Run Cowsay On-Chain
