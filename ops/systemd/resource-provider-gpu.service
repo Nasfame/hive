@@ -5,12 +5,10 @@ Wants=network-online.target systemd-networkd-wait-online.service
 
 [Service]
 Environment="LOG_TYPE=json"
-Environment="LOG_LEVEL=debug"
+Environment="DEBUG=true"
 Environment="HOME=/app/coophive"
 Environment="OFFER_GPU=1"
-EnvironmentFile=/app/coophive/resource-provider-gpu.env
-Environment="SERVICE_SOLVER=0x823531B7c7843D8c3821B19D70cbFb6173b9Cb02"
-Environment="SERVICE_MEDIATORS=0x823531B7c7843D8c3821B19D70cbFb6173b9Cb02"
+EnvironmentFile=/app/coophive/.env
 Restart=always
 RestartSec=5s
 ExecStart=/usr/bin/hive resource-provider
