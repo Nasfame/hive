@@ -149,7 +149,7 @@ Run Cowsay:
 Run SDXL:
 
 ```bash
-./stack runsdxl sdxl:v0.1.0 PROMPT="beautiful view of iceland with a record player"
+./stack run sdxl:v0.2.11 -i PromptEnv="PROMPT=hiro saves the hive" -i SeedEnv="RANDOM_SEED=10
 ```
 
 ### 4 - Run Cowsay On-Chain
