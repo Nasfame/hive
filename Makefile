@@ -50,7 +50,11 @@ deps:
 	go mod tidy && go work sync
 
 install:
-	goreleaser build --single-target --clean -o ./bin/${binName} --snapshot
+ifeq ($(OS),Windows_NT)
+	@goreleaser build --clean --snapshot
+else
+	@goreleaser build --single-target --clean -o ./bin/$(binName) --snapshot
+endif
 
 snapshot:
 	goreleaser build --clean --snapshot
