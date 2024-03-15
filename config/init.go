@@ -27,7 +27,7 @@ import (
 
 // set debug
 func init() {
-	debugFlag, _ := strconv.ParseBool(os.Getenv("DEBUG"))
+	debugFlag, _ := strconv.ParseBool(os.Getenv(enums.DEBUG))
 
 	if debugFlag {
 		logrus.SetLevel(logrus.DebugLevel)
