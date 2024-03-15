@@ -140,7 +140,7 @@ func getJobCreatorOptions(options testOptions) (jobCreatorService.JobCreatorOpti
 	}
 	ret, err := jobcreator.ProcessJobCreatorOptions(jobCreatorOptions, []string{
 		// this should point to the shortcut
-		"cowsay:v0.0.2",
+		"cowsay:v0.1.2",
 	})
 
 	if err != nil {
