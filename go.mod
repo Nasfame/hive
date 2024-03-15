@@ -166,6 +166,7 @@ require (
 )
 
 retract (
+	v0.16.2
 	v0.11.0-alpha
 	v0.10.7-beta
 
@@ -193,5 +194,6 @@ retract (
 	v0.0.0-pr133
 	v0.0.0-pr129
 	v0.0.0-br-feat-support-faucet
+//	retracted due to panic aurora
 
 )

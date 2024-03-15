@@ -16,19 +16,28 @@ CoopHive operates on a decentralized infrastructure across multiple EVM-compatib
 
 <details>
 
-<summary>Aurora Testnet</summary>
+
+<summary>Aurora Testnet <i>(Deprecated)</i></summary>
+
 
 <pre>
+
 Network name: Aurora Testnet
+
 
 RPC URL: http://aurora.co-ophive.network:8545
 
+
 Chain ID: 1337
+
 
 Currency symbol: ETH
 
+
 Block Explorer URL: (leave blank)
+
 </pre>
+
 
 </details>
 
@@ -58,6 +67,15 @@ Block Explorer URL: (leave blank)
 
 </details>
 
+<details>
+<summary>FVM Calibration Testnet</summary>
+
+- [x] Visit https://chainlist.org/chain/314159
+- [x] Add to Metamask
+
+</details>
+
+
 
 
 > The testnet has a base currency of ETH and you will also get HIVE to pay for jobs (and nodes to stake).
@@ -66,11 +84,12 @@ Block Explorer URL: (leave blank)
 
 To obtain funds, please visit the below faucets:
 
-1. Aurora Faucet: [Click Here](http://faucet.co-ophive.network:8080)
+1. Aurora Faucet <i>(Deprecated)</i>: [Click Here](http://faucet.co-ophive.network:8080)
 2. Halcyon Faucet: [Click Here](http://halcyon-faucet.co-ophive.network:8085)
 3. Sepolia Faucet:
    - [Hive Faucet](http://faucet.co-ophive.network:8081)
    - [Eth Faucet](https://sepoliafaucet.com)
+4. Calibration Faucet: [Click Here](http://faucet.co-ophive.network:8082)
 
 [//]: # (3. Sepolia Faucet: [Click Here]&#40;http://faucet.co-ophive.network:8081&#41;)
 
@@ -173,51 +192,120 @@ export WEB3_PRIVATE_KEY=<your private key>
 
 Alternatively, arrange for the key to be in your environment in a more secure way that doesn't get written to your shell history.
 
-### Cows
+## Checkout our standard modules
 
-Hello World, now with cows.
+<details>
+<summary>Update: You can now switch from the default network</summary>
 
+> using `--network <network>` or by setting the env var `export NETWORK=`
+
+- `hive run cowsay:v0.1.2 -i Message="CoopHive" --network halcyon`
+- `hive run cowsay:v0.1.2 -i Message="CoopHive" --network calibration`
+- `hive run cowsay:v0.1.2 -i Message="CoopHive" --network aurora`
+- `hive run cowsay:v0.1.2 -i Message="CoopHive" --network sepolia`
+- `export NETWORK=sepolia && hive run cowsay:v0.1.2 -i Message="CoopHive"`
+
+</details>
+
+### Cowsay Module
+
+Hello CoopHive, now with cows.
+
+```shell
+hive run cowsay:v0.1.2 -i Message="Hiro is building Coophive"
 ```
-hive run cowsay:v0.1.1 -i Message="CoopHive"
-```
 
-```stdout
- __________
-< CoopHive >
- ----------
+[//]: # (FIXME: the video uses the input var Prompt not Message. Upload fresh video)
+https://github.com/CoopHive/hive/assets/24226219/d1768527-57d8-47cc-8643-4bb57d190769
+
+
+<details>
+
+<summary> Preview Run </summary>
+
+<pre>
+hive run cowsay:v0.1.2 -i Message="Hiro is building CoopHive" --network sepolia
+
+  ___  __    __  ____  _  _  __  _  _  ____
+ / __)/  \  /  \(  _ \/ )( \(  )/ )( \(  __)
+( (__(  O )(  O )) __/) __ ( )( \ \/ / ) _)
+ \___)\__/  \__/(__)  \_)(_/(__) \__/ (____) 0.17.1
+
+  Decentralized Compute Network  https://coophive.network
+
+
+●∙∙ CoopHive submitting job2024-03-08T07:21:28+05:30 INF ../../Volumes/N/CoopHive/hive/pkg/module/utils.go:148 > updating cached git repo=/Users/hiro/.coophive/sepolia/jc/repos/CoopHive/coophive-module-cowsay
+🌟  CoopHive submitting job
+∙∙∙ Job submitted. Negotiating deal...Deal QmSirREjZ9icDawWiR8EMQn8UaVMFySrocgfdGstCrjiGR is matched
+∙●∙ Job submitted. Negotiating deal...2024/03/08 07:21:29 Deal QmSirREjZ9icDawWiR8EMQn8UaVMFySrocgfdGstCrjiGR is agreed
+🤝  Job submitted. Negotiating deal...
+💌  Deal agreed. Running job...
+∙∙∙ Job submitted. Negotiating deal...Deal QmQZgZDo6YJFrBZNUfQhdK2zYdFB47KJgcPDnEBqH3poNg is matched
+∙●∙ Job submitted. Negotiating deal...2024/03/08 07:21:53 Deal QmQZgZDo6YJFrBZNUfQhdK2zYdFB47KJgcPDnEBqH3poNg is agreed
+🤝  Job submitted. Negotiating deal...
+💌  Deal agreed. Running job...
+🤔  Results submitted. Awaiting verification...
+✅  Results accepted. Downloading result...
+
+🍂 CoopHive job completed in 58.219397459s, try 👇
+    open /Users/hiro/.coophive/sepolia/jc/downloaded-files/QmSirREjZ9icDawWiR8EMQn8UaVMFySrocgfdGstCrjiGR
+    cat /Users/hiro/.coophive/sepolia/jc/downloaded-files/QmSirREjZ9icDawWiR8EMQn8UaVMFySrocgfdGstCrjiGR/stdout
+    cat /Users/hiro/.coophive/sepolia/jc/downloaded-files/QmSirREjZ9icDawWiR8EMQn8UaVMFySrocgfdGstCrjiGR/stderr
+    https://ipfs.io/ipfs/QmRnfzKiR2hmm5UeSx2Cn2CRFEB1gTDBXavf4oiJC1Aeoo
+</pre>
+
+
+<pre>
+cat /Users/hiro/.coophive/sepolia/jc/downloaded-files/QmSirREjZ9icDawWiR8EMQn8UaVMFySrocgfdGstCrjiGR/stdout 
+ ___________________________
+< Hiro is building CoopHive >
+ ---------------------------
         \   ^__^
          \  (oo)\_______
             (__)\       )\/\
                 ||----w |
                 ||     ||
-```
+</pre>
 
-> You can now switch from the default network using `--network <network>`  
-> For eg: `hive run cowsay:v0.1.1 -i Message="CoopHive" --network halcyon`
+</details>
 
-### SDXL
+<details> 
+<summary>Cowsay on Halcyon</summary>
+
+https://github.com/CoopHive/hive/assets/24226219/4edb669c-7eb7-4dee-9adf-1651ddb73b3b
+
+</details>
+
+### SDXL v0.9.0
 
 Stable diffusion:
 
 ```
-hive run sdxl:v0.2.8 -i PromptEnv="PROMPT= a hive of bees"
+hive run sdxl:v0.3.0 -i Prompt="hiro saves the hive"
 ```
 
-```stdout
- ___  __    __  ____  _  _  __  _  _  ____
+
+https://github.com/CoopHive/hive/assets/24226219/b0a00864-5afb-49ee-9bb6-a44a8936194e
+
+
+<details>
+
+<summary> Preview Run </summary>
+<pre>
+hive run sdxl:v0.3.0 -i Prompt="hiro saves the hive"
+
+  ___  __    __  ____  _  _  __  _  _  ____
  / __)/  \  /  \(  _ \/ )( \(  )/ )( \(  __)
 ( (__(  O )(  O )) __/) __ ( )( \ \/ / ) _)
- \___)\__/  \__/(__)  \_)(_/(__) \__/ (____) 0.4.0
+ \___)\__/  \__/(__)  \_)(_/(__) \__/ (____) 0.17.1
 
   Decentralized Compute Network  https://coophive.network
 
 
-∙∙● CoopHive submitting job 2024-02-07T05:11:18+05:30
-∙●∙ CoopHive submitting jobEnumerating objects: 11, done.
-Counting objects: 100% (11/11), done.
-Compressing objects: 100% (10/10), done.
-Total 11 (delta 1), reused 11 (delta 1), pack-reused 0
+∙●∙ CoopHive submitting job2024-03-08T07:22:41+05:30 INF ../../Volumes/N/CoopHive/hive/pkg/module/utils.go:148 > updating cached git repo=/Users/hiro/.coophive/sepolia/jc/repos/CoopHive/coophive-module-sdxl
 🌟  CoopHive submitting job
+∙∙∙ Job submitted. Negotiating deal...Deal QmbBhg8NqYyqYp6QnUhd1yZgYhRoKYt1bZLxKtUjkLNEbM is matched
+●∙∙ Job submitted. Negotiating deal...2024/03/08 07:22:43 Deal QmbBhg8NqYyqYp6QnUhd1yZgYhRoKYt1bZLxKtUjkLNEbM is agreed
 🤝  Job submitted. Negotiating deal...
 💌  Deal agreed. Running job...
 🤔  Results submitted. Awaiting verification...
@@ -225,24 +313,42 @@ Total 11 (delta 1), reused 11 (delta 1), pack-reused 0
 🤔  Results submitted. Awaiting verification...
 ✅  Results accepted. Downloading result...
 
-🍂 CoopHive job completed, try 👇
-    open /tmp/coophive/data/downloaded-files/QmYoVjFGY1h6m22c7X8trw27H44wzHat1TUdfVJAPfLzmc
-    cat /tmp/coophive/data/downloaded-files/QmYoVjFGY1h6m22c7X8trw27H44wzHat1TUdfVJAPfLzmc/stdout
-    cat /tmp/coophive/data/downloaded-files/QmYoVjFGY1h6m22c7X8trw27H44wzHat1TUdfVJAPfLzmc/stderr
-    https://ipfs.io/ipfs/Qme2sRKs3kgbz6F4pFkeLT4tx6km13ZiBevvCvpki9T6Sj
+🍂 CoopHive job completed in 2m43.038262916s, try 👇
+    open /Users/hiro/.coophive/sepolia/jc/downloaded-files/QmbBhg8NqYyqYp6QnUhd1yZgYhRoKYt1bZLxKtUjkLNEbM
+    cat /Users/hiro/.coophive/sepolia/jc/downloaded-files/QmbBhg8NqYyqYp6QnUhd1yZgYhRoKYt1bZLxKtUjkLNEbM/stdout
+    cat /Users/hiro/.coophive/sepolia/jc/downloaded-files/QmbBhg8NqYyqYp6QnUhd1yZgYhRoKYt1bZLxKtUjkLNEbM/stderr
+    https://ipfs.io/ipfs/Qmf8jBCQHz6io6VK8GnQZVzk7hUHG6NWXjqQs4AeEervEv
 
-```
+</pre>
 
-Not working?
-Try `rm -rf /tmp/coophive/data/repos`. Uninstall hive path, and reinstall from the start.
+<pre>
+cat /Users/hiro/.coophive/sepolia/jc/downloaded-files/QmbBhg8NqYyqYp6QnUhd1yZgYhRoKYt1bZLxKtUjkLNEbM/stdout
+Random seed set as 12
+Got 1 images
+</pre>
 
-## Run a node, earn HIVE
+![SDXL:v0.3.0](https://github.com/CoopHive/hive/assets/24226219/92c3c52f-9b3a-49c2-8aa1-7d28d87d9709)
 
-```
-hive rp
-```
+> Didn't like the image? Try a different seed
+>> hive run sdxl:v0.3.0 -i Prompt="hiro saves the hive" -i Seed=16
 
-Deploy seamlessly on linux by utilizing [these systemd configuration files](https://github.com/CoopHive/hive/tree/main/ops).
+</details>
+
+[//]: # (## Run a node, earn HIVE)
+
+[//]: # ()
+
+[//]: # ()
+
+[//]: # (```)
+
+[//]: # (hive rp)
+
+[//]: # (```)
+
+[//]: # ()
+
+[//]: # (Deploy seamlessly on linux by utilizing [these systemd configuration files]&#40;https://github.com/CoopHive/hive/tree/main/ops&#41;.)
 
 ## Available modules
 
@@ -296,8 +402,20 @@ strings with placeholders.
     `
     ```
 </details>
+[Sample Module for Ref](https://github.com/CoopHive/coophive-module-marker/blob/243e86c/module.coophive#L17)
+[Prototype Your Module over here](https://go.dev/play/p/oBgc2Cetug3)
 
-[Example Code](https://go.dev/play/p/oBgc2Cetug3)
+2. `subst`: same as `subt`. Checkout https://github.com/CoopHive/coophive-module-sdxl/blob/v0.3.0/module.coophive#L24
+
+3. `or`: takes 2 positional arguments : inputA, inputB. It returns the inputA if its a non-empty string else inputB. It
+   can be used to ensure default vars without nested conditional
+   logics: https://github.com/CoopHive/coophive-module-marker/blob/243e86c/module.coophive#L47. You can prototype your
+   template strings using this scratch file: https://go.dev/play/p/_FvTYbtKim1
+
+4. `get`: alias of `or`
+
+> If you are golang dev, you can better insights on implementation of the template functions by checking
+> out: <a href=./pkg/module/templateFuncs_test.go> Template Func Test</a>
 
 [CoopHive]: https://coophive.network
 

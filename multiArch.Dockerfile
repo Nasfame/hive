@@ -27,4 +27,4 @@ WORKDIR /app
 COPY --from=builder /app/bin/hive /app/hive
 
 ENTRYPOINT ["/app/hive"]
-CMD ["run", "cowsay:v0.1.0", "-i", "Message=Hiro"]
+CMD ["run", "cowsay:v0.1.2", "-i", "Message=Hiro"]

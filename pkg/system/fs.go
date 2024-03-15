@@ -105,7 +105,7 @@ func ExpandTarBuffer(buf *bytes.Buffer, localPath string) error {
 	for {
 		header, err := tr.Next()
 		if err == io.EOF {
-			break // End of archive
+			break // Stop of archive
 		}
 		if err != nil {
 			return err

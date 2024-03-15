@@ -54,8 +54,8 @@ Time to make the following files by copying the respective private key from `/ap
 
 Each file should be of the following format:
 
-```
-WEB3_PRIVATE_KEY=xxx
+```.dotenv
+export WEB3_PRIVATE_KEY=xxx
 ```
 
 - `/app/hive/solver.env` (copy `SOLVER_PRIVATE_KEY` from `.env`)

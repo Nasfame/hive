@@ -38,7 +38,7 @@ COPY --from=builder /app/bin/hive  /app/bin/hive
 RUN ln -s /app/bin/hive /bin/hive
 
 ENTRYPOINT ["/bin/hive"]
-CMD ["run", "cowsay:v0.1.0", "-i", "Message=Hiro"]
+CMD ["run", "cowsay:v0.1.2", "-i", "Message=Hiro"]
 
 LABEL authors="Hiro <laciferin@gmail.com>"
 LABEL maintainer="Hiro <laciferin@gmail.com>"

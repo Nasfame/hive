@@ -59,6 +59,7 @@ snapshot:
 	goreleaser build --clean --snapshot
 
 host ?= hive
+hiveDir ?= /tmp/
 
 sync:
 	#host=${host:-"hive"}
@@ -66,8 +67,11 @@ sync:
 	make snapshot
 	#scp dist/hive_linux_amd64_v1/hive hive:/usr/local/bin/hive #permission issue
 	#scp dist/hive_linux_amd64_v1/hive hive:./bin/hive
-	scp dist/hive_linux_amd64_v1/hive ${host}:./hive
-	ssh ${host} 'cd hive && sudo chmod +x hive && sudo cp hive /usr/local/bin/'
+
+	scp dist/hive_linux_amd64_v1/hive ${host}:${hiveDir}
+#	ssh ${host} 'cd ${hiveDir} && sudo chmod +x hive && sudo cp hive /usr/local/bin/'
+	ssh ${host} 'cd ${hiveDir} && sudo chmod +x hive && sudo rsync --force ./hive /usr/local/bin/'
+
 
 	scp *.yml ${host}:.
 	scp .env.* ${host}:.
@@ -147,7 +151,7 @@ h:
 	make install-hive-latest
 
 cowsay:
-	hive run cowsay:v0.1.0
+	hive run cowsay:v0.1.2
 
 .PHONY: solver run cowsay h b
 
@@ -156,7 +160,7 @@ solver:
 	hive solver --web3-private-key $$SOLVER_PRIVATE_KEY
 
 run:
-	hive run cowsay:v0.1.0
+	hive run cowsay:v0.1.2
 
 
 rp:

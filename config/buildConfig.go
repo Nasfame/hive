@@ -107,7 +107,7 @@ var MODULE_PATH string  // temporary init for shortcuts pkg, use Conf injected
 var STD_MODULE_FORMAT string
 var Conf *viper.Viper
 
-func tempInitForFx(conf *viper.Viper) {
+func initDerivedConfigVariables(conf *viper.Viper) {
 
 	Conf = conf // set global var
 	// log.Println("version", conf.GetString(enums.VERSION))
@@ -159,12 +159,20 @@ func SetAppDir(conf *viper.Viper, appDir string) {
 
 	}
 
+	/*network := conf.GetString(enums.NETWORK) //nevermind APP_DIR/$NETWORK takes care of it
+
+	logFormat := conf.GetString(enums.APP_LOG_FILE_FORMAT)
+	logFormat = strings.Replace(logFormat, "$NETWORK", network, 1)
+	logrus.Debugln("logFormat for solver:", logFormat)
+	conf.Set(enums.APP_LOG_FILE_FORMAT, logFormat)*/
+
 	// conf.Set(enums.BACALHAU_RESULTS_DIR, path.Join(appDir, conf.GetString(enums.BACALHAU_RESULTS_DIR)))
 	// os.MkdirAll(conf.GetString(enums.BACALHAU_RESULTS_DIR), 0755)
-
+	setPathConfig(enums.BACALHAU_REPO)
 	setPathConfig(enums.BACALHAU_RESULTS_DIR)
 	setPathConfig(enums.BACALHAU_SPECS_DIR)
 	setPathConfig(enums.BACALHAU_JOBS_DIR)
+
 	setPathConfig(enums.REPO_DIR)
 	setPathConfig(enums.DOWNlOADS_DIR)
 

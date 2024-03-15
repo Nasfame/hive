@@ -3,6 +3,7 @@ package config
 import (
 	"log"
 	"os"
+	"regexp"
 	"slices"
 	"strings"
 
@@ -20,7 +21,7 @@ var Module = fx.Options(
 	fx.Provide(
 		newConfig,
 	),
-	fx.Invoke(tempInitForFx),
+	fx.Invoke(initDerivedConfigVariables),
 	fx.WithLogger(func(conf *viper.Viper) (l fxevent.Logger) {
 		if conf.GetBool(enums.DEBUG) {
 			return &fxevent.ConsoleLogger{W: os.Stderr}
@@ -37,13 +38,7 @@ type out struct {
 func newConfig() (o out) {
 	pf := pflag.NewFlagSet("conf", pflag.ContinueOnError)
 
-	config := viper.New()
-
-	checkDup := func(key string, block string) {
-		if config.IsSet(key) {
-			log.Fatalf("duplicate key found in config[%s]: %s", block, key)
-		}
-	}
+	config := Conf
 
 	// formatEnvVar := func(key string) string {
 	// 	k := strings.Replace("-", "_", key, -1)
@@ -62,19 +57,7 @@ func newConfig() (o out) {
 		enums.BACALHAU_BIN: true,
 	}
 
-	for key, meta := range buildConfig {
-		checkDup(key, "build")
-		config.Set(key, meta.defaultVal)
-	}
-
 	for key, meta := range appConfig {
-		checkDup(key, "app")
-
-		config.SetDefault(key, meta.defaultVal)
-
-		// automatic conversion of environment var key to `UPPER_CASE` will happen.
-		config.BindEnv(key)
-
 		if cmdFlags[key] {
 			// key := strings.Replace("_", "-", key, -1)
 			// read command-line arguments
@@ -83,7 +66,23 @@ func newConfig() (o out) {
 		}
 	}
 
-	if err := pf.Parse(os.Args[1:]); err != nil {
+	var osArgs []string
+
+	// bugfix: for `hive run cowsay:v0.1.2 -i Message="Hiro" --network sepolia` but defaulting to aurora
+	// due to collusion with short hand vars
+	for _, arg := range os.Args[1:] {
+		// if strings.HasPrefix(arg, "--") {
+		// 	osArgs = append(osArgs, arg)
+		// }
+		if strings.HasPrefix(arg, "-") && !strings.HasPrefix(arg, "--") {
+			defer logrus.Debugf("ignoring arg:%v", arg)
+			continue
+		}
+
+		osArgs = append(osArgs, arg)
+	}
+
+	if err := pf.Parse(osArgs); err != nil {
 		logrus.Debugf("failed to parse args due to %v", err)
 	}
 
@@ -96,18 +95,26 @@ func newConfig() (o out) {
 		logrus.SetReportCaller(true)
 	}
 
-	appDir := config.GetString(enums.APP_DIR)
-	logrus.Debugln("appDir: ", appDir)
-
-	// appDataDir := config.GetString(enums.APP_DATA_DIR)
-	// appDataDir = strings.Replace(appDataDir, AppDirSymbol, appDir, 1)
-	// config.Set(enums.APP_DATA_DIR, appDataDir)
-
 	/*Network related config*/
 
 	network := config.GetString(enums.NETWORK)
 
 	logrus.Debugln("network: ", network)
+
+	appDir := config.GetString(enums.APP_DIR)
+
+	regex := regexp.MustCompile("[^a-zA-Z0-9_]")
+	sanitizedNetworkString := regex.ReplaceAllString(network, "") // TODO: move to a function and test the function
+	logrus.Debugln("sanitizedNetworkString for dir: ", sanitizedNetworkString)
+
+	appDir = strings.Replace(appDir, networkSymbol, sanitizedNetworkString, 1)
+
+	logrus.Debugln("appDir: ", appDir)
+	config.Set(enums.APP_DIR, appDir)
+
+	// appDataDir := config.GetString(enums.APP_DATA_DIR)
+	// appDataDir = strings.Replace(appDataDir, AppDirSymbol, appDir, 1)
+	// config.Set(enums.APP_DATA_DIR, appDataDir)
 
 	if true {
 		c, err := loadDApp(network)
@@ -127,7 +134,7 @@ func newConfig() (o out) {
 			}
 
 			if curVal != "" && defaultVal != curVal {
-				logrus.Info("key already set: ", key)
+				logrus.Debugf("key already set: %s", key)
 				continue
 			}
 			logrus.Debugf("%v:%v\n", key, val)
