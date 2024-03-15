@@ -59,11 +59,11 @@ function faucet() {
   eval $(./stack print-contract-env)
   local privateKey=$(echo -n "$ADMIN_PRIVATE_KEY" | sed 's/^0x//')
   local tokenAddress=$(echo -n "$WEB3_TOKEN_ADDRESS" | sed 's/^0x//')
-#  TODO: faucet needs to be build; publish to ghcr then lets talk
   docker run -d \
     --name faucet \
     -p 8080:8080 \
     --network coophive \
+    -e PORT=8080
     -e WEB3_PROVIDER=http://geth:8545 \
     -e PRIVATE_KEY=$privateKey \
     -e TOKEN_ADDRESS=$WEB3_TOKEN_ADDRESS \
