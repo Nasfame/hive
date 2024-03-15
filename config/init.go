@@ -115,9 +115,6 @@ func init() {
 	}
 
 	Conf = config // overriden by fx TODO: perhaps migrate this
-	appDir := config.GetString(enums.APP_DIR)
-
-	panic(appDir)
 
 	initDerivedConfigVariables(config)
 
