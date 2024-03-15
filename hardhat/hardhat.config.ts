@@ -1,8 +1,8 @@
 import {HardhatUserConfig, task} from "hardhat/config";
 import "@typechain/hardhat";
 import "@nomicfoundation/hardhat-toolbox";
-import "@nomicfoundation/hardhat-ethers";
 import "@nomicfoundation/hardhat-chai-matchers";
+import "@nomicfoundation/hardhat-ethers";
 import "hardhat-deploy";
 import * as dotenv from "dotenv";
 import * as process from "process";
