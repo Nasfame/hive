@@ -12,7 +12,7 @@ First, install the required Node.js modules and generate a local `.env` file con
 services. Run the following commands:
 
 ```bash
-(cd hardhat && yarn install)
+(cd hardhat && pnpm install)
 ./stack print-env > .env
 ```
 

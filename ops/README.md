@@ -27,7 +27,7 @@ sudo chown $USER app
 cd /app/
 git clone https://github.com/CoopHive/hive
 cd hive
-(cd hardhat && yarn install)
+(cd hardhat && pnpm install)
 ```
 
 Then we create the production keys:
