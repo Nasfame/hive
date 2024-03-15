@@ -3,8 +3,9 @@ package in_test
 import (
 	"context"
 	"fmt"
-	"github.com/CoopHive/hive/cmd"
 	"github.com/CoopHive/hive/enums"
+	"github.com/CoopHive/hive/internal"
+	"github.com/CoopHive/hive/services"
 	"go.uber.org/fx/fxtest"
 	"os"
 	"testing"
@@ -199,6 +200,8 @@ func TestNoModeration(t *testing.T) {
 	commandCtx := system.NewTestingContext()
 	defer commandCtx.Cleanup()
 
+	initApp(t)
+
 	message := "hello apples this is a message"
 
 	executorOptions := noop.NewNoopExecutorOptions()
@@ -223,20 +226,25 @@ func init() {
 	if err != nil {
 		log.Fatal().Str("err", err.Error()).Msgf(".env not found")
 	}
+	//
+	//app := cmd.Hive()
+	//
+	//go func() {
+	//	<-app.Done()
+	//	log.Info().Str("app", "exiting gracefully")
+	//}()
 
-	app := cmd.Hive()
-
-	go func() {
-		<-app.Done()
-		log.Info().Str("app", "exiting gracefully")
-
-	}()
 }
 
 var ctx = context.Background()
 
 func initApp(t *testing.T) {
-	app := fxtest.New(t, config.Module)
+	app := fxtest.New(t,
+		config.Module,
+		internal.Module,
+		services.Module,
+		//dealmaker.Module,
+	)
 
 	// Start the application.
 	// ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
@@ -247,8 +255,13 @@ func initApp(t *testing.T) {
 
 	app.RequireStart()
 
-	// Stop the application.
-	if err := app.Stop(ctx); err != nil {
-		t.Fatal(err)
-	}
+	go func() {
+		<-app.Done()
+		t.Log("exiting app gracefully")
+	}()
+
+	//// Stop the application.
+	//if err := app.Stop(ctx); err != nil {
+	//	t.Fatal(err)
+	//}
 }
