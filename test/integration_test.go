@@ -242,7 +242,7 @@ func initApp(t *testing.T) {
 	app := fxtest.New(t,
 		config.Module,
 		internal.Module,
-		services.Module,
+		services.ModuleWithoutRoot,
 		//dealmaker.Module,
 	)
 
