@@ -3,6 +3,7 @@ package in_test
 import (
 	"context"
 	"fmt"
+	"github.com/CoopHive/hive/cmd"
 	"github.com/CoopHive/hive/enums"
 	"go.uber.org/fx/fxtest"
 	"os"
@@ -222,6 +223,8 @@ func init() {
 	if err != nil {
 		log.Fatal().Str("err", err.Error()).Msgf(".env not found")
 	}
+
+	go cmd.Hive()
 
 }
 
