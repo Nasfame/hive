@@ -240,14 +240,20 @@ func init() {
 var ctx = context.Background()
 
 func initApp(t *testing.T) {
+	type In struct {
+		DealmakerService *dealmaker.Service `name:"dealmaker"`
+	}
+
 	app := fxtest.New(t,
 		config.Module,
 		internal.Module,
 		services.ModuleWithoutRoot,
-		//dealmaker.Module,
-		fx.Invoke(func(injectedDealerService *dealmaker.Service) {
-			dealMaker = injectedDealerService
+		fx.Invoke(func(d *dealmaker.Service) {
+			dealMaker = d
 		}),
+		//fx.Provide(func(i *In) {
+		//	dealMaker = i.DealmakerService
+		//}),
 	)
 
 	// Start the application.
