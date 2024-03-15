@@ -286,7 +286,7 @@ function hardhat-script() {
 
 # print the env settings for the various accounts and private keys
 function print-env() {
-  hardhat-script scripts/print-env.ts | grep export
+  (cd hardhat && npm run print-env) | grep export
 }
 
 function print-contract-env() {

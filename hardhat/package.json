@@ -7,6 +7,7 @@
   "author": "Hiro <laciferin@gmail.com>",
   "scripts": {
     "setup": "remixd -i slither",
+    "print-env": "ts-node scripts/generate-addresses.ts",
     "gen-env": "ts-node scripts/generate-addresses.ts > .env.gen",
     "postinstall": "npm run setup",
     "dev": "remixd",
