@@ -23,15 +23,12 @@ services. Run the following commands:
 To run a Bacalhau node on the same machine as the resource provider, follow these steps:
 
 ```bash
-# Install the latest Bacalhau release which works with GPUs (https://github.com/bacalhau-project/bacalhau/issues/2858)
-wget https://github.com/bacalhau-project/bacalhau/releases/download/v1.0.3/bacalhau_v1.0.3_linux_amd64.tar.gz
-# Extract the downloaded archive and move the `bacalhau` binary to `/usr/local/bin`
-tar xfv bacalhau_v1.0.3_linux_amd64.tar.gz
-mv bacalhau /usr/local/bin
+curl -sL https://get.bacalhau.org/install.sh | sudo bash
 # Set the IPFS data path by exporting the `BACALHAU_SERVE_IPFS_PATH` variable to your desired location
 export BACALHAU_SERVE_IPFS_PATH=/tmp/hive/data/ipfs
+mdir -p $BACALHAU_SERVE_IPFS_PATH
 # Run Bacalhau as both a compute node and a requester node
-bacalhau serve --node-type compute,requester --peer none --private-internal-job-ipfs=false --job-selection-accept-networked
+bacalhau serve --node-type compute,requester --peer none --private-internal-ipfs=false --job-selection-accept-networked --web-ui --web-ui-port 1080
 ```
 
 ### 2 - CoopHive
