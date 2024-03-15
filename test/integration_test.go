@@ -6,6 +6,7 @@ import (
 	"github.com/CoopHive/hive/enums"
 	"github.com/CoopHive/hive/internal"
 	"github.com/CoopHive/hive/services"
+	"go.uber.org/fx"
 	"go.uber.org/fx/fxtest"
 	"os"
 	"testing"
@@ -35,6 +36,8 @@ type testOptions struct {
 	moderationChance int
 	executor         noop.NoopExecutorOptions
 }
+
+var dealMaker *dealmaker.Service
 
 func getWeb3Options() (w *web3.Web3Options) {
 	conf := config.Conf
@@ -96,7 +99,7 @@ func getResourceProvider(
 	}
 
 	// FIXME:pass dealmaker service
-	return resourceprovider.NewResourceProvider(resourceProviderOptions, web3SDK, executor, nil)
+	return resourceprovider.NewResourceProvider(resourceProviderOptions, web3SDK, executor, dealMaker)
 }
 
 func getMediator(
@@ -184,9 +187,7 @@ func testStackWithOptions(
 		return nil, err
 	}
 
-	dealerService := &dealmaker.Service{}
-
-	result, err := jobCreatorService.RunJob(commandCtx, jobCreatorOptions, dealerService, func(evOffer dto.JobOfferContainer) {
+	result, err := jobCreatorService.RunJob(commandCtx, jobCreatorOptions, dealMaker, func(evOffer dto.JobOfferContainer) {
 
 	})
 	if err != nil {
@@ -244,6 +245,9 @@ func initApp(t *testing.T) {
 		internal.Module,
 		services.ModuleWithoutRoot,
 		//dealmaker.Module,
+		fx.Invoke(func(injectedDealerService *dealmaker.Service) {
+			dealMaker = injectedDealerService
+		}),
 	)
 
 	// Start the application.
