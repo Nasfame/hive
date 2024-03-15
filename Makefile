@@ -34,9 +34,6 @@ prerelease:
 release:
 	goreleaser release --clean
 
-install-hive:
-	goreleaser build --single-target --clean -o ./bin/${binName} --snapshot
-
 make-bin:
 	go build -v -ldflags="\
 		-X 'github.com/CoopHive/hive/config.version=$$(git describe --tags --abbrev=0)' \
