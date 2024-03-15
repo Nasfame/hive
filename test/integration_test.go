@@ -1,8 +1,10 @@
 package in_test
 
 import (
+	"context"
 	"fmt"
 	"github.com/CoopHive/hive/enums"
+	"go.uber.org/fx/fxtest"
 	"os"
 	"testing"
 	"time"
@@ -221,4 +223,24 @@ func init() {
 		log.Fatal().Str("err", err.Error()).Msgf(".env not found")
 	}
 
+}
+
+var ctx = context.Background()
+
+func initApp(t *testing.T) {
+	app := fxtest.New(t, config.Module)
+
+	// Start the application.
+	// ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
+	// defer cancel()
+	// if err := app.Start(ctx); err != nil {
+	// 	t.Fatal(err)
+	// }
+
+	app.RequireStart()
+
+	// Stop the application.
+	if err := app.Stop(ctx); err != nil {
+		t.Fatal(err)
+	}
 }
