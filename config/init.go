@@ -61,8 +61,12 @@ func init() {
 
 	logrus.Debugf("Loading config from %s", configFile)
 
-	if err := godotenv.Load(configFile); err != nil && !defaultLoad {
-		logrus.Errorf(".env loading error %v", err)
+	if err := godotenv.Load(configFile); err != nil {
+		if !defaultLoad {
+			logrus.Errorf(".env loading error %v", err)
+		} else {
+			logrus.Debugf("err loading : %v", err)
+		}
 	}
 
 }
