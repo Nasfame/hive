@@ -224,8 +224,13 @@ func init() {
 		log.Fatal().Str("err", err.Error()).Msgf(".env not found")
 	}
 
-	go cmd.Hive()
+	app := cmd.Hive()
 
+	go func() {
+		<-app.Done()
+		log.Info().Str("app", "exiting gracefully")
+
+	}()
 }
 
 var ctx = context.Background()
