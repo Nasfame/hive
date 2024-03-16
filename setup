@@ -1,0 +1,82 @@
+#!/usr/bin/env bash
+set -euo pipefail
+IFS=$'\n\t'
+
+
+export DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+export DEFAULT_DATA_DIR="/tmp/geth"
+export DATA_DIRECTORY=${DATA_DIRECTORY:="$DEFAULT_DATA_DIR"}
+export NETWORK=${NETWORK:="geth"}
+
+
+if [[ -f "$DIR/.env" ]]; then
+  source "$DIR/.env"
+fi
+
+
+function pkey(){
+  primaryKey="$1"
+#  echo "pkey = $primaryKey"
+  node hardhat/scripts/derive-pkey.js $primaryKey
+}
+
+
+#geth setup
+
+# run a local geth node in dev mode mounted against a local data directory
+function geth() {
+  docker network ls | grep coophive || docker network create coophive
+  docker run -d --restart always \
+    --name geth \
+    --network coophive \
+    -p 8545:8545 \
+    -p 8546:8546 \
+    -v ${DATA_DIRECTORY}:/data/geth \
+    ethereum/client-go \
+      --datadir /data/geth \
+      --dev \
+      --ws \
+      --ws.api web3,eth,net \
+      --ws.addr 0.0.0.0 \
+      --ws.port 8546 \
+      --ws.origins '*' \
+      --http \
+      --http.api web3,eth,net \
+      --http.addr 0.0.0.0 \
+      --http.corsdomain '*' \
+      --http.port 8545 \
+      --http.vhosts '*'
+}
+
+function geth-command() {
+  docker exec -i geth geth --exec "$@" attach /data/geth/geth.ipc
+}
+
+
+
+
+
+
+
+# faucet
+
+# run the faucet container
+function faucet() {
+  source .env
+  eval $(./stack print-contract-env)
+#  TODO: contract env
+  local privateKey=$(echo -n "$ADMIN_PRIVATE_KEY" | sed 's/^0x//')
+  local tokenAddress=$(echo -n "$WEB3_TOKEN_ADDRESS" | sed 's/^0x//')
+  docker run -d \
+    --name faucet \
+    -p 8080:8080 \
+    --network coophive \
+    -e PORT=8080
+    -e WEB3_PROVIDER=http://geth:8545 \
+    -e PRIVATE_KEY=$privateKey \
+    -e TOKEN_ADDRESS=$WEB3_TOKEN_ADDRESS \
+    ghcr.io/coophive/faucet:latest \
+      --faucet.amount=100 \
+      --faucet.tokenamount=100 \
+      --faucet.minutes=1
+}
