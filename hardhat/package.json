@@ -9,6 +9,8 @@
     "setup": "remixd -i slither",
     "print-env": "ts-node scripts/generate-addresses.ts",
     "gen-env": "ts-node scripts/generate-addresses.ts > .env.gen",
+    "print:env": "ts-node scripts/generate-addresses.ts",
+    "print:contract": "hardhat run scripts/print-contract-env.ts --network ",
     "postinstall": "npm run setup",
     "dev": "remixd",
     "style": "prettier -w .",
