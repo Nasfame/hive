@@ -18,6 +18,12 @@ fi
 ############################################################################
 ############################################################################
 
+function pkey(){
+  primaryKey="$1"
+#  echo "pkey = $primaryKey"
+  node hardhat/scripts/derive-pkey.js $primaryKey
+}
+
 # run a local geth node in dev mode mounted against a local data directory
 function geth() {
   docker network ls | grep coophive || docker network create coophive

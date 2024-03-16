@@ -11,6 +11,7 @@
     "gen-env": "ts-node scripts/generate-addresses.ts > .env.gen",
     "print:env": "ts-node scripts/generate-addresses.ts",
     "print:contract": "hardhat run scripts/print-contract-env.ts --network ",
+    "pkey": "node scripts/derive-pkey.js ",
     "postinstall": "npm run setup",
     "dev": "remixd",
     "style": "prettier -w .",
