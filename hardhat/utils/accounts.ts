@@ -198,6 +198,7 @@ async function getHiveBalance(account: string, hre: HardhatRuntimeEnvironment) {
 
     const token = await hre.deployments.get("HiveToken");
 
+    // @ts-ignore
     const tokenContract: HiveToken = new hre.ethers.Contract(token.address, token.abi, signer)
 
     return tokenContract.balanceOf(account)
