@@ -1,6 +1,6 @@
 set shell := ["sh", "-c"]
 set windows-shell := ["powershell.exe", "-NoLogo", "-Command"]
-set allow-duplicate-recipes
+#set allow-duplicate-recipe
 set positional-arguments
 set dotenv-load
 set export
@@ -16,5 +16,8 @@ release:
 	" .
 	./hive version
 
+echo:
+    @echo just
 
 setup-geth:
+    echo "Setup geth"
