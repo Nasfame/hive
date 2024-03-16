@@ -55,9 +55,6 @@ function geth-command() {
 
 
 
-
-
-
 # faucet
 
 # run the faucet container
