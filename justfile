@@ -1,3 +1,11 @@
+set shell := ["sh", "-c"]
+set windows-shell := ["powershell.exe", "-NoLogo", "-Command"]
+set allow-duplicate-recipes
+set positional-arguments
+set dotenv-load
+set export
+
+
 default:
     go build
 
@@ -7,3 +15,6 @@ release:
 		-X 'github.com/CoopHive/hive/config.commitSha=$$(git rev-parse HEAD)' \
 	" .
 	./hive version
+
+
+setup-geth:
