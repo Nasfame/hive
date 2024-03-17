@@ -6,7 +6,7 @@ import {Account} from "../utils/types";
 import {HardhatRuntimeEnvironment} from "hardhat/types";
 import {HardhatEthersError} from "@nomicfoundation/hardhat-ethers/internal/errors";
 import {HardhatEthersSigner} from "@nomicfoundation/hardhat-ethers/signers";
-import {Contract} from "ethers";
+import {Contract, getBigInt} from "ethers";
 import {access} from "../typechain-types/@openzeppelin/contracts";
 import hre from "hardhat";
 
@@ -257,6 +257,11 @@ task("drip", "Drip RP, faucet account's balance")
     });
 
 const transferEther = async (acc: Account, amountInWei: bigint, hre: HardhatRuntimeEnvironment, signer: HardhatEthersSigner) => {
+
+    if (amountInWei==getBigInt(0)){
+        console.log("ether invalid : 0")
+        return
+    }
     const tx = {
         to: acc.address,
         value: amountInWei
@@ -264,7 +269,7 @@ const transferEther = async (acc: Account, amountInWei: bigint, hre: HardhatRunt
 
     if (hre.network.name == "titanAI") {
         // const gasLimit = await signer.estimateGas(tx);
-        tx["gasLimit"] = 100000 //+gasLimit //1.5 times or 250K
+        // tx["gasLimit"] = 100000 //+gasLimit //1.5 times or 250K
     }
     const transactionResponse = await signer.sendTransaction(tx);
     const transactionReceipt = await transactionResponse.wait();
