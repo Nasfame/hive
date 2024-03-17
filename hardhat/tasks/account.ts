@@ -315,6 +315,11 @@ const transferHive = async (acc: Account, hre: HardhatRuntimeEnvironment, signer
 
     const amountInHiveWei = hre.ethers.parseUnits(hiveTokenAmount, await tokenContract.decimals());
 
+    if (amountInHiveWei==getBigInt(0)){
+        console.log("hive invalid : 0")
+        return
+    }
+
     const additionalParams = {}
 
     if (hre.network.name == "titanAI") {
