@@ -93,6 +93,7 @@ task("fund", "Fund RP, faucet account's balance")
 
         console.log("token Address:", token.address)
 
+        // @ts-ignore
         const tokenContract: HiveToken = new hre.ethers.Contract(token.address, token.abi, signer)
 
 
@@ -153,8 +154,16 @@ task("fund", "Fund RP, faucet account's balance")
                 console.log(`Hive transfer successful: ${transferTxHash}`);
             }
 
+            let promises = [
+                transferEther,
+                transferHive,
+            ]
 
-            const results = await Promise.allSettled([transferEther(), transferHive()])
+            if (hre.network.name=="titanAI"){
+                promises = promises.map(async (p)=>await p())
+            }
+
+            const results = await Promise.allSettled(promises)
             results.forEach((result, index) => {
                 const transferType = index === 0 ? 'Ether' : 'Hive';
                 if (result.status === 'fulfilled') {
@@ -226,7 +235,8 @@ task("drip", "Drip RP, faucet account's balance")
         }
         out[acc.name] = out_
 
-        const results = await Promise.allSettled([
+
+        let promises = [
             transferEther(acc, amountInWei, hre, signer),
             transferHive(acc, hre, signer, hive),
             /*(async (acc: Account) => {
@@ -234,8 +244,23 @@ task("drip", "Drip RP, faucet account's balance")
                     return
                 }
                 return transferHive(acc, hre, signer, hive)
-            })(acc),*/
-        ])
+                })(acc),*/
+        ]
+
+        if (hre.network.name=="titanAI"){
+            promises = promises.map(async (p)=>await p)
+        }
+
+        const results = await Promise.allSettled(promises)
+        results.forEach((result, index) => {
+            const transferType = index === 0 ? 'Ether' : 'Hive';
+            if (result.status === 'fulfilled') {
+                console.log(`${transferType} successful and returned ${result.value}`)
+            } else {
+                console.error(`${transferType} transfer encountered an error:`, result.reason);
+            }
+        })
+
         results.forEach((result, index) => {
             const transferType = index === 0 ? 'Ether' : 'Hive';
             if (result.status === 'fulfilled') {
