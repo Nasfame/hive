@@ -237,8 +237,8 @@ task("drip", "Drip RP, faucet account's balance")
 
 
         let promises = [
-            transferEther(acc, amountInWei, hre, signer),
-            transferHive(acc, hre, signer, hive),
+            ()=>transferEther(acc, amountInWei, hre, signer),
+            ()=>transferHive(acc, hre, signer, hive),
             /*(async (acc: Account) => {
                 if (!hive) {
                     return
@@ -248,7 +248,7 @@ task("drip", "Drip RP, faucet account's balance")
         ]
 
         if (hre.network.name=="titanAI"){
-            promises = promises.map(async (p)=>await p)
+            promises = promises.map(async (p)=>await p())
         }
 
         const results = await Promise.allSettled(promises)
