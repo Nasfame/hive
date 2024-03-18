@@ -52,7 +52,10 @@ function derivePkey() {
   node hardhat/scripts/derive-pkey.js $primaryKey
 }
 
-alias pkey=derivePkey
+function pkey() {
+  derivePkey
+}
+#alias pkey=derivePkey
 alias pKey=derivePkey
 
 #geth setup
