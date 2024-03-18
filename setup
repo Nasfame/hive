@@ -250,7 +250,7 @@ function fund-services-ether() {
 }
 
 function fund-services-tokens() {
-` #TODO: replace with npx hardhat fund <etherVal> <hiveTokenVal>
+  #TODO: replace with npx hardhat fund <etherVal> <hiveTokenVal>
   hardhat-script scripts/fund-services-tokens.ts
 }
 
@@ -319,3 +319,5 @@ function boot() {
 }
 
 eval "$@"
+
+
