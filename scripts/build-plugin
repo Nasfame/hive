@@ -30,3 +30,5 @@ else
     # If only one argument is passed, execute go-bindings with the provided argument
     eval "build-plugin-$1"
 fi
+
+echo "Build plugin successful"
