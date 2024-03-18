@@ -74,4 +74,17 @@ function go-bindings-docker() {
 }
 
 
-eval "$@"
+if [ "$#" -eq 0 ]; then
+    # If no arguments are passed, execute go-bindings
+    if ! go-bindings; then
+        echo "Error: Failed to execute go-bindings. Try running '$0 docker' instead."
+        exit 1
+    fi
+elif [ "$#" -gt 1 ]; then
+    # If more than one argument is passed, exit with code 2 and provide usage
+    echo "Usage: $0 [optional pass docker to generate using docker]"
+    exit 2
+else
+    # If only one argument is passed, execute go-bindings with the provided argument
+    eval "go-bindings-$1"
+fi
