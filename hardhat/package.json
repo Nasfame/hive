@@ -18,7 +18,7 @@
     "start": "hardhat node",
     "prebuild": "hardhat clean",
     "build": "hardhat compile",
-    "postbuild": "hardhat typechain",
+    "postbuild": "hardhat typechain & (cd .. && go generate)",
     "build1": "export TS_NODE_TRANSPILE_ONLY=1 && echo 'run when hardhat fails due to insufficient types' && hardhat compile",
     "clean": "hardhat clean && rm -rf deployments",
     "hardhat:local": "hardhat node",
