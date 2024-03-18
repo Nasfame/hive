@@ -237,13 +237,13 @@ You can find the frontend code in the `web` directory and the images are in the 
 Now you can run jobs on the stack as follows:
 
 ```bash
-./setup run cowsay:v0.0.1 -i Message="moo"
+./setup run cowsay:v0.1.2 -i Message="Hiro saves the bees"
 ```
 
 If you have a GPU node - you can run SDXL (which needs a GPU):
 
 ```bash
-./setup runsdxl sdxl:v0.2.9 PROMPT="beautiful view of iceland with a record player"
+./setup runsdxl sdxl:v0.3.0 "hiro saves the hive"
 ```
 
 To demonstrate triggering jobs being run from on-chain smart contracts:
