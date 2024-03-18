@@ -88,7 +88,7 @@ function faucet() {
 # hive
 
 function install() {
-    export GOBIN=/usr/local/bin
+    export GOBIN=$(go env GOBIN || echo '/usr/local/bin')
     go install . #installs hive to GOBIN
 }
 
