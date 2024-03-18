@@ -235,7 +235,7 @@ function clean() {
 function clean-deploy() {
   rm -rf hardhat/artifacts
   rm -rf hardhat/cache
-  rm -rf hardhat/deployments/geth
+  rm -rf hardhat/deployments/$NETWORK
 }
 
 eval "$@"
