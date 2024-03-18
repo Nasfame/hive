@@ -85,6 +85,16 @@ function geth() {
 function geth-command() {
   docker exec -i geth geth --exec "$@" attach /data/geth/geth.ipc
 }
+# move ALL the money apart from 1 eth to the given admin account
+# this expects the .env file to already have been created
+function fund-admin() {
+  export ADMIN_ADDRESS=${ADMIN_ADDRESS:-$(pkey $ADMIN_PRIVATE_KEY)}
+  if [[ -z "$ADMIN_ADDRESS" ]]; then
+    echo >&2 "ADMIN_ADDRESS must be set"
+    exit 1
+  fi
+  geth-command "eth.sendTransaction({from: eth.coinbase, to: \"${ADMIN_ADDRESS}\", value: new web3.BigNumber(eth.getBalance(eth.coinbase)).minus(web3.toWei(1, \"ether\"))  })"
+}
 
 # faucet
 
