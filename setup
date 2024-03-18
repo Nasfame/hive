@@ -9,7 +9,7 @@ export DATA_DIRECTORY=${DATA_DIRECTORY:="$DEFAULT_DATA_DIR"}
 export NETWORK=${NETWORK:="geth"}
 export CONFIG_FILE=${CONFIG_FILE:=".env"}
 
-#hardhat
+# hardhat
 function _setupHardhat(){
   cd hardhat
   npm install -g pnpm
@@ -22,7 +22,24 @@ function _setup(){
   make
 }
 
-##hardhat utils
+function compile-contracts() {
+  (
+    set -euo pipefail
+    cd hardhat
+    npx hardhat compile
+  )
+  ./scripts/go-bindings docker
+}
+
+function deploy-contracts() {
+  (
+    set -euo pipefail
+    cd hardhat
+    npx hardhat deploy --network "$NETWORK"
+  )
+}
+
+## hardhat utils
 
 function derivePkey() {
   if [ ! -d "hardhat/node_modules" ]; then
