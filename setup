@@ -124,5 +124,26 @@ function rp() {
     hive rp "$@"
 }
 
-eval "$@"
+function run() {
+    hive run "$@"
+}
 
+
+## hive modules
+
+function runsdxl() {
+  # Check for the number of arguments provided
+  if [ $# -lt 3 ]; then
+    echo "Usage: $0 runsdxl <model> \"<prompt>\""
+    echo "Eg: $0 runsdxl sdxl:v0.3.0 \"hiro is building hive\""
+    exit 1
+  fi
+
+  local model="$1"
+  shift  # Remove the first argument, so "$@" contains only the second one
+  local prompt="$@"
+  go run . run $model -i "Prompt=$prompt"
+}
+
+
+eval "$@"
