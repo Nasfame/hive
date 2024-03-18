@@ -102,12 +102,11 @@ generate-sol-bindings-for-go:
 
 plugin-autoacceptdealer:
 	#this plugin is very platform specific and can only be build in that specific platform
-	./stack build-plugin-autoaccept;
+	./scripts/build-plugin autoaccept
 
 
 plugin-websocket:
-	./stack build-plugin-websocket
-
+	./scripts/build-plugin websocket
 
 cleanup_github:
 	git tag -l | grep -- "-pr[0-9]" | xargs -I {} sh -c 'git tag -d {} & git push origin --delete {} & gh release delete {} --yes'
