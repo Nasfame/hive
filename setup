@@ -104,7 +104,7 @@ function fund-admin() {
 # run the faucet container
 function faucet() {
   source .env
-  eval $(./stack print-contract-env)
+  eval $(./setup print-contract-env)
 #  TODO: contract env
   local privateKey=$(echo -n "$ADMIN_PRIVATE_KEY" | sed 's/^0x//')
   local tokenAddress=$(echo -n "$WEB3_TOKEN_ADDRESS" | sed 's/^0x//')

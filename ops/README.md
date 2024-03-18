@@ -41,13 +41,13 @@ This will print out the various private keys. We need to copy these into the `/a
 Now we can boot geth and it will fund the various accounts:
 
 ```bash
-./stack boot
+./setup boot
 ```
 
 Let's check this:
 
 ```bash
-./stack balances
+./setup balances
 ```
 
 Time to make the following files by copying the respective private key from `/app/hive/.env`

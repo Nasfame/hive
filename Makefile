@@ -97,7 +97,7 @@ install-win:
 
 
 generate-sol-bindings-for-go:
-	./stack go-bindings;
+	./setup go-bindings;
 
 
 plugin-autoacceptdealer:

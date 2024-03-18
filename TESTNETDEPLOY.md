@@ -7,7 +7,7 @@ services. Run the following commands:
 
 ```bash
 (cd hardhat && pnpm install && pnpm gen-env)
-./stack print-env > .env
+./setup print-env > .env
 ```
 
 ## Booting the Stack
@@ -22,7 +22,7 @@ curl -sL https://get.bacalhau.org/install.sh | sudo bash
 # configure this to where you want the ipfs data to be stored
 export BACALHAU_SERVE_IPFS_PATH=/tmp/coophive/data/ipfs
 # run bacalhau as both compute node and requester node
-./stack bacalhau-serve
+./setup bacalhau-serve
 ```
 
 ## Create Seven New Accounts
@@ -58,31 +58,31 @@ Fund the `admin` acccount with .7 ETH.
 Fund the remaining six accounts with .1 ETH each.
 
 ```bash
-./stack fund-services-ether
+./setup fund-services-ether
 ```
 
 Check the balances
 
 ```bash
-./stack balances
+./setup balances
 ```
 
 ## Compile Contracts
 
 ```bash
-./stack compile-contracts
+./setup compile-contracts
 ```
 
 ## Deploy Contracts
 
 ```bash
-./stack deploy-contracts
+./setup deploy-contracts
 ```
 
 ## Fund Services Tokens
 
 ```bash
-./stack fund-services-tokens
+./setup fund-services-tokens
 ```
 
 ### Run Services
@@ -90,37 +90,37 @@ Check the balances
 Run the following commands in separate terminals:
 
 ```bash
-./stack solver
+./setup solver
 ```
 
 Wait for the solver to start when `🟡 SOL solver registered` is logged, and then run:
 
 ```bash
-./stack mediator
+./setup mediator
 ```
 
 If you have a GPU, run the following command in a separate terminal window:
 
 ```bash
-./stack rp --offer-gpu 1
+./setup rp --offer-gpu 1
 ```
 
 Otherwise, if you don't have a GPU:
 
 ```bash
-./stack rp
+./setup rp
 ```
 
 Run Cowsay:
 
 ```bash
-./stack run cowsay:v0.1.2 -i Message="Hiro welcomes you to his Hive"
+./setup run cowsay:v0.1.2 -i Message="Hiro welcomes you to his Hive"
 ```
 
 Run SDXL:
 
 ```bash
-./stack run sdxl:v0.3.0 -i Prompt="hiro saves the hive" -i Seed=16
+./setup run sdxl:v0.3.0 -i Prompt="hiro saves the hive" -i Seed=16
 ```
 
 ### 4 - Run Cowsay On-Chain
@@ -128,9 +128,9 @@ Run SDXL:
 Start the on-chain Job Creator:
 
 ```bash
-./stack jc
+./setup jc
 ```
 
 ```bash
-./stack run-cowsay-onchain
+./setup run-cowsay-onchain
 ```

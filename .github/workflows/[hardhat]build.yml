@@ -124,8 +124,8 @@ jobs:
 
       - name: Generate go bindings
         run: |
-          chmod +x stack
-          ./stack go-bindings
+          chmod +x setup
+          ./setup go-bindings
 
       - name: Git config
         run: |
