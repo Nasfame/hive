@@ -78,9 +78,20 @@ function print-env() {
   (cd hardhat && npm run print-env) | grep export
 }
 
+#issue: $'\r': command not found
+#The error message you're encountering, $'\r': command not found, typically indicates that there's a carriage return character (\r) present in your script, which can cause issues on Unix-like systems.
+#This often happens when a script is written or edited on a Windows system and then transferred to a Unix-like system without converting line endings properly.
+function _fixDappForUnix(){
+  echo "fixing $1 for unix"
+  sudo apt-get install dos2unix
+  dos2unix "$1"
+}
+
 function print-contract-env() {
+  local dappFile="config/dApps/$NETWORK.env"
+  _fixDappForUnix $dappFile
   #hardhat-script scripts/print-contract-env.ts | grep export
-  cat config/dApps/$NETWORK.env | grep HIVE_
+  cat $dappFile | grep HIVE_
 }
 
 function print-local-dev-env() {
@@ -151,9 +162,9 @@ function fund-admin() {
 
 # run the faucet container
 function faucet() {
-#  eval $(./setup print-contract-env)
-  print-contract-env
+  eval "$(print-contract-env)"
   HIVE_TOKEN=${HIVE_TOKEN:-""}
+  ADMIN_PRIVATE_KEY=${ADMIN_PRIVATE_KEY:-""}
   export WEB3_TOKEN_ADDRESS=$HIVE_TOKEN
   # Checking if WEB3_TOKEN_ADDRESS is empty
   if [ -z "$WEB3_TOKEN_ADDRESS" ]; then
