@@ -280,7 +280,8 @@ function clean-deploy() {
   rm -rf hardhat/artifacts
   rm -rf hardhat/cache
   rm -rf hardhat/deployments/$NETWORK
-
+  #clean hive dapp
+}
 
 # boot
 
