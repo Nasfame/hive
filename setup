@@ -9,10 +9,6 @@ export DATA_DIRECTORY=${DATA_DIRECTORY:="$DEFAULT_DATA_DIR"}
 export NETWORK=${NETWORK:="geth"}
 
 
-if [[ -f "$DIR/.env" ]]; then
-  source "$DIR/.env"
-fi
-
 #hardhat
 function _setupHardhat(){
   cd hardhat
@@ -25,8 +21,6 @@ function _setupHardhat(){
 function _setup(){
   make
 }
-
-
 
 ##hardhat utils
 
