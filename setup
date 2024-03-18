@@ -13,14 +13,24 @@ if [[ -f "$DIR/.env" ]]; then
   source "$DIR/.env"
 fi
 
-
-function pkey(){
-  primaryKey="$1"
-#  echo "pkey = $primaryKey"
-  node hardhat/scripts/derive-pkey.js $primaryKey
+function _setupHardhat(){
+  cd hardhat
+  npm install -g pnpm
+  echo "Installing dependencies using pnpm.."
+  pnpm install
 }
 
 
+function derivePkey() {
+  if [ ! -d "hardhat/node_modules" ]; then
+    echo "Node modules not found."
+    exit 2
+    _setupHardhat
+  fi
+
+  primaryKey="$1"
+  node hardhat/scripts/derive-pkey.js $primaryKey
+}
 #geth setup
 
 # run a local geth node in dev mode mounted against a local data directory
@@ -74,3 +84,5 @@ function faucet() {
       --faucet.tokenamount=100 \
       --faucet.minutes=1
 }
+
+eval "$@"
