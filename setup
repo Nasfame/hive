@@ -13,6 +13,7 @@ if [[ -f "$DIR/.env" ]]; then
   source "$DIR/.env"
 fi
 
+#hardhat
 function _setupHardhat(){
   cd hardhat
   npm install -g pnpm
@@ -20,6 +21,9 @@ function _setupHardhat(){
   pnpm install
 }
 
+
+
+##hardhat utils
 
 function derivePkey() {
   if [ ! -d "hardhat/node_modules" ]; then
@@ -31,6 +35,10 @@ function derivePkey() {
   primaryKey="$1"
   node hardhat/scripts/derive-pkey.js $primaryKey
 }
+
+alias pkey=derivePkey
+alias pKey=derivePkey
+
 #geth setup
 
 # run a local geth node in dev mode mounted against a local data directory
