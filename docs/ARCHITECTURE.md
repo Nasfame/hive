@@ -132,7 +132,7 @@ git clone https://github.com/CoopHive/faucet.coophive.network
 
 ```bash
 cd coophive
-./stack install
+./setup install
 ```
 
 This script will:
@@ -154,7 +154,7 @@ and tokens.
 
 ```bash
 cd coophive
-./stack boot
+./setup boot
 ```
 
 This script will:
@@ -173,7 +173,7 @@ This script will:
 Run the following commands in separate terminal windows:
 
 ```bash
-./stack solver
+./setup solver
 ```
 
 #### mediator
@@ -181,7 +181,7 @@ Run the following commands in separate terminal windows:
 Wait for the solver to start when `🟡 SOL solver registered` is logged, and then, in another terminal window, run:
 
 ```bash
-./stack mediator
+./setup mediator
 ```
 
 #### Jobcreator
@@ -189,7 +189,7 @@ Wait for the solver to start when `🟡 SOL solver registered` is logged, and th
 In another terminal window run:
 
 ```bash
-./stack jobcreator
+./setup jobcreator
 ```
 
 #### bacalhau
@@ -200,7 +200,7 @@ In another terminal window run:
 # Set the IPFS data path by exporting the `BACALHAU_SERVE_IPFS_PATH` variable to your desired location
 export BACALHAU_SERVE_IPFS_PATH=/var/lib/hive/data/ipfs
 sudo mkdir -p ${BACALHAU_SERVE_IPFS_PATH}
-./stack bacalhau-serve
+./setup bacalhau-serve
 ```
 
 #### resource-provider
@@ -208,13 +208,13 @@ sudo mkdir -p ${BACALHAU_SERVE_IPFS_PATH}
 If you have a GPU, run the following command in a separate terminal window:
 
 ```bash
-./stack resource-provider --offer-gpu 1
+./setup resource-provider --offer-gpu 1
 ```
 
 Otherwise, if you don't have a GPU:
 
 ```bash
-./stack resource-provider
+./setup resource-provider
 ```
 
 ### run faucet
@@ -222,7 +222,7 @@ Otherwise, if you don't have a GPU:
 To run the faucet container so you can test with other user accounts:
 
 ```bash
-./stack faucet
+./setup faucet
 ```
 
 Once the faucet is running, you can access it using http://localhost:8085
@@ -237,19 +237,19 @@ You can find the frontend code in the `web` directory and the images are in the 
 Now you can run jobs on the stack as follows:
 
 ```bash
-./stack run cowsay:v0.0.1 -i Message="moo"
+./setup run cowsay:v0.0.1 -i Message="moo"
 ```
 
 If you have a GPU node - you can run SDXL (which needs a GPU):
 
 ```bash
-./stack runsdxl sdxl:v0.2.9 PROMPT="beautiful view of iceland with a record player"
+./setup runsdxl sdxl:v0.2.9 PROMPT="beautiful view of iceland with a record player"
 ```
 
 To demonstrate triggering jobs being run from on-chain smart contracts:
 
 ```bash
-./stack run-cowsay-onchain
+./setup run-cowsay-onchain
 ```
 
 ### stop stack
@@ -259,19 +259,19 @@ To stop the various services you have started in the numerous terminal windows, 
 To stop geth:
 
 ```bash
-./stack geth-stop
+./setup geth-stop
 ```
 
 To stop the faucet:
 
 ```bash
-./stack faucet-stop
+./setup faucet-stop
 ```
 
 To reset Geth data, effectively performing a complete restart, use the following command:
 
 ```bash
-./stack clean
+./setup clean
 ```
 
 Please note that after running `clean`, you will need to re-run the `fund-admin` and `fund-services` commands.
@@ -281,7 +281,7 @@ Please note that after running `clean`, you will need to re-run the `fund-admin`
 Run the smart contract unit tests with the following command:
 
 ```bash
-./stack unit-tests
+./setup unit-tests
 ```
 
 ### regenerating go bindings
@@ -290,7 +290,7 @@ Whenever you make changes to the smart contracts, regenerate the Go bindings in 
 running:
 
 ```bash
-./stack compile-contracts
+./setup compile-contracts
 ```
 
 ## production deployment
@@ -321,14 +321,14 @@ Regardless of what blockchain we use, we will need the private keys and associat
 To generate these for a new deployment - you can run the following command:
 
 ```bash
-./stack generate-addresses
+./setup generate-addresses
 ```
 
 This will print the private keys and addresses to stdout so to create a production `prod.env` file, you can do the
 following:
 
 ```bash
-./stack generate-addresses > prod.env
+./setup generate-addresses > prod.env
 ```
 
 If you plan to run geth locally, also add to `prod.env`:
@@ -369,15 +369,15 @@ In a production network - the `JOBCREATOR` will be end users who should get thei
 applies to tokens to pay for jobs).
 
 If you want to run your own geth testnet, you can start geth and transfer funds from the admin account of your local
-geth to the SECURE (non-development) addresses you created by running (after the `./stack generate-addresses > prod.env`
+geth to the SECURE (non-development) addresses you created by running (after the `./setup generate-addresses > prod.env`
 step above):
 
 ```bash
-./stack geth
+./setup geth
 source prod.env
-./stack fund-admin
-./stack deploy
-./stack fund-services-ether
+./setup fund-admin
+./setup deploy
+./setup fund-services-ether
 ```
 
 ### deploy contracts
