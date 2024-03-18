@@ -52,9 +52,6 @@ function geth-command() {
   docker exec -i geth geth --exec "$@" attach /data/geth/geth.ipc
 }
 
-
-
-
 # faucet
 
 # run the faucet container
