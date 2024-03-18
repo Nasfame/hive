@@ -100,7 +100,7 @@ function install() {
     go install . #installs hive to GOBIN
 }
 
-#alias hive='hive "$@"' FIXME:
+#alias hive='hive "$@"' FIXME: it only works for internal
 
 function version() {
     hive version
