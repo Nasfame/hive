@@ -152,8 +152,15 @@ function fund-admin() {
 
 # run the faucet container
 function faucet() {
-  source .env
   eval $(./setup print-contract-env)
+  export WEB3_TOKEN_ADDRESS=$HIVE_TOKEN
+  # Checking if WEB3_TOKEN_ADDRESS is empty
+  if [ -z "$WEB3_TOKEN_ADDRESS" ]; then
+      echo "WEB3_TOKEN_ADDRESS is empty."
+      exit 2
+  else
+      echo "WEB3_TOKEN_ADDRESS is $WEB3_TOKEN_ADDRESS."
+  fi
 #  TODO: contract env
   local privateKey=$(echo -n "$ADMIN_PRIVATE_KEY" | sed 's/^0x//')
   local tokenAddress=$(echo -n "$WEB3_TOKEN_ADDRESS" | sed 's/^0x//')
@@ -164,7 +171,7 @@ function faucet() {
     -e PORT=8080
     -e WEB3_PROVIDER=http://geth:8545 \
     -e PRIVATE_KEY=$privateKey \
-    -e TOKEN_ADDRESS=$WEB3_TOKEN_ADDRESS \
+    -e TOKEN_ADDRESS=$tokenAddress \
     ghcr.io/coophive/faucet:latest \
       --faucet.amount=100 \
       --faucet.tokenamount=100 \
