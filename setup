@@ -153,10 +153,11 @@ function fund-admin() {
 function faucet() {
 #  eval $(./setup print-contract-env)
   print-contract-env
+  HIVE_TOKEN=${HIVE_TOKEN:-""}
   export WEB3_TOKEN_ADDRESS=$HIVE_TOKEN
   # Checking if WEB3_TOKEN_ADDRESS is empty
   if [ -z "$WEB3_TOKEN_ADDRESS" ]; then
-      echo "WEB3_TOKEN_ADDRESS is empty."
+      echo "WEB3_TOKEN_ADDRESS is empty. failed"
       exit 2
   else
       echo "WEB3_TOKEN_ADDRESS is $WEB3_TOKEN_ADDRESS."
