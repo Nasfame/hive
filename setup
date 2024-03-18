@@ -237,10 +237,12 @@ function print-local-dev-env() {
 }
 
 function fund-services-ether() {
+  #TODO: replace with npx hardhat fund
   hardhat-script scripts/fund-services-ether.ts
 }
 
 function fund-services-tokens() {
+` #TODO: replace with npx hardhat fund <etherVal> <hiveTokenVal>
   hardhat-script scripts/fund-services-tokens.ts
 }
 
