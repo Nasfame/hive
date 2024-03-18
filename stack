@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+echo "this script has been migrated to ./setup"
+exit 2
