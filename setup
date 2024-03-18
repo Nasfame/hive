@@ -227,7 +227,7 @@ function hardhat-script() {
   (
     set -euo pipefail
     cd hardhat
-    npx hardhat run "$@"
+    npx hardhat run --network $NETWORK "$@"
   )
 }
 
@@ -237,6 +237,7 @@ function print-env() {
 }
 
 function print-contract-env() {
+  #FIXME: doesn't work
   hardhat-script scripts/print-contract-env.ts | grep export
 }
 
