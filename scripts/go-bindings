@@ -39,6 +39,15 @@ function go-binding() {
 function go-bindings() {
   # check if the hive-solc image exists
   # and only build it if it doesn't
+  if ! command -v solc &>/dev/null; then
+      echo "Error: solc executable not found. try running make"
+      exit 1
+  fi
+
+  if ! command -v abigen &>/dev/null; then
+      echo "Error: abigen executable not found. try running make"
+      exit 1
+  fi
 
   rm -rf pkg/web3/bindings
   mkdir -p pkg/web3/bindings
@@ -72,7 +81,6 @@ function go-bindings-docker() {
 
   echo "Generated all go bindings pkg/contract/bindings/"
 }
-
 
 if [ "$#" -eq 0 ]; then
     # If no arguments are passed, execute go-bindings
