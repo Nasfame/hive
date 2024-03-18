@@ -92,6 +92,21 @@ function faucet() {
       --faucet.minutes=1
 }
 
+# bacalhau [for rp]
+
+
+function bacalhau-serve() {
+  export BACALHAU_SERVE_IPFS_PATH=${BACALHAU_SERVE_IPFS_PATH:-/tmp/coophive/data/ipfs}
+
+  bacalhau serve \
+    --node-type compute,requester \
+    --peer none \
+    --private-internal-ipfs=false \
+    --job-selection-accept-networked \
+    --web-ui --web-ui-port 1080
+}
+
+
 # hive
 
 function install() {
