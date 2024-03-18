@@ -15,7 +15,7 @@ require (
 	github.com/ipfs/go-merkledag v0.11.0
 	github.com/rs/zerolog v1.32.0
 	github.com/spf13/cobra v1.8.0
-	github.com/stretchr/testify v1.8.4
+	github.com/stretchr/testify v1.9.0
 	github.com/theckman/yacspin v0.13.12
 	k8s.io/apimachinery v0.29.2
 )
@@ -166,6 +166,7 @@ require (
 )
 
 retract (
+	v0.16.2
 	v0.11.0-alpha
 	v0.10.7-beta
 
@@ -193,5 +194,6 @@ retract (
 	v0.0.0-pr133
 	v0.0.0-pr129
 	v0.0.0-br-feat-support-faucet
+//	retracted due to panic aurora
 
 )

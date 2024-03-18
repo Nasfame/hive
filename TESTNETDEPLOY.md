@@ -7,7 +7,7 @@ services. Run the following commands:
 
 ```bash
 (cd hardhat && pnpm install && pnpm gen-env)
-./stack print-env > .env
+./setup print-env > .env
 ```
 
 ## Booting the Stack
@@ -18,37 +18,20 @@ To run a Bacalhau node on the same machine as the resource provider, follow thes
 
 ```bash
 # install the latest bacalhau which works with GPUs (https://github.com/bacalhau-project/bacalhau/issues/2858)
-wget https://github.com/bacalhau-project/bacalhau/releases/download/v1.0.3/bacalhau_v1.0.3_linux_amd64.tar.gz
-tar xfv bacalhau_v1.0.3_linux_amd64.tar.gz
-mv bacalhau /usr/local/bin
+curl -sL https://get.bacalhau.org/install.sh | sudo bash
 # configure this to where you want the ipfs data to be stored
 export BACALHAU_SERVE_IPFS_PATH=/tmp/coophive/data/ipfs
 # run bacalhau as both compute node and requester node
-./stack bacalhau-serve
+./setup bacalhau-serve
 ```
 
 ## Create Seven New Accounts
 
 Follow the `README.md` in the `generate_accts` directory to create seven new accounts.
 
-Copy `hardhat/.env.sample` to `.env` and update the following environment variables:
+Copy `hardhat/.env.sample` to `.env` and update the private keys. 
 
-```
-ADMIN_ADDRESS=
-ADMIN_PRIVATE_KEY=
-FAUCET_ADDRESS=
-FAUCET_PRIVATE_KEY=
-SOLVER_ADDRESS=
-SOLVER_PRIVATE_KEY=
-MEDIATOR_ADDRESS=
-MEDIATOR_PRIVATE_KEY=
-RESOURCE_PROVIDER_ADDRESS=
-RESOURCE_PROVIDER_PRIVATE_KEY=
-JOB_CREATOR_ADDRESS=
-JOB_CREATOR_PRIVATE_KEY=
-DIRECTORY_ADDRESS=
-DIRECTORY_PRIVATE_KEY=
-```
+> Hint: you can also use the same private key across all services, but the recommended way is to use different accounts.
 
 ## Create a new Infura Project
 
@@ -66,19 +49,7 @@ export INFURA_KEY=
 
 ## Setup Hardhat
 
-Add NETWORK to the `hardhat/.env` file:
-
-```
-NETWORK=sepolia
-```
-
-Update the following values in the `.env` file. Replace `<INFURA_KEY>` with the Infura key from above:
-
-```
-export NETWORK=sepolia
-export WEB3_RPC_URL=wss://sepolia.infura.io/ws/v3/<INFURA_KEY>
-export WEB3_CHAIN_ID=11155111
-```
+Add the NETWORK to the `hardhat/hardhat.config.ts`.
 
 ## Fund the Seven New Accounts
 
@@ -87,31 +58,31 @@ Fund the `admin` acccount with .7 ETH.
 Fund the remaining six accounts with .1 ETH each.
 
 ```bash
-./stack fund-services-ether
+./setup fund-services-ether
 ```
 
 Check the balances
 
 ```bash
-./stack balances
+./setup balances
 ```
 
 ## Compile Contracts
 
 ```bash
-./stack compile-contracts
+./setup compile-contracts
 ```
 
 ## Deploy Contracts
 
 ```bash
-./stack deploy-contracts
+./setup deploy-contracts
 ```
 
 ## Fund Services Tokens
 
 ```bash
-./stack fund-services-tokens
+./setup fund-services-tokens
 ```
 
 ### Run Services
@@ -119,37 +90,37 @@ Check the balances
 Run the following commands in separate terminals:
 
 ```bash
-./stack solver
+./setup solver
 ```
 
 Wait for the solver to start when `🟡 SOL solver registered` is logged, and then run:
 
 ```bash
-./stack mediator
+./setup mediator
 ```
 
 If you have a GPU, run the following command in a separate terminal window:
 
 ```bash
-./stack resource-provider --offer-gpu 1
+./setup rp --offer-gpu 1
 ```
 
 Otherwise, if you don't have a GPU:
 
 ```bash
-./stack resource-provider
+./setup rp
 ```
 
 Run Cowsay:
 
 ```bash
-./stack run cowsay:v0.0.1 -i Message="moo"
+./setup run cowsay:v0.1.2 -i Message="Hiro welcomes you to his Hive"
 ```
 
 Run SDXL:
 
 ```bash
-./stack runsdxl sdxl:v0.1.0 PROMPT="beautiful view of iceland with a record player"
+./setup run sdxl:v0.3.0 -i Prompt="hiro saves the hive" -i Seed=16
 ```
 
 ### 4 - Run Cowsay On-Chain
@@ -157,9 +128,9 @@ Run SDXL:
 Start the on-chain Job Creator:
 
 ```bash
-./stack jobcreator
+./setup jc
 ```
 
 ```bash
-./stack run-cowsay-onchain
+./setup run-cowsay-onchain
 ```

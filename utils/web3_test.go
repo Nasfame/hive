@@ -2,6 +2,7 @@ package utils_test
 
 import (
 	"errors"
+	"fmt"
 	"testing"
 
 	"github.com/ethereum/go-ethereum/core"
@@ -15,6 +16,7 @@ func TestCheckInSufficientFunds(t *testing.T) {
 	tests := []struct {
 		name        string
 		err         error
+		errString   string
 		faucetUrl   string
 		expectPanic bool
 	}{
@@ -58,10 +60,16 @@ func TestCheckInSufficientFunds(t *testing.T) {
 			faucetUrl:   faucetUrl,
 			expectPanic: true,
 		},
+		{
+			name:        "Test for calibration insufficient funds",
+			err:         fmt.Errorf("actor not found"),
+			expectPanic: true,
+		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			tt := tt
 			defer func() {
 				r := recover()
 				if (r != nil) != tt.expectPanic {
@@ -69,7 +77,56 @@ func TestCheckInSufficientFunds(t *testing.T) {
 				}
 			}()
 
-			utils.CheckInSufficientFunds(tt.err, tt.faucetUrl)
+			utils.PanicOnInsufficientFunds(tt.err, tt.faucetUrl)
+		})
+	}
+}
+
+func TestPanicOnHTTPUrl(t *testing.T) {
+	type TestCase struct {
+		name        string
+		url         string
+		expectPanic bool
+	}
+	tests := []TestCase{
+		{
+			name:        "Test for empty URL",
+			url:         "",
+			expectPanic: true,
+		},
+		{
+			name:        "Test for non-empty HTTP URL",
+			url:         "http://example.com",
+			expectPanic: true,
+		},
+		{
+			name:        "Test for non-empty HTTPS URL",
+			url:         "https://example.com",
+			expectPanic: true,
+		},
+		{
+			name:        "Test for non-empty WebSocket URL",
+			url:         "ws://example.com",
+			expectPanic: false,
+		},
+		{
+			name:        "Test for non-empty Secure WebSocket URL",
+			url:         "wss://example.com",
+			expectPanic: false,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			defer func(tt TestCase) {
+				r := recover()
+				if (r != nil) != tt.expectPanic {
+					t.Errorf("Unexpected panic: %v", r)
+					t.Errorf("Test case ID: %s", tt.name)
+				}
+			}(tt)
+
+			utils.PanicOnHTTPUrl(tt.url)
 		})
 	}
 }

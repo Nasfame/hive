@@ -39,6 +39,10 @@ func AddServerCliFlags(cmd *cobra.Command, serverOptions *http.ServerOptions) {
 }
 
 func CheckServerOptions(options http.ServerOptions) error {
+	if options.Host == "" {
+		return fmt.Errorf("SERVER_HOST is required")
+	}
+
 	if options.URL == "" {
 		return fmt.Errorf("SERVER_URL is required")
 	}

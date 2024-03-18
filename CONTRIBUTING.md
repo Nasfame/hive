@@ -12,8 +12,8 @@ First, install the required Node.js modules and generate a local `.env` file con
 services. Run the following commands:
 
 ```bash
-(cd hardhat && yarn install)
-./stack print-env > .env
+(cd hardhat && pnpm install)
+./setup print-env > .env
 ```
 
 ## Booting the Stack
@@ -23,15 +23,12 @@ services. Run the following commands:
 To run a Bacalhau node on the same machine as the resource provider, follow these steps:
 
 ```bash
-# Install the latest Bacalhau release which works with GPUs (https://github.com/bacalhau-project/bacalhau/issues/2858)
-wget https://github.com/bacalhau-project/bacalhau/releases/download/v1.0.3/bacalhau_v1.0.3_linux_amd64.tar.gz
-# Extract the downloaded archive and move the `bacalhau` binary to `/usr/local/bin`
-tar xfv bacalhau_v1.0.3_linux_amd64.tar.gz
-mv bacalhau /usr/local/bin
+curl -sL https://get.bacalhau.org/install.sh | sudo bash
 # Set the IPFS data path by exporting the `BACALHAU_SERVE_IPFS_PATH` variable to your desired location
 export BACALHAU_SERVE_IPFS_PATH=/tmp/hive/data/ipfs
+mdir -p $BACALHAU_SERVE_IPFS_PATH
 # Run Bacalhau as both a compute node and a requester node
-bacalhau serve --node-type compute,requester --peer none --private-internal-job-ipfs=false --job-selection-accept-networked
+bacalhau serve --node-type compute,requester --peer none --private-internal-ipfs=false --job-selection-accept-networked --web-ui --web-ui-port 1080
 ```
 
 ### 2 - CoopHive
@@ -39,7 +36,7 @@ bacalhau serve --node-type compute,requester --peer none --private-internal-job-
 To initiate the boot sequence for CoopHive, run the following command:
 
 ```bash
-./stack boot
+./setup boot
 ```
 
 This command performs the following four phases within the boot sequence:
@@ -49,10 +46,10 @@ This command performs the following four phases within the boot sequence:
 During this phase, the following tasks are executed:
 
 ```bash
-./stack geth
-./stack fund-admin
-./stack fund-services-ether
-./stack balances
+./setup geth
+./setup fund-admin
+./setup fund-services-ether
+./setup balances
 ```
 
 These commands start Geth, allocates eth to the admin, faucet, solver, mediator, resource_provider, job_creator, and
@@ -61,7 +58,7 @@ directory accounts.
 #### 2.2 - Compile Contracts
 
 ```bash
-./stack compile-contracts
+./setup compile-contracts
 ```
 
 This compiles the smart contracts and generates Go bindings in `pkg/contract/bindings/contracts`.
@@ -69,7 +66,7 @@ This compiles the smart contracts and generates Go bindings in `pkg/contract/bin
 #### 2.3 - Deploy Contracts
 
 ```bash
-./stack deploy-contracts
+./setup deploy-contracts
 ```
 
 This deploys the smart contracts. Note that services will not have any tokens at this point.
@@ -77,8 +74,8 @@ This deploys the smart contracts. Note that services will not have any tokens at
 #### 2.4 - Fund Tokens
 
 ```bash
-./stack fund-services-tokens
-./stack balances
+./setup fund-services-tokens
+./setup balances
 ```
 
 This funds the services with tokens and prints the balances.
@@ -88,37 +85,37 @@ This funds the services with tokens and prints the balances.
 Run the following commands in separate terminal windows:
 
 ```bash
-./stack solver
+./setup solver
 ```
 
 Wait for the solver to start when `🟡 SOL solver registered` is logged, and then run:
 
 ```bash
-./stack mediator
+./setup mediator
 ```
 
 If you have a GPU, run the following command in a separate terminal window:
 
 ```bash
-./stack resource-provider --offer-gpu 1
+./setup resource-provider --offer-gpu 1
 ```
 
 Otherwise, if you don't have a GPU:
 
 ```bash
-./stack resource-provider
+./setup resource-provider
 ```
 
 Run Cowsay:
 
 ```bash
-./stack run cowsay:v0.0.1 -i Message="moo"
+./setup run cowsay:v0.0.1 -i Message="moo"
 ```
 
 Run SDXL:
 
 ```bash
-./stack runsdxl sdxl:v0.1.0 PROMPT="beautiful view of iceland with a record player"
+./setup runsdxl sdxl:v0.1.0 PROMPT="beautiful view of iceland with a record player"
 ```
 
 ### 4 - Run Cowsay On-Chain
@@ -126,11 +123,11 @@ Run SDXL:
 Start the on-chain Job Creator:
 
 ```bash
-./stack jobcreator
+./setup jobcreator
 ```
 
 ```bash
-./stack run-cowsay-onchain
+./setup run-cowsay-onchain
 ```
 
 ## Stopping the Stack
@@ -138,13 +135,13 @@ Start the on-chain Job Creator:
 To stop Geth at any time, use the following command:
 
 ```bash
-./stack geth-stop
+./setup geth-stop
 ```
 
 To reset Geth data, effectively performing a complete restart, use the following command:
 
 ```bash
-./stack clean
+./setup clean
 ```
 
 Please note that after running `clean`, you will need to re-run the `fund-admin` and `fund-services` commands.
@@ -154,7 +151,7 @@ Please note that after running `clean`, you will need to re-run the `fund-admin`
 Run the smart contract unit tests with the following command:
 
 ```bash
-./stack unit-tests
+./setup unit-tests
 ```
 
 ## Regenerating Go Bindings
@@ -163,7 +160,7 @@ Whenever you make changes to the smart contracts, regenerate the Go bindings in 
 running:
 
 ```bash
-./stack compile-contracts
+./setup compile-contracts
 ```
 
 ## Troubleshooting

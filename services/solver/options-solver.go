@@ -1,12 +1,18 @@
 package solver
 
 import (
+	"fmt"
+	"strings"
+
+	"github.com/rs/zerolog/log"
 	"github.com/sirupsen/logrus"
 
 	"github.com/CoopHive/hive/enums"
+	"github.com/CoopHive/hive/pkg/http"
 	options2 "github.com/CoopHive/hive/pkg/options"
 	"github.com/CoopHive/hive/pkg/system"
 	"github.com/CoopHive/hive/services/solver/solver"
+	"github.com/CoopHive/hive/utils"
 
 	"github.com/spf13/cobra"
 )
@@ -43,6 +49,22 @@ func ProcessSolverOptions(options solver.SolverOptions) (solver.SolverOptions, e
 		logrus.Debugf("failed to process web3 options %v", err)
 		return options, err
 	}
+
 	options.Web3 = newWeb3Options
+	ProcessServerOptions(&options.Server)
 	return options, CheckSolverOptions(options)
+}
+
+func ProcessServerOptions(options *http.ServerOptions) {
+	u := options.URL
+
+	if u == "" || strings.Contains(u, "curl") {
+		ip := utils.GetPublicIP()
+		if ip != "" {
+			u = fmt.Sprintf("http://%s:%d", ip, options.Port)
+			log.Info().Msgf("setting %s to public ip:%s", enums.SERVER_URL, u)
+			options.URL = u
+		}
+	}
+
 }

@@ -27,7 +27,11 @@ func (s *JobCreatorEventChannels) Start(
 	sdk *Web3SDK,
 	ctx context.Context,
 	cm *system.CleanupManager,
-) error {
+) (err error) {
+	defer func() {
+		eventErrorHandler(err)
+	}()
+
 	blockNumber, err := sdk.getBlockNumber()
 	if err != nil {
 		return err
@@ -47,7 +51,7 @@ func (s *JobCreatorEventChannels) Start(
 
 	jobAddedSub, err = connectJobAddedSub()
 	if err != nil {
-		log.Fatal().Err(err).Msgf("subscribe to job request failed")
+		log.Error().Err(err).Msgf("subscribe to job request failed")
 		return err
 	}
 	go func() {

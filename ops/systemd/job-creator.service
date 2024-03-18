@@ -8,8 +8,6 @@ Environment="LOG_TYPE=json"
 Environment="LOG_LEVEL=debug"
 Environment="HOME=/app/coophive"
 EnvironmentFile=/app/coophive/job-creator.env
-Environment="SERVICE_SOLVER=0x823531B7c7843D8c3821B19D70cbFb6173b9Cb02"
-Environment="SERVICE_MEDIATORS=0x823531B7c7843D8c3821B19D70cbFb6173b9Cb02"
 Restart=always
 RestartSec=5s
 ExecStart=/usr/bin/hive jobcreator

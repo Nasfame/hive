@@ -7,9 +7,7 @@ Wants=network-online.target systemd-networkd-wait-online.service
 Environment="LOG_TYPE=json"
 Environment="LOG_LEVEL=debug"
 Environment="HOME=/app/coophive"
-EnvironmentFile=/app/coophive/solver.env
-Environment="SERVER_PORT=80"
-Environment="SERVER_URL=http://testnet.co-ophive.network"
+EnvironmentFile=/app/coophive/.env
 Restart=always
 RestartSec=5s
 ExecStart=/usr/bin/hive solver

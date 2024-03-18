@@ -12,18 +12,20 @@ import (
 
 const DEFAULT_DEALER = "std-autoaccept"
 
-const defaultNetwork = "aurora"
+const defaultNetwork = enums.SEPOLIA
 
 const deprecatedNetwork = "aurora"
 
 const AppDirSymbol = "$APP_DIR"
+
+const networkSymbol = "$NETWORK"
 
 var processAppDir = func() string {
 
 	appDir := buildConfig[enums.APP_NAME].defaultVal
 
 	if strings.TrimSpace(appDir) == "" {
-		log.Fatal("invalid app dir")
+		panic("invalid app dir")
 	}
 
 	appDir = "." + strings.ToLower(appDir) // capital dirs are treated differently in unix systems
@@ -34,7 +36,7 @@ var processAppDir = func() string {
 		log.Fatal("failed to find user home dir with error ", err)
 	}
 
-	return path.Join(homeDir, appDir)
+	return path.Join(homeDir, appDir, networkSymbol)
 }
 
 var appConfig = configMap[string]{
@@ -79,7 +81,7 @@ var appConfig = configMap[string]{
 		"",
 	},
 	enums.NETWORK: {
-		fmt.Sprintf("supported networks:%v. aurora is deprecated", NETWORKS),
+		fmt.Sprintf("supported networks:%v. %v is deprecated", NETWORKS, deprecatedNetwork),
 		defaultNetwork,
 	},
 
@@ -87,8 +89,24 @@ var appConfig = configMap[string]{
 		"rpc url",
 		"",
 	},
+	enums.HIVE_RPC_URL: {
+		"hive rpc url (overrides web3_rpc_url)",
+		"",
+	},
+	enums.HIVE_RPC_WS: {
+		"hive rpc ws url (overrides web3_rpc_url)",
+		"",
+	},
+	enums.HIVE_RPC_HTTP: {
+		"hive rpc http url (overrides web3_rpc_url)",
+		"",
+	},
 	enums.WEB3_CHAIN_ID: {
 		"chain id of the network",
+		"",
+	},
+	enums.HIVE_CHAIN_ID: {
+		"chain id of the network (overrides hive chainId)",
 		"",
 	},
 	enums.WEB3_PRIVATE_KEY: {
@@ -141,15 +159,22 @@ var appConfig = configMap[string]{
 		"bacalhau host",
 		"localhost",
 	},
-	enums.BACALHAU_HOME: {
+	enums.BACALHAU_REPO: {
 		"bacalhau home",
-		"",
+		".bacalhau",
 	},
 	enums.BACALHAU_ENV: {
 		"bacalhau env", // bacalhau env
 		"",
 	},
-
+	enums.BACALHAU_SERVE_IPFS_PATH: {
+		"bacalhau get uses ipfs to load the output cid",
+		"/tmp/ipfs",
+	},
+	/*	enums.BACALHAU_ENVIRONMENT: {
+		"bacalhau environment",
+		"production",
+	},*/
 	/*RP*/
 
 	enums.PRICING_MODE: {

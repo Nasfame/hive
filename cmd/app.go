@@ -1,8 +1,6 @@
 package cmd
 
 import (
-	"log"
-
 	"go.uber.org/fx"
 
 	"github.com/CoopHive/hive/config"
@@ -10,9 +8,9 @@ import (
 	"github.com/CoopHive/hive/services"
 )
 
-func Hive() {
+func Hive() (app *fx.App) {
 
-	app := fx.New(
+	app = fx.New(
 		config.Module,
 		internal.Module,
 		services.Module,
@@ -21,7 +19,5 @@ func Hive() {
 		// fx.StopTimeout(1),
 	)
 	app.Run()
-	<-app.Done()
-	log.Println("exiting gracefully")
-
+	return app
 }

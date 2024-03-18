@@ -50,3 +50,13 @@ hardhat/.deps/
 logs/
 
 job-*/
+
+notepad.txt
+
+*.exe
+hive.exe
+
+repos/
+
+test/noop-results/*
+test/downloaded-files/*

@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+
+
+function build-plugin-autoaccept(){
+  APP_DIR="${APP_DIR:="./data"}"
+  PLUGIN_DIR="${APP_DIR}/plugins"
+  EXT_DIR="${PLUGIN_DIR}/autoaccept.so"
+  go build -buildmode=plugin -o "${EXT_DIR}" ./exp/dealer/autoacceptDealer/main.go
+}
+
+
+function build-plugin-websocket(){
+  APP_DIR="${APP_DIR:="./data"}"
+  PLUGIN_DIR="${APP_DIR}/plugins"
+  EXT_DIR="${PLUGIN_DIR}/websocket.so"
+  go build -buildmode=plugin -o "${EXT_DIR}" ./exp/dealer/websocketDealer/main.go
+}
+
+if [ "$#" -eq 0 ]; then
+    # If no arguments are passed, execute go-bindings
+    if ! build-plugin-autoaccept; then
+        echo "Error: Failed to execute default recipe"
+        exit 1
+    fi
+elif [ "$#" -gt 1 ]; then
+    # If more than one argument is passed, exit with code 2 and provide usage
+    echo "Usage: $0 [autoaccept, websockets]"
+    exit 2
+else
+    # If only one argument is passed, execute go-bindings with the provided argument
+    eval "build-plugin-$1"
+fi
+
+echo "Build plugin successful"

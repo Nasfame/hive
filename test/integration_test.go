@@ -1,7 +1,13 @@
 package in_test
 
 import (
+	"context"
 	"fmt"
+	"github.com/CoopHive/hive/enums"
+	"github.com/CoopHive/hive/internal"
+	"github.com/CoopHive/hive/services"
+	"go.uber.org/fx"
+	"go.uber.org/fx/fxtest"
 	"os"
 	"testing"
 	"time"
@@ -31,8 +37,20 @@ type testOptions struct {
 	executor         noop.NoopExecutorOptions
 }
 
+var dealMaker *dealmaker.Service
+
+func getWeb3Options() (w *web3.Web3Options) {
+	conf := config.Conf
+	w = &web3.Web3Options{
+		RpcURL: conf.GetString(enums.HIVE_RPC_WS),
+	}
+
+	return
+}
 func getSolver(t *testing.T, options testOptions) (*solver2.Solver, error) {
 	solverOptions := solver.NewSolverOptions()
+
+	//solverOptions.Web3 = *getWeb3Options()
 	solverOptions.Web3.PrivateKey = os.Getenv("SOLVER_PRIVATE_KEY")
 	solverOptions.Server.Port = 8080
 	solverOptions.Server.URL = "http://localhost:8080"
@@ -61,7 +79,7 @@ func getResourceProvider(
 	options testOptions,
 ) (*resourceprovider.ResourceProvider, error) {
 	resourceProviderOptions := resourceprovider.NewResourceProviderOptions()
-	resourceProviderOptions.Web3.PrivateKey = os.Getenv("RESOURCE_PROVIDER_PRIVATE_KEY")
+	resourceProviderOptions.Web3.PrivateKey = os.Getenv("RP_PRIVATE_KEY")
 	if resourceProviderOptions.Web3.PrivateKey == "" {
 		return nil, fmt.Errorf("RESOURCE_PROVIDER_PRIVATE_KEY is not defined")
 	}
@@ -81,7 +99,7 @@ func getResourceProvider(
 	}
 
 	// FIXME:pass dealmaker service
-	return resourceprovider.NewResourceProvider(resourceProviderOptions, web3SDK, executor, nil)
+	return resourceprovider.NewResourceProvider(resourceProviderOptions, web3SDK, executor, dealMaker)
 }
 
 func getMediator(
@@ -122,7 +140,7 @@ func getJobCreatorOptions(options testOptions) (jobCreatorService.JobCreatorOpti
 	}
 	ret, err := jobcreator.ProcessJobCreatorOptions(jobCreatorOptions, []string{
 		// this should point to the shortcut
-		"cowsay:v0.0.2",
+		"cowsay:v0.1.2",
 	})
 
 	if err != nil {
@@ -169,9 +187,7 @@ func testStackWithOptions(
 		return nil, err
 	}
 
-	dealerService := &dealmaker.Service{}
-
-	result, err := jobCreatorService.RunJob(commandCtx, jobCreatorOptions, dealerService, func(evOffer dto.JobOfferContainer) {
+	result, err := jobCreatorService.RunJob(commandCtx, jobCreatorOptions, dealMaker, func(evOffer dto.JobOfferContainer) {
 
 	})
 	if err != nil {
@@ -184,6 +200,8 @@ func testStackWithOptions(
 func TestNoModeration(t *testing.T) {
 	commandCtx := system.NewTestingContext()
 	defer commandCtx.Cleanup()
+
+	initApp(t)
 
 	message := "hello apples this is a message"
 
@@ -209,5 +227,51 @@ func init() {
 	if err != nil {
 		log.Fatal().Str("err", err.Error()).Msgf(".env not found")
 	}
+	//
+	//app := cmd.Hive()
+	//
+	//go func() {
+	//	<-app.Done()
+	//	log.Info().Str("app", "exiting gracefully")
+	//}()
 
+}
+
+var ctx = context.Background()
+
+func initApp(t *testing.T) {
+	type In struct {
+		DealmakerService *dealmaker.Service `name:"dealmaker"`
+	}
+
+	app := fxtest.New(t,
+		config.Module,
+		internal.Module,
+		services.ModuleWithoutRoot,
+		fx.Invoke(func(d *dealmaker.Service) {
+			dealMaker = d
+		}),
+		//fx.Provide(func(i *In) {
+		//	dealMaker = i.DealmakerService
+		//}),
+	)
+
+	// Start the application.
+	// ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
+	// defer cancel()
+	// if err := app.Start(ctx); err != nil {
+	// 	t.Fatal(err)
+	// }
+
+	app.RequireStart()
+
+	go func() {
+		<-app.Done()
+		t.Log("exiting app gracefully")
+	}()
+
+	//// Stop the application.
+	//if err := app.Stop(ctx); err != nil {
+	//	t.Fatal(err)
+	//}
 }

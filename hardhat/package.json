@@ -7,12 +7,19 @@
   "author": "Hiro <laciferin@gmail.com>",
   "scripts": {
     "setup": "remixd -i slither",
+    "print-env": "ts-node scripts/generate-addresses.ts",
     "gen-env": "ts-node scripts/generate-addresses.ts > .env.gen",
+    "print:env": "ts-node scripts/generate-addresses.ts",
+    "print:contract": "hardhat run scripts/print-contract-env.ts --network ",
+    "pkey": "node scripts/derive-pkey.js ",
     "postinstall": "npm run setup",
     "dev": "remixd",
     "style": "prettier -w .",
     "start": "hardhat node",
+    "prebuild": "hardhat clean",
     "build": "hardhat compile",
+    "postbuild": "hardhat typechain & (cd .. && go generate)",
+    "build1": "export TS_NODE_TRANSPILE_ONLY=1 && echo 'run when hardhat fails due to insufficient types' && hardhat compile",
     "clean": "hardhat clean && rm -rf deployments",
     "hardhat:local": "hardhat node",
     "pkey": "hardhat pkey ",
@@ -35,7 +42,9 @@
     "drip": "hardhat drip --network ",
     "dapp": "hardhat dapp --network ",
     "coophive": "cp -r deployments/coophive deployments1/coophive && rm -rf deployments/coophive && npm run deploy coophive",
-    "calibration": "cp -r deployments/calibration deployments1/calibration && rm -rf deployments/calibration && npm run deploy calibration"
+    "calibration": "cp -r deployments/calibration deployments1/calibration && rm -rf deployments/calibration && npm run deploy calibration",
+    "bal": "hardhat bal --network ",
+    "balance": "npm run bal"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-chai-matchers": "^2.0.4",

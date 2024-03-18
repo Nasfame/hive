@@ -2,8 +2,12 @@ package main
 
 import (
 	"github.com/CoopHive/hive/cmd"
+	"log"
 )
 
 func main() {
-	cmd.Hive()
+	app := cmd.Hive()
+	<-app.Done()
+
+	log.Println("exiting gracefully")
 }

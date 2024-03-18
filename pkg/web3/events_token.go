@@ -28,7 +28,11 @@ func (t *TokenEventChannels) Start(
 	sdk *Web3SDK,
 	ctx context.Context,
 	cm *system.CleanupManager,
-) error {
+) (err error) {
+	defer func() {
+		eventErrorHandler(err)
+	}()
+
 	blockNumber, err := sdk.getBlockNumber()
 	if err != nil {
 		return err
@@ -50,7 +54,7 @@ func (t *TokenEventChannels) Start(
 
 	transferSub, err = connectTransferSub()
 	if err != nil {
-		log.Fatal().Err(err).Msgf("subscribe to token transfers failed")
+		log.Error().Err(err).Msgf("subscribe to token transfers failed")
 		return err
 	}
 

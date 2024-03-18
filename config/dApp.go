@@ -39,7 +39,13 @@ func getNetworks() (networks []string) {
 
 func loadDApp(network string) (envMap map[string]string, err error) {
 
-	dApp, _ := dApps.ReadFile(path.Join(dAppFolderName, fmt.Sprintf("%s.env", network)))
+	networkFile := path.Join(dAppFolderName, fmt.Sprintf("%s.env", network))
+
+	dApp, err := dApps.ReadFile(networkFile)
+
+	if err != nil {
+		panic(err)
+	}
 
 	envMap, err = godotenv.UnmarshalBytes(dApp)
 

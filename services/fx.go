@@ -23,3 +23,13 @@ var Module = fx.Options(
 	solver.Module,
 	root.Module,
 )
+
+var ModuleWithoutRoot = fx.Options(
+	dealmaker.Module,
+	version.Module,
+	run.Module,
+	jobcreator.Module,
+	resourceprovider.Module,
+	mediator.Module,
+	solver.Module,
+)

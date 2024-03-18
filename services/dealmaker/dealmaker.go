@@ -40,7 +40,7 @@ func (d *Service) DealMatched(dealID string) {
 			panic("dealer panic")
 		}
 	}()
-	if ok, _ := d.dealsMatched[dealID]; ok {
+	if _, matched := d.dealsMatched[dealID]; matched {
 		return
 	}
 	d.dealer.DealMatched(dealID)
@@ -91,7 +91,7 @@ RECV_AGREE_DEALS:
 
 				if err := f(dealID); err == nil {
 					doneDeals[dealID] = true
-					d.dealsMatched[dealID] = true
+					// d.dealsMatched[dealID] = true
 					d.Log.Debugf("[dealer] Deal %s agreed tx", dealID)
 				} else {
 					d.Log.Errorf("[dealer] agreedDeal-%s agree failed due to %v", dealID, err)

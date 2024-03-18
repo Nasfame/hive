@@ -27,7 +27,11 @@ func (s *StorageEventChannels) Start(
 	sdk *Web3SDK,
 	ctx context.Context,
 	cm *system.CleanupManager,
-) error {
+) (err error) {
+	defer func() {
+		eventErrorHandler(err)
+	}()
+
 	blockNumber, err := sdk.getBlockNumber()
 	if err != nil {
 		return err
@@ -47,7 +51,7 @@ func (s *StorageEventChannels) Start(
 
 	dealStateChangeSub, err = connectDealStateChangeSub()
 	if err != nil {
-		log.Fatal().Err(err).Msgf("subscribe to dealStateChanges failed")
+		log.Error().Err(err).Msgf("subscribe to dealStateChanges failed")
 		return err
 	}
 

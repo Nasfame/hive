@@ -30,7 +30,8 @@ type in struct {
 
 type out struct {
 	fx.Out
-	DealerMaker *Service `name:"dealmaker"`
+	DealerMaker   *Service `name:"dealmaker"`
+	DealerGeneral *Service
 }
 
 func newServices(i in) (o out) {
@@ -52,7 +53,8 @@ func newServices(i in) (o out) {
 	}
 
 	o = out{
-		DealerMaker: s,
+		DealerMaker:   s,
+		DealerGeneral: s,
 	}
 
 	return

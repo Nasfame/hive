@@ -73,11 +73,18 @@ const (
 )
 
 const (
-	WEB3_RPC_URL     = "WEB3_RPC_URL"
+	WEB3_RPC_URL = "WEB3_RPC_URL"
+	HIVE_RPC_URL = "HIVE_RPC_URL" // TODO: add to web3 options, discuss with luke whether to backward support
+
+	HIVE_RPC_WS   = "HIVE_RPC_WS"
+	HIVE_RPC_HTTP = "HIVE_RPC_HTTP"
+
 	WEB3_PRIVATE_KEY = "web3_private_key"
 
 	HIVE_PRIVATE_KEY = "HIVE_PRIVATE_KEY"
 	WEB3_CHAIN_ID    = "WEB3_CHAIN_ID"
+
+	HIVE_CHAIN_ID = "HIVE_CHAIN_ID"
 )
 
 const (
@@ -108,8 +115,16 @@ const (
 )
 const (
 	BACALHAU_API_HOST = "BACALHAU_API_HOST"
-	BACALHAU_HOME     = "BACALHAU_HOME"
-	BACALHAU_ENV      = "BACALHAU_ENV"
+
+	// BACALHAU_REPO: set this when u r setting up multiple bacalhau clusters
+	// in the same machine. For just a single machine just set the bacalhau repo.
+	BACALHAU_REPO = "BACALHAU_REPO"
+	BACALHAU_ENV  = "BACALHAU_ENV"
+
+	// BACALHAU_ENVIRONMENT = "BACALHAU_ENVIRONMENT"
+
+	// need to ensure this path is created
+	BACALHAU_SERVE_IPFS_PATH = "BACALHAU_SERVE_IPFS_PATH"
 )
 
 const PRICING_MODE = "PRICING_MODE"

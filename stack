@@ -18,6 +18,12 @@ fi
 ############################################################################
 ############################################################################
 
+function pkey(){
+  primaryKey="$1"
+#  echo "pkey = $primaryKey"
+  node hardhat/scripts/derive-pkey.js $primaryKey
+}
+
 # run a local geth node in dev mode mounted against a local data directory
 function geth() {
   docker network ls | grep coophive || docker network create coophive
@@ -57,13 +63,14 @@ function geth-command() {
 function faucet() {
   source .env
   eval $(./stack print-contract-env)
+#  TODO: contract env
   local privateKey=$(echo -n "$ADMIN_PRIVATE_KEY" | sed 's/^0x//')
   local tokenAddress=$(echo -n "$WEB3_TOKEN_ADDRESS" | sed 's/^0x//')
-#  TODO: faucet needs to be build; publish to ghcr then lets talk
   docker run -d \
     --name faucet \
     -p 8080:8080 \
     --network coophive \
+    -e PORT=8080
     -e WEB3_PROVIDER=http://geth:8545 \
     -e PRIVATE_KEY=$privateKey \
     -e TOKEN_ADDRESS=$WEB3_TOKEN_ADDRESS \
@@ -286,7 +293,7 @@ function hardhat-script() {
 
 # print the env settings for the various accounts and private keys
 function print-env() {
-  hardhat-script scripts/print-env.ts | grep export
+  (cd hardhat && npm run print-env) | grep export
 }
 
 function print-contract-env() {

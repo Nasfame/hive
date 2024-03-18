@@ -27,7 +27,7 @@ sudo chown $USER app
 cd /app/
 git clone https://github.com/CoopHive/hive
 cd hive
-(cd hardhat && yarn install)
+(cd hardhat && pnpm install)
 ```
 
 Then we create the production keys:
@@ -41,21 +41,21 @@ This will print out the various private keys. We need to copy these into the `/a
 Now we can boot geth and it will fund the various accounts:
 
 ```bash
-./stack boot
+./setup boot
 ```
 
 Let's check this:
 
 ```bash
-./stack balances
+./setup balances
 ```
 
 Time to make the following files by copying the respective private key from `/app/hive/.env`
 
 Each file should be of the following format:
 
-```
-WEB3_PRIVATE_KEY=xxx
+```.dotenv
+export WEB3_PRIVATE_KEY=xxx
 ```
 
 - `/app/hive/solver.env` (copy `SOLVER_PRIVATE_KEY` from `.env`)
@@ -82,10 +82,8 @@ sudo mv hive /usr/bin/hive
 Then we install bacalhau:
 
 ```bash
-cd /tmp
-wget https://github.com/bacalhau-project/bacalhau/releases/download/v1.0.3/bacalhau_v1.0.3_linux_amd64.tar.gz
-tar xfv bacalhau_v1.0.3_linux_amd64.tar.gz
-sudo mv bacalhau /usr/bin/bacalhau
+curl -sL https://get.bacalhau.org/install.sh | sudo bash
+
 sudo mkdir -p /app/data/ipfs
 sudo chown -R $USER /app/data
 ```
@@ -95,7 +93,7 @@ Finally we start the various systemd services:
 ```bash
 sudo systemctl start bacalhau
 sudo systemctl start solver
-sudo systemctl start mediator
+#sudo systemctl start mediator
 sudo systemctl start resource-provider
 sudo systemctl start job-creator
 ```

@@ -1,4 +1,7 @@
-binName = hive-$(shell uname -s)-$(shell uname -m)
+include .env
+export
+
+binName ?= hive-$(shell uname -s)-$(shell uname -m)
 
 
 setup-dev:
@@ -7,11 +10,8 @@ setup-dev:
 	go install github.com/ethereum/go-ethereum/cmd/abigen@latest
 	cd hardhat && pnpm install && pnpm gen-env
 	cd ..
-	#go generate
+	go generate
 	go build
-
-include .env
-export
 
 build-ci:
 	go build -v -ldflags="\
@@ -34,9 +34,6 @@ prerelease:
 release:
 	goreleaser release --clean
 
-install-hive:
-	goreleaser build --single-target --clean -o ./bin/${binName} --snapshot
-
 make-bin:
 	go build -v -ldflags="\
 		-X 'github.com/CoopHive/hive/config.version=$$(git describe --tags --abbrev=0)' \
@@ -53,22 +50,39 @@ deps:
 	go mod tidy && go work sync
 
 install:
-	goreleaser build --single-target --clean -o ./bin/${binName} --snapshot
+ifeq ($(OS),Windows_NT)
+	@goreleaser build --clean --snapshot
+else
+	@goreleaser build --single-target --clean -o ./bin/$(binName) --snapshot
+endif
 
 snapshot:
 	goreleaser build --clean --snapshot
 
-sync:
-	make snapshot
+host ?= hive
+hiveDir ?= /tmp/
 
+sync:
+	#host=${host:-"hive"}
+	echo "host is ${host}"
+	make snapshot
 	#scp dist/hive_linux_amd64_v1/hive hive:/usr/local/bin/hive #permission issue
-	scp dist/hive_linux_amd64_v1/hive hive:./bin/hive
-	scp dist/hive_linux_amd64_v1/hive hive:./hive/hive
+	#scp dist/hive_linux_amd64_v1/hive hive:./bin/hive
+
+	scp dist/hive_linux_amd64_v1/hive ${host}:${hiveDir}
+#	ssh ${host} 'cd ${hiveDir} && sudo chmod +x hive && sudo cp hive /usr/local/bin/'
+	ssh ${host} 'cd ${hiveDir} && sudo chmod +x hive && sudo rsync --force ./hive /usr/local/bin/'
+
+
+	scp *.yml ${host}:.
+	scp .env.* ${host}:.
 
 	#scp dist/hive_linux_amd64_v1/hive hive1:/usr/local/bin/hive
 
 	#scp .env.prod hive:.env
 	#scp .env.prod hive1:.env
+sync-solver:
+	make sync host=solver
 
 sync-env:
 	scp .env.prod hive:.env
@@ -83,17 +97,16 @@ install-win:
 
 
 generate-sol-bindings-for-go:
-	./stack go-bindings;
+	./setup go-bindings;
 
 
 plugin-autoacceptdealer:
 	#this plugin is very platform specific and can only be build in that specific platform
-	./stack build-plugin-autoaccept;
+	./scripts/build-plugin autoaccept
 
 
 plugin-websocket:
-	./stack build-plugin-websocket
-
+	./scripts/build-plugin websocket
 
 cleanup_github:
 	git tag -l | grep -- "-pr[0-9]" | xargs -I {} sh -c 'git tag -d {} & git push origin --delete {} & gh release delete {} --yes'
@@ -138,7 +151,7 @@ h:
 	make install-hive-latest
 
 cowsay:
-	hive run cowsay:v0.1.0
+	hive run cowsay:v0.1.2
 
 .PHONY: solver run cowsay h b
 
@@ -147,12 +160,16 @@ solver:
 	hive solver --web3-private-key $$SOLVER_PRIVATE_KEY
 
 run:
-	hive run cowsay:v0.1.0
+	hive run cowsay:v0.1.2
 
 
 rp:
 	hive rp
 
+
+test:
+	cd test
+	go test -v -count 1 .
 
 
 sdxl-subt:

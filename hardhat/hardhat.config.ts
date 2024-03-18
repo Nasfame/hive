@@ -1,8 +1,8 @@
 import {HardhatUserConfig, task} from "hardhat/config";
 import "@typechain/hardhat";
 import "@nomicfoundation/hardhat-toolbox";
-import "@nomicfoundation/hardhat-ethers";
 import "@nomicfoundation/hardhat-chai-matchers";
+import "@nomicfoundation/hardhat-ethers";
 import "hardhat-deploy";
 import * as dotenv from "dotenv";
 import * as process from "process";
@@ -55,7 +55,14 @@ const config: HardhatUserConfig = {
         accounts: PRIVATE_KEYS,
         saveDeployments: true,
     },
-    coophive: {
+    /* coophive: {
+       chainId: 1337,
+       url: "http://aurora.co-ophive.network:8545",
+       ws: "ws://aurora.co-ophive.network:8546",
+       accounts: PRIVATE_KEYS,
+       saveDeployments: true,
+     },*/
+    aurora: {
       chainId: 1337,
       url: "http://aurora.co-ophive.network:8545",
       ws: "ws://aurora.co-ophive.network:8546",
@@ -109,6 +116,13 @@ const config: HardhatUserConfig = {
   //     // Doesn't need an API key
   //     enabled: true
   // }
+  typechain: {
+    outDir: 'typechain-types',
+    target: 'ethers-v6',
+    alwaysGenerateOverloads: false, // should overloads with full signatures like deposit(uint256) be generated always, even if there are no overloads?
+    externalArtifacts: ['externalArtifacts/*.json'], // optional array of glob patterns with external artifacts to process (for example external libs from node_modules)
+    dontOverrideCompile: false // defaults to false
+  },
 };
 
 import "./tasks";

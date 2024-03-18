@@ -71,7 +71,7 @@ jobs:
           # configure this to where you want the ipfs data to be stored
           export BACALHAU_SERVE_IPFS_PATH=/tmp/coophive/data/ipfs
           # run bacalhau as both compute node and requester node
-          ./stack bacalhau-serve &
+          ./setup bacalhau-serve &
           sleep 10
 
       - name: Setup CoopHive Nodes- Mediator, Resource providers...
@@ -99,13 +99,13 @@ jobs:
           export WEB3_RPC_URL=wss://sepolia.infura.io/ws/v3/cd97920f485a4ed0b1f7f4bfb447b1dc
           export WEB3_CHAIN_ID=11155111
 
-          ./stack balances
-          ./stack compile-contracts
-          ./stack deploy-contracts
+          ./setup balances
+          ./setup compile-contracts
+          ./setup deploy-contracts
 
-          ./stack solver 
+          ./setup solver 
           sleep 10
-          ./stack mediator
+          ./setup mediator
 
       - name: Test Short
         run: go test -v -run="^Test" -short ./... -timeout 20m
