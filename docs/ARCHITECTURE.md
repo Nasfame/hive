@@ -208,13 +208,13 @@ sudo mkdir -p ${BACALHAU_SERVE_IPFS_PATH}
 If you have a GPU, run the following command in a separate terminal window:
 
 ```bash
-./setup resource-provider --offer-gpu 1
+./setup rp --offer-gpu 1
 ```
 
 Otherwise, if you don't have a GPU:
 
 ```bash
-./setup resource-provider
+./setup rp
 ```
 
 ### run faucet
