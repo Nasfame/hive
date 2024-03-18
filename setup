@@ -79,7 +79,6 @@ function print-env() {
 }
 
 function print-contract-env() {
-  #FIXME: doesn't work
   #hardhat-script scripts/print-contract-env.ts | grep export
   cat config/dApps/$NETWORK.env | grep HIVE_
 }
@@ -161,7 +160,6 @@ function faucet() {
   else
       echo "WEB3_TOKEN_ADDRESS is $WEB3_TOKEN_ADDRESS."
   fi
-#  TODO: contract env
   local privateKey=$(echo -n "$ADMIN_PRIVATE_KEY" | sed 's/^0x//')
   local tokenAddress=$(echo -n "$WEB3_TOKEN_ADDRESS" | sed 's/^0x//')
   docker run -d \
