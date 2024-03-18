@@ -220,4 +220,22 @@ function run-cowsay-onchain() {
 }
 
 
+# cleanup
+
+function geth-stop() {
+  docker rm -f geth 2> /dev/null || true
+}
+
+function clean() {
+  docker rm -f $(docker ps -aq) || true
+  sudo rm -rf ${DATA_DIRECTORY}
+  clean-deploy
+}
+
+function clean-deploy() {
+  rm -rf hardhat/artifacts
+  rm -rf hardhat/cache
+  rm -rf hardhat/deployments/geth
+}
+
 eval "$@"
