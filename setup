@@ -21,6 +21,11 @@ function _setupHardhat(){
   pnpm install
 }
 
+#hive setup
+function _setup(){
+  make
+}
+
 
 
 ##hardhat utils
