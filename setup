@@ -165,5 +165,45 @@ function integration-tests() {
   )
 }
 
+# Deep Dive into hardhat
+
+
+function hardhat-script() {
+  (
+    set -euo pipefail
+    cd hardhat
+    npx hardhat run "$@"
+  )
+}
+
+# print the env settings for the various accounts and private keys
+function print-env() {
+  (cd hardhat && npm run print-env) | grep export
+}
+
+function print-contract-env() {
+  hardhat-script scripts/print-contract-env.ts | grep export
+}
+
+function print-local-dev-env() {
+  print-contract-env
+}
+
+function fund-services-ether() {
+  hardhat-script scripts/fund-services-ether.ts
+}
+
+function fund-services-tokens() {
+  hardhat-script scripts/fund-services-tokens.ts
+}
+
+function balances() {
+  hardhat-script scripts/balances.ts
+}
+
+function run-cowsay-onchain() {
+  hardhat-script scripts/run-cowsay-onchain.ts
+}
+
 
 eval "$@"
