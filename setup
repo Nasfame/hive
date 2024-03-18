@@ -61,6 +61,52 @@ function pkey() {
 #alias pkey=derivePkey
 alias pKey=derivePkey
 
+
+# Deep Dive into hardhat
+
+
+function hardhat-script() {
+  (
+    set -euo pipefail
+    cd hardhat
+    npx hardhat run --network $NETWORK "$@"
+  )
+}
+
+# print the env settings for the various accounts and private keys
+function print-env() {
+  (cd hardhat && npm run print-env) | grep export
+}
+
+function print-contract-env() {
+  #FIXME: doesn't work
+  #hardhat-script scripts/print-contract-env.ts | grep export
+  cat config/dApps/$NETWORK.env | grep HIVE_
+}
+
+function print-local-dev-env() {
+  print-contract-env
+}
+
+function fund-services-ether() {
+  #TODO: replace with npx hardhat fund
+  hardhat-script scripts/fund-services-ether.ts
+}
+
+function fund-services-tokens() {
+  #TODO: replace with npx hardhat fund <etherVal> <hiveTokenVal>
+  hardhat-script scripts/fund-services-tokens.ts
+}
+
+function balances() {
+  hardhat-script scripts/balances.ts
+}
+
+function run-cowsay-onchain() {
+  hardhat-script scripts/run-cowsay-onchain.ts
+}
+
+
 #geth setup
 
 # run a local geth node in dev mode mounted against a local data directory
@@ -219,51 +265,6 @@ function integration-tests() {
     go test -v -count 1 .
   )
 }
-
-# Deep Dive into hardhat
-
-
-function hardhat-script() {
-  (
-    set -euo pipefail
-    cd hardhat
-    npx hardhat run --network $NETWORK "$@"
-  )
-}
-
-# print the env settings for the various accounts and private keys
-function print-env() {
-  (cd hardhat && npm run print-env) | grep export
-}
-
-function print-contract-env() {
-  #FIXME: doesn't work
-  #hardhat-script scripts/print-contract-env.ts | grep export
-  cat config/dApps/$NETWORK.env | grep HIVE_
-}
-
-function print-local-dev-env() {
-  print-contract-env
-}
-
-function fund-services-ether() {
-  #TODO: replace with npx hardhat fund
-  hardhat-script scripts/fund-services-ether.ts
-}
-
-function fund-services-tokens() {
-  #TODO: replace with npx hardhat fund <etherVal> <hiveTokenVal>
-  hardhat-script scripts/fund-services-tokens.ts
-}
-
-function balances() {
-  hardhat-script scripts/balances.ts
-}
-
-function run-cowsay-onchain() {
-  hardhat-script scripts/run-cowsay-onchain.ts
-}
-
 
 # cleanup
 
