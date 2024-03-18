@@ -238,7 +238,8 @@ function print-env() {
 
 function print-contract-env() {
   #FIXME: doesn't work
-  hardhat-script scripts/print-contract-env.ts | grep export
+  #hardhat-script scripts/print-contract-env.ts | grep export
+  cat config/dApps/$NETWORK.env | grep HIVE_
 }
 
 function print-local-dev-env() {
