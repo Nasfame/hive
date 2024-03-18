@@ -21,7 +21,7 @@ function _setupHardhat(){
 }
 
 #hive setup
-function _setup(){
+function setup(){
   make
 }
 
@@ -47,7 +47,7 @@ function deploy-contracts() {
 function derivePkey() {
   if [ ! -d "hardhat/node_modules" ]; then
     echo "Node modules not found."
-    exit 2
+    #exit 2
     _setupHardhat
   fi
 
@@ -145,6 +145,14 @@ function bacalhau-serve() {
 function install() {
     export GOBIN=$(go env GOBIN || echo '/usr/local/bin')
     go install . #installs hive to GOBIN
+}
+
+function check_install(){
+   if ! command -v hive &>/dev/null; then
+        echo "Error: hive executable not found"
+        echo "$0 install"
+        install
+    fi
 }
 
 #alias hive='hive "$@"' FIXME: it only works for internal
@@ -264,6 +272,7 @@ function geth-stop() {
 function clean() {
   docker rm -f $(docker ps -aq) || true
   sudo rm -rf ${DATA_DIRECTORY}
+#  TODO: remove hive also
   clean-deploy
 }
 
@@ -297,6 +306,8 @@ function deploy() {
 
 function boot() {
   clean
+  boot-message "$0 setup"
+  setup
   boot-message "Starting geth"
   geth
   sleep 5
