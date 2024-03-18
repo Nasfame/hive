@@ -100,4 +100,29 @@ function install() {
     go install . #installs hive to GOBIN
 }
 
+#alias hive='hive "$@"' FIXME:
+
+function version() {
+    hive version
+}
+
+## hive services
+
+function mediator(){
+    hive mediator "$@"
+}
+
+function solver() {
+    hive solver "$@"
+}
+
+function jc() {
+    hive jc "$@"
+}
+
+function rp() {
+    hive rp "$@"
+}
+
 eval "$@"
+
