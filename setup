@@ -9,6 +9,9 @@ export DATA_DIRECTORY=${DATA_DIRECTORY:="$DEFAULT_DATA_DIR"}
 export NETWORK=${NETWORK:="geth"}
 export CONFIG_FILE=${CONFIG_FILE:=".env"}
 
+#for hardhat config file
+export CONFIG=$CONFIG || $CONFIG_FILE
+
 # hardhat
 function _setupHardhat(){
   cd hardhat
