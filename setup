@@ -85,4 +85,11 @@ function faucet() {
       --faucet.minutes=1
 }
 
+# hive
+
+function install() {
+    export GOBIN=/usr/local/bin
+    go install . #installs hive to GOBIN
+}
+
 eval "$@"
