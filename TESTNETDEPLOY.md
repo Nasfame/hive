@@ -18,9 +18,7 @@ To run a Bacalhau node on the same machine as the resource provider, follow thes
 
 ```bash
 # install the latest bacalhau which works with GPUs (https://github.com/bacalhau-project/bacalhau/issues/2858)
-wget https://github.com/bacalhau-project/bacalhau/releases/download/v1.0.3/bacalhau_v1.0.3_linux_amd64.tar.gz
-tar xfv bacalhau_v1.0.3_linux_amd64.tar.gz
-mv bacalhau /usr/local/bin
+curl -sL https://get.bacalhau.org/install.sh | sudo bash
 # configure this to where you want the ipfs data to be stored
 export BACALHAU_SERVE_IPFS_PATH=/tmp/coophive/data/ipfs
 # run bacalhau as both compute node and requester node
@@ -31,24 +29,9 @@ export BACALHAU_SERVE_IPFS_PATH=/tmp/coophive/data/ipfs
 
 Follow the `README.md` in the `generate_accts` directory to create seven new accounts.
 
-Copy `hardhat/.env.sample` to `.env` and update the following environment variables:
+Copy `hardhat/.env.sample` to `.env` and update the private keys. 
 
-```
-ADMIN_ADDRESS=
-ADMIN_PRIVATE_KEY=
-FAUCET_ADDRESS=
-FAUCET_PRIVATE_KEY=
-SOLVER_ADDRESS=
-SOLVER_PRIVATE_KEY=
-MEDIATOR_ADDRESS=
-MEDIATOR_PRIVATE_KEY=
-RESOURCE_PROVIDER_ADDRESS=
-RESOURCE_PROVIDER_PRIVATE_KEY=
-JOB_CREATOR_ADDRESS=
-JOB_CREATOR_PRIVATE_KEY=
-DIRECTORY_ADDRESS=
-DIRECTORY_PRIVATE_KEY=
-```
+> Hint: you can also use the same private key across all services, but the recommended way is to use different accounts.
 
 ## Create a new Infura Project
 
@@ -66,19 +49,7 @@ export INFURA_KEY=
 
 ## Setup Hardhat
 
-Add NETWORK to the `hardhat/.env` file:
-
-```
-NETWORK=sepolia
-```
-
-Update the following values in the `.env` file. Replace `<INFURA_KEY>` with the Infura key from above:
-
-```
-export NETWORK=sepolia
-export WEB3_RPC_URL=wss://sepolia.infura.io/ws/v3/<INFURA_KEY>
-export WEB3_CHAIN_ID=11155111
-```
+Add the NETWORK to the `hardhat/hardhat.config.ts`.
 
 ## Fund the Seven New Accounts
 
@@ -131,13 +102,13 @@ Wait for the solver to start when `🟡 SOL solver registered` is logged, and th
 If you have a GPU, run the following command in a separate terminal window:
 
 ```bash
-./stack resource-provider --offer-gpu 1
+./stack rp --offer-gpu 1
 ```
 
 Otherwise, if you don't have a GPU:
 
 ```bash
-./stack resource-provider
+./stack rp
 ```
 
 Run Cowsay:
@@ -157,7 +128,7 @@ Run SDXL:
 Start the on-chain Job Creator:
 
 ```bash
-./stack jobcreator
+./stack jc
 ```
 
 ```bash
