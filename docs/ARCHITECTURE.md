@@ -374,7 +374,7 @@ step above):
 
 ```bash
 ./setup geth
-source prod.env
+export CONFIG_FILE=prod.env
 ./setup fund-admin
 ./setup deploy
 ./setup fund-services-ether
