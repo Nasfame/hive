@@ -189,7 +189,7 @@ Wait for the solver to start when `🟡 SOL solver registered` is logged, and th
 In another terminal window run:
 
 ```bash
-./setup jobcreator
+./setup jc
 ```
 
 #### bacalhau

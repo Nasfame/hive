@@ -97,13 +97,13 @@ Wait for the solver to start when `🟡 SOL solver registered` is logged, and th
 If you have a GPU, run the following command in a separate terminal window:
 
 ```bash
-./setup resource-provider --offer-gpu 1
+./setup rp --offer-gpu 1
 ```
 
 Otherwise, if you don't have a GPU:
 
 ```bash
-./setup resource-provider
+./setup rp
 ```
 
 Run Cowsay:
@@ -123,7 +123,7 @@ Run SDXL:
 Start the on-chain Job Creator:
 
 ```bash
-./setup jobcreator
+./setup jc
 ```
 
 ```bash
