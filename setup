@@ -56,7 +56,7 @@ function derivePkey() {
 }
 
 function pkey() {
-  derivePkey
+  derivePkey "$@"
 }
 #alias pkey=derivePkey
 alias pKey=derivePkey
