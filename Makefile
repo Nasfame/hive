@@ -193,3 +193,5 @@ deploy-sepolia:
 	docker-compose up sepolia -d --wait
 	export CONFIG_FILE=.env.sepolia
 	hive solver
+
+.PHONY: run test
