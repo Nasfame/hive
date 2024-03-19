@@ -367,13 +367,15 @@ function boot-hive() {
     (
         set -euo pipefail
         cd ops/systemd
-        sudo cp bacalhau.service /etc/systemd/system/
-        sudo cp solver.service /etc/systemd/system/
-        sudo cp mediator.service /etc/systemd/system/
-        sudo cp job-creator.service /etc/systemd/system/
+        sudo cp *.service /etc/systemd/system/
+#       sudo cp bacalhau.service /etc/systemd/system/
+#        sudo cp solver.service /etc/systemd/system/
+#        sudo cp mediator.service /etc/systemd/system/
+#        sudo cp job-creator.service /etc/systemd/system/
         sudo systemctl enable bacalhau
         sudo systemctl enable solver
         sudo systemctl enable job-creator
+        sudo systemctl enable resource-provider
 #        sudo systemctl enable mediator
     )
 
