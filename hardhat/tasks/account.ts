@@ -71,6 +71,7 @@ interface Out {
 task("fund", "Fund RP, faucet account's balance")
     .addOptionalPositionalParam("eth", "The Eth drip", ".01")
     .addOptionalPositionalParam("hive", "The Hive Drip", "8000")
+    // .addOptionalParam("p", "Parallel", true) //TODO:
     .setAction(async ({eth, hive}, hre) => {
         console.log("network", hre.network.name);
 
