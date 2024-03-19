@@ -153,7 +153,7 @@ These steps boot geth, deploy our contracts and ensure that the various services
 and tokens.
 
 ```bash
-cd coophive
+cd hive
 ./setup boot
 ```
 
