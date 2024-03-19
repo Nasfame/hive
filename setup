@@ -353,6 +353,16 @@ function deploy() {
   balances
 }
 
+function boot-hive() {
+    if ! command -v bacalhau &>/dev/null; then
+         echo "Error: bacalhau executable not found. trying to install bacalhau"
+         curl -sL https://get.bacalhau.org/install.sh | sudo bash
+    fi
+
+
+
+}
+
 function boot() {
   boot-message "$0 clean : cleans previous setup"
   clean
