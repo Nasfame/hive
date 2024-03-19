@@ -119,7 +119,9 @@ function fund-services-ether() {
 
 function fund-services-tokens() {
   #TODO: replace with npx hardhat fund <etherVal> <hiveTokenVal>
-  hardhat-script scripts/fund-services-tokens.ts
+  #hardhat-script scripts/fund-services-tokens.ts
+  cd hardhat
+  pnpm fund $NETWORK 0 10000
 }
 
 function balances() {
