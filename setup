@@ -89,7 +89,7 @@ function _fixDappForUnix(){
 
 function print-contract-env() {
   local dappFile="config/dApps/$NETWORK.env"
-  _fixDappForUnix $dappFile
+  _fixDappForUnix $dappFile >/dev/null 2>&1
   #hardhat-script scripts/print-contract-env.ts | grep export
   cat $dappFile | grep HIVE_
 }
