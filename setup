@@ -7,7 +7,7 @@ export DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 export DEFAULT_DATA_DIR="/tmp/geth"
 export DATA_DIRECTORY=${DATA_DIRECTORY:="$DEFAULT_DATA_DIR"}
 export NETWORK=${NETWORK:="geth"}
-export CONFIG_FILE=${CONFIG_FILE:=".env"}
+export CONFIG_FILE=${CONFIG_FILE:=".env.$NETWORK"}
 
 #for hardhat config file
 export CONFIG=${CONFIG:=$CONFIG_FILE}
