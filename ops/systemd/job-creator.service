@@ -7,7 +7,7 @@ Wants=network-online.target systemd-networkd-wait-online.service
 Environment="LOG_TYPE=json"
 Environment="LOG_LEVEL=debug"
 Environment="HOME=/app/coophive"
-EnvironmentFile=/app/coophive/job-creator.env
+EnvironmentFile=/app/coophive/.env
 Restart=always
 RestartSec=5s
 ExecStart=/usr/bin/hive jobcreator
