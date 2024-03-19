@@ -112,6 +112,10 @@ These steps only need to be done once.
 curl -sL https://get.bacalhau.org/install.sh | sudo bash
 ```
 
+```stdout
+ CLIENT  SERVER  LATEST  UPDATE MESSAGE
+ v1.2.3  v1.2.3  v1.2.3
+```
 
 #### clone faucet repo
 
