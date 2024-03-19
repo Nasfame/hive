@@ -154,6 +154,7 @@ and tokens.
 
 ```bash
 cd hive
+chmod +x ./setup
 ./setup boot
 ```
 
