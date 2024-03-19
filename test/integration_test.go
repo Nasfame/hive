@@ -6,6 +6,7 @@ import (
 	"github.com/CoopHive/hive/enums"
 	"github.com/CoopHive/hive/internal"
 	"github.com/CoopHive/hive/services"
+	"github.com/sirupsen/logrus"
 	"go.uber.org/fx"
 	"go.uber.org/fx/fxtest"
 	"os"
@@ -14,7 +15,6 @@ import (
 
 	"github.com/davecgh/go-spew/spew"
 	"github.com/joho/godotenv"
-	"github.com/rs/zerolog/log"
 	"github.com/stretchr/testify/assert"
 
 	"github.com/CoopHive/hive/config"
@@ -222,11 +222,35 @@ func TestNoModeration(t *testing.T) {
 	spew.Dump(localPath)
 }
 
+// load ConfigFile
 func init() {
-	err := godotenv.Load("../.env")
-	if err != nil {
-		log.Fatal().Str("err", err.Error()).Msgf(".env not found")
+	configFile := os.Getenv("CONFIG_FILE")
+	defaultLoad := false
+
+	if configFile == "" {
+		configFile = "../.env"
+		defaultLoad = true
 	}
+	os.Setenv(enums.DEBUG, "true")
+	logrus.SetLevel(logrus.TraceLevel)
+
+	logrus.Debugf("Loading config from %s", configFile)
+
+	if err := godotenv.Load(configFile); err != nil {
+		if !defaultLoad {
+			logrus.Errorf(".env loading error %v", err)
+		} else {
+			logrus.Debugf("err loading : %v", err)
+		}
+	}
+
+}
+
+func init() {
+	/*	err := godotenv.Load("../.env")
+		if err != nil {
+			log.Fatal().Str("err", err.Error()).Msgf(".env not found")
+		}*/
 	//
 	//app := cmd.Hive()
 	//
