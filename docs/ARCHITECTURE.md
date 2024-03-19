@@ -263,11 +263,15 @@ To stop geth:
 ./setup geth-stop
 ```
 
+<!--
 To stop the faucet:
 
 ```bash
 ./setup faucet-stop
 ```
+There is no faucet-stop in stack
+
+-->
 
 To reset Geth data, effectively performing a complete restart, use the following command:
 
@@ -303,7 +307,7 @@ Running the coophive in a production environment will require:
 * a VM (or multiple) connected to the Internet
     * the solver will require a public http(s) endpoint
     * it is recommended that you use a reverse proxy to terminate TLS and forward to the solver
-* a compiled binary of bacalhau `v1.0.3-coophive1`
+* a compiled binary of bacalhau 
     * see the development instructions for how to get this onto the machine
     * it must live on the VM at the `/usr/bin/bacalhau` path
 * a compiled binary of the coophive
@@ -322,17 +326,17 @@ Regardless of what blockchain we use, we will need the private keys and associat
 To generate these for a new deployment - you can run the following command:
 
 ```bash
-./setup generate-addresses
+./setup print-env
 ```
 
-This will print the private keys and addresses to stdout so to create a production `prod.env` file, you can do the
+This will print the private keys and addresses to stdout so to create a production `.env` file, you can do the
 following:
 
 ```bash
-./setup generate-addresses > prod.env
+./setup print-env > .env
 ```
 
-If you plan to run geth locally, also add to `prod.env`:
+If you plan to run geth locally, also add to `.env.geth`:
 
 ```
 export LOG_LEVEL=info
