@@ -461,40 +461,39 @@ SERVER_URL=https://my-cool-network.io
 **NOTE** in the example above - we will have setup a TLS terminating reverse proxy such
 that `https://my-cool-network.io` will forward to the solver VM on port 80.
 
-The following is a guide to each of the `.env` files that need creating:
+The following is a guide to env vars for setting up **Hive Services **:
 
-`solver.env`
+Its preferred to store the vars in a  a single `.env` file for all services
 
-* `WEB3_PRIVATE_KEY` (copy `SOLVER_PRIVATE_KEY` from `prod.env`)
+`.env`
+
+#### Jobcreator `hive jc` or `hive run`
+
+* `WEB3_PRIVATE_KEY` or `HIVE_PRIVATE_KEY` or `JC_PRIVATE_KEY` _(Priority in case all are present in the same order)_
+* `HIVE_SOLVER` <i>Optional (only for advanced setups)</i>
+
+[//]: # (* `HIVE_MEDIATORS` <i>Optional )
+
+
+#### Solver `hive solver`
+
+* `SOLVER_PRIVATE_KEY` 
 * `SERVER_PORT` (the port the solver will listen on)
 * `SERVER_URL` (the public http(s) endpoint of the solver)
 
-In the following, `HIVE_SOLVER` and `SERVICE_MEDIATORS` aren't necessary if you've updated the code
-in `pkg/options/services.go` to use yours as the default. WEB3_CONTROLLER_ADDRESS in `pkg/options/web3.go` too (for the
-controller contract address, see `cat hardhat/deployments/geth/CoopHiveController.json |head | grep address`).
+#### Resource provider `hive rp`
 
-`job-creator.env`
+* `RP_PRIVATE_KEY` 
+* `HIVE_SOLVER` <i>Optional (only for advanced setups)</i>
 
-* `WEB3_PRIVATE_KEY` (copy `SOLVER_PRIVATE_KEY` from `prod.env` - NOT the job creator one)
-* `HIVE_SOLVER` (copy `SOLVER_ADDRESS` from `prod.env`)
-* `SERVICE_MEDIATORS` (copy `MEDIATOR_ADDRESS` from `prod.env`)
+[//]: # (* `SERVICE_MEDIATORS`)
 
-`resource-provider.env`
+[//]: # (#### Mediator `hive mediator`)
 
-* `WEB3_PRIVATE_KEY` (copy `RESOURCE_PROVIDER_PRIVATE_KEY` from `prod.env`)
-* `HIVE_SOLVER` (copy `SOLVER_ADDRESS` from `prod.env`)
-* `SERVICE_MEDIATORS` (copy `MEDIATOR_ADDRESS` from `prod.env`)
+[//]: # ()
+[//]: # (* `MEDIATOR_PRIVATE_KEY` &#40;copy `MEDIATOR_PRIVATE_KEY` from `prod.env`&#41;)
 
-`resource-provider-gpu.env`
-
-* `WEB3_PRIVATE_KEY` (copy `RESOURCE_PROVIDER_PRIVATE_KEY` from `prod.env`)
-* `HIVE_SOLVER` (copy `SOLVER_ADDRESS` from `prod.env`)
-* `SERVICE_MEDIATORS` (copy `MEDIATOR_ADDRESS` from `prod.env`)
-
-`mediator.env`
-
-* `WEB3_PRIVATE_KEY` (copy `MEDIATOR_PRIVATE_KEY` from `prod.env`)
-* `HIVE_SOLVER` (copy `SOLVER_ADDRESS` from `prod.env`)
+[//]: # (* `HIVE_SOLVER` &#40;copy `SOLVER_ADDRESS` from `prod.env`&#41;)
 
 Once you have created these files - you can upload them to the VM(s) you are going to run the services on.
 
