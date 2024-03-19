@@ -372,7 +372,7 @@ function boot() {
   fund-services-ether
   deploy
   install
-  run cowsay:v0.1.2 -i Message="Hiro saves the bees"
+#  run cowsay:v0.1.2 -i Message="Hiro saves the bees"
 }
 
 eval "$@"
