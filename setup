@@ -327,6 +327,7 @@ function deploy() {
 }
 
 function boot() {
+  boot-message "$0 clean : cleans previous setup"
   clean
   boot-message "$0 setup"
   setup
