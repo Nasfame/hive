@@ -87,6 +87,13 @@ function hardhat-script() {
   )
 }
 
+function hardhat-npm() {
+  (
+    set -euo pipefail
+    cd hardhat
+    npm run "$@"
+  )
+}
 # print the env settings for the various accounts and private keys
 function print-env() {
   (cd hardhat && npm run print-env) | grep export
@@ -120,8 +127,9 @@ function fund-services-ether() {
 function fund-services-tokens() {
   #TODO: replace with npx hardhat fund <etherVal> <hiveTokenVal>
   #hardhat-script scripts/fund-services-tokens.ts
-  cd hardhat
-  pnpm fund $NETWORK 0 10000
+#  cd hardhat
+#  pnpm fund $NETWORK 0 10000
+  hardhat-npm fund $NETWORK 0 1000
 }
 
 function balances() {
