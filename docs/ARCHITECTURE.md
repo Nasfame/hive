@@ -131,7 +131,7 @@ git clone https://github.com/CoopHive/faucet.coophive.network
 #### install stack
 
 ```bash
-cd coophive
+cd hive
 ./setup install
 ```
 
