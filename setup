@@ -358,8 +358,24 @@ function boot-hive() {
          echo "Error: bacalhau executable not found. trying to install bacalhau"
          curl -sL https://get.bacalhau.org/install.sh | sudo bash
     fi
+    check_install
 
+    sudo mkdir -p /app/coophive
+    sudo chown -R $USER /app/coophive
+    sudo ln -s $CONFIG_FILE /app/coophive/.env
 
+    (
+        set -euo pipefail
+        cd ops/systemd
+        sudo cp bacalhau.service /etc/systemd/system/
+        sudo cp solver.service /etc/systemd/system/
+        sudo cp mediator.service /etc/systemd/system/
+        sudo cp job-creator.service /etc/systemd/system/
+        sudo systemctl enable bacalhau
+        sudo systemctl enable solver
+        sudo systemctl enable job-creator
+#        sudo systemctl enable mediator
+    )
 
 }
 
@@ -384,6 +400,8 @@ function boot() {
   fund-services-ether
   deploy
   install
+  integration-tests
+  boot-hive
 #  run cowsay:v0.1.2 -i Message="Hiro saves the bees"
 }
 
