@@ -1,5 +1,17 @@
-include .env
-export
+# Check if .env file exists
+ifeq ($(wildcard .env),)
+    ENV_EXISTS := false
+else
+    ENV_EXISTS := true
+endif
+
+# Include .env file if it exists
+ifeq ($(ENV_EXISTS),true)
+    include .env
+    export
+endif
+
+
 
 binName ?= hive-$(shell uname -s)-$(shell uname -m)
 
