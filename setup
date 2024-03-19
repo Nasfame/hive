@@ -253,23 +253,23 @@ function version() {
 ## hive services
 
 function mediator(){
-    hive mediator "$@"
+    hive mediator $@
 }
 
 function solver() {
-    hive solver "$@"
+    hive solver $@
 }
 
 function jc() {
-    hive jc "$@"
+    hive jc $@
 }
 
 function rp() {
-    hive rp "$@"
+    hive rp $@
 }
 
 function run() {
-    hive run "$@"
+    hive run $@
 }
 
 
@@ -371,6 +371,8 @@ function boot() {
   boot-message "Funding services with ether"
   fund-services-ether
   deploy
+  install
+  run cowsay:v0.1.2 -i Message="Hiro saves the bees"
 }
 
 eval "$@"
