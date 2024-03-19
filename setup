@@ -150,7 +150,8 @@ function geth-command() {
 # move ALL the money apart from 1 eth to the given admin account
 # this expects the .env file to already have been created
 function fund-admin() {
-  export ADMIN_ADDRESS=${ADMIN_ADDRESS:-$(pkey $ADMIN_PRIVATE_KEY)}
+  ADMIN_PRIVATE_KEY=${ADMIN_PRIVATE_KEY:-""}
+  export ADMIN_ADDRESS=${ADMIN_ADDRESS:-$(pkey "$ADMIN_PRIVATE_KEY")}
   if [[ -z "$ADMIN_ADDRESS" ]]; then
     echo >&2 "ADMIN_ADDRESS must be set"
     exit 1
@@ -339,6 +340,7 @@ function boot() {
   else
     echo "Configuration file $CONFIG_FILE found."
   fi
+  source $CONFIG_FILE
   sleep 5
   boot-message "Funding admin account"
   fund-admin
