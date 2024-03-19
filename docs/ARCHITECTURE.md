@@ -469,32 +469,32 @@ The following is a guide to each of the `.env` files that need creating:
 * `SERVER_PORT` (the port the solver will listen on)
 * `SERVER_URL` (the public http(s) endpoint of the solver)
 
-In the following, `SERVICE_SOLVER` and `SERVICE_MEDIATORS` aren't necessary if you've updated the code
+In the following, `HIVE_SOLVER` and `SERVICE_MEDIATORS` aren't necessary if you've updated the code
 in `pkg/options/services.go` to use yours as the default. WEB3_CONTROLLER_ADDRESS in `pkg/options/web3.go` too (for the
 controller contract address, see `cat hardhat/deployments/geth/CoopHiveController.json |head | grep address`).
 
 `job-creator.env`
 
 * `WEB3_PRIVATE_KEY` (copy `SOLVER_PRIVATE_KEY` from `prod.env` - NOT the job creator one)
-* `SERVICE_SOLVER` (copy `SOLVER_ADDRESS` from `prod.env`)
+* `HIVE_SOLVER` (copy `SOLVER_ADDRESS` from `prod.env`)
 * `SERVICE_MEDIATORS` (copy `MEDIATOR_ADDRESS` from `prod.env`)
 
 `resource-provider.env`
 
 * `WEB3_PRIVATE_KEY` (copy `RESOURCE_PROVIDER_PRIVATE_KEY` from `prod.env`)
-* `SERVICE_SOLVER` (copy `SOLVER_ADDRESS` from `prod.env`)
+* `HIVE_SOLVER` (copy `SOLVER_ADDRESS` from `prod.env`)
 * `SERVICE_MEDIATORS` (copy `MEDIATOR_ADDRESS` from `prod.env`)
 
 `resource-provider-gpu.env`
 
 * `WEB3_PRIVATE_KEY` (copy `RESOURCE_PROVIDER_PRIVATE_KEY` from `prod.env`)
-* `SERVICE_SOLVER` (copy `SOLVER_ADDRESS` from `prod.env`)
+* `HIVE_SOLVER` (copy `SOLVER_ADDRESS` from `prod.env`)
 * `SERVICE_MEDIATORS` (copy `MEDIATOR_ADDRESS` from `prod.env`)
 
 `mediator.env`
 
 * `WEB3_PRIVATE_KEY` (copy `MEDIATOR_PRIVATE_KEY` from `prod.env`)
-* `SERVICE_SOLVER` (copy `SOLVER_ADDRESS` from `prod.env`)
+* `HIVE_SOLVER` (copy `SOLVER_ADDRESS` from `prod.env`)
 
 Once you have created these files - you can upload them to the VM(s) you are going to run the services on.
 
