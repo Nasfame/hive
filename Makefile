@@ -22,6 +22,8 @@ setup-dev:
 	go install github.com/ethereum/go-ethereum/cmd/abigen@latest
 	cd hardhat && pnpm install && pnpm gen-env
 	cd ..
+	chmod +x scripts/*
+	chmod +x setup
 	go generate ./...
 	go build
 
