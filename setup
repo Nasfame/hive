@@ -360,10 +360,16 @@ function boot-hive() {
     fi
     check_install
 
-    sudo mkdir -p /app/coophive
-    sudo chown -R $USER /app/coophive
-    sudo ln -s $CONFIG_FILE /app/coophive/.env
+    appDir="/app/coophive"
 
+    sudo mkdir -p $appDir
+    sudo chown -R $USER $appDir
+    if [ ! -f "$appDir/.env" ]; then
+         sudo ln -s "$CONFIG_FILE" $appDir/.env
+         echo "Symbolic link created."
+     else
+         echo "Skipping symbolic link creation: .env file already exists."
+    fi
     (
         set -euo pipefail
         cd ops/systemd
