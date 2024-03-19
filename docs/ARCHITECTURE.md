@@ -107,15 +107,11 @@ These steps only need to be done once.
 
 #### install bacalhau
 
-We are currently pinned to bacalhau v1.0.3-coophive1 - to install this version run the following commands:
-
+[//]: # (TODO: note the last working version of bacalhau)
 ```bash
-wget https://github.com/CoopHive/bacalhau/releases/download/v1.0.3-coophive1/bacalhau
-chmod +x bacalhau
-sudo mv bacalhau /usr/bin
+curl -sL https://get.bacalhau.org/install.sh | sudo bash
 ```
 
-[//]: # (TODO: upgrade bacalhau)
 
 #### clone faucet repo
 
