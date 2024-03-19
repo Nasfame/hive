@@ -7,7 +7,7 @@ export DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 export DEFAULT_DATA_DIR="/tmp/geth"
 export DATA_DIRECTORY=${DATA_DIRECTORY:="$DEFAULT_DATA_DIR"}
 export NETWORK=${NETWORK:="geth"}
-export CONFIG_FILE=${CONFIG_FILE:=".env.$NETWORK"}
+export CONFIG_FILE=${CONFIG_FILE:=$PWD/".env.$NETWORK"}
 
 #TODO: expect for GETH_DOCKER_IMAGE
 # if we are running geth in docker (for testnets)
