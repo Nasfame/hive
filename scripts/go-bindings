@@ -62,6 +62,44 @@ function go-bindings() {
   echo "Generated all go bindings pkg/contract/bindings/"
 }
 
+function go-binding-docker() {
+  local name="$1"
+  local pkg="$2"
+
+  # compile the sol files into bytecode and ABI
+  docker run --rm \
+    -v $DIR/hardhat:/src \
+    -w /src \
+    --entrypoint solc \
+    coophive-solc \
+       --base-path . \
+       --include-path node_modules \
+       --overwrite \
+      --abi --bin \
+      "contracts/$name.sol" \
+      -o artifacts
+
+  sudo chown -R $USER:$USER hardhat/artifacts
+  mkdir -p hardhat/artifacts/bindings/$pkg
+
+  # generate the go bindings
+  docker run --rm \
+    -v $DIR/hardhat:/src \
+    -w /src \
+    --entrypoint abigen \
+    coophive-solc \
+      "--bin=artifacts/$name.bin" \
+      "--abi=artifacts/$name.abi" \
+      "--pkg=$pkg" "--out=artifacts/bindings/$pkg/$pkg.go"
+
+  sudo chown -R $USER:$USER hardhat/artifacts/bindings/$pkg
+  sudo chmod 0644 hardhat/artifacts/bindings/$pkg/$pkg.go
+  cp -r hardhat/artifacts/bindings/$pkg pkg/web3/bindings/$pkg
+
+  echo "Generated go binding hardhat/artifacts/bindings/$pkg/$pkg.go"
+}
+
+
 function go-bindings-docker() {
   # check if the hive-solc image exists
   # and only build it if it doesn't
