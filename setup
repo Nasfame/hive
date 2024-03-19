@@ -168,10 +168,10 @@ function faucet() {
   export WEB3_TOKEN_ADDRESS=$HIVE_TOKEN
   # Checking if WEB3_TOKEN_ADDRESS is empty
   if [ -z "$WEB3_TOKEN_ADDRESS" ]; then
-      echo "WEB3_TOKEN_ADDRESS is empty. failed"
+      echo "WEB3_TOKEN_ADDRESS is empty. failed" >&2
       exit 2
   else
-      echo "WEB3_TOKEN_ADDRESS is $WEB3_TOKEN_ADDRESS."
+      echo "WEB3_TOKEN_ADDRESS is $WEB3_TOKEN_ADDRESS"
   fi
   local privateKey=$(echo -n "$ADMIN_PRIVATE_KEY" | sed 's/^0x//')
   local tokenAddress=$(echo -n "$WEB3_TOKEN_ADDRESS" | sed 's/^0x//')
@@ -179,7 +179,7 @@ function faucet() {
     --name faucet \
     -p 8080:8080 \
     --network coophive \
-    -e PORT=8080
+    -e PORT=8080 \
     -e WEB3_PROVIDER=http://geth:8545 \
     -e PRIVATE_KEY=$privateKey \
     -e TOKEN_ADDRESS=$tokenAddress \
