@@ -130,6 +130,8 @@ function fund-services-tokens() {
 #  cd hardhat
 #  pnpm fund $NETWORK 0 10000
   hardhat-npm fund $NETWORK 0 1000
+#  FIXME: some transactions are failing
+  hardhat-npm fund $NETWORK 0 1000
 }
 
 function balances() {
