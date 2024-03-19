@@ -332,6 +332,12 @@ function boot() {
   setup
   boot-message "Starting geth"
   geth
+  if [ ! -f "$CONFIG_FILE" ]; then
+    boot-message "Genr env to $CONFIG_FILE"
+    print-env > "$CONFIG_FILE"
+  else
+    echo "Configuration file $CONFIG_FILE found."
+  fi
   sleep 5
   boot-message "Funding admin account"
   fund-admin
